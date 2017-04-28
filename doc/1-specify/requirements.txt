@@ -1,0 +1,8 @@
+Ada Integrated Development Environment (aIDE)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Provide a widget-based Ada IDE:
+
+   - Project support.
+   - A 'raw source' editor to cater for all Ada source constructs as plain text.
+   - A custom editor for each Ada source construct.

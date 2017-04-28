@@ -1,0 +1,8 @@
+Ada Integrated Development Environment (aIDE)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Use a sub-project (AdaM) which models the Ada language to supplement ASIS.
+- AdaM must be able to build a tree of Ada declarations, rooted from the Standard package, using ASIS.
+- AdaM must be able to generate Ada source, and so provide a 'write' complement to ASIS 'read-only'.
+
+- aIDE will be a UI project which uses AdaM.
