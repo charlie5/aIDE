@@ -65,7 +65,7 @@ is
          add ("project " & project_Name & " is");
          add ("");
          add ("   for Source_Dirs use (""" & generated_source_Path & """);");
-         add ("   for Main use (""launch_hello.adb""");
+         add ("   for Main use (""launch_hello.adb"");");
          add ("");
          add ("   for Object_Dir use ""build"";");
          add ("   for Exec_Dir   use ""."";");
