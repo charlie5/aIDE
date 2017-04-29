@@ -79,6 +79,34 @@ is
          close (the_File);
       end;
 
+
+      --  Build the applet.
+      --
+      declare
+         use ada.Characters.Handling,
+             ada.Strings.Unbounded,
+             ada.Text_IO;
+
+         the_Filename : constant String := to_Lower (project_Name) & ".gpr";
+      begin
+         log ("", 2);
+         log ("Cleaning ...");
+         log;
+         log (command_Output (to_Command ("gnatclean -P " & the_Filename)));
+
+         if Exists ("./build") then
+            delete_Tree ("./build");     -- Clear the build folder.
+         end if;
+
+         create_Path ("./build");     --
+
+
+         log ("", 2);
+         log ("Compiling ...");
+         log;
+         log (command_Output (to_Command ("gprbuild -P " & the_Filename)));
+      end;
+
    end build_Project;
 
 
