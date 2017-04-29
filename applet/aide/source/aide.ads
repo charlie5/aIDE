@@ -4,4 +4,6 @@ is
    procedure start;
    procedure stop;
 
+   procedure build_Project;
+
 end aIDE;

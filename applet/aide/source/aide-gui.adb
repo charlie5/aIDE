@@ -69,8 +69,7 @@ is
    is
       pragma Unreferenced (Button);
    begin
-      log ("Building ...");
-      log ("Built !");
+      aIDE.build_Project;
    end on_build_project_Button_clicked;
 
 
