@@ -1,4 +1,5 @@
 with
+     "../../library/adam",
      "gtkada",
      "ashell",
      "common";

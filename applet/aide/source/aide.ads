@@ -1,3 +1,6 @@
+with
+     adam.Factory;
+
 package aIDE
 is
 
