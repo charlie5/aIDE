@@ -4,6 +4,8 @@ A widget-based Ada IDE.
 ### Dependencies
 
 - GtkAda
+- Florist
+- aShell ~ https://github.com/charlie5/aShell.git
 
 
 ### Build
