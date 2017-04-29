@@ -129,6 +129,15 @@ is
 
       top_Window.Modify_Font (Font_Desc => From_String ("Courier 10"));
 
+      -- Hide unused pages in the top notebook.
+      --
+      the_top_Notebook.get_Nth_Page (0).hide;
+      the_top_Notebook.get_Nth_Page (2).hide;
+      the_top_Notebook.get_Nth_Page (3).hide;
+      the_top_Notebook.get_Nth_Page (4).hide;
+
+
+
       log ("Welcome... ");
 
       Widget_Handler.connect (top_Window,
