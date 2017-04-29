@@ -12,4 +12,14 @@ A widget-based Ada IDE.
 
 - $ cd aIDE/applet/aide
 - $ gprbuild -P aide.gpr
-- $ ./launch_aide
+
+### Test
+
+- $ cd test
+- $ ../launch_aide
+
+- Open the 'builder' expander (bottom left).
+- Click on 'build' button.
+- Close aIDE.
+
+- $ ./launch_hello
