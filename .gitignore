@@ -3,3 +3,11 @@
 
 # Ada Library Information
 *.ali
+
+*~
+*-loc.xml
+*.cgpr
+b__*.ad[sb]
+*.bexch
+gnatinspect.db
+applet/aide/launch_aide
