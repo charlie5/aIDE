@@ -107,6 +107,16 @@ is
          log (command_Output (to_Command ("gprbuild -P " & the_Filename)));
       end;
 
+      -- Launch the applet.
+      --
+      if Exists ("./launch_hello")
+      then
+         log ("", 2);
+         log ("Launching ...");
+         log;
+         log (command_Output (to_Command ("./launch_hello")));
+      end if;
+
    end build_Project;
 
 
