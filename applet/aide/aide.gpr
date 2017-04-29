@@ -1,0 +1,41 @@
+with
+     "gtkada",
+     "common";
+
+
+project aIDE
+is
+
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Main use ("launch_aide.adb");
+
+   type Gtkada_Kind_Type is
+      ("static", "relocatable");
+   Library_Type : Gtkada_Kind_Type := external ("LIBRARY_TYPE", "static");
+
+   type Restrictions is
+      ("xgc", "ravenscar");
+   Restrictions : Restrictions := external ("restrictions");
+
+   type Os_Type is
+      ("Windows_NT", "Linux", "MacOSX");
+   Os : Os_Type := external ("OS");
+
+   for Source_Dirs use (".", "source", "source/editors", "source/asis/**", "source/palettes");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g", "-j5");
+   end Builder;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g");
+   end Linker;
+
+   package Compiler renames Common.Compiler;
+
+end aIDE;
