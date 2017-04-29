@@ -5,7 +5,7 @@ A widget-based Ada IDE.
 
 - GtkAda
 - Florist
-- aShell ~ https://github.com/charlie5/aShell.git
+- aShell ~ https://github.com/charlie5/aShell.git (add_recurse_option_to_directory_iteration branch)
 
 
 ### Build
