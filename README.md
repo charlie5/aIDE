@@ -17,6 +17,7 @@ A widget-based Ada IDE.
 ### Test
 
 - $ cd test
+- $ ln -s ../glade .
 - $ ../launch_aide
 
 - Open the 'builder' expander (bottom left).
