@@ -20,8 +20,9 @@ A widget-based Ada IDE.
 - $ ln -s ../glade .
 - $ ../launch_aide
 
-- Open the 'builder' expander (bottom left).
-- Click on 'build' button.
-- Close aIDE.
+ - Open the 'builder' expander (bottom left).
+ - Click on 'build' button.
+ - Close aIDE.
+
 
 - $ ./launch_hello
