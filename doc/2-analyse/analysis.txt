@@ -1,0 +1,9 @@
+Ada Integrated Development Environment (aIDE)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Editors:
+
+  - A 'raw source' editor to cater for all Ada source constructs as plain text.
+  - A custom editor for each specific Ada source construct.
+  - General sub-editors which can be re-used by custom editors.

@@ -1,0 +1,5 @@
+Lifecycle
+~~~~~~~~~
+
+- Use require/analyse/design/implement/test cycle.
+- Develop as a series of incremental revisions, with each revision adding more functionality.

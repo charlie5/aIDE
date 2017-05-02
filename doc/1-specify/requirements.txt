@@ -1,8 +1,13 @@
 Ada Integrated Development Environment (aIDE)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Provide a widget-based Ada IDE:
+Provide a widget-based Ada IDE.
 
-   - Project support.
-   - A 'raw source' editor to cater for all Ada source constructs as plain text.
-   - A custom editor for each Ada source construct.
+
+Must:
+
+  - Allow user to code an applet which can print a message to the console.
+  - Allow Ada code generation of the applet.
+  - Allow the applet code to be built.
+  - Allow the built applet to be run.
+  - Applet code must be persistent.
