@@ -11,7 +11,8 @@ A widget-based Ada IDE.
 ### Build
 
 - $ cd aIDE/applet/aide
-- $ gprbuild -P aide.gpr
+- $ export ADA_PROJECT_PATH=<path/to/aShell>:$ADA_PROJECT_PATH
+- $ gprbuild -p -P aide.gpr -Xrestrictions=xgc -XOS=Linux
 
 ### Test
 
