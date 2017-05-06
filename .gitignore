@@ -9,5 +9,7 @@
 *.cgpr
 b__*.ad[sb]
 *.bexch
-gnatinspect.db
+gnatinspect.*
+
 applet/aide/launch_aide
+applet/aide/test
