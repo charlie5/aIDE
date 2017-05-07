@@ -61,7 +61,7 @@ is
             first_Run := True;
 
             define_standard_Ada_Types;
-            the_selected_App := Subprogram.new_Subprogram (Name => "unnamed_Procedure");   -- Create initial test package.
+            the_selected_App := Subprogram.new_Subprogram (Name => "unnamed_Procedure");   -- Create initial test precedure..
       end;
 
       all_Apps.append (the_selected_App);
