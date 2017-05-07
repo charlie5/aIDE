@@ -1,11 +1,13 @@
 with
+     aIDE.Editor.of_subprogram,
+     aIDE.Palette.of_source_Entities,
+
      Common_Gtk,
      Glib,
      Glib.Error,
 
      Gtk.Main,
      Gtk.Builder,
-     Gtk.Button,
      Gtk.Text_View,
      Gtk.Tree_View,
      Gtk.Widget,
@@ -35,6 +37,16 @@ is
        gtk.Notebook,
        gtk.Tree_Store,
        Pango.Font;
+
+
+   --  Editors
+   --
+   the_app_Editor : aIDE.Editor.of_subprogram.view;
+
+
+   -- Palettes
+   --
+   the_source_entities_Palette : aIDE.Palette.of_source_entities.view;
 
 
    -- Main Widgets
@@ -148,12 +160,38 @@ is
                               "clicked",
                               on_build_project_Button_clicked'Access);
 
+      the_app_Editor := aIDE.Editor.of_subprogram.Forge.to_subprogram_Editor (the_selected_App);
+      the_app_Editor.top_Widget.Reparent (New_Parent => the_app_Alignment);
+
       top_Window.show;     -- Display our main window and all of its children.
       enable_bold_Tabs_for (the_top_Notebook);
+
+      the_packages_Palette        := aIDE.Palette.of_packages.to_packages_Palette;
+      the_source_entities_Palette := aIDE.Palette.of_source_entities.to_source_entities_Palette;
 
       gtk.Main.main;       -- Enter main GtkAda event loop.
    end open;
 
+
+
+
+   -- Palettes
+   --
+
+   procedure show_packages_Palette (Invoked_by : in     Gtk.Button.gtk_Button;
+                                    Target     : in     adam.context_Line.view)
+   is
+   begin
+      the_packages_Palette.show (Invoked_by, Target);
+   end show_packages_Palette;
+
+
+   procedure show_source_entities_Palette (Invoked_by : in aIDE.Editor.view;
+                                           Target     : in adam.Source.Entities_view)
+   is
+   begin
+      the_source_entities_Palette.show (Invoked_by, Target);
+   end show_source_entities_Palette;
 
 
    --  Logging
