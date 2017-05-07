@@ -77,4 +77,15 @@ is
       return the_Source;
    end to_body_Source;
 
+
+   overriding
+   function Id (Self : access Entity) return adam.Id
+   is
+      pragma Unreferenced (Self);
+   begin
+      raise Program_Error with "Source.Entity Id must be overridden";
+      return adam.Id'Last;
+   end Id;
+
+
 end adam.Source;

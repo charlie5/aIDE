@@ -1,6 +1,10 @@
+with
+     adam.Any;
+
+
 package adam.Source
 is
-   type Entity      is tagged private;
+   type Entity      is new Any.Item with private;
    type Entity_View is access all Entity'Class;
 
 
@@ -30,10 +34,13 @@ is
 
 private
 
-   type Entity is tagged
+   type Entity is  new Any.item with
       record
          Children : Entities;
       end record;
+
+   overriding
+   function Id (Self : access Entity) return adam.Id;
 
 
    type Entities is new Entity_Vectors.Vector with null record;
