@@ -18,6 +18,22 @@ is
    first_Run : Boolean := False;
 
 
+   procedure define_standard_Ada_Types
+   is
+      use Shell,
+          ada.Text_IO;
+   begin
+      -- Build the standard ada tree file.
+      --
+      put_Line ("rm *.adt: "        & command_Output (to_Command ("rm ./*.adt")));
+      put_Line ("gnatmake output: " & Command_Output (to_Command ("gnatmake -c -gnatc -gnatt ./assets/asis/all_standard_ada.adb")));
+
+      the_Environ := adam.Assist.known_Environment;
+      the_Environ.print;
+   end define_standard_Ada_Types;
+
+
+
    procedure define
    is
       use ada.Directories;
@@ -36,7 +52,7 @@ is
          the_Stream := Stream (the_File);
 
          adam.Environment.item'read (the_Stream, the_Environ);
-         Subprogram.view      'read (the_Stream, the_selected_App);
+         Subprogram      .view'read (the_Stream, the_selected_App);
 
          close (the_File);
 
@@ -44,9 +60,7 @@ is
          when ada.Streams.Stream_IO.Name_Error =>
             first_Run := True;
 
---              define_standard_Ada_Types;
---              the_Environ.print;
-
+            define_standard_Ada_Types;
             the_selected_App := Subprogram.new_Subprogram (Name => "unnamed_Procedure");   -- Create initial test package.
       end;
 
