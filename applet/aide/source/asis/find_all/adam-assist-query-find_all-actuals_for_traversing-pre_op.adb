@@ -1,0 +1,505 @@
+with
+     Adam,
+     AdaM.a_Package,
+     adam.a_Type.enumeration_type,
+     adam.a_Type.signed_integer_type,
+     adam.a_Type.modular_type,
+     adam.a_Type.floating_point_type,
+     adam.a_Type.ordinary_fixed_point_type,
+     adam.a_Type.decimal_fixed_point_type,
+     adam.a_Type.access_type,
+     adam.a_Type.unconstrained_array_type,
+     adam.a_Type.constrained_array_type,
+     adam.a_Type.record_type,
+     adam.a_Type.tagged_record_type,
+     adam.a_Type.derived_type,
+     adam.a_Type.derived_record_extension_type,
+     adam.a_Type.interface_type,
+     adam.a_Type.task_type,
+     adam.a_Type.protected_type,
+     adam.a_Type.a_subtype;
+
+with Ada.Wide_Text_IO;
+with Ada.Characters.Handling;
+with Ada.Exceptions;
+with ada.Strings.fixed;
+
+with Asis.Exceptions;
+with Asis.Errors;
+with Asis.Implementation;
+with Asis.Elements;
+with asis.Declarations,
+     asis.Expressions;
+
+with adam.Assist.Query.find_All.Metrics;
+with Asis;
+with Asis.Declarations;
+with Asis.Compilation_Units;
+with ada.Text_IO;
+
+
+separate (adam.Assist.Query.find_All.Actuals_for_traversing)
+
+procedure Pre_Op (Element :        Asis.Element;
+                  Control : in out Asis.Traverse_Control;
+                  State   : in out Traversal_State)
+is
+   use Asis,
+       asis.Elements,
+       asis.Declarations,
+
+       Ada.Characters.Handling,
+       Ada.Wide_Text_IO;
+
+   package Metrics renames adam.Assist.Query.find_All.Metrics;
+
+   Argument_Kind        : Asis.Element_Kinds;
+   the_declaration_Kind : Asis.declaration_Kinds;
+
+   Parent     : Source.Entity_View;
+   new_Entity : Source.Entity_View;
+
+   use type Source.Entity_View;
+
+begin
+   if not Is_Nil (State.ignore_Starter)
+   then
+      return;
+   end if;
+
+   if not State.parent_Stack.is_Empty
+   then
+      Parent := State.parent_Stack.last_Element;
+   end if;
+
+   --  Note, that the code below may be rewritten in more compact way (with
+   --  the same functionality). But we prefer to go step-by-step,
+   --  demonstrating the important ASIS queries
+
+   Argument_Kind        := Asis.Elements.    element_Kind (Element);
+   the_declaration_Kind := Asis.Elements.declaration_Kind (Element);
+
+--     if the_declaration_Kind = asis.a_package_Instantiation
+--     then
+--        State.ignore_Starter := Element;
+--        return;
+--     end if;
+
+   case Argument_Kind
+   is
+      when Asis.A_Statement =>
+         State.ignore_Starter := Element;
+
+      when Asis.A_Definition =>
+         State.ignore_Starter := Element;
+
+      when Asis.A_Declaration =>
+         declare
+            use asis.Compilation_Units;
+
+            the_Declaration : constant asis.Declaration        := asis.Declaration (Element);
+            the_Kind        : constant Asis.Declaration_Kinds  := asis.Elements.Declaration_Kind (the_Declaration);
+
+            the_Names       : constant asis.Defining_Name_List := Names (Element);
+
+            the_Unit        : constant asis.Compilation_Unit   := Enclosing_Compilation_Unit (the_Declaration);
+            the_unit_Name   : constant String                  := to_String (Unit_Full_Name (the_Unit));
+
+            the_Parent      : constant asis.Element            := enclosing_Element (Element);
+
+            function full_name_Prefix return String
+            is
+               parent_Name  : constant String := to_String (Defining_Name_Image (Names (the_Parent) (1)));
+            begin
+               if the_unit_Name = parent_Name then
+                  return the_unit_Name;
+               else
+                  return the_unit_Name & "." & parent_Name;
+               end if;
+            end full_name_Prefix;
+
+         begin
+            if the_Kind = Asis.A_Package_Declaration
+            then
+               declare
+                  use ada.Strings, ada.Strings.Fixed, ada.Strings.Unbounded;
+
+                  package_Name    : constant String              := to_String (Defining_Name_Image (the_Names (1)));
+                  final_dot_Index : constant Natural             := Index (package_Name, ".", Backward);
+                  parent_Name     :          Unbounded_String    := +package_Name (1 .. final_dot_Index - 1);
+                  new_Package     : constant AdaM.a_Package.view := AdaM.a_Package.new_Package (package_Name);
+                  parent_Package  :          AdaM.a_Package.view;
+               begin
+                  if package_Name = "Standard"
+                  then
+                     Metrics.Environment.standard_Package_is (new_Package);
+                  else
+                     if not Is_Nil (the_Parent)
+                     then
+                        parent_Name := +full_name_Prefix;
+                     end if;
+
+                     if parent_Name = ""
+                     then
+                        parent_Package := Metrics.Environment.standard_Package;
+                     else
+                        parent_Package := Metrics.all_Packages.Element (parent_Name);
+                     end if;
+
+                     parent_Package.add_Child (new_Package);
+                     new_Package   .Parent_is (parent_Package);
+                  end if;
+
+                  Metrics.all_Packages.insert (+package_Name, new_Package);
+               end;
+
+            elsif the_Kind = asis.An_Ordinary_Type_Declaration
+            then
+               declare
+                  use Adam;
+
+                  the_Name          :          asis.Defining_Name;
+                  the_Grandparent   : constant asis.Element         := enclosing_Element (the_Parent);
+                  parent_Name       : constant String               := to_String (Defining_Name_Image (Names (the_Parent) (1)));
+
+                  the_Type          : constant asis.Type_Definition := asis.Type_Definition  (the_Declaration);
+                  the_Type_View     : constant asis.Declaration     := Type_Declaration_View (the_Declaration);
+               begin
+                  for i in the_Names'Range
+                  loop
+                     the_Name := the_Names (i);
+
+                     declare
+                        the_name_Image : constant String  := to_String (Defining_Name_Image (the_Name));
+                        add_Type       :          Boolean := True;
+                     begin
+                        -- Don't add the type if it is a generic parameter.
+                        --
+                        if declaration_Kind (the_Grandparent) = a_package_Instantiation
+                        then
+                           declare
+                              use asis.Expressions;
+
+                              grandparent_Name :          String                := to_String (Defining_Name_Image (Names (the_Grandparent) (1)));
+                              assocs           : constant asis.Association_List := Generic_Actual_Part (the_Grandparent, True);
+                              param            :          asis.Element;
+                           begin
+                              for i in assocs'Range
+                              loop
+                                 param := Formal_Parameter (assocs (i));
+
+                                 if to_Lower (to_String (Defining_Name_Image (param))) = to_Lower (the_name_Image)
+                                 then
+                                    add_Type := False;
+                                 end if;
+                              end loop;
+                           end;
+                        end if;
+
+                        if add_Type
+                        then
+                           declare
+                              use ada.Strings.unbounded,
+                                  adam.a_Type,
+                                  adam.Source;
+
+                              full_Name : Text;
+                              new_Type  : adam.a_Type.view;
+                           begin
+                              if the_unit_Name = parent_Name
+                              then
+                                 Set_Unbounded_String (full_Name, the_unit_Name & "." & the_name_Image);
+                              else
+                                 Set_Unbounded_String (full_Name, the_unit_Name & "." & parent_Name & "." & the_name_Image);
+                              end if;
+
+                              case asis.Elements.Type_Kind (the_Type_View)
+                              is
+                                 when An_Enumeration_Type_Definition =>
+                                    declare
+                                       new_enum_Type : constant adam.a_Type.enumeration_type.view
+                                         := adam.a_Type.enumeration_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_enum_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when A_Signed_Integer_Type_Definition =>
+                                    declare
+                                       new_integer_Type : constant adam.a_Type.signed_integer_type.view
+                                         := adam.a_Type.signed_integer_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_integer_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when A_Modular_Type_Definition =>
+                                    declare
+                                       new_modular_Type : constant adam.a_Type.modular_type.view
+                                         := adam.a_Type.modular_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_modular_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when A_Floating_Point_Definition =>
+                                    declare
+                                       new_float_Type : constant adam.a_Type.floating_point_type.view
+                                         := adam.a_Type.floating_point_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_float_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when An_Ordinary_Fixed_Point_Definition =>
+                                    declare
+                                       new_ordinary_fixed_Type : constant adam.a_Type.ordinary_fixed_point_type.view
+                                         := adam.a_Type.ordinary_fixed_point_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_ordinary_fixed_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when A_Decimal_Fixed_Point_Definition =>
+                                    declare
+                                       new_decimal_fixed_Type : constant adam.a_Type.decimal_fixed_point_type.view
+                                         := adam.a_Type.decimal_fixed_point_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_decimal_fixed_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when An_Access_Type_Definition =>
+                                    declare
+                                       new_access_Type : constant adam.a_Type.access_type.view
+                                         := adam.a_Type.access_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_access_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when An_Unconstrained_Array_Definition =>
+                                    declare
+                                       new_array_Type : constant adam.a_Type.unconstrained_array_type.view
+                                         := adam.a_Type.unconstrained_array_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_array_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when A_Constrained_Array_Definition =>
+                                    declare
+                                       new_array_Type : constant adam.a_Type.constrained_array_type.view
+                                         := adam.a_Type.constrained_array_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_array_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when A_Record_Type_Definition =>
+                                    declare
+                                       new_record_Type : constant adam.a_Type.record_type.view
+                                         := adam.a_Type.record_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_record_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when A_Tagged_Record_Type_Definition =>
+                                    declare
+                                       new_record_Type : constant adam.a_Type.tagged_record_type.view
+                                         := adam.a_Type.tagged_record_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_record_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when A_Derived_Type_Definition =>
+                                    declare
+                                       new_derived_Type : constant adam.a_Type.derived_type.view
+                                         := adam.a_Type.derived_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_derived_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when A_Derived_Record_Extension_Definition =>
+                                    declare
+                                       new_derived_Type : constant adam.a_Type.derived_record_extension_type.view
+                                         := adam.a_Type.derived_record_extension_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_derived_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when An_Interface_Type_Definition =>
+                                    declare
+                                       new_interface_Type : constant adam.a_Type.interface_type.view
+                                         := adam.a_Type.interface_type.new_Type (Name => +full_Name);
+                                    begin
+                                       new_Type := new_interface_Type.all'Access;
+                                    end;
+
+                                    new_Entity := new_Type.all'Access;
+
+
+                                 when A_Root_Type_Definition =>
+                                    ada.Text_IO.put_Line ("*******  A_Root_Type_Definition  *********   " & (+full_Name));
+
+
+                                 when Not_A_Type_Definition =>
+                                    ada.Text_IO.put_Line ("*******  Not_A_Type_Definition  *********   " & (+full_Name));
+
+                              end case;
+
+                              if new_Type /= null
+                              then
+                                 Metrics.all_Types.append (new_Type);
+                              end if;
+                           end;
+                        end if;
+                     end;
+                  end loop;
+               end;
+
+
+            elsif the_Kind = A_Subtype_Declaration
+            then
+               declare
+                  full_Name   : constant String
+                    := full_name_Prefix & "." & to_String (Defining_Name_Image (the_Names (1)));
+
+                  new_Subtype : constant adam.a_Type.a_subtype.view
+                    := adam.a_Type.a_subtype.new_Type (Name => full_Name);
+               begin
+                  Metrics.all_Types.append (new_Subtype.all'Access);
+                  new_Entity := new_Subtype.all'Access;
+               end;
+
+
+            elsif the_Kind = A_Task_Type_Declaration
+            then
+               declare
+                  full_Name : constant String
+                    := full_name_Prefix & "." & to_String (Defining_Name_Image (the_Names (1)));
+
+                  new_Type  : constant adam.a_Type.task_type.view
+                    := adam.a_Type.task_type.new_Type (Name => full_Name);
+               begin
+                  Metrics.all_Types.append (new_Type.all'Access);
+                  new_Entity := new_Type.all'Access;
+               end;
+
+
+            elsif the_Kind = A_Protected_Type_Declaration
+            then
+               declare
+                  full_Name : constant String
+                    := full_name_Prefix & "." & to_String (Defining_Name_Image (the_Names (1)));
+
+                  new_Type  : constant adam.a_Type.protected_type.view
+                    := adam.a_Type.protected_type.new_Type (Name => full_Name);
+               begin
+                  Metrics.all_Types.append (new_Type.all'Access);
+                  new_Entity := new_Type.all'Access;
+               end;
+
+            end if;
+         end;
+
+      when others =>
+         State.ignore_Starter := Element;
+   end case;
+
+
+   if not Is_Nil (State.ignore_Starter)
+   then
+      return;   -- We are now ignoring, so do no more.
+   end if;
+
+   if new_Entity /= null
+   then
+      if Parent = null
+      then
+         Metrics.compilation_Unit.add (new_Entity);
+      else
+         Parent.add_Child (new_Entity);
+      end if;
+
+      State.parent_Stack.append (new_Entity);   -- Allow children to know their parent.
+   end if;
+
+exception
+
+   when Ex : Asis.Exceptions.ASIS_Inappropriate_Context          |
+        Asis.Exceptions.ASIS_Inappropriate_Container        |
+        Asis.Exceptions.ASIS_Inappropriate_Compilation_Unit |
+        Asis.Exceptions.ASIS_Inappropriate_Element          |
+        Asis.Exceptions.ASIS_Inappropriate_Line             |
+        Asis.Exceptions.ASIS_Inappropriate_Line_Number      |
+        Asis.Exceptions.ASIS_Failed                         =>
+
+      Ada.Wide_Text_IO.Put ("Pre_Op : ASIS exception (");
+
+      Ada.Wide_Text_IO.Put (Ada.Characters.Handling.To_Wide_String (
+                            Ada.Exceptions.Exception_Name (Ex)));
+
+      Ada.Wide_Text_IO.Put (") is raised");
+      Ada.Wide_Text_IO.New_Line;
+
+      Ada.Wide_Text_IO.Put ("ASIS Error Status is ");
+
+      Ada.Wide_Text_IO.Put
+        (Asis.Errors.Error_Kinds'Wide_Image (Asis.Implementation.Status));
+
+      Ada.Wide_Text_IO.New_Line;
+
+      Ada.Wide_Text_IO.Put ("ASIS Diagnosis is ");
+      Ada.Wide_Text_IO.New_Line;
+      Ada.Wide_Text_IO.Put (Asis.Implementation.Diagnosis);
+      Ada.Wide_Text_IO.New_Line;
+
+      Asis.Implementation.Set_Status;
+
+   when Ex : others =>
+
+      Ada.Wide_Text_IO.Put ("Pre_Op : ");
+
+      Ada.Wide_Text_IO.Put (Ada.Characters.Handling.To_Wide_String (
+                            Ada.Exceptions.Exception_Name (Ex)));
+
+      Ada.Wide_Text_IO.Put (" is raised (");
+
+      Ada.Wide_Text_IO.Put (Ada.Characters.Handling.To_Wide_String (
+                            Ada.Exceptions.Exception_Information (Ex)));
+
+      Ada.Wide_Text_IO.Put (")");
+      Ada.Wide_Text_IO.New_Line;
+
+end Pre_Op;
