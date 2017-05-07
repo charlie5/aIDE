@@ -1,5 +1,6 @@
 with
-     adam.Factory;
+     adam.Subprogram,
+     adam.Environment;
 
 package aIDE
 is
@@ -7,6 +8,12 @@ is
    procedure start;
    procedure stop;
 
-   procedure build_Project;
 
+private
+   the_Environ      : adam.Environment.item;
+
+   all_Apps         : adam.Subprogram.vector;
+   the_selected_App : adam.Subprogram.view;
+
+   procedure build_Project;
 end aIDE;
