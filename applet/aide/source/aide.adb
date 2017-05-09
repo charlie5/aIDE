@@ -272,27 +272,6 @@ is
          log ("Compiling ...");
          log;
 
---           declare
---              the_Command    : Shell.Command     := to_Command ("gprbuild -P " & the_Filename);
---              command_Result : String         := my_Command_Output (the_Command);
---  --              Process     :          Shell.Process;
---  --              out_Pipe    : Shell.Pipe;
---  --              err_Pipe    : Shell.Pipe;
---           begin
---  --              run (the_Command, Output => out_Pipe,
---  --                                Errors => err_Pipe);
---
---  --              run (the_Command, Pipeline => True);
---
---  --              log (command_Result.From_Out_Pipe.all);
---  --              log (command_Result.From_Err_Pipe.all);
---
---              log (command_Result);
---              log (Output_of      (the_Command));
---              log (Errors_of      (the_Command));
---           end;
-
-
          declare
             the_Command : constant Shell.Command         := to_Command ("gprbuild -P " & the_Filename);
             Results     : constant Shell.Command_Results := Results_of (the_Command);
