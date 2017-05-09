@@ -52,7 +52,9 @@ is
          the_Stream := Stream (the_File);
 
          AdaM.Environment.item'read (the_Stream, the_Environ);
-         Subprogram      .view'read (the_Stream, the_selected_App);
+
+         Subprogram.view      'read (the_Stream, the_selected_App);
+         Subprogram.Vector    'read (the_Stream, all_Apps);
 
          close (the_File);
 
@@ -61,10 +63,10 @@ is
             first_Run := True;
 
             define_standard_Ada_Types;
-            the_selected_App := Subprogram.new_Subprogram (Name => "unnamed_Procedure");   -- Create initial test precedure..
-      end;
 
-      all_Apps.append (the_selected_App);
+            the_selected_App := Subprogram.new_Subprogram (Name => "unnamed_Procedure");   -- Create initial test precedure..
+            all_Apps.append (the_selected_App);
+      end;
    end define;
 
 
@@ -85,7 +87,9 @@ is
          the_Stream := Stream (the_File);
 
          AdaM.Environment.item'write (the_Stream, the_Environ);
+
          Subprogram.view      'write (the_Stream, the_selected_App);
+         Subprogram.Vector    'write (the_Stream, all_Apps);
 
          close (the_File);
       end;
@@ -106,6 +110,25 @@ is
    begin
       aIDE.destruct;
    end stop;
+
+
+
+   --  Apps
+   --
+
+   function fetch_App (Named : in String) return adam.Subprogram.view
+   is
+   begin
+      for Each of all_Apps
+      loop
+         if Each.Name = Named
+         then
+            return Each;
+         end if;
+      end loop;
+
+      return null;
+   end fetch_App;
 
 
 

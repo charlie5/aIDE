@@ -10,6 +10,7 @@ with
      Gtk.Builder,
      Gtk.Text_View,
      Gtk.Tree_View,
+     Gtk.Tree_Model,
      Gtk.Widget,
      Gtk.Window,
      Gtk.Alignment,
@@ -17,6 +18,7 @@ with
      Gtk.Tree_Store,
      Gtk.Tree_Selection,
      Gtk.Text_Iter,
+     Gtk.Handlers,
 
      Pango.Font,
 
@@ -74,6 +76,13 @@ is
    the_build_log_Textview : Gtk_Text_View;
 
 
+   -- Gui Callbacks
+   --
+
+   package tree_selection_Handlers
+   is new Gtk.Handlers.Callback (Widget_Type => Gtk.Tree_Selection.Gtk_Tree_Selection_Record);
+
+
    --  Gui Events
    --
 
@@ -92,6 +101,76 @@ is
    begin
       Gtk.Main.Main_Quit;
    end Destroy;
+
+
+
+   procedure on_new_app_Button_clicked (Button : access Gtk_Button_Record'Class)
+   is
+      pragma Unreferenced (Button);
+      the_new_App : constant adam.Subprogram.view := adam.Subprogram.new_Subprogram (Name => "no_Name");
+   begin
+      all_Apps.append              (the_new_App);
+      the_app_Editor.Target_is (the_new_App);
+
+      declare
+         use Gtk,
+             Gtk.Tree_Model;
+
+         Iter   :          gtk_tree_Iter;
+         Parent : constant gtk_tree_Iter := Null_Iter;
+      begin
+         the_app_tree_Store.append          (Iter, Parent);
+         the_app_tree_Store.set             (Iter, 0, the_new_App.Name);
+         the_app_tree_Selection.select_Iter (Iter);
+      end;
+   end on_new_app_Button_clicked;
+
+
+   procedure on_rid_app_Button_clicked (Button : access Gtk_Button_Record'Class)
+   is
+      pragma Unreferenced (Button);
+
+      use Gtk,
+          Gtk.Tree_Model;
+
+      use type adam.Subprogram.view;
+
+      the_App : constant adam.Subprogram.view := the_app_Editor.Target;
+
+      Iter      : gtk_tree_Iter;
+      the_Model : Gtk_Tree_Model;
+   begin
+      if the_App = the_selected_App then
+         return;
+      end if;
+
+      the_app_tree_Selection.get_Selected (the_Model, Iter);
+      the_app_tree_Store.remove (Iter);
+
+      the_app_tree_Selection.select_Iter  (the_app_tree_Store.get_Iter_first);
+
+      all_Apps.delete (all_Apps.find_Index (the_App));
+   end on_rid_app_Button_clicked;
+
+
+   procedure on_app_Selection_changed (Selection : access Gtk.Tree_Selection.Gtk_Tree_Selection_Record'Class)
+   is
+      use gtk.Tree_Model,
+          ada.Text_IO;
+      Iter      : Gtk_Tree_Iter;
+      the_model : Gtk_Tree_Model;
+   begin
+      Selection.Get_Selected (the_model, Iter);
+
+      if Iter /= null_Iter
+      then
+         declare
+            app_Name : constant String := gtk.Tree_Model.Get_String (the_model, Iter, 0);
+         begin
+            the_app_Editor.Target_is (fetch_App (app_Name));
+         end;
+      end if;
+   end on_app_Selection_changed;
 
 
 
@@ -160,8 +239,42 @@ is
                               "clicked",
                               on_build_project_Button_clicked'Access);
 
+      Button_Handler.Connect (new_app_Button,
+                              "clicked",
+                              on_new_app_Button_clicked'Access);
+
+      Button_Handler.Connect (rid_app_Button,
+                              "clicked",
+                              on_rid_app_Button_clicked'Access);
+
+
       the_app_Editor := aIDE.Editor.of_subprogram.Forge.to_subprogram_Editor (the_selected_App);
       the_app_Editor.top_Widget.Reparent (New_Parent => the_app_Alignment);
+
+      for Each of all_Apps
+      loop
+         declare
+            use Gtk.Tree_Model;
+            use type AdaM.Subprogram.view;
+
+            Iter   :          gtk_tree_Iter;
+            Parent : constant gtk_tree_Iter := Null_Iter;
+         begin
+            the_app_tree_Store.append (Iter, Parent);
+            the_app_tree_Store.set    (Iter, 0, Each.Name);
+
+            if Each = all_Apps.first_Element
+            then
+               the_app_tree_Selection.Select_Iter (Iter);
+            end if;
+         end;
+      end loop;
+
+      the_app_tree_View.show_All;
+      tree_selection_Handlers.connect (the_app_tree_Selection,
+                                       "changed",
+                                       on_app_Selection_changed'Access);
+
 
       top_Window.show;     -- Display our main window and all of its children.
       enable_bold_Tabs_for (the_top_Notebook);
