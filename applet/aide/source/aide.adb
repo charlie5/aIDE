@@ -143,9 +143,9 @@ is
    begin
       clear_Log;
 
-      log ("=======================");
-      log ("=== Building Applet ===");
-      log ("===                 ===");
+      log ("========================");
+      log ("=== Building Project ===");
+      log ("===                  ===");
 
       if Exists (generated_source_Path)
       then
@@ -282,34 +282,39 @@ is
       end;
 
 
-      -- Launch the applet.
+      -- Launch the applets.
       --
-      declare
-         use ada.Characters.handling;
-      begin
-         if Exists (to_Lower ("./" & all_Apps.Element (1).Name))
-         then
-            log ("", 2);
-            log ("Launching ...");
-            log;
+      for Each of all_Apps
+      loop
+         declare
+            use ada.Characters.handling;
+            app_Filename : constant String := to_Lower ("./" & Each.Name);
+         begin
+            if Exists (app_Filename)
+            then
+               log ("", 2);
+               log ("Launching '" & Each.Name & "' ...");
+               log;
 
-            declare
-               Output : constant String := command_Output (to_Command ("./" & to_Lower (all_Apps.Element (1).Name)));
-            begin
-               if Output = ""
-               then
-                  log ("<null output>");
-               else
-                  log (Output);
-               end if;
-            end;
-         end if;
-      end;
+               declare
+                  Output : constant String := command_Output (to_Command (app_Filename));
+               begin
+                  if Output = ""
+                  then
+                     log ("<null output>");
+                  else
+                     log (Output);
+                  end if;
+               end;
+            end if;
+         end;
+      end loop;
+
 
       log ("", 2);
-      log ("===              ===");
-      log ("=== Applet Built ===");
-      log ("====================");
+      log ("===               ===");
+      log ("=== Project Built ===");
+      log ("=====================");
    end build_Project;
 
 
