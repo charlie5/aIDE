@@ -6,7 +6,7 @@ with
      ada.Strings.fixed;
 
 
-package body adam.Environment
+package body AdaM.Environment
 is
 
    procedure add (Self : in out Item;   Unit : in compilation_Unit.view)
@@ -57,14 +57,14 @@ is
 
 
 
-   function all_Types (Self : in Item) return adam.a_Type.Vector
+   function all_Types (Self : in Item) return AdaM.a_Type.Vector
    is
-      the_Types  : adam.a_Type.Vector;
+      the_Types  : AdaM.a_Type.Vector;
 
-      the_Unit   : adam.compilation_Unit.view;
-      the_Entity : adam.Source.Entity_View;
+      the_Unit   : AdaM.compilation_Unit.view;
+      the_Entity : AdaM.Source.Entity_View;
 
-      use type adam.a_Type.view;
+      use type AdaM.a_Type.view;
    begin
       for i in 1 .. Self.Length
       loop
@@ -74,9 +74,9 @@ is
          loop
             the_Entity := the_Unit.Entity (j);
 
-            if the_Entity.all in adam.a_Type.item'Class
+            if the_Entity.all in AdaM.a_Type.item'Class
             then
-               the_Types.append (adam.a_Type.view (the_Entity));
+               the_Types.append (AdaM.a_Type.view (the_Entity));
             end if;
          end loop;
       end loop;
@@ -88,11 +88,11 @@ is
 
    procedure print (Self : in Item)
    is
-      use adam.Source,
+      use AdaM.Source,
           ada.Strings.fixed,
           ada.Text_IO;
-      the_Unit   : adam.compilation_Unit.view;
-      the_Entity : adam.Source.Entity_View;
+      the_Unit   : AdaM.compilation_Unit.view;
+      the_Entity : AdaM.Source.Entity_View;
 
       Depth      : Natural := 0;
 
@@ -121,4 +121,4 @@ is
       end loop;
    end print;
 
-end adam.Environment;
+end AdaM.Environment;

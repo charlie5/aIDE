@@ -1,23 +1,23 @@
 with
-     Adam.Environment,
-     Adam.compilation_Unit,
+     AdaM.Environment,
+     AdaM.compilation_Unit,
      AdaM.a_Package,
-     Adam.a_Type,
+     AdaM.a_Type,
 
      ada.Strings.Unbounded.Hash,
      ada.Containers.Hashed_Maps;
 
 
-package adam.Assist.Query.find_All.Metrics
+package AdaM.Assist.Query.find_All.Metrics
 is
 
-   Environment      : adam.Environment.item;
-   standard_Unit    : adam.compilation_Unit.item;
+   Environment      : AdaM.Environment.item;
+   standard_Unit    : AdaM.compilation_Unit.item;
 
-   compilation_Unit : adam.compilation_Unit.item;   -- Current
+   compilation_Unit : AdaM.compilation_Unit.item;   -- Current
    current_Package  : AdaM.a_Package.Vector;
 
-   all_Types        : adam.a_Type.Vector;
+   all_Types        : AdaM.a_Type.Vector;
 
 
    use type a_Package.view;
@@ -29,4 +29,4 @@ is
 
    procedure dummy;
 
-end adam.Assist.Query.find_All.Metrics;
+end AdaM.Assist.Query.find_All.Metrics;

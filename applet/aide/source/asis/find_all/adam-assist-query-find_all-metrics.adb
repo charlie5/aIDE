@@ -1,7 +1,7 @@
 
-package body adam.Assist.Query.find_All.Metrics
+package body AdaM.Assist.Query.find_All.Metrics
 is
 
    procedure dummy is begin null; end dummy;
 
-end adam.Assist.Query.find_All.Metrics;
+end AdaM.Assist.Query.find_All.Metrics;

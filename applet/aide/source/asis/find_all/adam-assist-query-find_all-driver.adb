@@ -8,10 +8,10 @@ with Asis.Implementation;
 with Asis.Exceptions;
 with Asis.Errors;
 
-with adam.Assist.Query.find_All.context_Processing;
+with AdaM.Assist.Query.find_All.context_Processing;
 
 
-procedure adam.Assist.Query.find_All.Driver
+procedure AdaM.Assist.Query.find_All.Driver
 is
    My_Context            : Asis.Context;
 
@@ -72,7 +72,7 @@ begin
 
    Asis.Ada_Environments.Open         (My_Context);
 
-   adam.Assist.Query.find_All.context_Processing.Process_Context (The_Context => My_Context,
+   AdaM.Assist.Query.find_All.context_Processing.Process_Context (The_Context => My_Context,
                                                                   Trace       => False);
 
    Asis.Ada_Environments.Close        (My_Context);
@@ -119,4 +119,4 @@ exception
       Ada.Wide_Text_IO.Put (")");
       Ada.Wide_Text_IO.New_Line;
 
-end adam.Assist.Query.find_All.Driver;
+end AdaM.Assist.Query.find_All.Driver;

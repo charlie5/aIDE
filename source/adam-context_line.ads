@@ -1,9 +1,9 @@
 with
-     adam.Any,
+     AdaM.Any,
      ada.Streams;
 
 
-package adam.context_Line
+package AdaM.context_Line
 is
 
    type Item is new Any.Item with private;
@@ -45,7 +45,7 @@ is
    --  Attributes
    --
 
-   overriding function  Id        (Self : access Item) return adam.Id;
+   overriding function  Id        (Self : access Item) return AdaM.Id;
 
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 
@@ -66,4 +66,4 @@ private
          Used         :         Boolean;
       end record;
 
-end adam.context_Line;
+end AdaM.context_Line;

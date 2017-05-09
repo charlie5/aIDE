@@ -1,6 +1,6 @@
 with
      aIDE.Editor,
-     adam.Source,
+     AdaM.Source,
 
      Gtk.Widget,
      Gtk.Button,
@@ -27,7 +27,7 @@ is
    --  Operations
    --
    procedure show    (Self : in out Item;   Invoked_by   : in aIDE.Editor.view;
-                                            Target       : in adam.Source.Entities_view);
+                                            Target       : in AdaM.Source.Entities_view);
 
    procedure freshen (Self : in out Item);
 
@@ -42,7 +42,7 @@ private
    type Item is new Palette.item with
       record
          Invoked_by : aIDE.Editor.view;
-         Target     : adam.Source.Entities_View;
+         Target     : AdaM.Source.Entities_View;
 
          Top                     : gtk_Window;
          raw_source_Button       : Gtk_Button;

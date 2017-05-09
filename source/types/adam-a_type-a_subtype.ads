@@ -2,7 +2,7 @@ with
      ada.Streams;
 
 
-package adam.a_Type.a_subtype
+package AdaM.a_Type.a_subtype
 is
 
    type Item is new a_Type.elementary_Type with private;   -- TODO: A subtype is not an elementary type.
@@ -24,7 +24,7 @@ is
    --
 
    overriding
-   function  Id (Self : access Item) return adam.Id;
+   function  Id (Self : access Item) return AdaM.Id;
 
 
 
@@ -49,4 +49,4 @@ private
    for View'read  use View_read;
 
 
-end adam.a_Type.a_subtype;
+end AdaM.a_Type.a_subtype;

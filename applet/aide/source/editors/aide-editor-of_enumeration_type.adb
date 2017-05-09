@@ -1,6 +1,6 @@
 with
      aIDE.Editor.of_enumeration_literal,
-     adam.a_Type.enumeration_literal,
+     AdaM.a_Type.enumeration_literal,
 
      glib.Error,
 
@@ -17,7 +17,7 @@ is
 
 
    function on_name_Entry_leave (the_Entry : access Gtk_Entry_Record'Class;
-                                 Target    : in     adam.a_Type.enumeration_type.view) return Boolean
+                                 Target    : in     AdaM.a_Type.enumeration_type.view) return Boolean
    is
       the_Text : constant String := the_Entry.Get_Text;
    begin
@@ -39,7 +39,7 @@ is
 
    package Entry_return_Callbacks is new Gtk.Handlers.User_Return_Callback (Gtk_Entry_Record,
                                                                             Boolean,
-                                                                            adam.a_Type.enumeration_type.view);
+                                                                            AdaM.a_Type.enumeration_type.view);
 
    package Button_Callbacks is new Gtk.Handlers.User_Callback (Gtk_Button_Record,
                                                                aIDE.Editor.of_enumeration_type.view);
@@ -62,7 +62,7 @@ is
 
    package body Forge
    is
-      function to_Editor (the_Target : in adam.a_Type.enumeration_type.view) return View
+      function to_Editor (the_Target : in AdaM.a_Type.enumeration_type.view) return View
       is
          use Glib;
 
@@ -124,7 +124,7 @@ is
    is
       use gtk.Widget;
 
-      the_Literals   : adam.a_Type.enumeration_literal.vector renames Self.Target.Literals;
+      the_Literals   : AdaM.a_Type.enumeration_literal.vector renames Self.Target.Literals;
       literal_Editor : aIDE.Editor.of_enumeration_literal.view;
    begin
       Self.literals_Box.Foreach (destroy_Callback'Access);

@@ -1,9 +1,9 @@
 with
-     adam.Factory,
+     AdaM.Factory,
      ada.Tags;
 
 
-package body adam.a_Type
+package body AdaM.a_Type
 is
 
    -- Forge
@@ -48,11 +48,11 @@ is
    begin
       if Self = null
       then
-         adam.Id'write  (Stream,  null_Id);
+         AdaM.Id'write  (Stream,  null_Id);
          return;
       end if;
 
-      adam.Id'write  (Stream,  Self.Id);
+      AdaM.Id'write  (Stream,  Self.Id);
       String 'output (Stream,  external_Tag (Self.all'Tag));
    end View_write;
 
@@ -61,9 +61,9 @@ is
    procedure View_read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
                         Self   : out             View)
    is
-      Id : adam.Id;
+      Id : AdaM.Id;
    begin
-      adam.Id'read (Stream, Id);
+      AdaM.Id'read (Stream, Id);
 
       if Id = null_Id
       then
@@ -76,9 +76,9 @@ is
          the_String : constant String  := String'Input   (Stream);                  -- Read tag as string from stream.
          the_Tag    : constant Tag     := Descendant_Tag (the_String, Item'Tag);    -- Convert to a tag.
       begin
-         Self := View (adam.Factory.to_View (Id, the_Tag));
+         Self := View (AdaM.Factory.to_View (Id, the_Tag));
       end;
    end View_read;
 
 
-end adam.a_Type;
+end AdaM.a_Type;

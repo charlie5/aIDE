@@ -2,7 +2,7 @@ with
      ada.Streams;
 
 
-package adam.a_Type.signed_integer_type
+package AdaM.a_Type.signed_integer_type
 is
 
    type Item is new a_Type.integer_Type with private;
@@ -24,7 +24,7 @@ is
    --
 
    overriding
-   function  Id (Self : access Item) return adam.Id;
+   function  Id (Self : access Item) return AdaM.Id;
 
    overriding
    function  to_spec_Source   (Self : in Item) return text_Vectors.Vector;
@@ -50,4 +50,4 @@ private
    for View'write use View_write;
    for View'read  use View_read;
 
-end adam.a_Type.signed_integer_type;
+end AdaM.a_Type.signed_integer_type;

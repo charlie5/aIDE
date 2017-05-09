@@ -126,7 +126,7 @@ is
 
    --  Forge
    --
-   function new_Editor (the_Handler : in adam.exception_Handler.view) return View
+   function new_Editor (the_Handler : in AdaM.exception_Handler.view) return View
    is
       Self        : constant Editor.of_exception_handler.view := new Editor.of_exception_handler.item;
 

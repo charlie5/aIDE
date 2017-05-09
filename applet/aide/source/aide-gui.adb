@@ -179,7 +179,7 @@ is
    --
 
    procedure show_packages_Palette (Invoked_by : in     Gtk.Button.gtk_Button;
-                                    Target     : in     adam.context_Line.view)
+                                    Target     : in     AdaM.context_Line.view)
    is
    begin
       the_packages_Palette.show (Invoked_by, Target);
@@ -187,7 +187,7 @@ is
 
 
    procedure show_source_entities_Palette (Invoked_by : in aIDE.Editor.view;
-                                           Target     : in adam.Source.Entities_view)
+                                           Target     : in AdaM.Source.Entities_view)
    is
    begin
       the_source_entities_Palette.show (Invoked_by, Target);

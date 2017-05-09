@@ -1,15 +1,15 @@
 with
-     adam.Any,
-     adam.Source,
+     AdaM.Any,
+     AdaM.Source,
 
      ada.Containers.Vectors,
      ada.Streams;
 
 
-package adam.compilation_Unit
+package AdaM.compilation_Unit
 is
 
-   type Item is new adam.Any.item with private;
+   type Item is new AdaM.Any.item with private;
 
 
    -- View
@@ -43,7 +43,7 @@ is
    -- Attributes
    --
    overriding
-   function  Id      (Self : access Item) return adam.Id;
+   function  Id      (Self : access Item) return AdaM.Id;
 
    procedure add     (Self : in out Item;   Entity : in Source.Entity_View);
    procedure clear   (Self : in out Item);
@@ -57,7 +57,7 @@ is
 
 private
 
-   type Item is new adam.Any.item with
+   type Item is new AdaM.Any.item with
       record
          Name     : Text;
          Entities : Source.Entities;
@@ -74,4 +74,4 @@ private
    for Item'write use Item_write;
    for Item'read  use Item_read;
 
-end adam.compilation_Unit;
+end AdaM.compilation_Unit;

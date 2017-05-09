@@ -1,4 +1,4 @@
-package body adam.Source
+package body AdaM.Source
 is
 
    --  Entities
@@ -79,13 +79,13 @@ is
 
 
    overriding
-   function Id (Self : access Entity) return adam.Id
+   function Id (Self : access Entity) return AdaM.Id
    is
       pragma Unreferenced (Self);
    begin
       raise Program_Error with "Source.Entity Id must be overridden";
-      return adam.Id'Last;
+      return AdaM.Id'Last;
    end Id;
 
 
-end adam.Source;
+end AdaM.Source;

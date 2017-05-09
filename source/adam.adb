@@ -2,7 +2,7 @@ with
      Ada.Text_IO;
 
 
-package body Adam
+package body AdaM
 is
 
    procedure put (the_Lines : in text_Lines)
@@ -15,4 +15,4 @@ is
       end loop;
    end put;
 
-end Adam;
+end AdaM;

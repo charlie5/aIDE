@@ -1,28 +1,28 @@
 with
-     adam.Assist.Query.find_All.Driver,
-     adam.Assist.Query.find_All.Metrics,
+     AdaM.Assist.Query.find_All.Driver,
+     AdaM.Assist.Query.find_All.Metrics,
 
      Ada.Strings.unbounded,
      Ada.Strings.fixed;
 
 
-package body adam.Assist
+package body AdaM.Assist
 is
 
-   function known_Types return adam.a_Type.Vector
+   function known_Types return AdaM.a_Type.Vector
    is
    begin
-      return adam.Assist.Query.find_all.Metrics.all_Types;
+      return AdaM.Assist.Query.find_all.Metrics.all_Types;
    end known_Types;
 
 
 
-   function known_Environment return adam.Environment.item
+   function known_Environment return AdaM.Environment.item
    is
-      Environ : Environment.item renames adam.Assist.Query.find_All.Metrics.Environment;
+      Environ : Environment.item renames AdaM.Assist.Query.find_All.Metrics.Environment;
    begin
       Environ.clear;
-      adam.Assist.Query.find_All.Driver;
+      AdaM.Assist.Query.find_All.Driver;
 
       return Environ;
    end known_Environment;
@@ -103,4 +103,4 @@ is
       return the_Lines;
    end Split;
 
-end adam.Assist;
+end AdaM.Assist;

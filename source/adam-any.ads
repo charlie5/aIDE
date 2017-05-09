@@ -1,4 +1,4 @@
-package adam.Any
+package AdaM.Any
 --
 -- Allows any class to be made persistent.
 --
@@ -6,7 +6,7 @@ is
 
    type Item is interface;
 
-   function Id (Self : access Item) return adam.Id
+   function Id (Self : access Item) return AdaM.Id
      is abstract;
 
 
@@ -17,4 +17,4 @@ is
 
    procedure resolve_all_Views;
 
-end adam.Any;
+end AdaM.Any;

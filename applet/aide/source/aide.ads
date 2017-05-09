@@ -1,6 +1,6 @@
 with
-     adam.Subprogram,
-     adam.Environment;
+     AdaM.Subprogram,
+     AdaM.Environment;
 
 package aIDE
 is
@@ -10,10 +10,10 @@ is
 
 
 private
-   the_Environ      : adam.Environment.item;
+   the_Environ      : AdaM.Environment.item;
 
-   all_Apps         : adam.Subprogram.vector;
-   the_selected_App : adam.Subprogram.view;
+   all_Apps         : AdaM.Subprogram.vector;
+   the_selected_App : AdaM.Subprogram.view;
 
    procedure build_Project;
 end aIDE;

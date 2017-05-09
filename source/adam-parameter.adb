@@ -1,8 +1,8 @@
 with
-     adam.Factory;
+     AdaM.Factory;
 
 
-package body adam.Parameter
+package body AdaM.Parameter
 is
 
    --  Storage Pool
@@ -12,7 +12,7 @@ is
    max_Parameters : constant                := 5_000;
    null_Parameter : constant Parameter.item := (others => <>);
 
-   package Pool is new adam.Factory.Pools (".adam-store",
+   package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "parameters",
                                            max_Parameters,
                                            record_Version,
@@ -81,7 +81,7 @@ is
    --  Attributes
    --
 
-   overriding function Id   (Self : access Item) return adam.Id
+   overriding function Id   (Self : access Item) return AdaM.Id
    is
    begin
       return Pool.to_Id (Self);
@@ -196,4 +196,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end adam.Parameter;
+end AdaM.Parameter;

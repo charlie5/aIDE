@@ -1,4 +1,4 @@
-package body adam.Assist.Query.find_All.Actuals_for_traversing
+package body AdaM.Assist.Query.find_All.Actuals_for_traversing
 is
 
    -------------
@@ -21,4 +21,4 @@ is
       State   : in out Traversal_State)
    is separate;
 
-end adam.Assist.Query.find_All.Actuals_for_traversing;
+end AdaM.Assist.Query.find_All.Actuals_for_traversing;

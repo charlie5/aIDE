@@ -3,10 +3,10 @@ with
      ada.Containers.Vectors;
 
 
-package adam.a_Type.enumeration_literal
+package AdaM.a_Type.enumeration_literal
 is
 
-   type Item is new adam.a_Type.discrete_Type with private;
+   type Item is new AdaM.a_Type.discrete_Type with private;
 
 
    -- View
@@ -45,7 +45,7 @@ is
    --
 
    overriding
-   function  Id    (Self : access Item) return adam.Id;
+   function  Id    (Self : access Item) return AdaM.Id;
 
    overriding
    function  to_spec_Source   (Self : in Item) return text_Vectors.Vector;
@@ -54,10 +54,10 @@ is
 
 private
 
-   type Item is new adam.a_Type.discrete_Type with
+   type Item is new AdaM.a_Type.discrete_Type with
       record
          null;
          -- Value : Text;
       end record;
 
-end adam.a_Type.enumeration_literal;
+end AdaM.a_Type.enumeration_literal;

@@ -1,9 +1,9 @@
 with
-     adam.Source,
+     AdaM.Source,
      ada.Streams;
 
 
-package adam.raw_source
+package AdaM.raw_source
 is
 
    type Item is new Source.Entity with private;
@@ -50,4 +50,4 @@ private
    for View'write use View_write;
    for View'read  use View_read;
 
-end adam.raw_source;
+end AdaM.raw_source;

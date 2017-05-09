@@ -10,7 +10,7 @@ with Asis.Implementation,
      asis.Elements;
 
 
-separate (adam.Assist.Query.find_All.Actuals_for_traversing)
+separate (AdaM.Assist.Query.find_All.Actuals_for_traversing)
 
 procedure Post_Op
   (Element :        Asis.Element;

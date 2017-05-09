@@ -2,7 +2,7 @@ with
      AdaM.Subprogram;
 
 
-package body adam.Source.utility
+package body AdaM.Source.utility
 is
 
    --  Entities
@@ -25,4 +25,4 @@ is
    end contains_Subprograms;
 
 
-end adam.Source.utility;
+end AdaM.Source.utility;

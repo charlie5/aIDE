@@ -1,9 +1,9 @@
 with
-     adam.Source,
+     AdaM.Source,
      ada.Streams;
 
 
-package adam.a_Type
+package AdaM.a_Type
 is
 
    type Item is abstract new Source.Entity with private;
@@ -84,4 +84,4 @@ private
    type integer_Type is abstract new discrete_Type with null record;
    type fixed_Type   is abstract new     real_Type with null record;
 
-end adam.a_Type;
+end AdaM.a_Type;

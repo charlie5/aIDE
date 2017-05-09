@@ -31,7 +31,7 @@ is
    --  Operations
    --
    procedure show      (Self : in out Item;   Invoked_by   : in     Gtk.Button.gtk_Button;
-                                              Target       : in     adam.context_Line.view);
+                                              Target       : in     AdaM.context_Line.view);
    procedure choice_is (Self : in out Item;   package_Name : in     String);
    procedure freshen   (Self : in out Item);
 
@@ -49,7 +49,7 @@ private
    type Item is new Palette.item with
       record
          Invoked_by    : gtk_Button;
-         Target        : adam.context_Line.view;
+         Target        : AdaM.context_Line.view;
 
          recent_Table  : gtk_Table;
          top_Notebook,

@@ -21,14 +21,14 @@ is
 
 
    function on_comment_text_View_leave (the_Entry     : access Gtk_Text_View_Record'Class;
-                                        the_Operation : in     adam.Comment.view) return Boolean
+                                        the_Operation : in     AdaM.Comment.view) return Boolean
    is
       use Gtk.Text_Iter;
       Start   : Gtk_Text_Iter;
       the_End : Gtk_Text_Iter;
       Continue : Boolean;
 
-      the_Lines : adam.text_Lines;
+      the_Lines : AdaM.text_Lines;
    begin
       the_Entry.Get_Buffer.get_start_Iter (Start);
       the_End := Start;
@@ -42,7 +42,7 @@ is
 
       loop
          declare
-            use Adam;
+            use AdaM;
             the_Text : constant String := the_Entry.Get_Buffer.Get_Text (Start, the_End);
          begin
             if the_Text (the_Text'Last) = ada.Characters.Latin_1.LF
@@ -80,7 +80,7 @@ is
 
    package text_View_return_Callbacks is new Gtk.Handlers.User_Return_Callback (Gtk_Text_View_Record,
                                                                                 Boolean,
-                                                                                adam.Comment.view);
+                                                                                AdaM.Comment.view);
 
    package Button_Callbacks is new Gtk.Handlers.User_Callback (Gtk_Button_Record,
                                                                aIDE.Editor.of_Comment.view);
@@ -89,7 +89,7 @@ is
 
    package body Forge
    is
-      function to_comment_Editor (the_Comment : in adam.Comment.view) return View
+      function to_comment_Editor (the_Comment : in AdaM.Comment.view) return View
       is
          Self        : constant Editor.of_Comment.view := new Editor.of_Comment.item;
 
@@ -128,7 +128,7 @@ is
                                    on_rid_Button_clicked'Access,
                                    Self);
          declare
-            use Adam;
+            use AdaM;
             Buffer : constant Gtk_Text_Buffer := Self.comment_text_View.Get_Buffer;
             Iter   : Gtk_Text_Iter;
          begin

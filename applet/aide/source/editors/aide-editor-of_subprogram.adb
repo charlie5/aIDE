@@ -45,7 +45,7 @@ is
 
    package body Forge
    is
-      function to_subprogram_Editor (the_Subprogram : in adam.Subprogram.view) return View
+      function to_subprogram_Editor (the_Subprogram : in AdaM.Subprogram.view) return View
       is
          Self : constant Editor.of_subprogram.view := new Editor.of_subprogram.item;
 
@@ -106,14 +106,14 @@ is
 
 
 
-   function  Target (Self : in     Item)     return adam.Subprogram.view
+   function  Target (Self : in     Item)     return AdaM.Subprogram.view
    is
    begin
       return Self.Subprogram;
    end Target;
 
 
-   procedure Target_is (Self : in out Item;   Now : in adam.Subprogram.view)
+   procedure Target_is (Self : in out Item;   Now : in AdaM.Subprogram.view)
    is
    begin
       Self.Subprogram := Now;

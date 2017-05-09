@@ -2,7 +2,7 @@ with
      AdaM.Factory;
 
 
-package body adam.raw_source
+package body AdaM.raw_source
 is
 
    --  Storage Pool
@@ -12,7 +12,7 @@ is
    max_Sources    : constant                 := 5_000;
    null_Source    : constant raw_Source.item := (Source.Entity with others => <>);
 
-   package Pool is new adam.Factory.Pools (".adam-store",
+   package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "raw_source",
                                            max_Sources,
                                            record_Version,
@@ -118,4 +118,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end adam.raw_source;
+end AdaM.raw_source;

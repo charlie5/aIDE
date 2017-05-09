@@ -1,10 +1,10 @@
 with
-     adam.Any,
-     adam.Source,
-     adam.exception_Handler,
+     AdaM.Any,
+     AdaM.Source,
+     AdaM.exception_Handler,
      ada.Streams;
 
-package adam.Block
+package AdaM.Block
 is
 
    type Item is new Any.Item with private;
@@ -25,7 +25,7 @@ is
    --
 
    overriding
-   function  Id              (Self : access Item) return adam.Id;
+   function  Id              (Self : access Item) return AdaM.Id;
    function  Name            (Self : in     Item) return String;
    function  to_Source       (Self : in     Item) return text_Vectors.Vector;
 
@@ -44,9 +44,9 @@ private
       record
          Name            : Text;
 
-         my_Declarations : aliased adam.Source.Entities;
-         my_Statements   : aliased adam.Source.Entities;
-         my_Handlers     : aliased adam.Source.Entities;
+         my_Declarations : aliased AdaM.Source.Entities;
+         my_Statements   : aliased AdaM.Source.Entities;
+         my_Handlers     : aliased AdaM.Source.Entities;
       end record;
 
 
@@ -61,4 +61,4 @@ private
    for View'write use View_write;
    for View'read  use View_read;
 
-end adam.Block;
+end AdaM.Block;

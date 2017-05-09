@@ -29,7 +29,7 @@ is
 
 
    function on_used_Button_leave (the_Button       : access Gtk_Check_Button_Record'Class;
-                                  the_Context_Line : in     adam.context_Line.view) return Boolean
+                                  the_Context_Line : in     AdaM.context_Line.view) return Boolean
    is
    begin
       the_Context_Line.is_Used (the_Button.get_Active);
@@ -52,7 +52,7 @@ is
 
    package check_Button_return_Callbacks is new Gtk.Handlers.User_Return_Callback (Gtk_Check_Button_Record,
                                                                                    Boolean,
-                                                                                   adam.Context_Line.view);
+                                                                                   AdaM.Context_Line.view);
 
    package Button_Callbacks is new Gtk.Handlers.User_Callback (Gtk_Button_Record,
                                                                aIDE.Editor.of_context_Line.view);
@@ -61,8 +61,8 @@ is
 
    package body Forge
    is
-      function to_context_line_Editor (the_Context      : in adam.Context     .view;
-                                       the_Context_Line : in adam.context_Line.view) return View
+      function to_context_line_Editor (the_Context      : in AdaM.Context     .view;
+                                       the_Context_Line : in AdaM.context_Line.view) return View
       is
          Self        : constant Editor.of_context_Line.view := new Editor.of_context_Line.item;
 
@@ -127,7 +127,7 @@ is
 
 
 
-   function context_Line (Self : in Item) return adam.context_Line.view
+   function context_Line (Self : in Item) return AdaM.context_Line.view
    is
    begin
       return Self.context_Line;

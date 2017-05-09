@@ -1,12 +1,12 @@
 with
-     adam.Source;
+     AdaM.Source;
 
 private
 with
      ada.Streams;
 
 
-package adam.Comment
+package AdaM.Comment
 is
 
    type Item is new Source.Entity with private;
@@ -26,7 +26,7 @@ is
    --
 
    overriding
-   function Id         (Self : access Item) return adam.Id;
+   function Id         (Self : access Item) return AdaM.Id;
 
    function  Lines     (Self : in     Item)     return text_Lines;
    procedure Lines_are (Self : in out Item;   Now : in text_Lines);
@@ -54,4 +54,4 @@ private
    for View'write use View_write;
    for View'read  use View_read;
 
-end adam.Comment;
+end AdaM.Comment;

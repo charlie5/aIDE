@@ -1,5 +1,5 @@
 with
-     adam.a_Type.enumeration_literal,
+     AdaM.a_Type.enumeration_literal,
      gtk.Widget;
 
 private
@@ -20,11 +20,11 @@ is
    type View is access all Item'Class;
 
 
-   type enumeration_type_view is access all adam.a_Type.enumeration_type.item'Class;
+   type enumeration_type_view is access all AdaM.a_Type.enumeration_type.item'Class;
 
    package Forge
    is
-      function to_Editor (the_Target     : in adam.a_Type.enumeration_literal.view;
+      function to_Editor (the_Target     : in AdaM.a_Type.enumeration_literal.view;
                           targets_Parent : in enumeration_type_view) return View;
    end Forge;
 
@@ -41,7 +41,7 @@ private
 
    type Item is new Editor.item with
       record
-         Target               : adam.a_Type.enumeration_literal.view;
+         Target               : AdaM.a_Type.enumeration_literal.view;
          Targets_Parent       : enumeration_type_view;
 
          top_Box              : gtk_Box;

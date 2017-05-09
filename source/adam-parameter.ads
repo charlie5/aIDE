@@ -1,11 +1,11 @@
 with
-     adam.Any,
-     adam.a_Type,
+     AdaM.Any,
+     AdaM.a_Type,
 
      ada.Streams;
 
 
-package adam.Parameter
+package AdaM.Parameter
 is
 
    type Item is new Any.Item with private;
@@ -51,7 +51,7 @@ is
    --  Attributes
    --
 
-   overriding function  Id         (Self : access Item) return adam.Id;
+   overriding function  Id         (Self : access Item) return AdaM.Id;
 
    function  Name       (Self : in     Item)     return String;
    procedure Name_is    (Self : in out Item;   Now : in String);
@@ -80,4 +80,4 @@ private
          Default      :         Text;
       end record;
 
-end adam.Parameter;
+end AdaM.Parameter;

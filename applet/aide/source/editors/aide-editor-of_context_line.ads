@@ -1,6 +1,6 @@
 with
-     adam.context_Line,
-     adam.Context,
+     AdaM.context_Line,
+     AdaM.Context,
      gtk.Widget,
      gtk.Button;
 
@@ -19,15 +19,15 @@ is
 
    package Forge
    is
-      function to_context_line_Editor (the_Context      : in adam.Context     .view;
-                                       the_Context_Line : in adam.context_Line.view) return View;
+      function to_context_line_Editor (the_Context      : in AdaM.Context     .view;
+                                       the_Context_Line : in AdaM.context_Line.view) return View;
    end Forge;
 
    overriding
    function top_Widget   (Self : in Item) return gtk.Widget.gtk_Widget;
    function name_Button  (Self : in Item) return gtk.Button.gtk_Button;
 
-   function context_Line (Self : in Item) return adam.context_Line.view;
+   function context_Line (Self : in Item) return AdaM.context_Line.view;
 
 
 
@@ -40,8 +40,8 @@ private
 
    type Item is new Editor.item with
       record
-         Context      : adam.Context     .view;
-         context_Line : adam.context_Line.view;
+         Context      : AdaM.Context     .view;
+         context_Line : AdaM.context_Line.view;
 
          Top          : Gtk_Box;
          name_Button  : gtk_Button;

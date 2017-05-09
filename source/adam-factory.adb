@@ -8,7 +8,7 @@ with
      ada.Directories;
 
 
-package body adam.Factory
+package body AdaM.Factory
 is
 
    type   Storer is access procedure;
@@ -38,7 +38,7 @@ is
 
 
 
-   type to_View_function is access function (Id  : in adam.Id) return Any_view;
+   type to_View_function is access function (Id  : in AdaM.Id) return Any_view;
 
    function Hash is new ada.Unchecked_Conversion (ada.Tags.Tag, ada.Containers.Hash_Type);
    use type ada.Tags.Tag;
@@ -51,7 +51,7 @@ is
    tag_Map_of_to_View_function : tag_Maps_of_to_View_function.Map;
 
    procedure  register_to_view_Function (the_Tag      : in     ada.Tags.Tag;
-                                         the_Function : access function (Id  : in adam.Id) return Any_view)
+                                         the_Function : access function (Id  : in AdaM.Id) return Any_view)
    is
    begin
       tag_Map_of_to_View_function.insert (the_Tag, the_Function);
@@ -59,7 +59,7 @@ is
 
 
 
-   function to_View (Id : in adam.Id;   Tag : in ada.Tags.Tag) return Any_view
+   function to_View (Id : in AdaM.Id;   Tag : in ada.Tags.Tag) return Any_view
    is
       use tag_Maps_of_to_View_function;
       the_Function : constant to_View_function := Element (tag_Map_of_to_View_function.Find (Tag));
@@ -77,7 +77,7 @@ is
       -- Arrays and Pointers for our Pool.
       --
 
-      subtype item_Id is adam.Id range 1 .. adam.Id'Last;
+      subtype item_Id is AdaM.Id range 1 .. AdaM.Id'Last;
 
       type    Items   is array (item_Id range <>) of aliased Item;
 
@@ -89,7 +89,7 @@ is
       --  The storage pool.
       --
       Pool      : Items (1 .. item_Id (max_Items));
-      pool_Last : adam.Id                         := null_Id;
+      pool_Last : AdaM.Id                         := null_Id;
 
       stored_record_Version : Positive;
 
@@ -108,14 +108,14 @@ is
       --  'View' to 'Id' Resolution.
       --
 
-      function to_View (Id : in adam.Id) return View
+      function to_View (Id : in AdaM.Id) return View
       is
       begin
          return Pool (Id)'Access;
       end to_View;
 
 
-      function to_View (Id : in adam.Id) return Any_view
+      function to_View (Id : in AdaM.Id) return Any_view
       is
       begin
          declare
@@ -127,12 +127,12 @@ is
 
 
 
-      function to_Id (From : in View) return adam.Id
+      function to_Id (From : in View) return AdaM.Id
       is
          use item_Pointers;
          Start : constant item_Pointers.Pointer := Pool (Pool'First)'Access;
       begin
-         return adam.Id (item_Pointers.Pointer (From) - Start) + 1;
+         return AdaM.Id (item_Pointers.Pointer (From) - Start) + 1;
       end to_Id;
 
 
@@ -178,7 +178,7 @@ is
             the_Stream := Stream (the_File);
 
             Positive           'read (the_Stream, stored_record_Version);
-            adam.Id            'read (the_Stream, pool_Last);
+            AdaM.Id            'read (the_Stream, pool_Last);
             view_Vectors.Vector'read (the_Stream, freed_Views);
 
             close (the_File);
@@ -259,7 +259,7 @@ is
             the_Stream := Stream (the_File);
 
             Positive           'write (the_Stream, record_Version);
-            adam.Id            'write (the_Stream, pool_Last);
+            AdaM.Id            'write (the_Stream, pool_Last);
             view_Vectors.Vector'write (the_Stream, freed_Views);
 
             close (the_File);
@@ -277,11 +277,11 @@ is
       begin
          if Self = null
          then
-            adam.Id'write  (Stream,  null_Id);
+            AdaM.Id'write  (Stream,  null_Id);
             return;
          end if;
 
-         adam.Id'write  (Stream,  Self.Id);
+         AdaM.Id'write  (Stream,  Self.Id);
          String 'output (Stream,  external_Tag (Self.all'Tag));
       end View_write;
 
@@ -290,9 +290,9 @@ is
       procedure View_read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
                            Self   : out             View)
       is
-         Id : adam.Id;
+         Id : AdaM.Id;
       begin
-         adam.Id'read (Stream, Id);
+         AdaM.Id'read (Stream, Id);
 
          if Id = null_Id
          then
@@ -305,7 +305,7 @@ is
             the_String : constant String := String'Input   (Stream);                  -- Read tag as string from stream.
             the_Tag    : constant Tag    := Descendant_Tag (the_String, Item'Tag);    -- Convert to a tag.
          begin
-            Self := View (adam.Factory.to_View (Id, the_Tag));
+            Self := View (AdaM.Factory.to_View (Id, the_Tag));
          end;
       end View_read;
 
@@ -351,4 +351,4 @@ is
    end open;
 
 
-end adam.Factory;
+end AdaM.Factory;

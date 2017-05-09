@@ -1,8 +1,8 @@
 with
-     adam.Factory;
+     AdaM.Factory;
 
 
-package body adam.a_Type.unconstrained_array_type
+package body AdaM.a_Type.unconstrained_array_type
 is
    --  Storage Pool
    --
@@ -11,7 +11,7 @@ is
    max_Types      : constant := 5_000;
    null_Type      : constant unconstrained_array_type.item := (Source.Entity with others => <>);
 
-   package Pool is new adam.Factory.Pools (storage_Folder => ".adam-store",
+   package Pool is new AdaM.Factory.Pools (storage_Folder => ".adam-store",
                                            pool_Name      => "unconstrained_array_types",
                                            max_Items      => max_Types,
                                            record_Version => record_Version,
@@ -61,7 +61,7 @@ is
    --  Attributes
    --
 
-   overriding function Id   (Self : access Item) return adam.Id
+   overriding function Id   (Self : access Item) return AdaM.Id
    is
    begin
       return Pool.to_Id (Self);
@@ -80,4 +80,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end adam.a_Type.unconstrained_array_type;
+end AdaM.a_Type.unconstrained_array_type;

@@ -1,23 +1,23 @@
 with
-     Adam,
+     AdaM,
      AdaM.a_Package,
-     adam.a_Type.enumeration_type,
-     adam.a_Type.signed_integer_type,
-     adam.a_Type.modular_type,
-     adam.a_Type.floating_point_type,
-     adam.a_Type.ordinary_fixed_point_type,
-     adam.a_Type.decimal_fixed_point_type,
-     adam.a_Type.access_type,
-     adam.a_Type.unconstrained_array_type,
-     adam.a_Type.constrained_array_type,
-     adam.a_Type.record_type,
-     adam.a_Type.tagged_record_type,
-     adam.a_Type.derived_type,
-     adam.a_Type.derived_record_extension_type,
-     adam.a_Type.interface_type,
-     adam.a_Type.task_type,
-     adam.a_Type.protected_type,
-     adam.a_Type.a_subtype;
+     AdaM.a_Type.enumeration_type,
+     AdaM.a_Type.signed_integer_type,
+     AdaM.a_Type.modular_type,
+     AdaM.a_Type.floating_point_type,
+     AdaM.a_Type.ordinary_fixed_point_type,
+     AdaM.a_Type.decimal_fixed_point_type,
+     AdaM.a_Type.access_type,
+     AdaM.a_Type.unconstrained_array_type,
+     AdaM.a_Type.constrained_array_type,
+     AdaM.a_Type.record_type,
+     AdaM.a_Type.tagged_record_type,
+     AdaM.a_Type.derived_type,
+     AdaM.a_Type.derived_record_extension_type,
+     AdaM.a_Type.interface_type,
+     AdaM.a_Type.task_type,
+     AdaM.a_Type.protected_type,
+     AdaM.a_Type.a_subtype;
 
 with Ada.Wide_Text_IO;
 with Ada.Characters.Handling;
@@ -31,14 +31,14 @@ with Asis.Elements;
 with asis.Declarations,
      asis.Expressions;
 
-with adam.Assist.Query.find_All.Metrics;
+with AdaM.Assist.Query.find_All.Metrics;
 with Asis;
 with Asis.Declarations;
 with Asis.Compilation_Units;
 with ada.Text_IO;
 
 
-separate (adam.Assist.Query.find_All.Actuals_for_traversing)
+separate (AdaM.Assist.Query.find_All.Actuals_for_traversing)
 
 procedure Pre_Op (Element :        Asis.Element;
                   Control : in out Asis.Traverse_Control;
@@ -51,7 +51,7 @@ is
        Ada.Characters.Handling,
        Ada.Wide_Text_IO;
 
-   package Metrics renames adam.Assist.Query.find_All.Metrics;
+   package Metrics renames AdaM.Assist.Query.find_All.Metrics;
 
    Argument_Kind        : Asis.Element_Kinds;
    the_declaration_Kind : Asis.declaration_Kinds;
@@ -156,7 +156,7 @@ begin
             elsif the_Kind = asis.An_Ordinary_Type_Declaration
             then
                declare
-                  use Adam;
+                  use AdaM;
 
                   the_Name          :          asis.Defining_Name;
                   the_Grandparent   : constant asis.Element         := enclosing_Element (the_Parent);
@@ -200,11 +200,11 @@ begin
                         then
                            declare
                               use ada.Strings.unbounded,
-                                  adam.a_Type,
-                                  adam.Source;
+                                  AdaM.a_Type,
+                                  AdaM.Source;
 
                               full_Name : Text;
-                              new_Type  : adam.a_Type.view;
+                              new_Type  : AdaM.a_Type.view;
                            begin
                               if the_unit_Name = parent_Name
                               then
@@ -217,8 +217,8 @@ begin
                               is
                                  when An_Enumeration_Type_Definition =>
                                     declare
-                                       new_enum_Type : constant adam.a_Type.enumeration_type.view
-                                         := adam.a_Type.enumeration_type.new_Type (Name => +full_Name);
+                                       new_enum_Type : constant AdaM.a_Type.enumeration_type.view
+                                         := AdaM.a_Type.enumeration_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_enum_Type.all'Access;
                                     end;
@@ -228,8 +228,8 @@ begin
 
                                  when A_Signed_Integer_Type_Definition =>
                                     declare
-                                       new_integer_Type : constant adam.a_Type.signed_integer_type.view
-                                         := adam.a_Type.signed_integer_type.new_Type (Name => +full_Name);
+                                       new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
+                                         := AdaM.a_Type.signed_integer_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_integer_Type.all'Access;
                                     end;
@@ -239,8 +239,8 @@ begin
 
                                  when A_Modular_Type_Definition =>
                                     declare
-                                       new_modular_Type : constant adam.a_Type.modular_type.view
-                                         := adam.a_Type.modular_type.new_Type (Name => +full_Name);
+                                       new_modular_Type : constant AdaM.a_Type.modular_type.view
+                                         := AdaM.a_Type.modular_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_modular_Type.all'Access;
                                     end;
@@ -250,8 +250,8 @@ begin
 
                                  when A_Floating_Point_Definition =>
                                     declare
-                                       new_float_Type : constant adam.a_Type.floating_point_type.view
-                                         := adam.a_Type.floating_point_type.new_Type (Name => +full_Name);
+                                       new_float_Type : constant AdaM.a_Type.floating_point_type.view
+                                         := AdaM.a_Type.floating_point_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_float_Type.all'Access;
                                     end;
@@ -261,8 +261,8 @@ begin
 
                                  when An_Ordinary_Fixed_Point_Definition =>
                                     declare
-                                       new_ordinary_fixed_Type : constant adam.a_Type.ordinary_fixed_point_type.view
-                                         := adam.a_Type.ordinary_fixed_point_type.new_Type (Name => +full_Name);
+                                       new_ordinary_fixed_Type : constant AdaM.a_Type.ordinary_fixed_point_type.view
+                                         := AdaM.a_Type.ordinary_fixed_point_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_ordinary_fixed_Type.all'Access;
                                     end;
@@ -272,8 +272,8 @@ begin
 
                                  when A_Decimal_Fixed_Point_Definition =>
                                     declare
-                                       new_decimal_fixed_Type : constant adam.a_Type.decimal_fixed_point_type.view
-                                         := adam.a_Type.decimal_fixed_point_type.new_Type (Name => +full_Name);
+                                       new_decimal_fixed_Type : constant AdaM.a_Type.decimal_fixed_point_type.view
+                                         := AdaM.a_Type.decimal_fixed_point_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_decimal_fixed_Type.all'Access;
                                     end;
@@ -283,8 +283,8 @@ begin
 
                                  when An_Access_Type_Definition =>
                                     declare
-                                       new_access_Type : constant adam.a_Type.access_type.view
-                                         := adam.a_Type.access_type.new_Type (Name => +full_Name);
+                                       new_access_Type : constant AdaM.a_Type.access_type.view
+                                         := AdaM.a_Type.access_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_access_Type.all'Access;
                                     end;
@@ -294,8 +294,8 @@ begin
 
                                  when An_Unconstrained_Array_Definition =>
                                     declare
-                                       new_array_Type : constant adam.a_Type.unconstrained_array_type.view
-                                         := adam.a_Type.unconstrained_array_type.new_Type (Name => +full_Name);
+                                       new_array_Type : constant AdaM.a_Type.unconstrained_array_type.view
+                                         := AdaM.a_Type.unconstrained_array_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_array_Type.all'Access;
                                     end;
@@ -305,8 +305,8 @@ begin
 
                                  when A_Constrained_Array_Definition =>
                                     declare
-                                       new_array_Type : constant adam.a_Type.constrained_array_type.view
-                                         := adam.a_Type.constrained_array_type.new_Type (Name => +full_Name);
+                                       new_array_Type : constant AdaM.a_Type.constrained_array_type.view
+                                         := AdaM.a_Type.constrained_array_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_array_Type.all'Access;
                                     end;
@@ -316,8 +316,8 @@ begin
 
                                  when A_Record_Type_Definition =>
                                     declare
-                                       new_record_Type : constant adam.a_Type.record_type.view
-                                         := adam.a_Type.record_type.new_Type (Name => +full_Name);
+                                       new_record_Type : constant AdaM.a_Type.record_type.view
+                                         := AdaM.a_Type.record_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_record_Type.all'Access;
                                     end;
@@ -327,8 +327,8 @@ begin
 
                                  when A_Tagged_Record_Type_Definition =>
                                     declare
-                                       new_record_Type : constant adam.a_Type.tagged_record_type.view
-                                         := adam.a_Type.tagged_record_type.new_Type (Name => +full_Name);
+                                       new_record_Type : constant AdaM.a_Type.tagged_record_type.view
+                                         := AdaM.a_Type.tagged_record_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_record_Type.all'Access;
                                     end;
@@ -338,8 +338,8 @@ begin
 
                                  when A_Derived_Type_Definition =>
                                     declare
-                                       new_derived_Type : constant adam.a_Type.derived_type.view
-                                         := adam.a_Type.derived_type.new_Type (Name => +full_Name);
+                                       new_derived_Type : constant AdaM.a_Type.derived_type.view
+                                         := AdaM.a_Type.derived_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_derived_Type.all'Access;
                                     end;
@@ -349,8 +349,8 @@ begin
 
                                  when A_Derived_Record_Extension_Definition =>
                                     declare
-                                       new_derived_Type : constant adam.a_Type.derived_record_extension_type.view
-                                         := adam.a_Type.derived_record_extension_type.new_Type (Name => +full_Name);
+                                       new_derived_Type : constant AdaM.a_Type.derived_record_extension_type.view
+                                         := AdaM.a_Type.derived_record_extension_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_derived_Type.all'Access;
                                     end;
@@ -360,8 +360,8 @@ begin
 
                                  when An_Interface_Type_Definition =>
                                     declare
-                                       new_interface_Type : constant adam.a_Type.interface_type.view
-                                         := adam.a_Type.interface_type.new_Type (Name => +full_Name);
+                                       new_interface_Type : constant AdaM.a_Type.interface_type.view
+                                         := AdaM.a_Type.interface_type.new_Type (Name => +full_Name);
                                     begin
                                        new_Type := new_interface_Type.all'Access;
                                     end;
@@ -395,8 +395,8 @@ begin
                   full_Name   : constant String
                     := full_name_Prefix & "." & to_String (Defining_Name_Image (the_Names (1)));
 
-                  new_Subtype : constant adam.a_Type.a_subtype.view
-                    := adam.a_Type.a_subtype.new_Type (Name => full_Name);
+                  new_Subtype : constant AdaM.a_Type.a_subtype.view
+                    := AdaM.a_Type.a_subtype.new_Type (Name => full_Name);
                begin
                   Metrics.all_Types.append (new_Subtype.all'Access);
                   new_Entity := new_Subtype.all'Access;
@@ -409,8 +409,8 @@ begin
                   full_Name : constant String
                     := full_name_Prefix & "." & to_String (Defining_Name_Image (the_Names (1)));
 
-                  new_Type  : constant adam.a_Type.task_type.view
-                    := adam.a_Type.task_type.new_Type (Name => full_Name);
+                  new_Type  : constant AdaM.a_Type.task_type.view
+                    := AdaM.a_Type.task_type.new_Type (Name => full_Name);
                begin
                   Metrics.all_Types.append (new_Type.all'Access);
                   new_Entity := new_Type.all'Access;
@@ -423,8 +423,8 @@ begin
                   full_Name : constant String
                     := full_name_Prefix & "." & to_String (Defining_Name_Image (the_Names (1)));
 
-                  new_Type  : constant adam.a_Type.protected_type.view
-                    := adam.a_Type.protected_type.new_Type (Name => full_Name);
+                  new_Type  : constant AdaM.a_Type.protected_type.view
+                    := AdaM.a_Type.protected_type.new_Type (Name => full_Name);
                begin
                   Metrics.all_Types.append (new_Type.all'Access);
                   new_Entity := new_Type.all'Access;

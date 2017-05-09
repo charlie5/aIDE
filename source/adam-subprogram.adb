@@ -1,8 +1,8 @@
 with
-     adam.Factory;
+     AdaM.Factory;
 
 
-package body adam.Subprogram
+package body AdaM.Subprogram
 is
 
    --  Storage Pool
@@ -12,7 +12,7 @@ is
    max_Subprograms : constant                 := 5_000;
    null_Subprogram : constant Subprogram.item := (Source.Entity with others => <>);
 
-   package Pool is new adam.Factory.Pools (".adam-store",
+   package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "subprograms",
                                            max_Subprograms,
                                            record_Version,
@@ -44,9 +44,9 @@ is
    procedure define (Self : in out Item;   Name : in String)
    is
    begin
-      Self.Context := adam.Context.new_Context;
+      Self.Context := AdaM.Context.new_Context;
       Self.Name    := +Name;
-      Self.Block   := adam.Block.new_Block (name => "procedure");
+      Self.Block   := AdaM.Block.new_Block (name => "procedure");
    end define;
 
 
@@ -80,7 +80,7 @@ is
    --
 
    overriding
-   function Id   (Self : access Item) return adam.Id
+   function Id   (Self : access Item) return AdaM.Id
    is
    begin
       return Pool.to_Id (Self);
@@ -103,14 +103,14 @@ is
 
 
 
-   function Block     (Self : in Item) return adam.Block.view
+   function Block     (Self : in Item) return AdaM.Block.view
    is
    begin
       return Self.Block;
    end Block;
 
 
-   function Context (Self : in Item) return adam.Context.view
+   function Context (Self : in Item) return AdaM.Context.view
    is
    begin
       return Self.Context;
@@ -126,7 +126,7 @@ is
 
    function is_Procedure (Self : in Item) return Boolean
    is
-      use type adam.Parameter.view;
+      use type AdaM.Parameter.view;
    begin
       return Self.Profile.Result = null;
    end is_Procedure;
@@ -191,4 +191,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end adam.Subprogram;
+end AdaM.Subprogram;

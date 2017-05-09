@@ -1,13 +1,13 @@
 with
-     adam.a_Type,
-     adam.Environment;
+     AdaM.a_Type,
+     AdaM.Environment;
 
 
-package adam.Assist
+package AdaM.Assist
 is
 
-   function known_Types       return adam.a_Type.Vector;
-   function known_Environment return adam.Environment.item;
+   function known_Types       return AdaM.a_Type.Vector;
+   function known_Environment return AdaM.Environment.item;
 
 
    function Tail_of             (the_full_Name : in String) return String;
@@ -17,4 +17,4 @@ is
    function Split (the_Text : in String) return text_Lines;
 
 
-end adam.Assist;
+end AdaM.Assist;

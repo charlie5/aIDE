@@ -2,7 +2,7 @@ with
      aIDE,
      aIDE.Palette.of_packages_subpackages,
      AdaM.a_Package,
-     adam.Environment,
+     AdaM.Environment,
 
      Glib,
      Glib.Error,
@@ -39,8 +39,8 @@ is
 
    package recent_Packages
    is
-      procedure register_Usage (the_Package : in adam.Text);
-      function  fetch return adam.text_Lines;
+      procedure register_Usage (the_Package : in AdaM.Text);
+      function  fetch return AdaM.text_Lines;
    end recent_Packages;
 
 
@@ -48,20 +48,20 @@ is
    is
       type package_Usage is
          record
-            Name  : adam.Text;      -- The package name.
+            Name  : AdaM.Text;      -- The package name.
             Count : Natural;        -- Number of times the package has been used.
          end record;
 
       function "<" (L, R : in package_Usage) return Boolean
       is
-         use type adam.Text;
+         use type AdaM.Text;
       begin
          return L.Name < R.Name;
       end "<";
 
       overriding function "=" (L, R : in package_Usage) return Boolean
       is
-         use type adam.Text;
+         use type AdaM.Text;
       begin
          return L.Name = R.Name;
       end "=";
@@ -70,7 +70,7 @@ is
       the_usage_Stats : package_Usage_Sets.Set;
 
 
-      procedure register_Usage (the_Package : in adam.Text)
+      procedure register_Usage (the_Package : in AdaM.Text)
       is
          use package_Usage_Sets;
 
@@ -88,12 +88,12 @@ is
       end register_Usage;
 
 
-      function  fetch return adam.text_Lines
+      function  fetch return AdaM.text_Lines
       is
          use package_Usage_Sets,
              ada.Containers;
 
-         the_Lines : adam.text_Lines;
+         the_Lines : AdaM.text_Lines;
 
          package type_Usage_Vectors is new ada.Containers.Vectors (Positive, package_Usage);
          use     type_Usage_Vectors;
@@ -176,7 +176,7 @@ is
 
    type label_Info is
       record
-         package_Name : adam.Text;
+         package_Name : AdaM.Text;
          Palette      : aIDE.Palette.of_packages.view;
       end record;
 
@@ -185,7 +185,7 @@ is
    function on_tab_Label_clicked (the_Label : access Gtk_Label_Record'Class;
                                   Info      : in     label_Info) return Boolean
    is
-      use adam,
+      use AdaM,
           gtk.Widget;
 
       Self         :          aIDE.Palette.of_packages.view renames Info.Palette;
@@ -284,7 +284,7 @@ is
 
    procedure choice_is (Self : in out Item;   package_Name : in String)
    is
-      use adam;
+      use AdaM;
       full_Name : constant String := package_Name;
    begin
       recent_Packages.register_Usage (+full_Name);
@@ -302,7 +302,7 @@ is
 
 
    procedure show (Self : in out Item;   Invoked_by   : in     Gtk.Button.gtk_Button;
-                                         Target       : in     adam.context_Line.view)
+                                         Target       : in     AdaM.context_Line.view)
    is
    begin
       Self.Invoked_by := Invoked_by;
@@ -315,9 +315,9 @@ is
 
    procedure freshen (Self : in out Item)
    is
-      use Adam;
+      use AdaM;
 
-      the_Environ : adam.Environment.Item renames aIDE.the_Environ;
+      the_Environ : AdaM.Environment.Item renames aIDE.the_Environ;
 
    begin
       -- Clear out old notebook pages.
@@ -332,7 +332,7 @@ is
       --
       build_Gui_Tree:
       declare
-         procedure build_Gui_for (the_Package       : in adam.a_Package.view;
+         procedure build_Gui_for (the_Package       : in AdaM.a_Package.view;
                                   children_Notebook : in gtk_Notebook)
          is
             the_Children                 :          AdaM.a_Package.Vector renames the_Package.Children;
@@ -397,7 +397,7 @@ is
 
    procedure build_recent_List (Self : in out Item)
    is
-      the_Recent : constant adam.text_Lines := recent_Packages.fetch;
+      the_Recent : constant AdaM.text_Lines := recent_Packages.fetch;
       the_Button : gtk_Button;
 
       Row, Col   : Guint := 0;
@@ -407,8 +407,8 @@ is
       for i in 1 .. Integer (the_Recent.Length)
       loop
          declare
-            use Adam;
-            the_Package : adam.Text renames the_Recent.Element (i);
+            use AdaM;
+            the_Package : AdaM.Text renames the_Recent.Element (i);
          begin
             the_Button := aIDE.Palette.of_packages_subpackages.new_Button (Named            => +the_Package,
                                                                            packages_Palette => Self'unchecked_Access);

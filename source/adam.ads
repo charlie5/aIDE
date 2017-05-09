@@ -3,7 +3,7 @@ with
      ada.Containers.Vectors;
 
 
-package Adam
+package AdaM
 is
 
    --  Text
@@ -44,4 +44,4 @@ private
    for Id'Size use 32;
    null_Id : constant Id := Id'First;
 
-end Adam;
+end AdaM;

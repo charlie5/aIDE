@@ -1,8 +1,8 @@
 with
-     adam.Factory;
+     AdaM.Factory;
 
 
-package body adam.context_Line
+package body AdaM.context_Line
 is
 
    --  Storage Pool
@@ -12,7 +12,7 @@ is
    max_context_Lines : constant            := 5_000;
    null_context_Line : constant context_Line.item := (others => <>);
 
-   package Pool is new adam.Factory.Pools (".adam-store",
+   package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "context_lines",
                                            max_context_Lines,
                                            record_Version,
@@ -80,7 +80,7 @@ is
    --  Attributes
    --
 
-   overriding function Id   (Self : access Item) return adam.Id
+   overriding function Id   (Self : access Item) return AdaM.Id
    is
    begin
       return Pool.to_Id (Self);
@@ -155,4 +155,4 @@ is
    procedure View_read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
                         Self   : out             View)
                         renames Pool.View_read;
-end adam.context_Line;
+end AdaM.context_Line;

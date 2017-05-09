@@ -1,13 +1,13 @@
 with
-     adam.Any,
-     adam.context_Line;
+     AdaM.Any,
+     AdaM.context_Line;
 
 private
 with
      ada.Streams;
 
 
-package adam.Context
+package AdaM.Context
 is
 
    type Item is new Any.Item with private;
@@ -28,7 +28,7 @@ is
    --
 
    overriding
-   function  Id        (Self : access Item) return adam.Id;
+   function  Id        (Self : access Item) return AdaM.Id;
    function  Lines     (Self : in     Item) return context_Line.Vector;
 
    procedure add       (Self : in out Item;   the_Line : in context_Line.view);
@@ -57,4 +57,4 @@ private
    for View'write use View_write;
    for View'read  use View_read;
 
-end adam.Context;
+end AdaM.Context;

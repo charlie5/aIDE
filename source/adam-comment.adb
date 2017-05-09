@@ -1,8 +1,8 @@
 with
-     adam.Factory;
+     AdaM.Factory;
 
 
-package body adam.Comment
+package body AdaM.Comment
 is
 
    --  Storage Pool
@@ -12,7 +12,7 @@ is
    max_Comments   : constant                := 5_000;
    null_Comment   : constant Comment.item := (Source.Entity with others => <>);
 
-   package Pool is new adam.Factory.Pools (".adam-store",
+   package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "comments",
                                            max_Comments,
                                            record_Version,
@@ -61,7 +61,7 @@ is
    --
 
    overriding
-   function Id   (Self : access Item) return adam.Id
+   function Id   (Self : access Item) return AdaM.Id
    is
    begin
       return Pool.to_Id (Self);
@@ -130,4 +130,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end adam.Comment;
+end AdaM.Comment;

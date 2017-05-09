@@ -1,9 +1,9 @@
 with
-     adam.a_Type.record_type,
+     AdaM.a_Type.record_type,
      ada.Streams;
 
 
-package adam.a_Type.tagged_record_type
+package AdaM.a_Type.tagged_record_type
 is
 
    type Item is new a_Type.record_type.item with private;
@@ -25,7 +25,7 @@ is
    --
 
    overriding
-   function  Id (Self : access Item) return adam.Id;
+   function  Id (Self : access Item) return AdaM.Id;
 
 
 
@@ -49,4 +49,4 @@ private
    for View'write use View_write;
    for View'read  use View_read;
 
-end adam.a_Type.tagged_record_type;
+end AdaM.a_Type.tagged_record_type;

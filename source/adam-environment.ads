@@ -4,7 +4,7 @@ with
      AdaM.a_Type;
 
 
-package adam.Environment
+package AdaM.Environment
 --
 --
 --
@@ -18,7 +18,7 @@ is
    function  Length (Self : in Item) return Natural;
    function  Unit   (Self : in Item;   Index : Positive) return compilation_Unit.View;
 
-   function  all_Types (Self : in Item) return adam.a_Type.Vector;
+   function  all_Types (Self : in Item) return AdaM.a_Type.Vector;
 
    procedure print (Self : in Item);
 
@@ -37,4 +37,4 @@ private
       end record;
 
 
-end adam.Environment;
+end AdaM.Environment;

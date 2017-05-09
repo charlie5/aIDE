@@ -1,5 +1,5 @@
 with
-     adam.Subprogram,
+     AdaM.Subprogram,
      gtk.Widget;
 
 private
@@ -21,14 +21,14 @@ is
 
    package Forge
    is
-      function to_subprogram_Editor (the_Subprogram : in adam.Subprogram.view) return View;
+      function to_subprogram_Editor (the_Subprogram : in AdaM.Subprogram.view) return View;
    end Forge;
 
    overriding
    function top_Widget (Self : in Item) return gtk.Widget.Gtk_Widget;
 
-   function  Target    (Self : in     Item)     return adam.Subprogram.view;
-   procedure Target_is (Self : in out Item;   Now : in adam.Subprogram.view);
+   function  Target    (Self : in     Item)     return AdaM.Subprogram.view;
+   procedure Target_is (Self : in out Item;   Now : in AdaM.Subprogram.view);
 
 
 private
@@ -41,7 +41,7 @@ private
 
    type Item is new Editor.item with
       record
-         Subprogram        : adam.Subprogram.view;   -- TODO: This should be called Target.
+         Subprogram        : AdaM.Subprogram.view;   -- TODO: This should be called Target.
 
          top_Box           : Gtk_Box;
 

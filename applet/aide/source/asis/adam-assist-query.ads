@@ -1,4 +1,4 @@
-package adam.Assist.Query
+package AdaM.Assist.Query
 is
 
-end adam.Assist.Query;
+end AdaM.Assist.Query;

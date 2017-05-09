@@ -1,5 +1,5 @@
 with
-     adam.exception_Handler,
+     AdaM.exception_Handler,
      gtk.Widget;
 
 private
@@ -22,7 +22,7 @@ is
    type View is access all Item'Class;
 
 
-   function  new_Editor (the_Handler : in     adam.exception_Handler.view) return View;
+   function  new_Editor (the_Handler : in     AdaM.exception_Handler.view) return View;
    procedure free       (the_Handler : in out View);
 
 
@@ -42,7 +42,7 @@ private
 
    type Item is new Editor.item with
       record
-         exception_Handler   : adam.exception_Handler.view;
+         exception_Handler   : AdaM.exception_Handler.view;
 
          top_Frame           : gtk_Frame;
          top_Box             : gtk_Box;

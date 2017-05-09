@@ -1,12 +1,12 @@
 with
-     adam.Any,
-     adam.Source,
-     adam.Context,
+     AdaM.Any,
+     AdaM.Source,
+     AdaM.Context,
 
      ada.Streams;
 
 
-package adam.a_Package
+package AdaM.a_Package
 is
 
    type Item is new Any.Item with private;
@@ -46,7 +46,7 @@ is
    --
 
    overriding
-   function  Id               (Self : access Item) return adam.Id;
+   function  Id               (Self : access Item) return AdaM.Id;
 
    function  Name             (Self : in     Item)     return String;
    procedure Name_is          (Self : in out Item;   Now : in String);
@@ -85,7 +85,7 @@ private
          Progenitors  : a_Package.Vector;
          Children     : a_Package.Vector;
 
-         Context      : adam.Context.view;
+         Context      : AdaM.Context.view;
 
          public_Entities  : aliased Source.Entities;
          private_Entities :         Source.Entities;
@@ -103,4 +103,4 @@ private
    for Item'write use Item_write;
    for Item'read  use Item_read;
 
-end adam.a_Package;
+end AdaM.a_Package;

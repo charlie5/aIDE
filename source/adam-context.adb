@@ -1,8 +1,8 @@
 with
-     adam.Factory;
+     AdaM.Factory;
 
 
-package body adam.Context
+package body AdaM.Context
 is
 
    --  Storage Pool
@@ -12,7 +12,7 @@ is
    max_Contexts   : constant              := 5_000;
    null_Context   : constant Context.item := (others => <>);
 
-   package Pool is new adam.Factory.Pools (".adam-store",
+   package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "contexts",
                                            max_Contexts,
                                            record_Version,
@@ -63,7 +63,7 @@ is
    --  Attributes
    --
 
-   overriding function Id   (Self : access Item) return adam.Id
+   overriding function Id   (Self : access Item) return AdaM.Id
    is
    begin
       return Pool.to_Id (Self);
@@ -120,4 +120,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end adam.Context;
+end AdaM.Context;

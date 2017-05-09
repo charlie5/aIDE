@@ -1,12 +1,12 @@
 with
-     adam.Source;
+     AdaM.Source;
 
 private
 with
      ada.Streams;
 
 
-package adam.Statement
+package AdaM.Statement
 is
 
    type Item is new Source.Entity with private;
@@ -26,7 +26,7 @@ is
    --
 
    overriding
-   function Id        (Self : access Item) return adam.Id;
+   function Id        (Self : access Item) return AdaM.Id;
    function to_Source (Self : in     Item) return text_Vectors.Vector;
 
    procedure add      (Self : in out Item;   the_Line : in String);
@@ -52,4 +52,4 @@ private
    for View'write use View_write;
    for View'read  use View_read;
 
-end adam.Statement;
+end AdaM.Statement;

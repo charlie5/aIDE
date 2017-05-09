@@ -1,7 +1,7 @@
 with
-     adam.Factory;
+     AdaM.Factory;
 
-package body adam.Block
+package body AdaM.Block
 is
 
    --  Storage Pool
@@ -11,7 +11,7 @@ is
    max_Blocks     : constant            := 5_000;
    null_Block     : constant Block.item := (others => <>);
 
-   package Pool is new adam.Factory.Pools (".adam-store",
+   package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "blocks",
                                            max_Blocks,
                                            record_Version,
@@ -64,7 +64,7 @@ is
    --  Attributes
    --
 
-   overriding function Id   (Self : access Item) return adam.Id
+   overriding function Id   (Self : access Item) return AdaM.Id
    is
    begin
       return Pool.to_Id (Self);
@@ -121,7 +121,7 @@ is
 
    function to_Source (Self : in Item) return text_Vectors.Vector
    is
-      use adam.Source,
+      use AdaM.Source,
           ada.Strings.Unbounded;
 
       the_Line   : Text;
@@ -198,4 +198,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end adam.Block;
+end AdaM.Block;

@@ -1,5 +1,5 @@
 with
-     adam.Source,
+     AdaM.Source,
 
      ada.Streams,
      ada.Containers.Vectors;
@@ -10,7 +10,7 @@ with
 
 
 
-package adam.exception_Handler
+package AdaM.exception_Handler
 is
 
    type Item is new Source.Entity with private;
@@ -42,7 +42,7 @@ is
    --
 
    function  new_Handler (Name   : in String := "";
-                          Parent : in adam.Block.view) return exception_Handler.view;
+                          Parent : in AdaM.Block.view) return exception_Handler.view;
 
    procedure free        (Self : in out exception_Handler.view);
    procedure destruct    (Self : in out Item);
@@ -52,7 +52,7 @@ is
    --
 
    overriding
-   function  Id        (Self : access Item) return adam.Id;
+   function  Id        (Self : access Item) return AdaM.Id;
 
    function  is_Free   (Self : in     Item;   Slot : in Positive) return Boolean;
 
@@ -66,7 +66,7 @@ is
    overriding
    function  to_spec_Source (Self : in     Item) return text_Lines;
 
-   function  Handler   (Self : in     Item) return access adam.Block.item'Class;
+   function  Handler   (Self : in     Item) return access AdaM.Block.item'Class;
 
 
    --  Operations
@@ -79,8 +79,8 @@ private
    type Item is new Source.Entity with
       record
          Exceptions : text_Lines;
-         Handler    : access adam.Block.item'Class;
-         Parent     : access adam.Block.item'Class;
+         Handler    : access AdaM.Block.item'Class;
+         Parent     : access AdaM.Block.item'Class;
       end record;
 
-end adam.exception_Handler;
+end AdaM.exception_Handler;

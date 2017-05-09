@@ -1,10 +1,10 @@
 with
-     adam.Any,
+     AdaM.Any,
 
      ada.Streams,
      ada.Tags;
 
-package adam.Factory
+package AdaM.Factory
 --
 -- Provides persistent pointers.
 --
@@ -80,7 +80,7 @@ is
 
    type Any_view is access all Any.Item'Class;
 
-   function to_View (Id : in adam.Id;   Tag : in ada.Tags.Tag) return Any_view;
+   function to_View (Id : in AdaM.Id;   Tag : in ada.Tags.Tag) return Any_view;
 
 
    generic
@@ -89,15 +89,15 @@ is
       max_Items      : Positive := 5_000;
       record_Version : Positive;
 
-      type Item is new adam.Any.Item with private;
+      type Item is new AdaM.Any.Item with private;
       type View is access all Item'Class;
 
       null_Item : Item;
 
    package Pools
    is
-      function  to_View (Id   : in adam.Id) return View;
-      function  to_Id   (From : in View)    return adam.Id;
+      function  to_View (Id   : in AdaM.Id) return View;
+      function  to_Id   (From : in View)    return AdaM.Id;
 
       function  new_Item     return View;
       procedure free (Self : in out View);
@@ -111,4 +111,4 @@ is
    end Pools;
 
 
-end adam.Factory;
+end AdaM.Factory;

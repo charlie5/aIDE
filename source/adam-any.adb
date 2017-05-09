@@ -2,7 +2,7 @@ with
      ada.Containers.Vectors;
 
 
-package body adam.Any
+package body AdaM.Any
 is
 
    package view_resolver_Vectors is new ada.Containers.Vectors (Positive, view_Resolver);
@@ -31,4 +31,4 @@ is
       end loop;
    end resolve_all_Views;
 
-end adam.Any;
+end AdaM.Any;

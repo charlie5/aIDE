@@ -2,7 +2,7 @@
 
 with Asis;
 
-package adam.Assist.Query.find_All.element_Processing is
+package AdaM.Assist.Query.find_All.element_Processing is
 
    procedure Process_Construct (The_Element : Asis.Element);
    --  This is the template for the procedure which is supposed to
@@ -25,4 +25,4 @@ package adam.Assist.Query.find_All.element_Processing is
    --
    --  See the package body for more details.
 
-end adam.Assist.Query.find_All.element_Processing;
+end AdaM.Assist.Query.find_All.element_Processing;

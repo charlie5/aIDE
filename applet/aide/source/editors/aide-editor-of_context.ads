@@ -1,5 +1,5 @@
 with
-     adam.Context,
+     AdaM.Context,
      gtk.Widget;
 
 private
@@ -18,7 +18,7 @@ is
 
    package Forge
    is
-      function to_context_Editor (the_Context : in adam.Context.view) return View;
+      function to_context_Editor (the_Context : in AdaM.Context.view) return View;
    end Forge;
 
    overriding
@@ -27,7 +27,7 @@ is
    overriding
    procedure freshen    (Self : in out Item);
 
-   procedure Context_is (Self : in out Item;   Now : in adam.Context.view);
+   procedure Context_is (Self : in out Item;   Now : in AdaM.Context.view);
 
 
 private
@@ -40,7 +40,7 @@ private
 
    type Item is new Editor.item with
       record
-         Context           : adam.Context.view;
+         Context           : AdaM.Context.view;
 
          Top               : Gtk_Frame;
          context_Label     : Gtk_Label;

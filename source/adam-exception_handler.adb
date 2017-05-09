@@ -1,9 +1,9 @@
 with
-     adam.Block,
-     adam.Factory;
+     AdaM.Block,
+     AdaM.Factory;
 
 
-package body adam.exception_Handler
+package body AdaM.exception_Handler
 is
 
    --  Storage Pool
@@ -13,7 +13,7 @@ is
    max_Exceptions : constant             := 5_000;
    null_Exception : constant exception_Handler.item := (Source.Entity with others => <>);
 
-   package Pool is new adam.Factory.Pools (".adam-store",
+   package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "exceptions",
                                            max_Exceptions,
                                            record_Version,
@@ -46,7 +46,7 @@ is
    begin
       Self.Exceptions.append (+Name);
 
-      Self.Handler := adam.Block.new_Block ("");
+      Self.Handler := AdaM.Block.new_Block ("");
    end define;
 
 
@@ -60,7 +60,7 @@ is
 
 
    function new_Handler (Name   : in String := "";
-                         Parent : in adam.Block.view) return exception_Handler.view
+                         Parent : in AdaM.Block.view) return exception_Handler.view
    is
       new_Item : constant exception_Handler.view := Pool.new_Item;
    begin
@@ -87,7 +87,7 @@ is
    --  Attributes
    --
 
-   overriding function Id   (Self : access Item) return adam.Id
+   overriding function Id   (Self : access Item) return AdaM.Id
    is
    begin
       return Pool.to_Id (Self);
@@ -132,7 +132,7 @@ is
 
 
 
-   function Handler   (Self : in     Item) return access adam.Block.item'Class
+   function Handler   (Self : in     Item) return access AdaM.Block.item'Class
    is
    begin
       return Self.Handler;
@@ -180,4 +180,4 @@ is
    procedure View_read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
                         Self   : out             View)
                         renames Pool.View_read;
-end adam.exception_Handler;
+end AdaM.exception_Handler;

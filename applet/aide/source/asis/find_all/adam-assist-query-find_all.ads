@@ -1,4 +1,4 @@
-package adam.Assist.Query.find_All
+package AdaM.Assist.Query.find_All
 is
 
-end adam.Assist.Query.find_All;
+end AdaM.Assist.Query.find_All;

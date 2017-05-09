@@ -5,7 +5,7 @@ with
      gtk.Builder,
      gtk.Handlers,
 
-     adam.context_Line,
+     AdaM.context_Line,
      aIDE.Editor.of_context_line;
 
 
@@ -19,9 +19,9 @@ is
    function on_context_Label_clicked (the_Label : access Gtk_Label_Record'Class;
                                       Self      : in     aIDE.Editor.of_context.view) return Boolean
    is
-      use Adam;
+      use AdaM;
 
-      the_Line        : constant adam.context_Line          .view := adam.context_Line.new_context_Line ("anon");
+      the_Line        : constant AdaM.context_Line          .view := AdaM.context_Line.new_context_Line ("anon");
       the_Line_Editor : constant aIDE.Editor.of_context_line.view := Editor.of_context_line.Forge.to_context_line_Editor (Self.Context,
                                                                                                                                the_Line);
    begin
@@ -40,7 +40,7 @@ is
 
    package body Forge
    is
-      function to_context_Editor (the_Context : in adam.Context.view) return View
+      function to_context_Editor (the_Context : in AdaM.Context.view) return View
       is
          Self        : constant Editor.of_context.view := new Editor.of_context.item;
 
@@ -74,7 +74,7 @@ is
 
 
 
-   procedure Context_is (Self : in out Item;   Now : in adam.Context.view)
+   procedure Context_is (Self : in out Item;   Now : in AdaM.Context.view)
    is
    begin
       Self.Context := Now;
@@ -94,7 +94,7 @@ is
    overriding
    procedure freshen (Self : in out Item)
    is
-      the_Lines       : constant adam.context_Line.Vector := Self.Context.Lines;
+      the_Lines       : constant AdaM.context_Line.Vector := Self.Context.Lines;
    begin
       loop
          declare
@@ -108,7 +108,7 @@ is
       for i in 1 .. Integer (the_Lines.Length)
       loop
          declare
-            the_Line        :          adam.context_line          .view renames the_Lines.Element (i);
+            the_Line        :          AdaM.context_line          .view renames the_Lines.Element (i);
             the_Line_Editor : constant aIDE.Editor.of_context_line.view :=      Editor.of_context_line.Forge.to_context_line_Editor (Self.Context,
                                                                                                                                           the_Line);
          begin

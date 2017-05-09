@@ -1,14 +1,14 @@
 with
-     adam.Source,
-     adam.Block,
-     adam.Context,
-     adam.Parameter,
+     AdaM.Source,
+     AdaM.Block,
+     AdaM.Context,
+     AdaM.Parameter,
 
      ada.Containers.Vectors,
      ada.Streams;
 
 
-package adam.Subprogram
+package AdaM.Subprogram
 is
 
    type Item is new Source.Entity with private;
@@ -46,7 +46,7 @@ is
    --
 
    overriding
-   function Id           (Self : access Item) return adam.Id;
+   function Id           (Self : access Item) return AdaM.Id;
 
    overriding
    function  Name        (Self : in     Item)     return String;
@@ -55,8 +55,8 @@ is
    overriding
    function to_spec_Source (Self : in     Item) return text_Vectors.Vector;
 
-   function Context      (Self : in     Item) return adam.Context.view;
-   function Block        (Self : in     Item) return adam.Block.view;
+   function Context      (Self : in     Item) return AdaM.Context.view;
+   function Block        (Self : in     Item) return AdaM.Block.view;
 
    function is_Function  (Self : in     Item) return Boolean;
    function is_Procedure (Self : in     Item) return Boolean;
@@ -77,11 +77,11 @@ private
 
    type Item is new Source.Entity with
       record
-         Context      : adam.Context.view;
+         Context      : AdaM.Context.view;
          Name         : Text;
          Profile      : subprogram.Profile;
-         Block        : adam.Block.view;
+         Block        : AdaM.Block.view;
       end record;
 
 
-end adam.Subprogram;
+end AdaM.Subprogram;

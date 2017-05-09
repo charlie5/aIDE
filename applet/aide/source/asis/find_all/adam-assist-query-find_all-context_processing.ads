@@ -2,7 +2,7 @@ with
      Asis;
 
 
-package adam.Assist.Query.find_All.context_Processing
+package AdaM.Assist.Query.find_All.context_Processing
 is
 
    procedure Process_Context
@@ -13,4 +13,4 @@ is
      (Ada_File_Name : in String;
       The_Context   : in Asis.Context) return Asis.Compilation_Unit;
 
-end adam.Assist.Query.find_All.context_Processing;
+end AdaM.Assist.Query.find_All.context_Processing;

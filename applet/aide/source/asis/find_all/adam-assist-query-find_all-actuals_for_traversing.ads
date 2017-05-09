@@ -1,12 +1,12 @@
 with Asis,
-     adam.Source;
+     AdaM.Source;
 
-package adam.Assist.Query.find_All.Actuals_for_traversing
+package AdaM.Assist.Query.find_All.Actuals_for_traversing
 is
 
    type Traversal_State is
       record
-         parent_Stack   : adam.Source.Entities;
+         parent_Stack   : AdaM.Source.Entities;
          ignore_Starter : asis.Element        := asis.Nil_Element;
       end record;
 
@@ -23,4 +23,4 @@ is
       Control : in out Asis.Traverse_Control;
       State   : in out Traversal_State);
 
-end adam.Assist.Query.find_All.Actuals_for_traversing;
+end AdaM.Assist.Query.find_All.Actuals_for_traversing;

@@ -1,7 +1,7 @@
 with
      aIDE.GUI,
 
-     adam.exception_Handler,
+     AdaM.exception_Handler,
 
      glib,
      glib.Error,
@@ -35,8 +35,8 @@ is
 
          when 2 =>
             declare
-               new_Handler : constant adam.exception_Handler.view
-                 := adam.exception_Handler.new_Handler ("constraint_Error",
+               new_Handler : constant AdaM.exception_Handler.view
+                 := AdaM.exception_Handler.new_Handler ("constraint_Error",
                                                         Expander.Editor.Block);
             begin
                Expander.Editor.Block.add (new_Handler);
@@ -79,7 +79,7 @@ is
 
    package body Forge
    is
-      function to_block_Editor (the_Block : in adam.Block.view) return View
+      function to_block_Editor (the_Block : in AdaM.Block.view) return View
       is
          Self : constant Editor.of_block.view := new Editor.of_block.item;
 
@@ -159,7 +159,7 @@ is
    overriding
    procedure freshen (Self : in out Item)
    is
-      use Adam;
+      use AdaM;
    begin
       -- 'declare' Region
       --
@@ -179,12 +179,12 @@ is
       -- Create all 'declare' entity widgets.
       --
       declare
-         the_Entities : constant adam.Source.Entities_View := Self.Block.my_Declarations;
+         the_Entities : constant AdaM.Source.Entities_View := Self.Block.my_Declarations;
       begin
          for i in 1 .. Integer (the_Entities.Length)
          loop
             declare
-               the_Entity : adam.Source.Entity_view renames the_Entities.Element (i);
+               the_Entity : AdaM.Source.Entity_view renames the_Entities.Element (i);
                the_Editor : constant aIDE.Editor.view        :=      aIDE.Editor.to_Editor (the_Entity);
             begin
                the_Editor.top_Widget.reparent (Self.declare_Box);
@@ -211,12 +211,12 @@ is
       -- Create all 'begin' entity widgets.
       --
       declare
-         the_Entities : constant access adam.Source.Entities := Self.Block.my_Statements;
+         the_Entities : constant access AdaM.Source.Entities := Self.Block.my_Statements;
       begin
          for i in 1 .. Integer (the_Entities.Length)
          loop
             declare
-               the_Entity :          adam.Source.Entity_view renames the_Entities.Element (i);
+               the_Entity :          AdaM.Source.Entity_view renames the_Entities.Element (i);
                the_Editor : constant aIDE.Editor.view        :=      aIDE.Editor.to_Editor (the_Entity);
             begin
                the_Editor.top_Widget.reparent (Self.begin_Box);
@@ -240,8 +240,8 @@ is
       for i in 1 .. Integer (Self.Block.my_Handlers.Length)
       loop
          declare
-            the_Entity    : constant adam.Source.Entity_View     := Self.Block.my_Handlers.Element (i);
-            the_Exception : constant adam.exception_Handler.view := adam.exception_Handler.view  (the_Entity);
+            the_Entity    : constant AdaM.Source.Entity_View     := Self.Block.my_Handlers.Element (i);
+            the_Exception : constant AdaM.exception_Handler.view := AdaM.exception_Handler.view  (the_Entity);
          begin
             Self.exception_Handler := aIDE.Editor.of_exception_handler.new_Editor (the_Exception);
             Self.exception_Handler.top_Widget.reparent (Self.exception_Box);
@@ -252,7 +252,7 @@ is
 
 
 
-   procedure Target_is (Self : in out Item;   Now : adam.Block.view)
+   procedure Target_is (Self : in out Item;   Now : AdaM.Block.view)
    is
       Unused : Boolean;
    begin

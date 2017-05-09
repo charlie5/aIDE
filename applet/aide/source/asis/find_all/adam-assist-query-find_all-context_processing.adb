@@ -8,10 +8,10 @@ with
      Asis.Errors,
      Asis.Implementation,
 
-     adam.Assist.Query.find_All.unit_Processing;
+     AdaM.Assist.Query.find_All.unit_Processing;
 
 
-package body adam.Assist.Query.find_All.context_Processing
+package body AdaM.Assist.Query.find_All.context_Processing
 is
    function Get_Unit_From_File_Name (Ada_File_Name : String;
                                      The_Context   : Asis.Context) return Asis.Compilation_Unit
@@ -41,7 +41,7 @@ is
          case Next_Unit_Origin is
             when Asis.An_Application_Unit
                | Asis.A_Predefined_Unit =>
-               adam.Assist.Query.find_All.unit_Processing.Process_Unit (Next_Unit);
+               AdaM.Assist.Query.find_All.unit_Processing.Process_Unit (Next_Unit);
                --  This is the call to the procedure which performs the
                --  analysis of a particular unit
 
@@ -122,4 +122,4 @@ is
 
    end Process_Context;
 
-end adam.Assist.Query.find_All.context_Processing;
+end AdaM.Assist.Query.find_All.context_Processing;

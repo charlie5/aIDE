@@ -24,7 +24,7 @@ is
 
    type button_Info is
       record
-         package_Name     : adam.Text;
+         package_Name     : AdaM.Text;
          packages_Palette : aIDE.Palette.of_packages.view;
       end record;
 
@@ -32,7 +32,7 @@ is
    procedure on_select_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                        the_Info   : in     button_Info)
    is
-      use Adam;
+      use AdaM;
    begin
       the_Info.packages_Palette.choice_is (+the_Info.package_Name);
    end on_select_Button_clicked;
@@ -74,7 +74,7 @@ is
    function new_Button (Named            : in String;
                         packages_Palette : in palette.of_packages.view) return gtk_Button
    is
-      use Adam;
+      use AdaM;
       the_Button : gtk_Button;
    begin
       gtk_New (the_Button, Named);

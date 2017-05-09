@@ -1,5 +1,5 @@
 with
-     adam.Comment,
+     AdaM.Comment,
      gtk.Widget;
 
 private
@@ -19,7 +19,7 @@ is
 
    package Forge
    is
-      function to_comment_Editor (the_Comment : in adam.Comment.view) return View;
+      function to_comment_Editor (the_Comment : in AdaM.Comment.view) return View;
    end Forge;
 
    overriding
@@ -37,7 +37,7 @@ private
 
    type Item is new Editor.item with
       record
-         Comment              : adam.Comment.view;
+         Comment              : AdaM.Comment.view;
          Top                  : gtk_Frame;
 
          comment_text_View    : gtk_Text_View;

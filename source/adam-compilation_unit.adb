@@ -1,8 +1,8 @@
 with
-     adam.Factory;
+     AdaM.Factory;
 
 
-package body adam.compilation_Unit
+package body AdaM.compilation_Unit
 is
 
    --  Storage Pool
@@ -12,7 +12,7 @@ is
    max_Units      : constant            := 5_000;
    null_Unit      : constant compilation_Unit.item := (others => <>);
 
-   package Pool is new adam.Factory.Pools (".adam-store",
+   package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "compilation_units",
                                            max_Units,
                                            record_Version,
@@ -63,7 +63,7 @@ is
    --
 
    overriding
-   function Id   (Self : access Item) return adam.Id
+   function Id   (Self : access Item) return AdaM.Id
    is
    begin
       return Pool.to_Id (Self);
@@ -163,4 +163,4 @@ is
                         renames Pool.View_read;
 
 
-end adam.compilation_Unit;
+end AdaM.compilation_Unit;

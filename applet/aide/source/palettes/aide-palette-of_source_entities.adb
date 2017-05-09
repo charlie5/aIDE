@@ -1,7 +1,7 @@
 with
-     adam.Comment,
-     adam.raw_Source,
-     adam.a_Type.enumeration_type,
+     AdaM.Comment,
+     AdaM.raw_Source,
+     AdaM.a_Type.enumeration_type,
 
      Glib,
      Glib.Error,
@@ -33,7 +33,7 @@ is
    procedure on_raw_source_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                            Self       : in     aIDE.Palette.of_source_entities.view)
    is
-      new_Source : constant adam.raw_Source.view := adam.raw_Source.new_Source;
+      new_Source : constant AdaM.raw_Source.view := AdaM.raw_Source.new_Source;
    begin
       Self.Target.append (new_Source.all'Access);
       Self.Top.Hide;
@@ -47,7 +47,7 @@ is
    procedure on_comment_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                         Self       : in     aIDE.Palette.of_source_entities.view)
    is
-      new_Comment : constant adam.Comment.view := adam.Comment.new_Comment;
+      new_Comment : constant AdaM.Comment.view := AdaM.Comment.new_Comment;
    begin
       Self.Target.append (new_Comment.all'Access);
       Self.Top.Hide;
@@ -60,7 +60,7 @@ is
    procedure on_enumeration_type_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                                  Self       : in     aIDE.Palette.of_source_entities.view)
    is
-      new_Enumeration : constant adam.a_Type.enumeration_type.view := adam.a_Type.enumeration_type.new_Type ("");
+      new_Enumeration : constant AdaM.a_Type.enumeration_type.view := AdaM.a_Type.enumeration_type.new_Type ("");
    begin
       Self.Target.append (new_Enumeration.all'Access);
       Self.Top.Hide;
@@ -138,7 +138,7 @@ is
 
 
    procedure show (Self : in out Item;   Invoked_by   : in aIDE.Editor.view;
-                                         Target       : in adam.Source.Entities_view)
+                                         Target       : in AdaM.Source.Entities_view)
    is
    begin
       Self.Invoked_by := Invoked_by;

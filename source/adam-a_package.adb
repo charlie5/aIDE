@@ -1,9 +1,9 @@
 with
-     adam.Factory,
+     AdaM.Factory,
      AdaM.Source.utility;
 
 
-package body adam.a_Package
+package body AdaM.a_Package
 is
 
    --  Storage Pool
@@ -13,7 +13,7 @@ is
    max_Packages   : constant            := 5_000;
    null_Package   : constant a_Package.item := (others => <>);
 
-   package Pool is new adam.Factory.Pools (".adam-store",
+   package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "packages",
                                            max_Packages,
                                            record_Version,
@@ -28,7 +28,7 @@ is
    is
    begin
       Self.Name    := +Name;
-      Self.Context := adam.Context.new_Context ("");
+      Self.Context := AdaM.Context.new_Context ("");
    end define;
 
 
@@ -64,7 +64,7 @@ is
    --  Attributes
    --
 
-   overriding function Id   (Self : access Item) return adam.Id
+   overriding function Id   (Self : access Item) return AdaM.Id
    is
    begin
       return Pool.to_Id (Self);
@@ -87,7 +87,7 @@ is
 
 
 
-   function Context (Self : in     Item) return adam.Context.view
+   function Context (Self : in     Item) return AdaM.Context.view
    is
    begin
       return Self.Context;
@@ -242,7 +242,7 @@ is
       a_Package.Vector'write (Stream, Self.Progenitors);
       a_Package.Vector'write (Stream, Self.Children);
 
-      adam.Context.view'write (Stream, Self.Context);
+      AdaM.Context.view'write (Stream, Self.Context);
 
       Source.Entities'write (Stream, Self.public_Entities);
    end Item_write;
@@ -263,7 +263,7 @@ is
          a_Package.Vector'read (Stream, Self.Progenitors);
          a_Package.Vector'read (Stream, Self.Children);
 
-         adam.Context.view'read (Stream, Self.Context);
+         AdaM.Context.view'read (Stream, Self.Context);
          Source.Entities  'read (Stream, Self.public_Entities);
 
       when others =>
@@ -280,4 +280,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end adam.a_Package;
+end AdaM.a_Package;

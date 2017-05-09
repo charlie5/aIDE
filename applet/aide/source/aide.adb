@@ -28,7 +28,7 @@ is
       put_Line ("rm *.adt: "        & command_Output (to_Command ("rm ./*.adt")));
       put_Line ("gnatmake output: " & Command_Output (to_Command ("gnatmake -c -gnatc -gnatt ./assets/asis/all_standard_ada.adb")));
 
-      the_Environ := adam.Assist.known_Environment;
+      the_Environ := AdaM.Assist.known_Environment;
       the_Environ.print;
    end define_standard_Ada_Types;
 
@@ -41,7 +41,7 @@ is
       -- Restore the aIDE applets persistent state.
       --
       declare
-         use Adam,
+         use AdaM,
              ada.Streams.Stream_IO;
 
          the_File   : File_Type;
@@ -51,7 +51,7 @@ is
 
          the_Stream := Stream (the_File);
 
-         adam.Environment.item'read (the_Stream, the_Environ);
+         AdaM.Environment.item'read (the_Stream, the_Environ);
          Subprogram      .view'read (the_Stream, the_selected_App);
 
          close (the_File);
@@ -74,7 +74,7 @@ is
       -- Store the aIDE applets persistent state.
       --
       declare
-         use Adam,
+         use AdaM,
              ada.Streams.Stream_IO;
 
          the_File   : File_Type;
@@ -84,7 +84,7 @@ is
 
          the_Stream := Stream (the_File);
 
-         adam.Environment.item'write (the_Stream, the_Environ);
+         AdaM.Environment.item'write (the_Stream, the_Environ);
          Subprogram.view      'write (the_Stream, the_selected_App);
 
          close (the_File);
@@ -141,7 +141,7 @@ is
          for Each of all_Apps
          loop
             declare
-               the_App : constant adam.Subprogram.view := Each;
+               the_App : constant AdaM.Subprogram.view := Each;
             begin
                log ("   ... " & the_App.Name);
 
@@ -156,7 +156,7 @@ is
                   the_Filename : constant String   :=   generated_source_Path
                                                       & "/"
                                                       & to_Lower (the_App.Name) & ".adb";
-                  the_Source   : constant adam.Text_Vectors.Vector := the_App.to_spec_Source;
+                  the_Source   : constant AdaM.Text_Vectors.Vector := the_App.to_spec_Source;
                begin
                   create (the_File,  out_File,  the_Filename);
 
@@ -180,7 +180,7 @@ is
              ada.Strings.unbounded,
              ada.Text_IO;
 
-         use type adam.Subprogram.view;
+         use type AdaM.Subprogram.view;
 
          the_File     :          File_type;
          the_Filename : constant String   := to_Lower (project_Name) & ".gpr";

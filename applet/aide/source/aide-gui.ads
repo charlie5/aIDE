@@ -1,7 +1,7 @@
 with
      aIDE.Palette.of_packages,
      aIDE.Editor,
-     adam.context_Line,
+     AdaM.context_Line,
      AdaM.Source,
      gtk.Button;
 
@@ -16,10 +16,10 @@ is
                   Count       : in Positive := 1);
 
    procedure show_packages_Palette (Invoked_by : in     Gtk.Button.gtk_Button;
-                                    Target     : in     adam.context_Line.view);
+                                    Target     : in     AdaM.context_Line.view);
 
    procedure show_source_entities_Palette (Invoked_by : in aIDE.Editor.view;
-                                           Target     : in adam.Source.Entities_view);
+                                           Target     : in AdaM.Source.Entities_view);
 
 
    the_packages_Palette   : aIDE.Palette.of_packages.view;

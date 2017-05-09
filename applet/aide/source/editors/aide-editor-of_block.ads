@@ -1,5 +1,5 @@
 with
-     adam.Block,
+     AdaM.Block,
      gtk.Widget;
 
 private
@@ -21,13 +21,13 @@ is
 
    package Forge
    is
-      function to_block_Editor (the_Block : in adam.Block.view) return View;
+      function to_block_Editor (the_Block : in AdaM.Block.view) return View;
    end Forge;
 
    overriding
    function top_Widget (Self : in     Item) return gtk.Widget.Gtk_Widget;
 
-   procedure Target_is (Self : in out Item;   Now : in adam.Block.view);
+   procedure Target_is (Self : in out Item;   Now : in AdaM.Block.view);
 
 
 
@@ -42,7 +42,7 @@ private
 
    type my_Expander_Record is new Gtk_Expander_Record with
       record
-         Target : adam.Source.Entities_View;
+         Target : AdaM.Source.Entities_View;
          Editor : aIDE.Editor.of_block.view;
       end record;
 
@@ -51,7 +51,7 @@ private
 
    type Item is new Editor.item with
       record
-         Block              : adam.Block.view;
+         Block              : AdaM.Block.view;
 
          block_editor_Frame : Gtk_Frame;
          top_Box            : gtk_Box;

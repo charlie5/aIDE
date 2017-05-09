@@ -1,8 +1,8 @@
 with
-     adam.Any;
+     AdaM.Any;
 
 
-package adam.Source
+package AdaM.Source
 is
    type Entity      is new Any.Item with private;
    type Entity_View is access all Entity'Class;
@@ -40,9 +40,9 @@ private
       end record;
 
    overriding
-   function Id (Self : access Entity) return adam.Id;
+   function Id (Self : access Entity) return AdaM.Id;
 
 
    type Entities is new Entity_Vectors.Vector with null record;
 
-end adam.Source;
+end AdaM.Source;

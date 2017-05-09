@@ -1,9 +1,9 @@
 with
-     adam.a_Type.enumeration_literal,
+     AdaM.a_Type.enumeration_literal,
      ada.Streams;
 
 
-package adam.a_Type.enumeration_type
+package AdaM.a_Type.enumeration_type
 is
 
    type Item is new a_Type.discrete_Type with private;
@@ -21,7 +21,7 @@ is
    --
 
    overriding
-   function  Id (Self : access Item) return adam.Id;
+   function  Id (Self : access Item) return AdaM.Id;
 
    function  Literals     (Self : in     Item)     return enumeration_literal.Vector;
    procedure Literals_are (Self : in out Item;   Now : in enumeration_literal.Vector);
@@ -54,4 +54,4 @@ private
    for View'write use View_write;
    for View'read  use View_read;
 
-end adam.a_Type.enumeration_type;
+end AdaM.a_Type.enumeration_type;

@@ -1,14 +1,14 @@
 with asis.Elements,
      asis.Compilation_Units,
 
-     adam.compilation_Unit,
-     adam.Assist.Query.find_All.element_Processing,
-     adam.Assist.Query.find_All.Metrics,
+     AdaM.compilation_Unit,
+     AdaM.Assist.Query.find_All.element_Processing,
+     AdaM.Assist.Query.find_All.Metrics,
 
      Ada.Characters.Handling;
 
 
-package body adam.Assist.Query.find_All.unit_Processing
+package body AdaM.Assist.Query.find_All.unit_Processing
 is
 
    procedure Process_Unit (The_Unit : Asis.Compilation_Unit)
@@ -30,10 +30,10 @@ is
 
       for J in Cont_Clause_Elements'Range
       loop
-         adam.Assist.Query.find_All.element_Processing.Process_Construct (Cont_Clause_Elements (J));
+         AdaM.Assist.Query.find_All.element_Processing.Process_Construct (Cont_Clause_Elements (J));
       end loop;
 
-      adam.Assist.Query.find_All.element_Processing.Process_Construct (Unit_Decl);
+      AdaM.Assist.Query.find_All.element_Processing.Process_Construct (Unit_Decl);
 
       --  This procedure does not contain any exception handler because it
       --  supposes that Element_Processing.Process_Construct should handle
@@ -41,11 +41,11 @@ is
       --  hierarchy.
 
       declare
-         new_Unit : constant adam.compilation_Unit.view := adam.compilation_Unit.new_Unit (Name => "");
+         new_Unit : constant AdaM.compilation_Unit.view := AdaM.compilation_Unit.new_Unit (Name => "");
       begin
-         adam.compilation_Unit.item (new_Unit.all) := Metrics.compilation_Unit;
+         AdaM.compilation_Unit.item (new_Unit.all) := Metrics.compilation_Unit;
          Metrics.Environment.add (new_Unit);
       end;
    end Process_Unit;
 
-end adam.Assist.Query.find_All.unit_Processing;
+end AdaM.Assist.Query.find_All.unit_Processing;

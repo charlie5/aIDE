@@ -2,7 +2,7 @@ with
      ada.Streams;
 
 
-package adam.a_Type.decimal_fixed_point_type
+package AdaM.a_Type.decimal_fixed_point_type
 is
 
    type Item is new a_Type.fixed_Type with private;
@@ -24,7 +24,7 @@ is
    --
 
    overriding
-   function  Id (Self : access Item) return adam.Id;
+   function  Id (Self : access Item) return AdaM.Id;
 
 
 
@@ -49,4 +49,4 @@ private
    for View'write use View_write;
    for View'read  use View_read;
 
-end adam.a_Type.decimal_fixed_point_type;
+end AdaM.a_Type.decimal_fixed_point_type;
