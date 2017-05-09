@@ -107,7 +107,7 @@ is
    procedure on_new_app_Button_clicked (Button : access Gtk_Button_Record'Class)
    is
       pragma Unreferenced (Button);
-      the_new_App : constant adam.Subprogram.view := adam.Subprogram.new_Subprogram (Name => "no_Name");
+      the_new_App : constant adam.Subprogram.view := adam.Subprogram.new_Subprogram (Name => anonymous_Procedure);
    begin
       all_Apps.append              (the_new_App);
       the_app_Editor.Target_is (the_new_App);

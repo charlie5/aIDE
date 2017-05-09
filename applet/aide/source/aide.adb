@@ -64,7 +64,7 @@ is
 
             define_standard_Ada_Types;
 
-            the_selected_App := Subprogram.new_Subprogram (Name => "unnamed_Procedure");   -- Create initial test precedure..
+            the_selected_App := Subprogram.new_Subprogram (Name => anonymous_Procedure);   -- Create initial test precedure..
             all_Apps.append (the_selected_App);
       end;
    end define;

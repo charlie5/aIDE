@@ -19,4 +19,6 @@ private
 
    function  fetch_App (Named : in String) return adam.Subprogram.view;
 
+
+   anonymous_Procedure : constant String := "Anon";
 end aIDE;
