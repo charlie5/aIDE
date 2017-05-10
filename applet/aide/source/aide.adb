@@ -1,5 +1,7 @@
 with
      aIDE.GUI,
+     aIDE.Palette.of_packages,
+
      AdaM.Assist,
 
      Shell,
@@ -56,6 +58,8 @@ is
          Subprogram.view      'read (the_Stream, the_selected_App);
          Subprogram.Vector    'read (the_Stream, all_Apps);
 
+         Palette.of_packages.recent_Packages.read (the_Stream);
+
          close (the_File);
 
       exception
@@ -90,6 +94,8 @@ is
 
          Subprogram.view      'write (the_Stream, the_selected_App);
          Subprogram.Vector    'write (the_Stream, all_Apps);
+
+         Palette.of_packages.recent_Packages.write (the_Stream);
 
          close (the_File);
       end;

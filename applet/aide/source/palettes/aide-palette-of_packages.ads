@@ -1,7 +1,8 @@
 with
      AdaM.context_Line,
      Gtk.Button,
-     gtk.Widget;
+     gtk.Widget,
+     Ada.Streams;
 
 private
 with
@@ -35,6 +36,19 @@ is
    procedure choice_is (Self : in out Item;   package_Name : in     String);
    procedure freshen   (Self : in out Item);
 
+
+
+   --  Recent Packages - ToDo: Refactor this out, if possible.
+   --
+
+   package recent_Packages
+   is
+      procedure register_Usage (the_Package : in AdaM.Text);
+      function  fetch return AdaM.text_Lines;
+
+      procedure read  (From : access Ada.Streams.Root_Stream_Type'Class);
+      procedure write (To   : access Ada.Streams.Root_Stream_Type'Class);
+   end recent_Packages;
 
 
 private

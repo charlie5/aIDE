@@ -34,15 +34,9 @@ is
        Common_Gtk,
        Gtk.Window;
 
+
    --  Recent Packages - ToDo: Refactor this out, if possible.
    --
-
-   package recent_Packages
-   is
-      procedure register_Usage (the_Package : in AdaM.Text);
-      function  fetch return AdaM.text_Lines;
-   end recent_Packages;
-
 
    package body recent_Packages
    is
@@ -143,6 +137,20 @@ is
 
          return the_Lines;
       end fetch;
+
+
+      procedure read  (From : access Ada.Streams.Root_Stream_Type'Class)
+      is
+      begin
+         package_Usage_Sets.Set'read (From, the_usage_Stats);
+      end read;
+
+
+      procedure write (To   : access Ada.Streams.Root_Stream_Type'Class)
+      is
+      begin
+         package_Usage_Sets.Set'write (To, the_usage_Stats);
+      end write;
 
    end recent_Packages;
 
