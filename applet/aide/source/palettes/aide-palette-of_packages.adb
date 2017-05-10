@@ -366,6 +366,7 @@ is
                               the_packages_Palette_package.children_Notebook);   -- Recurse.
             end loop;
 
+            the_packages_Palette_package.children_Notebook.Popup_enable;
             enable_bold_Tabs_for (the_packages_Palette_package.children_Notebook);
          end build_Gui_for;
 
@@ -379,6 +380,7 @@ is
                            Self.all_Notebook);
          end loop;
 
+         Self.all_Notebook.Popup_enable;
          Self.all_Notebook.Show_All;
       end build_Gui_Tree;
 
