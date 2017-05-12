@@ -261,6 +261,13 @@ is
    end Target_is;
 
 
+   function Target (Self : in Item) return AdaM.Block.view
+   is
+   begin
+      return Self.Block;
+   end Target;
+
+
 
    overriding
    function top_Widget (Self : in Item) return gtk.Widget.Gtk_Widget

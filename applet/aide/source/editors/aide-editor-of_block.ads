@@ -28,6 +28,7 @@ is
    function top_Widget (Self : in     Item) return gtk.Widget.Gtk_Widget;
 
    procedure Target_is (Self : in out Item;   Now : in AdaM.Block.view);
+   function  Target    (Self : in     Item)     return AdaM.Block.view;
 
 
 

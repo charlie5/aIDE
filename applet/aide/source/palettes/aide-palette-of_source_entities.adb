@@ -96,6 +96,7 @@ is
       end if;
 
       Self.Top                     := gtk_Window   (the_Builder.get_Object ("top_Window"));
+      Self.new_type_Frame          := gtk_Frame    (the_Builder.get_Object ("new_type_Frame"));
       Self.raw_source_Button       := gtk_Button   (the_Builder.get_Object ("raw_source_Button"));
       Self.comment_Button          := gtk_Button   (the_Builder.get_Object ("comment_Button"));
       Self.enumeration_type_Button := gtk_Button   (the_Builder.get_Object ("new_enumeration_Button"));
@@ -138,13 +139,23 @@ is
 
 
    procedure show (Self : in out Item;   Invoked_by   : in aIDE.Editor.view;
-                                         Target       : in AdaM.Source.Entities_view)
+                                         Target       : in AdaM.Source.Entities_view;
+                                         Allowed      : in Filter)
    is
    begin
       Self.Invoked_by := Invoked_by;
       Self.Target     := Target;
 
-      Self.Top.show_All;
+      case Allowed
+      is
+         when declare_Region =>
+            Self.new_type_Frame.show;
+
+         when begin_Region =>
+            Self.new_type_Frame.hide;
+      end case;
+
+      Self.Top.show;
    end show;
 
 

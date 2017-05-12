@@ -1,5 +1,6 @@
 with
      aIDE.Editor.of_subprogram,
+     aIDE.Editor.of_block,
      aIDE.Palette.of_source_Entities,
 
      Common_Gtk,
@@ -302,8 +303,25 @@ is
    procedure show_source_entities_Palette (Invoked_by : in aIDE.Editor.view;
                                            Target     : in AdaM.Source.Entities_view)
    is
+      use Palette.of_source_entities;
+      use type adam.Source.Entities_View;
+
+      the_Editor : constant AIDE.Editor.of_block.view        := AIDE.Editor.of_block.view (Invoked_by);
+      the_Filter :          Palette.of_source_entities.Filter;
    begin
-      the_source_entities_Palette.show (Invoked_by, Target);
+      if the_Editor.Target.my_Declarations = Target
+      then
+         the_Filter := declare_Region;
+
+      elsif the_Editor.Target.my_Statements = Target
+      then
+         the_Filter := begin_Region;
+
+      else
+         raise Program_Error;
+      end if;
+
+      the_source_entities_Palette.show (Invoked_by, Target, the_Filter);
    end show_source_entities_Palette;
 
 
