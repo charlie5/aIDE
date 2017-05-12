@@ -105,7 +105,7 @@ is
          Result := the_Builder.Add_From_File ("glade/editor/comment_editor.glade", Error'Access);
 
          if Error /= null then
-            Error_Free (Error);
+            raise Program_Error with "Error: adam.Editor.of_comment ~ " & Get_Message (Error);
          end if;
 
          Self.Top                  := gtk_Frame        (the_Builder.get_Object ("Top"));
