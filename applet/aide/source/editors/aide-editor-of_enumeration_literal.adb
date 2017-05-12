@@ -66,7 +66,7 @@ is
          Result := the_Builder.Add_From_File ("glade/editor/enumeration_literal_editor.glade", Error'Access);
 
          if Error /= null then
-            Error_Free (Error);
+            raise Program_Error with "Error: adam.Editor.of_enumeration_literal ~ " & Get_Message (Error);
          end if;
 
          Self.top_Box      := gtk_Box    (the_Builder.get_Object ("top_Box"));
