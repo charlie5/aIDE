@@ -1,5 +1,6 @@
 with
      aIDE.Editor.of_block,
+     aIDE.GUI,
 
      Glib,
      glib.Error,
@@ -38,13 +39,16 @@ is
    end on_rid_Button_clicked;
 
 
+
    procedure On_Clicked (the_Button : access Gtk_Button_Record'Class;
                          Pair       : in     editor_slot_Pair)
    is
+--        use gtk.Button;
    begin
-      null;
+      aIDE.GUI.show_exceptions_Palette (Invoked_by => gtk_Button (the_Button),
+                                        Target     => Pair.Editor.exception_Handler,
+                                        Slot       => Pair.Slot);
    end On_Clicked;
-
 
 
    package Label_user_return_Callbacks is new Gtk.Handlers.User_Return_Callback (Gtk_Label_Record,

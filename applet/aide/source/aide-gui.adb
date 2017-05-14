@@ -2,6 +2,7 @@ with
      aIDE.Editor.of_subprogram,
      aIDE.Editor.of_block,
      aIDE.Palette.of_source_Entities,
+     aIDE.Palette.of_exceptions,
 
      Common_Gtk,
      Glib,
@@ -50,6 +51,7 @@ is
    -- Palettes
    --
    the_source_entities_Palette : aIDE.Palette.of_source_entities.view;
+   the_exceptions_Palette      : aIDE.Palette.of_exceptions.view;
 
 
    -- Main Widgets
@@ -282,6 +284,7 @@ is
 
       the_packages_Palette        := aIDE.Palette.of_packages.to_packages_Palette;
       the_source_entities_Palette := aIDE.Palette.of_source_entities.to_source_entities_Palette;
+      the_exceptions_Palette      := aIDE.Palette.of_exceptions.to_exceptions_Palette;
 
       gtk.Main.main;       -- Enter main GtkAda event loop.
    end open;
@@ -368,6 +371,16 @@ is
                                                        Xalign        => 0.2,
                                                        Yalign        => 0.3);
    end log;
+
+
+
+   procedure show_exceptions_Palette (Invoked_by : in gtk_Button;
+                                      Target     : in adam.exception_Handler.view;
+                                      Slot       : in Positive)
+   is
+   begin
+      the_exceptions_Palette.show (Invoked_by, Target, Slot);
+   end show_exceptions_Palette;
 
 
 end aIDE.GUI;

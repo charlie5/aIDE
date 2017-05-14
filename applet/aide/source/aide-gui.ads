@@ -2,6 +2,7 @@ with
      aIDE.Palette.of_packages,
      aIDE.Editor,
      AdaM.context_Line,
+     AdaM.exception_Handler,
      AdaM.Source,
      gtk.Button;
 
@@ -21,6 +22,9 @@ is
    procedure show_source_entities_Palette (Invoked_by : in aIDE.Editor.view;
                                            Target     : in AdaM.Source.Entities_view);
 
+   procedure show_exceptions_Palette (Invoked_by : in Gtk.Button.gtk_Button;
+                                      Target     : in adam.exception_Handler.view;
+                                      Slot       : in Positive);
 
    the_packages_Palette   : aIDE.Palette.of_packages.view;
 

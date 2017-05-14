@@ -1,6 +1,8 @@
 with
      AdaM.Factory,
      AdaM.Source.utility;
+with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Tags;
 
 
 package body AdaM.a_Package
@@ -123,6 +125,36 @@ is
    begin
       Self.public_Entities := Now;
    end public_Entities_are;
+
+
+
+   function all_Exceptions (Self : in     Item) return AdaM.an_Exception.Vector
+   is
+      use type an_Exception.view;
+
+      the_Exceptions : AdaM.an_Exception.Vector;
+      the_Exception  : AdaM.an_Exception.view;
+   begin
+      put_Line ("PACKAGE NAME: " & (+Self.Name));
+
+      for Each of Self.public_Entities
+      loop
+         put_Line ("*************   Tag: " & ada.Tags.External_Tag (Each.all'Tag));
+            raise program_Error with "sdfhslkad";
+
+         the_Exception := an_Exception.view (Each);
+
+         if the_Exception /= null
+--           if Each in AdaM.an_Exception.item'Class
+         then
+            the_Exceptions.append (the_Exception);
+         end if;
+      end loop;
+
+      return the_Exceptions;
+   end all_Exceptions;
+
+
 
 
 

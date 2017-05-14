@@ -13,7 +13,7 @@ is
    null_Unit      : constant compilation_Unit.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
-                                           "compilation_units",
+                                           "compilation_Units",
                                            max_Units,
                                            record_Version,
                                            compilation_Unit.item,

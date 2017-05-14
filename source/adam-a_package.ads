@@ -2,6 +2,7 @@ with
      AdaM.Any,
      AdaM.Source,
      AdaM.Context,
+     AdaM.an_Exception,
 
      ada.Streams;
 
@@ -61,6 +62,8 @@ is
 
    procedure add           (Self : in out Item;   the_Declaration : in Source.Entity_View);
    procedure rid           (Self : in out Item;   the_Declaration : in Source.Entity_View);
+
+   function all_Exceptions (Self : in     Item) return AdaM.an_Exception.Vector;
 
    function  requires_Body (Self : in Item) return Boolean;
 

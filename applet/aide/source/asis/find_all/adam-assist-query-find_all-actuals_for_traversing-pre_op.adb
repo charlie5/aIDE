@@ -1,6 +1,7 @@
 with
      AdaM,
      AdaM.a_Package,
+     AdaM.an_Exception,
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
      AdaM.a_Type.modular_type,
@@ -151,6 +152,21 @@ begin
                   end if;
 
                   Metrics.all_Packages.insert (+package_Name, new_Package);
+               end;
+
+            elsif the_Kind = asis.An_Exception_Declaration
+            then
+               declare
+--                    use Adam;
+--                    the_Unit      : constant asis.Compilation_Unit := Asis.Elements.Enclosing_Compilation_Unit (the_Declaration);
+--                    the_unit_Name : constant Wide_String           := Asis.Compilation_Units.Unit_Full_Name (the_Unit);
+
+                  Names    : constant asis.Defining_Name_List := Asis.Declarations.Names (Element);
+                  the_Name :          String                  := to_String (Asis.Declarations.Defining_Name_Image (Names (1)));
+
+                  new_Exception : AdaM.an_Exception.view      := Adam.an_Exception.new_Subprogram (the_Name);
+               begin
+                  new_Entity := new_Exception.all'Access;
                end;
 
             elsif the_Kind = asis.An_Ordinary_Type_Declaration

@@ -1,6 +1,9 @@
 with
      AdaM.Any,
      AdaM.Source,
+     AdaM.Context,
+     AdaM.library_Item,
+     AdaM.Subunit,
 
      ada.Containers.Vectors,
      ada.Streams;
@@ -57,10 +60,27 @@ is
 
 private
 
+   type Kind is (library_unit_Kind, subunit_Kind);
+
+   type library_Item_or_Subunit (Kind : compilation_Unit.Kind := library_unit_Kind) is
+      record
+         case Kind
+         is
+            when library_unit_Kind =>
+               library_Item : AdaM.library_Item.view;
+            when subunit_Kind =>
+               Subunit      : AdaM.Subunit.view;
+         end case;
+      end record;
+
+
    type Item is new AdaM.Any.item with
       record
          Name     : Text;
          Entities : Source.Entities;
+
+         Context  : AdaM.Context.view;
+         Unit     : library_Item_or_Subunit;
       end record;
 
 

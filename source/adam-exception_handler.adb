@@ -14,7 +14,7 @@ is
    null_Exception : constant exception_Handler.item := (Source.Entity with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
-                                           "exceptions",
+                                           "exception_handlers",
                                            max_Exceptions,
                                            record_Version,
                                            exception_Handler.item,

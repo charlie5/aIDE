@@ -354,9 +354,12 @@ is
             the_packages_Palette_package.top_Widget.reparent (children_Notebook);
             children_Notebook.set_Tab_Label_Text (the_packages_Palette_package.top_Widget,
                                                   the_Package.Name);
+            -- Configure event handling.
+            --
             declare
                use gtk.Label;
-               the_tab_Label : constant gtk_Label := gtk_Label (children_Notebook.get_tab_Label (the_packages_Palette_package.top_Widget));
+               the_tab_Label : constant gtk_Label
+                 := gtk_Label (children_Notebook.get_tab_Label (the_packages_Palette_package.top_Widget));
             begin
                the_tab_Label.set_Selectable (True);
                label_return_Callbacks.connect (the_tab_Label,
@@ -392,7 +395,7 @@ is
          Self.all_Notebook.Show_All;
       end build_Gui_Tree;
 
-      Self.build_recent_List;   -- ToDo: This is useless til usage stats are made persistent.
+      Self.build_recent_List;
    end freshen;
 
 
