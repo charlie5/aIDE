@@ -21,6 +21,18 @@ with
      AdaM.generic_Instantiation,
      AdaM.package_Declaration,
      AdaM.subprogram_Declaration,
+     AdaM.subprogram_renaming_Declaration,
+     AdaM.   package_renaming_Declaration,
+     AdaM.   generic_renaming_Declaration,
+     AdaM.   package_Body,
+     AdaM.subprogram_Body,
+     AdaM.with_Clause,
+     AdaM. use_Clause,
+     AdaM. use_Clause.for_package,
+     AdaM. use_Clause.for_type,
+     AdaM.context_Clause,
+     AdaM.context_Item,
+     AdaM.body_Stub,
 
      Shell,
 

@@ -68,6 +68,7 @@ private
          is
             when library_unit_Kind =>
                library_Item : AdaM.library_Item.view;
+
             when subunit_Kind =>
                Subunit      : AdaM.Subunit.view;
          end case;
@@ -79,8 +80,8 @@ private
          Name     : Text;
          Entities : Source.Entities;
 
-         Context  : AdaM.Context.view;
-         Unit     : library_Item_or_Subunit;
+         Context      : AdaM.Context.view;
+         library_Item : library_Item_or_Subunit;
       end record;
 
 
