@@ -6,8 +6,8 @@ with
 
 private
 with
-     AdaM.subprogram_Declaration,
-     AdaM.package_Declaration,
+     AdaM.Declaration.of_subprogram,
+     AdaM.Declaration.of_package,
      AdaM.generic_Declaration,
      AdaM.generic_Instantiation;
 
@@ -62,10 +62,10 @@ private
          case Kind
          is
             when a_Subprogram =>
-               of_Subprogram    : AdaM.subprogram_Declaration.view;
+               of_Subprogram    : AdaM.Declaration.of_subprogram.view;
 
             when a_Package =>
-               of_Package       : AdaM.package_Declaration.view;
+               of_Package       : AdaM.Declaration.of_package.view;
 
             when a_Generic =>
                of_Generic       : AdaM.generic_Declaration.view;

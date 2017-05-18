@@ -2,7 +2,7 @@ with
      AdaM.Factory;
 
 
-package body AdaM.generic_renaming_Declaration
+package body AdaM.Declaration.of_exception
 is
 
    --  Storage Pool
@@ -10,14 +10,14 @@ is
 
    record_Version  : constant                := 1;
    max_Subprograms : constant                := 5_000;
-   null_Subprogram : constant generic_renaming_Declaration.item := (others => <>);
+   null_Subprogram : constant Declaration.of_exception.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
-                                           "generic_renaming_Declarations",
+                                           "Declarations.of_exception",
                                            max_Subprograms,
                                            record_Version,
-                                           generic_renaming_Declaration.item,
-                                           generic_renaming_Declaration.view,
+                                           Declaration.of_exception.item,
+                                           Declaration.of_exception.view,
                                            null_Subprogram);
 
    --  Forge
@@ -39,17 +39,17 @@ is
 
    function new_Subprogram return View
    is
-      new_View : constant generic_renaming_Declaration.view := Pool.new_Item;
+      new_View : constant Declaration.of_exception.view := Pool.new_Item;
    begin
-      define (generic_renaming_Declaration.item (new_View.all));
+      define (Declaration.of_exception.item (new_View.all));
       return new_View;
    end new_Subprogram;
 
 
-   procedure free (Self : in out generic_renaming_Declaration.view)
+   procedure free (Self : in out Declaration.of_exception.view)
    is
    begin
-      destruct (generic_renaming_Declaration.item (Self.all));
+      destruct (Declaration.of_exception.item (Self.all));
       Pool.free (Self);
    end free;
 
@@ -77,4 +77,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end AdaM.generic_renaming_Declaration;
+end AdaM.Declaration.of_exception;

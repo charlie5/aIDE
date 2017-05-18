@@ -1,14 +1,12 @@
 with
-     AdaM.Any,
-
      Ada.Containers.Vectors,
      Ada.Streams;
 
 
-package AdaM.subprogram_Declaration
+package AdaM.Declaration.of_package
 is
 
-   type Item is new Any.item with private;
+   type Item is new Declaration.item with private;
 
 
    -- View
@@ -33,9 +31,9 @@ is
 
    --  Forge
    --
-   function  new_Subprogram         return subprogram_Declaration.view;
-   procedure free           (Self : in out subprogram_Declaration.view);
-   procedure destruct       (Self : in out subprogram_Declaration.item);
+   function  new_Subprogram         return Declaration.of_package.view;
+   procedure free           (Self : in out Declaration.of_package.view);
+   procedure destruct       (Self : in out Declaration.of_package.item);
 
 
    -- Attributes
@@ -48,9 +46,9 @@ is
 
 private
 
-   type Item is new Any.item with
+   type Item is new Declaration.item with
       record
          null;
       end record;
 
-end AdaM.subprogram_Declaration;
+end AdaM.Declaration.of_package;

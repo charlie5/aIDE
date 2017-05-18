@@ -1,14 +1,12 @@
 with
-     AdaM.Any,
-
      Ada.Containers.Vectors,
      Ada.Streams;
 
 
-package AdaM.generic_Instantiation
+package AdaM.Declaration.of_object
 is
 
-   type Item is new Any.item with private;
+   type Item is new Declaration.item with private;
 
 
    -- View
@@ -33,9 +31,9 @@ is
 
    --  Forge
    --
-   function  new_Subprogram         return generic_Instantiation.view;
-   procedure free           (Self : in out generic_Instantiation.view);
-   procedure destruct       (Self : in out generic_Instantiation.item);
+   function  new_Subprogram         return Declaration.of_object.view;
+   procedure free           (Self : in out Declaration.of_object.view);
+   procedure destruct       (Self : in out Declaration.of_object.item);
 
 
    -- Attributes
@@ -48,9 +46,9 @@ is
 
 private
 
-   type Item is new Any.item with
+   type Item is new Declaration.item with
       record
          null;
       end record;
 
-end AdaM.generic_Instantiation;
+end AdaM.Declaration.of_object;

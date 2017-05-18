@@ -2,7 +2,7 @@ with
      AdaM.Factory;
 
 
-package body AdaM.package_Declaration
+package body AdaM.Declaration.of_type
 is
 
    --  Storage Pool
@@ -10,14 +10,14 @@ is
 
    record_Version  : constant                := 1;
    max_Subprograms : constant                := 5_000;
-   null_Subprogram : constant package_Declaration.item := (others => <>);
+   null_Subprogram : constant Declaration.of_type.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
-                                           "package_Declarations",
+                                           "Declaration.of_types",
                                            max_Subprograms,
                                            record_Version,
-                                           package_Declaration.item,
-                                           package_Declaration.view,
+                                           Declaration.of_type.item,
+                                           Declaration.of_type.view,
                                            null_Subprogram);
 
    --  Forge
@@ -39,17 +39,17 @@ is
 
    function new_Subprogram return View
    is
-      new_View : constant package_Declaration.view := Pool.new_Item;
+      new_View : constant Declaration.of_type.view := Pool.new_Item;
    begin
-      define (package_Declaration.item (new_View.all));
+      define (Declaration.of_type.item (new_View.all));
       return new_View;
    end new_Subprogram;
 
 
-   procedure free (Self : in out package_Declaration.view)
+   procedure free (Self : in out Declaration.of_type.view)
    is
    begin
-      destruct (package_Declaration.item (Self.all));
+      destruct (Declaration.of_type.item (Self.all));
       Pool.free (Self);
    end free;
 
@@ -77,4 +77,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end AdaM.package_Declaration;
+end AdaM.Declaration.of_type;

@@ -2,7 +2,7 @@ with
      AdaM.Factory;
 
 
-package body AdaM.subprogram_Declaration
+package body AdaM.Declaration.of_renaming.a_generic
 is
 
    --  Storage Pool
@@ -10,14 +10,14 @@ is
 
    record_Version  : constant                := 1;
    max_Subprograms : constant                := 5_000;
-   null_Subprogram : constant subprogram_Declaration.item := (others => <>);
+   null_Subprogram : constant Declaration.of_renaming.a_generic.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
-                                           "subprogram_Declarations",
+                                           "Declarations.of_renaming.a_generic",
                                            max_Subprograms,
                                            record_Version,
-                                           subprogram_Declaration.item,
-                                           subprogram_Declaration.view,
+                                           Declaration.of_renaming.a_generic.item,
+                                           Declaration.of_renaming.a_generic.view,
                                            null_Subprogram);
 
    --  Forge
@@ -39,17 +39,17 @@ is
 
    function new_Subprogram return View
    is
-      new_View : constant subprogram_Declaration.view := Pool.new_Item;
+      new_View : constant Declaration.of_renaming.a_generic.view := Pool.new_Item;
    begin
-      define (subprogram_Declaration.item (new_View.all));
+      define (Declaration.of_renaming.a_generic.item (new_View.all));
       return new_View;
    end new_Subprogram;
 
 
-   procedure free (Self : in out subprogram_Declaration.view)
+   procedure free (Self : in out Declaration.of_renaming.a_generic.view)
    is
    begin
-      destruct (subprogram_Declaration.item (Self.all));
+      destruct (Declaration.of_renaming.a_generic.item (Self.all));
       Pool.free (Self);
    end free;
 
@@ -77,4 +77,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end AdaM.subprogram_Declaration;
+end AdaM.Declaration.of_renaming.a_generic;

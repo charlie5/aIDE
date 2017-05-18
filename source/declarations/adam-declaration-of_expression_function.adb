@@ -2,7 +2,7 @@ with
      AdaM.Factory;
 
 
-package body AdaM.generic_Instantiation
+package body AdaM.Declaration.of_expression_function
 is
 
    --  Storage Pool
@@ -10,14 +10,14 @@ is
 
    record_Version  : constant                := 1;
    max_Subprograms : constant                := 5_000;
-   null_Subprogram : constant generic_Instantiation.item := (others => <>);
+   null_Subprogram : constant Declaration.of_expression_function.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
-                                           "generic_Instantiations",
+                                           "Declaration.of_expression_functions",
                                            max_Subprograms,
                                            record_Version,
-                                           generic_Instantiation.item,
-                                           generic_Instantiation.view,
+                                           Declaration.of_expression_function.item,
+                                           Declaration.of_expression_function.view,
                                            null_Subprogram);
 
    --  Forge
@@ -39,17 +39,17 @@ is
 
    function new_Subprogram return View
    is
-      new_View : constant generic_Instantiation.view := Pool.new_Item;
+      new_View : constant Declaration.of_expression_function.view := Pool.new_Item;
    begin
-      define (generic_Instantiation.item (new_View.all));
+      define (Declaration.of_expression_function.item (new_View.all));
       return new_View;
    end new_Subprogram;
 
 
-   procedure free (Self : in out generic_Instantiation.view)
+   procedure free (Self : in out Declaration.of_expression_function.view)
    is
    begin
-      destruct (generic_Instantiation.item (Self.all));
+      destruct (Declaration.of_expression_function.item (Self.all));
       Pool.free (Self);
    end free;
 
@@ -77,4 +77,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end AdaM.generic_Instantiation;
+end AdaM.Declaration.of_expression_function;
