@@ -4,7 +4,7 @@ with
 
 private
 with
-     AdaM.package_Declaration;
+     AdaM.Declaration.of_package;
 
 
 package AdaM.use_Clause.for_package
@@ -52,7 +52,7 @@ private
 
    type Item is new use_Clause.item with
       record
-         Packages : package_Declaration.vector;
+         Packages : Declaration.of_package.vector;
       end record;
 
 end AdaM.use_Clause.for_package;

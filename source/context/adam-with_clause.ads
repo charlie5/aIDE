@@ -6,7 +6,7 @@ with
 
 private
 with
-    AdaM.package_Declaration;
+    AdaM.Declaration.of_package;
 
 
 package AdaM.with_Clause
@@ -57,7 +57,7 @@ private
          is_Limited : Boolean;
          is_Private : Boolean;
 
-         Packages   : package_Declaration.vector;
+         Packages   : Declaration.of_package.vector;
       end record;
 
 end AdaM.with_Clause;

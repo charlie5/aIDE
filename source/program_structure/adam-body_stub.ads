@@ -6,8 +6,8 @@ with
 
 private
 with
-     AdaM.subprogram_Declaration,
-     AdaM.package_Declaration,
+     AdaM.Declaration.of_subprogram,
+     AdaM.Declaration.of_package,
      AdaM.task_Unit,
      AdaM.protected_Unit,
      AdaM.Aspect;
@@ -69,10 +69,10 @@ private
          is
             when of_Subprogram =>
                is_Overriding : Boolean;
-               Subprogram    : subprogram_Declaration.view;
+               Subprogram    : Declaration.of_subprogram.view;
 
             when of_Package =>
-               my_Package    : package_Declaration.view;
+               my_Package    : Declaration.of_package.view;
 
             when of_Task =>
                my_Task       : task_Unit.view;
