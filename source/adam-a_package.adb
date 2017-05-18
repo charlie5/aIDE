@@ -13,7 +13,7 @@ is
 
    record_Version : constant            := 1;
    max_Packages   : constant            := 5_000;
-   null_Package   : constant a_Package.item := (others => <>);
+   null_Package   : constant a_Package.item := (program_Unit.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "packages",

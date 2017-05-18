@@ -1,5 +1,5 @@
 with
-     AdaM.Any,
+     AdaM.program_Unit,
      AdaM.Source,
      AdaM.Context,
      AdaM.an_Exception,
@@ -10,7 +10,7 @@ with
 package AdaM.a_Package
 is
 
-   type Item is new Any.Item with private;
+   type Item is new program_Unit.Item with private;
 
 
    -- View
@@ -80,7 +80,7 @@ is
 private
 
 
-   type Item is new Any.Item with
+   type Item is new program_Unit.Item with
       record
          Name         : Text;
 
