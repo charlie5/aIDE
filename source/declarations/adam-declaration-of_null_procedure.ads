@@ -31,7 +31,7 @@ is
 
    --  Forge
    --
-   function  new_Subprogram         return Declaration.of_null_procedure.view;
+   function  new_Declaration        return Declaration.of_null_procedure.view;
    procedure free           (Self : in out Declaration.of_null_procedure.view);
    procedure destruct       (Self : in out Declaration.of_null_procedure.item);
 

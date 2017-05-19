@@ -31,7 +31,7 @@ is
 
    --  Forge
    --
-   function  new_Subprogram         return Declaration.of_renaming.a_package.view;
+   function  new_Declaration         return Declaration.of_renaming.a_package.view;
    procedure free           (Self : in out Declaration.of_renaming.a_package.view);
    procedure destruct       (Self : in out Declaration.of_renaming.a_package.item);
 

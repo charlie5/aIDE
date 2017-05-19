@@ -37,7 +37,7 @@ is
    end destruct;
 
 
-   function new_Subprogram return View
+   function new_Declaration return View
    is
       new_View : constant Declaration.of_number.view := Pool.new_Item;
    begin

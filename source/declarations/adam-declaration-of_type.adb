@@ -37,13 +37,13 @@ is
    end destruct;
 
 
-   function new_Subprogram return View
+   function new_Declaration return View
    is
       new_View : constant Declaration.of_type.view := Pool.new_Item;
    begin
       define (Declaration.of_type.item (new_View.all));
       return new_View;
-   end new_Subprogram;
+   end new_Declaration;
 
 
    procedure free (Self : in out Declaration.of_type.view)

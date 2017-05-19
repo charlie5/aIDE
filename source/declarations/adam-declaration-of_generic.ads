@@ -31,7 +31,7 @@ is
 
    --  Forge
    --
-   function  new_Subprogram         return Declaration.of_generic.view;
+   function  new_Declaration        return Declaration.of_generic.view;
    procedure free           (Self : in out Declaration.of_generic.view);
    procedure destruct       (Self : in out Declaration.of_generic.item);
 
