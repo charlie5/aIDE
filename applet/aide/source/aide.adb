@@ -221,7 +221,7 @@ is
                   the_Filename : constant String   :=   generated_source_Path
                                                       & "/"
                                                       & to_Lower (the_App.Name) & ".adb";
-                  the_Source   : constant AdaM.Text_Vectors.Vector := the_App.to_spec_Source;
+                  the_Source   : constant AdaM.Text_Vectors.Vector := the_App.to_Source;
                begin
                   create (the_File,  out_File,  the_Filename);
 

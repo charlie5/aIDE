@@ -84,7 +84,7 @@ is
 
 
    overriding
-   function to_spec_Source (Self : in Item) return text_Vectors.Vector
+   function to_Source (Self : in Item) return text_Vectors.Vector
    is
       the_Source : text_Vectors.Vector;
 
@@ -105,17 +105,7 @@ is
       end loop;
 
       return the_Source;
-   end to_spec_Source;
-
-
-
-   overriding
-   function to_body_Source (Self : in Item) return text_Vectors.Vector
-   is
-      the_Source : text_Vectors.Vector;
-   begin
-      return the_Source;
-   end to_body_Source;
+   end to_Source;
 
 
 

@@ -48,12 +48,11 @@ is
    overriding
    function Id           (Self : access Item) return AdaM.Id;
 
-   overriding
    function  Name        (Self : in     Item)     return String;
    procedure Name_is     (Self : in out Item;   Now : in String);
 
    overriding
-   function to_spec_Source (Self : in     Item) return text_Vectors.Vector;
+   function to_Source    (Self : in     Item) return text_Vectors.Vector;
 
    function Context      (Self : in     Item) return AdaM.Context.view;
    function Block        (Self : in     Item) return AdaM.Block.view;

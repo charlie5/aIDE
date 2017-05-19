@@ -115,7 +115,7 @@ is
             the_Entity := the_Unit.Entity (i);
 
             Depth := Depth + 1;
-            ada.Text_IO.put_Line (Indent & "Entity : " & the_Entity.Name & "   Tag = " & ada.Tags.Expanded_Name (the_Entity.all'Tag));
+--              ada.Text_IO.put_Line (Indent & "Entity : " & the_Entity.Name & "   Tag = " & ada.Tags.Expanded_Name (the_Entity.all'Tag));
             Depth := Depth - 1;
          end loop;
       end loop;

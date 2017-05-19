@@ -64,7 +64,7 @@ is
    function  exception_Count (Self : in     Item)     return Natural;
 
    overriding
-   function  to_spec_Source (Self : in     Item) return text_Lines;
+   function  to_Source (Self : in     Item) return text_Lines;
 
    function  Handler   (Self : in     Item) return access AdaM.Block.item'Class;
 

@@ -128,12 +128,12 @@ is
 
 
 
-   function all_Exceptions (Self : in     Item) return AdaM.an_Exception.Vector
+   function all_Exceptions (Self : in     Item) return AdaM.Declaration.of_exception.Vector
    is
-      use type an_Exception.view;
+      use type Declaration.of_exception.view;
 
-      the_Exceptions : AdaM.an_Exception.Vector;
-      the_Exception  : AdaM.an_Exception.view;
+      the_Exceptions : AdaM.Declaration.of_exception.Vector;
+      the_Exception  : AdaM.Declaration.of_exception.view;
    begin
       put_Line ("PACKAGE NAME: " & (+Self.Name));
 
@@ -142,7 +142,7 @@ is
          put_Line ("*************   Tag: " & ada.Tags.External_Tag (Each.all'Tag));
             raise program_Error with "sdfhslkad";
 
-         the_Exception := an_Exception.view (Each);
+         the_Exception := Declaration.of_exception.view (Each);
 
          if the_Exception /= null
 --           if Each in AdaM.an_Exception.item'Class
@@ -210,7 +210,7 @@ is
 
       add (+"");
 
-      the_Source.append (Self.public_Entities.to_body_Source);
+--        the_Source.append (Self.public_Entities.to_body_Source);
 
       add (+"");
       add ( "end " & Self.Name & ";");

@@ -2,9 +2,9 @@ with
      AdaM.program_Unit,
      AdaM.Source,
      AdaM.Context,
-     AdaM.an_Exception,
+     AdaM.Declaration.of_exception,
 
-     ada.Streams;
+     Ada.Streams;
 
 
 package AdaM.a_Package
@@ -63,7 +63,7 @@ is
    procedure add           (Self : in out Item;   the_Declaration : in Source.Entity_View);
    procedure rid           (Self : in out Item;   the_Declaration : in Source.Entity_View);
 
-   function all_Exceptions (Self : in     Item) return AdaM.an_Exception.Vector;
+   function all_Exceptions (Self : in     Item) return AdaM.Declaration.of_exception.Vector;
 
    function  requires_Body (Self : in Item) return Boolean;
 

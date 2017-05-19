@@ -87,7 +87,6 @@ is
    end Id;
 
 
-   overriding
    function Name (Self : in Item) return String
    is
    begin
@@ -134,7 +133,7 @@ is
 
 
    overriding
-   function to_spec_Source (Self : in Item) return text_Vectors.Vector
+   function to_Source (Self : in Item) return text_Vectors.Vector
    is
       use ada.Strings.Unbounded;
       the_Line   : Text;
@@ -177,7 +176,7 @@ is
       the_Source.append (the_Line);
 
       return the_Source;
-   end to_spec_Source;
+   end to_Source;
 
 
    -- Streams

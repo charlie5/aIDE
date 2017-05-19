@@ -44,13 +44,15 @@ is
    overriding
    function Id (Self : access Item) return AdaM.Id;
 
+   function Name (Self : in Item) return String;
+
 
 
 private
 
    type Item is new Any.item with
       record
-         null;
+         Name : Text;
       end record;
 
 end AdaM.Declaration;

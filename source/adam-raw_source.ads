@@ -25,10 +25,12 @@ is
    function  Lines     (Self : in     Item)     return text_Lines;
    procedure Lines_are (Self : in out Item;   Now : in text_Lines);
 
+
    overriding
-   function to_spec_Source (Self : in     Item) return text_Vectors.Vector;
+   function Id (Self : access Item) return AdaM.Id;
+
    overriding
-   function to_body_Source (Self : in     Item) return text_Vectors.Vector;
+   function to_Source (Self : in     Item) return text_Vectors.Vector;
 
 
 

@@ -66,6 +66,15 @@ is
    end Id;
 
 
+   function Name (Self : in Item) return String
+   is
+   begin
+      return +Self.Name;
+   end Name;
+
+
+
+
    -- Streams
    --
 

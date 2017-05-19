@@ -23,10 +23,10 @@ is
    --  Forge
    --
 
-   procedure define (Self : in out Item)
+   procedure define (Self : in out Item;   Name : in String)
    is
    begin
-      null;
+      Self.Name := +Name;
    end define;
 
 
@@ -37,11 +37,11 @@ is
    end destruct;
 
 
-   function new_Declaration return View
+   function  new_Declaration (Name : in     String) return Declaration.of_exception.view
    is
       new_View : constant Declaration.of_exception.view := Pool.new_Item;
    begin
-      define (Declaration.of_exception.item (new_View.all));
+      define (Declaration.of_exception.item (new_View.all), Name);
       return new_View;
    end new_Declaration;
 
@@ -64,6 +64,24 @@ is
    begin
       return Pool.to_Id (Self);
    end Id;
+
+
+
+   overriding
+   function to_Source (Self : in Item) return text_Vectors.Vector
+   is
+      use ada.Strings.Unbounded;
+      the_Line   : Text;
+      the_Source : text_Vectors.Vector;
+
+   begin
+      append (the_Line, Self.Name);
+      append (the_Line, " : exception;");
+
+      the_Source.append (the_Line);
+
+      return the_Source;
+   end to_Source;
 
 
    -- Streams

@@ -30,7 +30,7 @@ is
    begin
       for i in 1 .. the_exception_Handlers.Length
       loop
-         the_Source.append (the_exception_Handlers.Element (Integer (i)).to_spec_Source);
+         the_Source.append (the_exception_Handlers.Element (Integer (i)).to_Source);
       end loop;
 
       return the_Source;
@@ -141,7 +141,7 @@ is
 
 
    overriding
-   function to_spec_Source (Self : in Item) return text_Lines
+   function to_Source (Self : in Item) return text_Lines
    is
       use text_Vectors;
       Lines     : text_Lines;
@@ -166,7 +166,7 @@ is
       Lines.append (Self.Handler.to_Source);
 
       return Lines;
-   end to_spec_Source;
+   end to_Source;
 
 
 

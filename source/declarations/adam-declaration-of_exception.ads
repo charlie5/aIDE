@@ -1,4 +1,5 @@
 with
+     AdaM.Source,
      Ada.Containers.Vectors,
      Ada.Streams;
 
@@ -6,7 +7,8 @@ with
 package AdaM.Declaration.of_exception
 is
 
-   type Item is new Declaration.item with private;
+   type Item is new Declaration.item
+                and Source.Entity with private;
 
 
    -- View
@@ -31,9 +33,10 @@ is
 
    --  Forge
    --
-   function  new_Declaration        return Declaration.of_exception.view;
-   procedure free           (Self : in out Declaration.of_exception.view);
-   procedure destruct       (Self : in out Declaration.of_exception.item);
+   function  new_Declaration (Name : in     String) return Declaration.of_exception.view;
+   procedure free            (Self : in out Declaration.of_exception.view);
+   overriding
+   procedure destruct        (Self : in out Declaration.of_exception.item);
 
 
    -- Attributes
@@ -42,11 +45,14 @@ is
    overriding
    function Id (Self : access Item) return AdaM.Id;
 
+   overriding
+   function  to_Source (Self : in Item) return text_Vectors.Vector;
 
 
 private
 
-   type Item is new Declaration.item with
+   type Item is new Declaration.item
+                and Source.Entity with
       record
          null;
       end record;
