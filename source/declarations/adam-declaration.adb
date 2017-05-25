@@ -73,6 +73,12 @@ is
    end Name;
 
 
+   procedure Name_is (Self : in out Item;   Now : in String)
+   is
+   begin
+      Self.Name := +Now;
+   end Name_is;
+
 
 
    -- Streams

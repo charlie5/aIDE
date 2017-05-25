@@ -34,7 +34,8 @@ is
 
    --  Forge
    --
-   function  new_Subprogram         return library_Item.view;
+   function  new_Item (Unit : in AdaM.library_Unit.view) return library_Item.view;
+
    procedure free           (Self : in out library_Item.view);
    procedure destruct       (Self : in out library_Item.item);
 
@@ -44,6 +45,9 @@ is
 
    overriding
    function Id (Self : access Item) return AdaM.Id;
+
+   procedure Unit_is (Self : in out Item;   Now : AdaM.library_Unit.view);
+   function  Unit    (Self : in     Item)  return AdaM.library_Unit.view;
 
 
 

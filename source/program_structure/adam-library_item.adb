@@ -37,13 +37,15 @@ is
    end destruct;
 
 
-   function new_Subprogram return View
+   function new_Item (Unit : in AdaM.library_Unit.view) return library_Item.view
    is
       new_View : constant library_Item.view := Pool.new_Item;
    begin
       define (library_Item.item (new_View.all));
+      new_View.library_Unit := Unit;
+
       return new_View;
-   end new_Subprogram;
+   end new_Item;
 
 
    procedure free (Self : in out library_Item.view)
@@ -64,6 +66,22 @@ is
    begin
       return Pool.to_Id (Self);
    end Id;
+
+
+
+   procedure Unit_is (Self : in out Item;   Now : AdaM.library_Unit.view)
+   is
+   begin
+      Self.library_Unit := Now;
+   end Unit_is;
+
+
+   function  Unit    (Self : in     Item)  return AdaM.library_Unit.view
+   is
+   begin
+      return Self.library_Unit;
+   end Unit;
+
 
 
    -- Streams

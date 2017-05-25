@@ -4,6 +4,8 @@ with
      AdaM.a_Package,
      AdaM.a_Type,
 
+     AdaM.Declaration.of_package,
+
      ada.Strings.Unbounded.Hash,
      ada.Containers.Hashed_Maps;
 
@@ -15,7 +17,7 @@ is
    standard_Unit    : AdaM.compilation_Unit.item;
 
    compilation_Unit : AdaM.compilation_Unit.item;   -- Current
-   current_Package  : AdaM.a_Package.Vector;
+   current_Packages : AdaM.a_Package.Vector;
 
    all_Types        : AdaM.a_Type.Vector;
 
@@ -26,6 +28,12 @@ is
                                                                    Hash            => ada.Strings.Unbounded.Hash,
                                                                    Equivalent_Keys => "=");
    all_Packages : name_Maps_of_package.Map;
+
+
+
+   current_compilation_Unit    : AdaM.compilation_Unit.view;
+   current_package : AdaM.Declaration.of_package.view;
+
 
    procedure dummy;
 

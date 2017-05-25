@@ -152,6 +152,9 @@ begin
                   end if;
 
                   Metrics.all_Packages.insert (+package_Name, new_Package);
+
+
+                  Metrics.current_package.Name_is (package_Name);
                end;
 
             elsif the_Kind = asis.An_Exception_Declaration

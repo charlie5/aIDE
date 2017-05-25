@@ -39,11 +39,52 @@ is
 
    function new_Subprogram return View
    is
-      new_View : constant library_Unit.declaration.view := Pool.new_Item;
+      new_unit_Declaration : constant library_Unit.declaration.view       := Pool.new_Item;
+      new_Subprogram       : constant AdaM.Declaration.of_subprogram.view := AdaM.Declaration.of_subprogram.new_Declaration;
    begin
-      define (library_Unit.declaration.item (new_View.all));
-      return new_View;
+      define (library_Unit.declaration.item (new_unit_Declaration.all));
+      new_unit_Declaration.Declaration := (a_Subprogram, new_Subprogram);
+
+      return new_unit_Declaration;
    end new_Subprogram;
+
+
+   function  new_Package      return library_Unit.declaration.view
+   is
+      new_unit_Declaration : constant library_Unit.declaration.view    := Pool.new_Item;
+      new_Package          : constant AdaM.Declaration.of_package.view := AdaM.Declaration.of_package.new_Declaration;
+   begin
+      define (library_Unit.declaration.item (new_unit_Declaration.all));
+      new_unit_Declaration.Declaration := (a_Package, new_Package);
+
+      return new_unit_Declaration;
+   end new_Package;
+
+
+   function  new_Generic      return library_Unit.declaration.view
+   is
+      new_unit_Declaration : constant library_Unit.declaration.view    := Pool.new_Item;
+      new_Generic          : constant AdaM.Declaration.of_generic.view := AdaM.Declaration.of_generic.new_Declaration;
+   begin
+      define (library_Unit.declaration.item (new_unit_Declaration.all));
+      new_unit_Declaration.Declaration := (a_Generic, new_Generic);
+
+      return new_unit_Declaration;
+   end new_Generic;
+
+
+   function  new_Intantiation return library_Unit.declaration.view
+   is
+      new_unit_Declaration : constant library_Unit.declaration.view          := Pool.new_Item;
+      new_Instaniation     : constant AdaM.Declaration.of_instantiation.view := AdaM.Declaration.of_instantiation.new_Declaration;
+   begin
+      define (library_Unit.declaration.item (new_unit_Declaration.all));
+      new_unit_Declaration.Declaration := (an_Instantiation, new_Instaniation);
+
+      return new_unit_Declaration;
+   end new_Intantiation;
+
+
 
 
    procedure free (Self : in out library_Unit.declaration.view)
@@ -64,6 +105,15 @@ is
    begin
       return Pool.to_Id (Self);
    end Id;
+
+
+
+   function my_Package (Self : in Item) return AdaM.Declaration.of_package.view
+   is
+   begin
+      return Self.Declaration.of_Package;
+   end my_Package;
+
 
 
    -- Streams

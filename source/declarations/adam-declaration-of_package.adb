@@ -42,6 +42,8 @@ is
       new_View : constant Declaration.of_package.view := Pool.new_Item;
    begin
       define (Declaration.of_package.item (new_View.all));
+      new_View.my_Package := Adam.a_Package.new_Package;
+
       return new_View;
    end new_Declaration;
 
@@ -64,6 +66,14 @@ is
    begin
       return Pool.to_Id (Self);
    end Id;
+
+
+   function  my_Package (Self : in Item) return Adam.a_Package.view
+   is
+   begin
+      return Self.my_Package;
+   end my_Package;
+
 
 
    -- Streams

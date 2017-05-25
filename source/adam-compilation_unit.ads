@@ -37,8 +37,14 @@ is
 
    --  Forge
    --
+   type unit_Kind is (library_unit_Kind, subunit_Kind);
 
-   function  new_Unit (Name : in     String := "") return compilation_Unit.view;
+   function  new_library_Unit (Name     : in String := "";
+                               the_Item : in library_Item.view) return compilation_Unit.view;
+
+   function  new_Subunit      (Name     : in String := "";
+                              the_Unit  : in Subunit.view) return compilation_Unit.view;
+
    procedure free     (Self : in out compilation_Unit.view);
    procedure destruct (Self : in out Item);
 
@@ -47,6 +53,10 @@ is
    --
    overriding
    function  Id      (Self : access Item) return AdaM.Id;
+
+   function Kind         (Self : in Item) return unit_Kind;
+   function library_Item (Self : in Item) return AdaM.library_Item.view;
+
 
    procedure add     (Self : in out Item;   Entity : in Source.Entity_View);
    procedure clear   (Self : in out Item);
@@ -60,9 +70,7 @@ is
 
 private
 
-   type Kind is (library_unit_Kind, subunit_Kind);
-
-   type library_Item_or_Subunit (Kind : compilation_Unit.Kind := library_unit_Kind) is
+   type library_Item_or_Subunit (Kind : unit_Kind := library_unit_Kind) is
       record
          case Kind
          is

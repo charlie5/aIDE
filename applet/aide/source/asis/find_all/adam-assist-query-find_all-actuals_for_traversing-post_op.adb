@@ -37,11 +37,12 @@ begin
 
    if the_Kind = Asis.A_Package_Declaration
    then
-      if not Metrics.current_Package.Is_Empty
+      if not Metrics.current_Packages.Is_Empty
       then
-         Metrics.current_Package.delete_Last;     -- Pop the current package stack.
+         Metrics.current_Packages.delete_Last;     -- Pop the current package stack.
       end if;
    end if;
+
 
 exception
 

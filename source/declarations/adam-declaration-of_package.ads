@@ -1,6 +1,8 @@
 with
      Ada.Containers.Vectors,
-     Ada.Streams;
+     Ada.Streams,
+
+     Adam.a_Package;
 
 
 package AdaM.Declaration.of_package
@@ -40,7 +42,9 @@ is
    --
 
    overriding
-   function Id (Self : access Item) return AdaM.Id;
+   function  Id (Self : access Item) return AdaM.Id;
+
+   function  my_Package (Self : in Item) return Adam.a_Package.view;
 
 
 
@@ -48,7 +52,7 @@ private
 
    type Item is new Declaration.item with
       record
-         null;
+         my_Package : Adam.a_Package.view;
       end record;
 
 end AdaM.Declaration.of_package;

@@ -23,10 +23,21 @@ is
    --  Forge
    --
 
-   procedure define (Self : in out Item;   Name : in String)
+   procedure define (Self : in out Item;   Name    : in String;
+                                           of_Kind : in unit_Kind)
    is
    begin
       Self.Name := +Name;
+
+      case of_Kind
+      is
+         when library_unit_Kind =>
+            Self.library_Item := (Kind         => library_unit_Kind,
+                                  library_Item => null);
+         when subunit_Kind =>
+            Self.library_Item := (Kind    => subunit_Kind,
+                                  Subunit => null);
+      end case;
    end define;
 
 
@@ -39,13 +50,28 @@ is
 
 
 
-   function new_Unit (Name : in String := "") return View
+   function new_library_Unit (Name     : in String := "";
+                              the_Item : in AdaM.library_Item.view) return compilation_Unit.view
    is
       new_View : constant compilation_Unit.view := Pool.new_Item;
    begin
-      define (compilation_Unit.item (new_View.all), Name);
+      define (compilation_Unit.item (new_View.all), Name, library_unit_Kind);
+      new_View.library_Item.library_Item := the_Item;
+
       return new_View;
-   end new_Unit;
+   end new_library_Unit;
+
+
+   function new_Subunit (Name     : in String := "";
+                         the_Unit : in Subunit.view) return compilation_Unit.view
+   is
+      new_View : constant compilation_Unit.view := Pool.new_Item;
+   begin
+      define (compilation_Unit.item (new_View.all), Name, subunit_Kind);
+      new_View.library_Item.Subunit := the_Unit;
+
+      return new_View;
+   end new_Subunit;
 
 
 
@@ -68,6 +94,23 @@ is
    begin
       return Pool.to_Id (Self);
    end Id;
+
+
+
+
+   function Kind         (Self : in Item) return unit_Kind
+   is
+   begin
+      return Self.library_Item.Kind;
+   end Kind;
+
+
+   function library_Item (Self : in Item) return AdaM.library_Item.view
+   is
+   begin
+      return Self.library_Item.library_Item;
+   end library_Item;
+
 
 
 

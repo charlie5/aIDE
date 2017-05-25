@@ -1,5 +1,5 @@
 with
-     AdaM.Any,
+     AdaM.Declaration.of_package,
 
      Ada.Containers.Vectors,
      Ada.Streams;
@@ -7,9 +7,8 @@ with
 private
 with
      AdaM.Declaration.of_subprogram,
-     AdaM.Declaration.of_package,
-     AdaM.generic_Declaration,
-     AdaM.generic_Instantiation;
+     AdaM.Declaration.of_generic,
+     AdaM.Declaration.of_instantiation;
 
 
 package AdaM.library_Unit.declaration
@@ -40,7 +39,13 @@ is
 
    --  Forge
    --
-   function  new_Subprogram         return library_Unit.declaration.view;
+   type declaration_Kind is (a_Subprogram, a_Package, a_Generic, an_Instantiation);
+
+   function  new_Subprogram   return library_Unit.declaration.view;
+   function  new_Package      return library_Unit.declaration.view;
+   function  new_Generic      return library_Unit.declaration.view;
+   function  new_Intantiation return library_Unit.declaration.view;
+
    procedure free           (Self : in out library_Unit.declaration.view);
    procedure destruct       (Self : in out library_Unit.declaration.item);
 
@@ -52,10 +57,11 @@ is
    function Id (Self : access Item) return AdaM.Id;
 
 
+   function my_Package (Self : in Item) return AdaM.Declaration.of_package.view;
+
+
 
 private
-
-   type declaration_Kind is (a_Subprogram, a_Package, a_Generic, an_Instantiation);
 
    type a_Declaration (Kind : declaration_Kind := a_Subprogram) is
       record
@@ -68,10 +74,10 @@ private
                of_Package       : AdaM.Declaration.of_package.view;
 
             when a_Generic =>
-               of_Generic       : AdaM.generic_Declaration.view;
+               of_Generic       : AdaM.Declaration.of_generic.view;
 
             when an_Instantiation =>
-               of_Instantiation : AdaM.generic_Instantiation.view;
+               of_Instantiation : AdaM.Declaration.of_instantiation.view;
          end case;
       end record;
 
