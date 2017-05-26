@@ -50,6 +50,16 @@ is
 
 
 
+   function  new_compliation_Unit (Name : in String := "") return compilation_Unit.view
+   is
+      new_Unit : constant compilation_Unit.view := Pool.new_Item;
+   begin
+      new_Unit.Name := +Name;
+      return new_Unit;
+   end new_compliation_Unit;
+
+
+
    function new_library_Unit (Name     : in String := "";
                               the_Item : in AdaM.library_Item.view) return compilation_Unit.view
    is

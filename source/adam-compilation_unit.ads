@@ -37,6 +37,9 @@ is
 
    --  Forge
    --
+   function  new_compliation_Unit (Name : in String := "") return compilation_Unit.view;
+
+
    type unit_Kind is (library_unit_Kind, subunit_Kind);
 
    function  new_library_Unit (Name     : in String := "";

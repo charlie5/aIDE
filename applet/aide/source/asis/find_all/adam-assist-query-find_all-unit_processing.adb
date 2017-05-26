@@ -39,13 +39,13 @@ is
 
       if Kind = asis.a_Package
       then
-         Metrics.current_compilation_Unit
-           := adam.compilation_Unit.new_library_Unit
-                (the_Name,
-                 library_Item.new_Item (adam.library_Unit.declaration.new_Package.all'Access));
-
-         Metrics.current_package
-           := AdaM.library_Unit.declaration.view (Metrics.current_compilation_Unit.library_Item.Unit).my_Package;
+         Metrics.current_compilation_Unit := AdaM.compilation_Unit.new_compliation_Unit;
+--             := adam.compilation_Unit.new_library_Unit
+--                  (the_Name,
+--                   library_Item.new_Item (adam.library_Unit.declaration.new_Package.all'Access));
+--
+--           Metrics.current_package_Declaration
+--             := AdaM.library_Unit.declaration.view (Metrics.current_compilation_Unit.library_Item.Unit).my_Package;
       end if;
 
 

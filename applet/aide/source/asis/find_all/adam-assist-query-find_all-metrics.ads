@@ -32,7 +32,7 @@ is
 
 
    current_compilation_Unit    : AdaM.compilation_Unit.view;
-   current_package : AdaM.Declaration.of_package.view;
+   current_package_Declaration : AdaM.Declaration.of_package.view;
 
 
    procedure dummy;
