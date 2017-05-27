@@ -64,7 +64,7 @@ is
    procedure add           (Self : in out Item;   the_Declaration : in Source.Entity_View);
    procedure rid           (Self : in out Item;   the_Declaration : in Source.Entity_View);
 
-   function  all_Exceptions (Self : in     Item) return AdaM.Declaration.of_exception.Vector;
+   function  all_Exceptions (Self : access     Item) return AdaM.Declaration.of_exception.Vector;
 
    function  requires_Body (Self : in Item) return Boolean;
 
@@ -86,9 +86,9 @@ private
       record
          Name         : Text;
 
-         Parent       : a_Package.view;
-         Progenitors  : a_Package.Vector;
-         Children     : a_Package.Vector;
+         Parent         : a_Package.view;
+         Progenitors    : a_Package.Vector;
+         child_Packages : a_Package.Vector;
 
          Context      : AdaM.Context.view;
 

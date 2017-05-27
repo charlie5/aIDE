@@ -365,11 +365,20 @@ is
       begin
          -- Recursively add sub-gui's for each package, rooted at 'Standard'.
          --
-         for i in 1 .. Integer (the_Environ.standard_Package.Children.Length)
-         loop
-            build_Gui_for (the_Environ.standard_Package.child_Packages.Element (i).all'Access,
-                           Self.all_Notebook);
-         end loop;
+--           for i in 1 .. Integer (the_Environ.standard_Package.Children.Length)
+--           loop
+--              build_Gui_for (the_Environ.standard_Package.child_Packages.Element (i).all'Access,
+--                             Self.all_Notebook);
+--           end loop;
+
+--           for i in 1 .. Integer (the_entity_Environ.standard_Package.child_Packages.Length)
+--           loop
+--              build_Gui_for (the_Environ.standard_Package.child_Packages.Element (i).all'Access,
+--                             Self.all_Notebook);
+--           end loop;
+
+         build_Gui_for (the_entity_Environ.standard_Package,
+                        Self.all_Notebook);
 
          Self.all_Notebook.Popup_enable;
          Self.all_Notebook.Show_All;

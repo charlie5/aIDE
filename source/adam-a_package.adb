@@ -3,6 +3,7 @@ with
      AdaM.Source.utility;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Tags;
+with AdaM.Entity;
 
 
 package body AdaM.a_Package
@@ -128,32 +129,58 @@ is
 
 
 
-   function all_Exceptions (Self : in     Item) return AdaM.Declaration.of_exception.Vector
+--     function all_Exceptions (Self : in     Item) return AdaM.Declaration.of_exception.Vector
+--     is
+--        use type Declaration.of_exception.view;
+--
+--        the_Exceptions : AdaM.Declaration.of_exception.Vector;
+--        the_Exception  : AdaM.Declaration.of_exception.view;
+--     begin
+--        put_Line ("PACKAGE NAME: " & (+Self.Name));
+--
+--        for Each of Self.public_Entities
+--        loop
+--           put_Line ("*************   Tag: " & ada.Tags.External_Tag (Each.all'Tag));
+--              raise program_Error with "sdfhslkad";
+--
+--           the_Exception := Declaration.of_exception.view (Each);
+--
+--           if the_Exception /= null
+--  --           if Each in AdaM.an_Exception.item'Class
+--           then
+--              the_Exceptions.append (the_Exception);
+--           end if;
+--        end loop;
+--
+--        return the_Exceptions;
+--     end all_Exceptions;
+
+
+   function all_Exceptions (Self : access     Item) return AdaM.Declaration.of_exception.Vector
    is
       use type Declaration.of_exception.view;
 
       the_Exceptions : AdaM.Declaration.of_exception.Vector;
       the_Exception  : AdaM.Declaration.of_exception.view;
    begin
---        put_Line ("PACKAGE NAME: " & (+Self.Name));
+      put_Line ("PACKAGE NAME: " & (+Self.Name));
 
-      for Each of Self.public_Entities
+      for Each of Self.Children.all
       loop
          put_Line ("*************   Tag: " & ada.Tags.External_Tag (Each.all'Tag));
-            raise program_Error with "sdfhslkad";
+--              raise program_Error with "sdfhslkad";
 
-         the_Exception := Declaration.of_exception.view (Each);
+--           the_Exception := Declaration.of_exception.view (Each);
 
-         if the_Exception /= null
---           if Each in AdaM.an_Exception.item'Class
+--           if the_Exception /= null
+         if Each.all in AdaM.Declaration.of_Exception.item'Class
          then
-            the_Exceptions.append (the_Exception);
+            the_Exceptions.append (Declaration.of_exception.view (Each));
          end if;
       end loop;
 
       return the_Exceptions;
    end all_Exceptions;
-
 
 
 
@@ -280,14 +307,14 @@ is
    function  child_Packages (Self : in Item'Class) return a_Package.Vector
    is
    begin
-      return Self.Children;
+      return Self.child_Packages;
    end child_Packages;
 
 
    procedure add_Child (Self : in out Item;   Child : in a_Package.View)
    is
    begin
-      Self.Children.append (Child);
+      Self.child_Packages.append (Child);
    end add_Child;
 
 
@@ -303,7 +330,7 @@ is
 
       a_Package.view  'write (Stream, Self.Parent);
       a_Package.Vector'write (Stream, Self.Progenitors);
-      a_Package.Vector'write (Stream, Self.Children);
+      a_Package.Vector'write (Stream, Self.child_Packages);
 
       AdaM.Context.view'write (Stream, Self.Context);
 
@@ -324,7 +351,7 @@ is
 
          a_Package.view  'read (Stream, Self.Parent);
          a_Package.Vector'read (Stream, Self.Progenitors);
-         a_Package.Vector'read (Stream, Self.Children);
+         a_Package.Vector'read (Stream, Self.child_Packages);
 
          AdaM.Context.view'read (Stream, Self.Context);
          Source.Entities  'read (Stream, Self.public_Entities);

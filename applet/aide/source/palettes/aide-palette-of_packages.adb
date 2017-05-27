@@ -385,7 +385,7 @@ is
       begin
          -- Recursively add sub-gui's for each package, rooted at 'Standard'.
          --
-         for i in 1 .. Integer (a_Package.item (the_Environ.standard_Package.all).Children.Length)
+         for i in 1 .. Integer (a_Package.item (the_entity_Environ.standard_Package.all).child_Packages.Length)
          loop
             build_Gui_for (the_Environ.standard_Package.child_Packages.Element (i),
                            Self.all_Notebook);
