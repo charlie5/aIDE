@@ -304,6 +304,7 @@ is
 
 
    procedure show_source_entities_Palette (Invoked_by : in aIDE.Editor.view;
+--                                             Target     : in AdaM.Entity.Entities_view)
                                            Target     : in AdaM.Source.Entities_view)
    is
       use Palette.of_source_entities;
