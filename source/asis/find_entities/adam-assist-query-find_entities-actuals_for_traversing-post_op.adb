@@ -41,6 +41,8 @@ begin
       end if;
 
       Metrics.current_Parent := Metrics.current_Parent.Parent;
+      ada.Text_IO.new_Line;
+
    else
       if Is_Equal (Element, State.ignore_Starter)
       then

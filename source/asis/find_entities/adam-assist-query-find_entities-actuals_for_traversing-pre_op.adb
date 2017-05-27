@@ -498,30 +498,24 @@ begin
       return;   -- We are now ignoring, so do no more.
    end if;
 
-   if new_Entity /= null
+
+   if Metrics.current_Parent = null
    then
---        if Parent = null
---        then
---           Metrics.compilation_Unit.add (new_Entity);
---           Metrics.compilation_Unit.Entity_is (new_Entity);
---        else
---           Parent.add_Child (new_Entity);
---        end if;
+      Metrics.compilation_Unit.Entity_is (new_Entity);
 
-      if Metrics.current_Parent = null
-      then
-         Metrics.compilation_Unit.Entity_is (new_Entity);
-         ada.Text_IO.put_Line ("Lowering Metrics.current_Parent from null to " & new_Entity.Name);
-      else
-         Metrics.current_Parent.Children.append (new_Entity);
-         ada.Text_IO.put_Line ("Lowering Metrics.current_Parent from " & Metrics.current_Parent.Name &
-                                 " to " & new_Entity.Name);
-      end if;
+      ada.Text_IO.put_Line ("Lowering Metrics.current_Parent from null to " & new_Entity.Name);
+      new_Entity.Parent_is (null);
+      Metrics.current_Parent := new_Entity;
+   else
+      Metrics.current_Parent.Children.append (new_Entity);
 
+      ada.Text_IO.put_Line ("Lowering Metrics.current_Parent from " & Metrics.current_Parent.Name &
+                              " to " & new_Entity.Name);
       new_Entity.Parent_is (Metrics.current_Parent);
       Metrics.current_Parent := new_Entity;
---        State.parent_Stack.append (new_Entity);   -- Allow children to know their parent.
    end if;
+
+--        State.parent_Stack.append (new_Entity);   -- Allow children to know their parent.
 
 exception
 

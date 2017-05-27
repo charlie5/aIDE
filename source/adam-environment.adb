@@ -136,7 +136,7 @@ is
           ada.Text_IO;
 
       the_Unit   : AdaM.compilation_Unit.view;
-      the_Entity : AdaM.Entity.view;
+      top_Entity : AdaM.Entity.view;
 
       Depth      : Natural := 0;
 
@@ -146,22 +146,36 @@ is
          return Depth * "   ";
       end Indent;
 
+      procedure print (the_Entity : in Entity.view)
+      is
+      begin
+--           put_Line ("Entity.Name = " & the_Entity.Name & "     of kind " & );
+
+         Depth := Depth + 1;
+         put_Line (Indent
+                   & "Entity.Name : "             & the_Entity.Name
+                   & "                    Tag = " & ada.Tags.Expanded_Name (the_Entity.all'Tag));
+         Depth := Depth - 1;
+
+         for Each of the_Entity.Children.all
+         loop
+            print (Each);
+         end loop;
+      end print;
+
    begin
       put_Line ("Environment:");
 
       for i in 1 .. Self.Length
       loop
          the_Unit   := Self.Unit (i);
-         the_Entity := the_Unit.Entity;
+         top_Entity := the_Unit.Entity;
 
          New_Line (2);
          put_Line ("Unit.Name = " & the_Unit.Name);
-         put_Line ("Entity.Name = " & the_Entity.Name);
+         put_Line ("Top Entity.Name = " & top_Entity.Name);
 
-         for Each of the_Entity.Children.all
-         loop
-            put_Line ("Child.Name = " & Each.Name);
-         end loop;
+         print (top_Entity);
       end loop;
 
       new_Line;
