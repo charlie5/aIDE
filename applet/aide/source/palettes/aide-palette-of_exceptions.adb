@@ -315,7 +315,7 @@ is
          procedure build_Gui_for (the_Package       : in AdaM.a_Package.view;
                                   children_Notebook : in gtk_Notebook)
          is
-            the_Children                   :          AdaM.a_Package.Vector renames the_Package.Children;
+            the_Children                   :          AdaM.a_Package.Vector renames the_Package.child_Packages;
             the_exceptions_Palette_package : constant Palette.of_exceptions_subpackages.view
               := aIDE.Palette.of_exceptions_subpackages.to_exceptions_Palette_package;
          begin
@@ -367,7 +367,7 @@ is
          --
          for i in 1 .. Integer (the_Environ.standard_Package.Children.Length)
          loop
-            build_Gui_for (the_Environ.standard_Package.Children.Element (i).all'Access,
+            build_Gui_for (the_Environ.standard_Package.child_Packages.Element (i).all'Access,
                            Self.all_Notebook);
          end loop;
 

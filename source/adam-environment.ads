@@ -20,7 +20,8 @@ is
 
    function  all_Types (Self : in Item) return AdaM.a_Type.Vector;
 
-   procedure print (Self : in Item);
+   procedure print          (Self : in Item);
+   procedure print_Entities (Self : in Item);
 
 
    procedure standard_package_is (Self : in out Item;   Now : in AdaM.a_Package.view);

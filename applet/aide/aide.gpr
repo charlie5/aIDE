@@ -2,8 +2,7 @@ with
      "../../library/adam",
      "gtkada",
      "ashell",
-     "common",
-     "asis";
+     "common";
 
 
 project aIDE

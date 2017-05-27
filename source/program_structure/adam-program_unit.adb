@@ -8,17 +8,17 @@ is
    --  Storage Pool
    --
 
-   record_Version  : constant                := 1;
-   max_Subprograms : constant                := 5_000;
-   null_Subprogram : constant program_Unit.item := (others => <>);
-
-   package Pool is new AdaM.Factory.Pools (".adam-store",
-                                           "program_units",
-                                           max_Subprograms,
-                                           record_Version,
-                                           program_Unit.item,
-                                           program_Unit.view,
-                                           null_Subprogram);
+--     record_Version  : constant                := 1;
+--     max_Subprograms : constant                := 5_000;
+--     null_Subprogram : constant program_Unit.item := (others => <>);
+--
+--     package Pool is new AdaM.Factory.Pools (".adam-store",
+--                                             "program_units",
+--                                             max_Subprograms,
+--                                             record_Version,
+--                                             program_Unit.item,
+--                                             program_Unit.view,
+--                                             null_Subprogram);
 
    --  Forge
    --
@@ -37,44 +37,44 @@ is
    end destruct;
 
 
-   function new_Subprogram return View
-   is
-      new_View : constant program_Unit.view := Pool.new_Item;
-   begin
-      define (program_Unit.item (new_View.all));
-      return new_View;
-   end new_Subprogram;
+--     function new_Subprogram return View
+--     is
+--        new_View : constant program_Unit.view := Pool.new_Item;
+--     begin
+--        define (program_Unit.item (new_View.all));
+--        return new_View;
+--     end new_Subprogram;
 
 
-   procedure free (Self : in out program_Unit.view)
-   is
-   begin
-      destruct (program_Unit.item (Self.all));
-      Pool.free (Self);
-   end free;
+--     procedure free (Self : in out program_Unit.view)
+--     is
+--     begin
+--        destruct (program_Unit.item (Self.all));
+--        Pool.free (Self);
+--     end free;
 
 
 
    --  Attributes
    --
 
-   overriding
-   function Id   (Self : access Item) return AdaM.Id
-   is
-   begin
-      return Pool.to_Id (Self);
-   end Id;
+--     overriding
+--     function Id   (Self : access Item) return AdaM.Id
+--     is
+--     begin
+--        return Pool.to_Id (Self);
+--     end Id;
 
 
    -- Streams
    --
 
-   procedure View_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-                         Self   : in              View)
-                         renames Pool.View_write;
-
-   procedure View_read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-                        Self   : out             View)
-                        renames Pool.View_read;
+--     procedure View_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+--                           Self   : in              View)
+--                           renames Pool.View_write;
+--
+--     procedure View_read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+--                          Self   : out             View)
+--                          renames Pool.View_read;
 
 end AdaM.program_Unit;

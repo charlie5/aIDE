@@ -10,7 +10,7 @@ is
 
    record_Version  : constant                := 1;
    max_Subprograms : constant                := 5_000;
-   null_Subprogram : constant Declaration.of_exception.item := (others => <>);
+   null_Subprogram : constant Declaration.of_exception.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "Declarations.of_exception",

@@ -5,7 +5,9 @@ with
      ada.Containers.Vectors,
      ada.Containers.Hashed_Maps,
      ada.Unchecked_Conversion,
-     ada.Directories;
+     ada.Directories,
+
+     System.Parameters;
 
 
 package body AdaM.Factory
@@ -72,19 +74,52 @@ is
    --  Pools
    --
 
+
    package body Pools
    is
+      use Interfaces.C;
+
       -- Arrays and Pointers for our Pool.
       --
 
       subtype item_Id is AdaM.Id range 1 .. AdaM.Id'Last;
 
+--        type    Items   is array (item_Id range <>) of aliased Item;
+
+--        package item_Pointers is new interfaces.C.Pointers (Index              => item_Id,
+--                                                            Element            => Item,
+--                                                            Element_Array      => Items,
+--                                                            Default_Terminator => null_Item);
       type    Items   is array (item_Id range <>) of aliased Item;
 
-      package item_Pointers is new interfaces.C.Pointers (Index              => item_Id,
-                                                          Element            => Item,
-                                                          Element_Array      => Items,
-                                                          Default_Terminator => null_Item);
+
+      type Addr is mod 2 ** System.Parameters.ptr_bits;
+
+--        function To_Pointer is new Ada.Unchecked_Conversion (Addr,      Pointer);
+      function To_Addr    is new Ada.Unchecked_Conversion (View,   Addr);
+--        function To_Addr    is new Ada.Unchecked_Conversion (Interfaces.C.ptrdiff_t, Addr);
+      function To_Ptrdiff is new Ada.Unchecked_Conversion (Addr,      Interfaces.C.ptrdiff_t);
+
+      Elmt_Size : constant ptrdiff_t :=   (Items'Component_Size + System.Storage_Unit - 1)
+                                        / System.Storage_Unit;
+
+
+      function "-" (Left  : in View;
+                    Right : in View) return ptrdiff_t
+      is
+      begin
+         if        Left  = null
+           or else Right = null
+         then
+            raise constraint_Error;
+         end if;
+
+         return   To_Ptrdiff (To_Addr (Left) - To_Addr (Right))
+                / Elmt_Size;
+      end "-";
+
+
+
 
       --  The storage pool.
       --
@@ -127,13 +162,32 @@ is
 
 
 
+--        function to_Id (From : in View) return AdaM.Id
+--        is
+--           use item_Pointers;
+--           Start : constant item_Pointers.Pointer := Pool (Pool'First)'Access;
+--        begin
+--           return AdaM.Id (item_Pointers.Pointer (From) - Start) + 1;
+--        end to_Id;
+
+
       function to_Id (From : in View) return AdaM.Id
       is
-         use item_Pointers;
-         Start : constant item_Pointers.Pointer := Pool (Pool'First)'Access;
+--           use item_Pointers;
+         Start : constant View := Pool (Pool'First)'Access;
       begin
-         return AdaM.Id (item_Pointers.Pointer (From) - Start) + 1;
+         return AdaM.Id (From - Start) + 1;
       end to_Id;
+
+
+
+--        function to_Id (From : in View) return AdaM.Id
+--        is
+--           use System;
+--           Start : constant System.Address := Pool (Pool'First)'Address;
+--        begin
+--           return AdaM.Id (From.all'Address - Start) + 1;
+--        end to_Id;
 
 
       function new_Item return View

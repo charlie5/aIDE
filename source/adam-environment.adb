@@ -4,6 +4,7 @@ with
      ada.Text_IO,
      ada.Tags,
      ada.Strings.fixed;
+with AdaM.Entity;
 
 
 package body AdaM.Environment
@@ -103,6 +104,8 @@ is
       end Indent;
 
    begin
+      put_Line ("Environment:");
+
       for i in 1 .. Self.Length
       loop
          the_Unit := Self.Unit (i);
@@ -119,6 +122,51 @@ is
             Depth := Depth - 1;
          end loop;
       end loop;
+
+      new_Line;
+      put_Line ("End Environment:");
    end print;
+
+
+
+   procedure print_Entities (Self : in Item)
+   is
+      use AdaM.Source,
+          ada.Strings.fixed,
+          ada.Text_IO;
+
+      the_Unit   : AdaM.compilation_Unit.view;
+      the_Entity : AdaM.Entity.view;
+
+      Depth      : Natural := 0;
+
+      function Indent return String
+      is
+      begin
+         return Depth * "   ";
+      end Indent;
+
+   begin
+      put_Line ("Environment:");
+
+      for i in 1 .. Self.Length
+      loop
+         the_Unit   := Self.Unit (i);
+         the_Entity := the_Unit.Entity;
+
+         New_Line (2);
+         put_Line ("Unit.Name = " & the_Unit.Name);
+         put_Line ("Entity.Name = " & the_Entity.Name);
+
+         for Each of the_Entity.Children.all
+         loop
+            put_Line ("Child.Name = " & Each.Name);
+         end loop;
+      end loop;
+
+      new_Line;
+      put_Line ("End Environment:");
+   end print_Entities;
+
 
 end AdaM.Environment;

@@ -50,13 +50,13 @@ is
 
 
 
-   function  new_compliation_Unit (Name : in String := "") return compilation_Unit.view
+   function  new_compilation_Unit (Name : in String := "") return compilation_Unit.view
    is
       new_Unit : constant compilation_Unit.view := Pool.new_Item;
    begin
       new_Unit.Name := +Name;
       return new_Unit;
-   end new_compliation_Unit;
+   end new_compilation_Unit;
 
 
 
@@ -174,6 +174,28 @@ is
    begin
       Self.Name := +Now;
    end Name_is;
+
+
+
+
+
+
+
+
+   function  Entity    (Self : in     Item)     return AdaM.Entity.view
+   is
+   begin
+      return Self.Entity;
+   end Entity;
+
+
+
+   procedure Entity_is (Self : in out Item;   Now : in AdaM.Entity.view)
+   is
+   begin
+      Self.Entity := Now;
+   end Entity_is;
+
 
 
 

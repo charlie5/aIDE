@@ -9,7 +9,7 @@ is
 
    record_Version : constant                          := 1;
    max_Types      : constant                          := 5_000;
-   null_Type      : constant signed_integer_type.item := (Source.Entity with others => <>);
+   null_Type      : constant signed_integer_type.item := (a_Type.integer_Type with others => <>);
 
    package Pool is new AdaM.Factory.Pools (storage_Folder => ".adam-store",
                                            pool_Name      => "signed_integer_types",

@@ -1,4 +1,5 @@
 with
+     AdaM.Entity,
      AdaM.Source,
      AdaM.Block,
      AdaM.Context,
@@ -11,7 +12,8 @@ with
 package AdaM.Subprogram
 is
 
-   type Item is new Source.Entity with private;
+   type Item is new Source.Entity
+                and Entity.item   with private;
 
 
    -- View
@@ -73,8 +75,10 @@ private
    function to_Source (the_Profile : in Profile) return text_Vectors.Vector;
 
 
+   package Entity is new Entity.make_Entity (Source.Entity);
 
-   type Item is new Source.Entity with
+
+   type Item is new Entity.item with
       record
          Context      : AdaM.Context.view;
          Name         : Text;

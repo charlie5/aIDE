@@ -1,12 +1,15 @@
 with
      AdaM.Source,
-     ada.Streams;
+     AdaM.Entity,
+
+     Ada.Streams;
 
 
 package AdaM.a_Type
 is
 
-   type Item is abstract new Source.Entity with private;
+   type Item is abstract new Source.Entity
+                         and Entity.item    with private;
 
 
    -- View
@@ -62,7 +65,11 @@ is
 
 private
 
-   type Item is abstract new Source.Entity with
+   package Entity is new Entity.make_Entity (Source.Entity);
+
+
+--     type Item is abstract new Source.Entity
+   type Item is abstract new Entity.item with
       record
          Name : Text;
       end record;

@@ -9,7 +9,7 @@ is
 
    record_Version : constant                  := 1;
    max_Types      : constant                  := 5_000;
-   null_Type      : constant record_type.item := (Source.Entity with others => <>);
+   null_Type      : constant record_type.item := (a_Type.composite_Type with others => <>);
 
    package Pool is new AdaM.Factory.Pools (storage_Folder => ".adam-store",
                                            pool_Name      => "record_types",

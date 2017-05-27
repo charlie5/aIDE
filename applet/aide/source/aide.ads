@@ -21,4 +21,12 @@ private
 
 
    anonymous_Procedure : constant String := "Anon";
+
+
+
+
+
+   the_entity_Environ : AdaM.Environment.item;
+
+
 end aIDE;

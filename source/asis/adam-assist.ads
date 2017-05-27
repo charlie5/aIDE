@@ -8,6 +8,7 @@ is
 
    function known_Types       return AdaM.a_Type.Vector;
    function known_Environment return AdaM.Environment.item;
+   function known_Entities    return AdaM.Environment.item;
 
 
    function Tail_of             (the_full_Name : in String) return String;

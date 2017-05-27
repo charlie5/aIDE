@@ -24,10 +24,11 @@ is
    -- Entity Attributes
    --
 
-   function  to_Source (Self : in Entity) return text_Vectors.Vector is abstract;
+   function  to_Source (Self : in Entity) return text_Vectors.Vector     is abstract;
 
---     procedure add_Child (Self : in out Entity;   Child : in Entity_View) is abstract;
---     procedure rid_Child (Self : in out Entity;   Child : in Entity_View) is abstract;
+--     function  Parent    (Self : in     Entity)       return Entity_View   is abstract;
+--     procedure add_Child (Self : in out Entity;   Child : in Entity_View)  is abstract;
+--     procedure rid_Child (Self : in out Entity;   Child : in Entity_View)  is abstract;
 
 --     function  Name (Self : in Entity) return String is abstract;
 

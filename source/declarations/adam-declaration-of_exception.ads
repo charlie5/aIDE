@@ -1,5 +1,7 @@
 with
      AdaM.Source,
+     AdaM.Entity,
+
      Ada.Containers.Vectors,
      Ada.Streams;
 
@@ -8,8 +10,8 @@ package AdaM.Declaration.of_exception
 is
 
    type Item is new Declaration.item
-                and Source.Entity with private;
-
+                and Source.Entity
+                and Entity.item   with private;
 
    -- View
    --
@@ -51,7 +53,10 @@ is
 
 private
 
-   type Item is new Declaration.item
+   package Entity is new Entity.make_Entity (Declaration.item);
+
+--     type Item is new Declaration.item
+   type Item is new Entity.item
                 and Source.Entity with
       record
          null;

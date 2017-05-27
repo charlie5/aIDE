@@ -1,5 +1,6 @@
 with
      AdaM.Any,
+     AdaM.Entity,
      AdaM.Source,
      AdaM.Context,
      AdaM.library_Item,
@@ -37,7 +38,7 @@ is
 
    --  Forge
    --
-   function  new_compliation_Unit (Name : in String := "") return compilation_Unit.view;
+   function  new_compilation_Unit (Name : in String := "") return compilation_Unit.view;
 
 
    type unit_Kind is (library_unit_Kind, subunit_Kind);
@@ -71,6 +72,14 @@ is
    procedure Name_is (Self : in out Item;   Now : in String);
 
 
+
+   function  Entity    (Self : in     Item)     return AdaM.Entity.view;
+   procedure Entity_is (Self : in out Item;   Now : in AdaM.Entity.view);
+
+
+
+
+
 private
 
    type library_Item_or_Subunit (Kind : unit_Kind := library_unit_Kind) is
@@ -93,6 +102,9 @@ private
 
          Context      : AdaM.Context.view;
          library_Item : library_Item_or_Subunit;
+
+
+         Entity : AdaM.Entity.view;
       end record;
 
 

@@ -1,5 +1,7 @@
 with
      AdaM.Environment,
+     AdaM.Entity,
+     AdaM.Source,
      AdaM.compilation_Unit,
      AdaM.a_Package,
      AdaM.a_Type,
@@ -10,7 +12,7 @@ with
      ada.Containers.Hashed_Maps;
 
 
-package AdaM.Assist.Query.find_All.Metrics
+package AdaM.Assist.Query.find_Entities.Metrics
 is
 
    Environment      : AdaM.Environment.item;
@@ -35,6 +37,11 @@ is
    current_package_Declaration : AdaM.Declaration.of_package.view;
 
 
+
+--     current_Parent : AdaM.Source.Entity_View;
+   current_Parent : Entity.view;
+
+
    procedure dummy;
 
-end AdaM.Assist.Query.find_All.Metrics;
+end AdaM.Assist.Query.find_Entities.Metrics;

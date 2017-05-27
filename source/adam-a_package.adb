@@ -135,7 +135,7 @@ is
       the_Exceptions : AdaM.Declaration.of_exception.Vector;
       the_Exception  : AdaM.Declaration.of_exception.view;
    begin
-      put_Line ("PACKAGE NAME: " & (+Self.Name));
+--        put_Line ("PACKAGE NAME: " & (+Self.Name));
 
       for Each of Self.public_Entities
       loop
@@ -155,6 +155,37 @@ is
    end all_Exceptions;
 
 
+
+
+
+   function to_Source (Self : in Item) return text_Vectors.Vector
+   is
+      use ada.Strings.unbounded;
+
+      the_Source : text_Vectors.Vector;
+
+      procedure add (the_Line : in Text)
+      is
+      begin
+         the_Source.append (the_Line);
+      end add;
+
+   begin
+      the_Source.append (Self.Context.to_Source);
+
+      add (+"");
+      add ( "package " & Self.Name);
+      add (+"is");
+
+      add (+"");
+
+      the_Source.append (Self.public_Entities.to_spec_Source);
+
+      add (+"");
+      add ( "end " & Self.Name & ";");
+
+      return the_Source;
+   end to_Source;
 
 
 
@@ -246,11 +277,11 @@ is
 
 
 
-   function  Children (Self : in Item'Class) return a_Package.Vector
+   function  child_Packages (Self : in Item'Class) return a_Package.Vector
    is
    begin
       return Self.Children;
-   end Children;
+   end child_Packages;
 
 
    procedure add_Child (Self : in out Item;   Child : in a_Package.View)

@@ -52,6 +52,7 @@ is
    function  Name             (Self : in     Item)     return String;
    procedure Name_is          (Self : in out Item;   Now : in String);
 
+   function  to_Source        (Self : in     Item) return text_Vectors.Vector;
    function  to_spec_Source   (Self : in     Item) return text_Vectors.Vector;
    function  to_body_Source   (Self : in     Item) return text_Vectors.Vector;
 
@@ -71,7 +72,8 @@ is
    procedure Parent_is (Self : in out Item;   Now : in a_Package.View);
    function  Parent    (Self : in     Item) return a_Package.view;
 
-   function  Children  (Self : in     Item'Class) return a_Package.Vector;
+--     function  Children  (Self : in     Item'Class) return a_Package.Vector;
+   function  child_Packages  (Self : in     Item'Class) return a_Package.Vector;
 
    procedure add_Child (Self : in out Item;   Child : in a_Package.View);
 
@@ -80,7 +82,7 @@ is
 private
 
 
-   type Item is new program_Unit.Item with
+   type Item is new program_Unit.item with
       record
          Name         : Text;
 

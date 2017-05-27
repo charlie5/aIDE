@@ -1,6 +1,8 @@
 with
      AdaM,
+     AdaM.Entity,
      AdaM.a_Package,
+     AdaM.Subprogram,
      AdaM.Declaration.of_exception,
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
@@ -32,14 +34,14 @@ with Asis.Elements;
 with asis.Declarations,
      asis.Expressions;
 
-with AdaM.Assist.Query.find_All.Metrics;
+with AdaM.Assist.Query.find_Entities.Metrics;
 with Asis;
 with Asis.Declarations;
 with Asis.Compilation_Units;
 with ada.Text_IO;
 
 
-separate (AdaM.Assist.Query.find_All.Actuals_for_traversing)
+separate (AdaM.Assist.Query.find_Entities.Actuals_for_traversing)
 
 procedure Pre_Op (Element :        Asis.Element;
                   Control : in out Asis.Traverse_Control;
@@ -52,15 +54,21 @@ is
        Ada.Characters.Handling,
        Ada.Wide_Text_IO;
 
-   package Metrics renames AdaM.Assist.Query.find_All.Metrics;
+   package Metrics renames AdaM.Assist.Query.find_Entities.Metrics;
 
    Argument_Kind        : Asis.Element_Kinds;
    the_declaration_Kind : Asis.declaration_Kinds;
 
-   Parent     : Source.Entity_View;
-   new_Entity : Source.Entity_View;
+--     Parent     : Source.Entity_View;
+--     new_Entity : Source.Entity_View;
+
+--     Parent     : AdaM.Entity.view;
+   new_Entity : AdaM.Entity.view;
 
    use type Source.Entity_View;
+   use type Entity.view;
+
+
 
 begin
    if not Is_Nil (State.ignore_Starter)
@@ -68,10 +76,10 @@ begin
       return;
    end if;
 
-   if not State.parent_Stack.is_Empty
-   then
-      Parent := State.parent_Stack.last_Element;
-   end if;
+--     if not State.parent_Stack.is_Empty
+--     then
+--        Parent := State.parent_Stack.last_Element;
+--     end if;
 
    --  Note, that the code below may be rewritten in more compact way (with
    --  the same functionality). But we prefer to go step-by-step,
@@ -79,6 +87,10 @@ begin
 
    Argument_Kind        := Asis.Elements.    element_Kind (Element);
    the_declaration_Kind := Asis.Elements.declaration_Kind (Element);
+
+   ada.text_IO.put_Line ("Pre-Op: Processing kind (" & Asis.Element_Kinds'Image (Argument_Kind)
+                         & ")     declaration kind is (" & Asis.declaration_Kinds'Image (the_declaration_Kind) & ")");
+
 
 --     if the_declaration_Kind = asis.a_package_Instantiation
 --     then
@@ -120,120 +132,145 @@ begin
             end full_name_Prefix;
 
          begin
-            if the_Kind = Asis.A_Package_Declaration
-            then
-               declare
-                  use ada.Strings, ada.Strings.Fixed, ada.Strings.Unbounded;
+            case the_Kind
+            is
+               when Asis.A_Package_Declaration =>
+                  declare
+                     use ada.Strings, ada.Strings.Fixed, ada.Strings.Unbounded;
 
-                  package_Name    : constant String              := to_String (Defining_Name_Image (the_Names (1)));
-                  final_dot_Index : constant Natural             := Index (package_Name, ".", Backward);
-                  parent_Name     :          Unbounded_String    := +package_Name (1 .. final_dot_Index - 1);
-                  new_Package     : constant AdaM.a_Package.view := AdaM.a_Package.new_Package (package_Name);
-                  parent_Package  :          AdaM.a_Package.view;
-               begin
-                  if package_Name = "Standard"
-                  then
-                     Metrics.Environment.standard_Package_is (new_Package);
-                  else
+                     package_Name    : constant String              := to_String (Defining_Name_Image (the_Names (1)));
+                     final_dot_Index : constant Natural             := Index (package_Name, ".", Backward);
+                     parent_Name     :          Unbounded_String    := +package_Name (1 .. final_dot_Index - 1);
+                     new_Package     : constant AdaM.a_Package.view := AdaM.a_Package.new_Package (package_Name);
+                     parent_Package  :          AdaM.a_Package.view;
+                  begin
+                     if package_Name = "Standard"
+                     then
+                        Metrics.Environment.standard_Package_is (new_Package);
+                     else
+                        if not Is_Nil (the_Parent)
+                        then
+                           parent_Name := +full_name_Prefix;
+                        end if;
+
+                        if parent_Name = ""
+                        then
+                           parent_Package := Metrics.Environment.standard_Package;
+                        else
+                           parent_Package := Metrics.all_Packages.Element (parent_Name);
+                        end if;
+
+                        parent_Package.add_Child (new_Package);
+--                       new_Package   .Parent_is (parent_Package);
+                     end if;
+
+                     Metrics.all_Packages.insert (+package_Name, new_Package);
+
+                     new_Entity := new_Package.all'Access;
+--                    Metrics.current_package_Declaration.Name_is (package_Name);
+                  end;
+
+               when Asis.A_Procedure_Body_Declaration =>
+                  declare
+                     use ada.Strings, ada.Strings.Fixed, ada.Strings.Unbounded;
+
+                     procedure_Name  : constant String              := to_String (Defining_Name_Image (the_Names (1)));
+                     final_dot_Index : constant Natural             := Index (procedure_Name, ".", Backward);
+                     parent_Name     :          Unbounded_String    := +procedure_Name (1 .. final_dot_Index - 1);
+                     new_Procedure   : constant AdaM.Subprogram.view := AdaM.Subprogram.new_Subprogram (procedure_Name);
+                     parent_Package  :          AdaM.a_Package.view;
+                  begin
                      if not Is_Nil (the_Parent)
                      then
                         parent_Name := +full_name_Prefix;
                      end if;
 
-                     if parent_Name = ""
-                     then
-                        parent_Package := Metrics.Environment.standard_Package;
-                     else
-                        parent_Package := Metrics.all_Packages.Element (parent_Name);
-                     end if;
+--                       if parent_Name = ""
+--                       then
+--                          parent_Package := Metrics.Environment.standard_Package;
+--                       else
+--                          parent_Package := Metrics.all_Packages.Element (parent_Name);
+--                       end if;
 
-                     parent_Package.add_Child (new_Package);
-                     new_Package   .Parent_is (parent_Package);
-                  end if;
+                     new_Entity := new_Procedure.all'Access;
+--                    Metrics.current_package_Declaration.Name_is (package_Name);
+                  end;
 
-                  Metrics.all_Packages.insert (+package_Name, new_Package);
-
-
-                  Metrics.current_package_Declaration.Name_is (package_Name);
-               end;
-
-            elsif the_Kind = asis.An_Exception_Declaration
-            then
-               declare
+               when asis.An_Exception_Declaration =>
+                  declare
 --                    use Adam;
 --                    the_Unit      : constant asis.Compilation_Unit := Asis.Elements.Enclosing_Compilation_Unit (the_Declaration);
 --                    the_unit_Name : constant Wide_String           := Asis.Compilation_Units.Unit_Full_Name (the_Unit);
 
-                  Names    : constant asis.Defining_Name_List := Asis.Declarations.Names (Element);
-                  the_Name :          String                  := to_String (Asis.Declarations.Defining_Name_Image (Names (1)));
+                     Names    : constant asis.Defining_Name_List := Asis.Declarations.Names (Element);
+                     the_Name :          String                  := to_String (Asis.Declarations.Defining_Name_Image (Names (1)));
 
-                  new_Exception : AdaM.Declaration.of_exception.view := Adam.Declaration.of_exception.new_Declaration (the_Name);
-               begin
-                  new_Entity := new_Exception.all'Access;
-               end;
+                     new_Exception : AdaM.Declaration.of_exception.view := Adam.Declaration.of_exception.new_Declaration (the_Name);
+                  begin
+                     new_Entity := new_Exception.all'Access;
+                  end;
 
-            elsif the_Kind = asis.An_Ordinary_Type_Declaration
-            then
-               declare
-                  use AdaM;
+               when asis.An_Ordinary_Type_Declaration =>
+                  declare
+                     use AdaM;
 
-                  the_Name          :          asis.Defining_Name;
-                  the_Grandparent   : constant asis.Element         := enclosing_Element (the_Parent);
-                  parent_Name       : constant String               := to_String (Defining_Name_Image (Names (the_Parent) (1)));
+                     the_Name          :          asis.Defining_Name;
+                     the_Grandparent   : constant asis.Element         := enclosing_Element (the_Parent);
+                     parent_Name       : constant String               := to_String (Defining_Name_Image (Names (the_Parent) (1)));
 
-                  the_Type          : constant asis.Type_Definition := asis.Type_Definition  (the_Declaration);
-                  the_Type_View     : constant asis.Declaration     := Type_Declaration_View (the_Declaration);
-               begin
-                  for i in the_Names'Range
-                  loop
-                     the_Name := the_Names (i);
+                     the_Type          : constant asis.Type_Definition := asis.Type_Definition  (the_Declaration);
+                     the_Type_View     : constant asis.Declaration     := Type_Declaration_View (the_Declaration);
+                  begin
+                     for i in the_Names'Range
+                     loop
+                        the_Name := the_Names (i);
 
-                     declare
-                        the_name_Image : constant String  := to_String (Defining_Name_Image (the_Name));
-                        add_Type       :          Boolean := True;
-                     begin
-                        -- Don't add the type if it is a generic parameter.
-                        --
-                        if declaration_Kind (the_Grandparent) = a_package_Instantiation
-                        then
-                           declare
-                              use asis.Expressions;
+                        declare
+                           the_name_Image : constant String  := to_String (Defining_Name_Image (the_Name));
+                           add_Type       :          Boolean := True;
+                        begin
+                           -- Don't add the type if it is a generic parameter.
+                           --
+                           if declaration_Kind (the_Grandparent) = a_package_Instantiation
+                           then
+                              declare
+                                 use asis.Expressions;
 
-                              grandparent_Name :          String                := to_String (Defining_Name_Image (Names (the_Grandparent) (1)));
-                              assocs           : constant asis.Association_List := Generic_Actual_Part (the_Grandparent, True);
-                              param            :          asis.Element;
-                           begin
-                              for i in assocs'Range
-                              loop
-                                 param := Formal_Parameter (assocs (i));
+                                 grandparent_Name :          String                := to_String (Defining_Name_Image (Names (the_Grandparent) (1)));
+                                 assocs           : constant asis.Association_List := Generic_Actual_Part (the_Grandparent, True);
+                                 param            :          asis.Element;
+                              begin
+                                 for i in assocs'Range
+                                 loop
+                                    param := Formal_Parameter (assocs (i));
 
-                                 if to_Lower (to_String (Defining_Name_Image (param))) = to_Lower (the_name_Image)
+                                    if to_Lower (to_String (Defining_Name_Image (param))) = to_Lower (the_name_Image)
+                                    then
+                                       add_Type := False;
+                                    end if;
+                                 end loop;
+                              end;
+                           end if;
+
+                           if add_Type
+                           then
+                              declare
+                                 use ada.Strings.unbounded,
+                                     AdaM.a_Type,
+                                     AdaM.Source;
+
+                                 full_Name : Text;
+                                 new_Type  : AdaM.a_Type.view;
+                              begin
+                                 if the_unit_Name = parent_Name
                                  then
-                                    add_Type := False;
+                                    Set_Unbounded_String (full_Name, the_unit_Name & "." & the_name_Image);
+                                 else
+                                    Set_Unbounded_String (full_Name, the_unit_Name & "." & parent_Name & "." & the_name_Image);
                                  end if;
-                              end loop;
-                           end;
-                        end if;
 
-                        if add_Type
-                        then
-                           declare
-                              use ada.Strings.unbounded,
-                                  AdaM.a_Type,
-                                  AdaM.Source;
-
-                              full_Name : Text;
-                              new_Type  : AdaM.a_Type.view;
-                           begin
-                              if the_unit_Name = parent_Name
-                              then
-                                 Set_Unbounded_String (full_Name, the_unit_Name & "." & the_name_Image);
-                              else
-                                 Set_Unbounded_String (full_Name, the_unit_Name & "." & parent_Name & "." & the_name_Image);
-                              end if;
-
-                              case asis.Elements.Type_Kind (the_Type_View)
-                              is
+                                 case asis.Elements.Type_Kind (the_Type_View)
+                                 is
                                  when An_Enumeration_Type_Definition =>
                                     declare
                                        new_enum_Type : constant AdaM.a_Type.enumeration_type.view
@@ -395,61 +432,60 @@ begin
                                  when Not_A_Type_Definition =>
                                     ada.Text_IO.put_Line ("*******  Not_A_Type_Definition  *********   " & (+full_Name));
 
-                              end case;
+                                 end case;
 
-                              if new_Type /= null
-                              then
-                                 Metrics.all_Types.append (new_Type);
-                              end if;
-                           end;
-                        end if;
-                     end;
-                  end loop;
-               end;
-
-
-            elsif the_Kind = A_Subtype_Declaration
-            then
-               declare
-                  full_Name   : constant String
-                    := full_name_Prefix & "." & to_String (Defining_Name_Image (the_Names (1)));
-
-                  new_Subtype : constant AdaM.a_Type.a_subtype.view
-                    := AdaM.a_Type.a_subtype.new_Type (Name => full_Name);
-               begin
-                  Metrics.all_Types.append (new_Subtype.all'Access);
-                  new_Entity := new_Subtype.all'Access;
-               end;
+                                 if new_Type /= null
+                                 then
+                                    Metrics.all_Types.append (new_Type);
+                                 end if;
+                              end;
+                           end if;
+                        end;
+                     end loop;
+                  end;
 
 
-            elsif the_Kind = A_Task_Type_Declaration
-            then
-               declare
-                  full_Name : constant String
-                    := full_name_Prefix & "." & to_String (Defining_Name_Image (the_Names (1)));
+               when A_Subtype_Declaration =>
+                  declare
+                     full_Name   : constant String
+                       := full_name_Prefix & "." & to_String (Defining_Name_Image (the_Names (1)));
 
-                  new_Type  : constant AdaM.a_Type.task_type.view
-                    := AdaM.a_Type.task_type.new_Type (Name => full_Name);
-               begin
-                  Metrics.all_Types.append (new_Type.all'Access);
-                  new_Entity := new_Type.all'Access;
-               end;
+                     new_Subtype : constant AdaM.a_Type.a_subtype.view
+                       := AdaM.a_Type.a_subtype.new_Type (Name => full_Name);
+                  begin
+                     Metrics.all_Types.append (new_Subtype.all'Access);
+                     new_Entity := new_Subtype.all'Access;
+                  end;
 
 
-            elsif the_Kind = A_Protected_Type_Declaration
-            then
-               declare
-                  full_Name : constant String
-                    := full_name_Prefix & "." & to_String (Defining_Name_Image (the_Names (1)));
+               when A_Task_Type_Declaration =>
+                  declare
+                     full_Name : constant String
+                       := full_name_Prefix & "." & to_String (Defining_Name_Image (the_Names (1)));
 
-                  new_Type  : constant AdaM.a_Type.protected_type.view
-                    := AdaM.a_Type.protected_type.new_Type (Name => full_Name);
-               begin
-                  Metrics.all_Types.append (new_Type.all'Access);
-                  new_Entity := new_Type.all'Access;
-               end;
+                     new_Type  : constant AdaM.a_Type.task_type.view
+                       := AdaM.a_Type.task_type.new_Type (Name => full_Name);
+                  begin
+                     Metrics.all_Types.append (new_Type.all'Access);
+                     new_Entity := new_Type.all'Access;
+                  end;
 
-            end if;
+
+               when A_Protected_Type_Declaration =>
+                  declare
+                     full_Name : constant String
+                       := full_name_Prefix & "." & to_String (Defining_Name_Image (the_Names (1)));
+
+                     new_Type  : constant AdaM.a_Type.protected_type.view
+                       := AdaM.a_Type.protected_type.new_Type (Name => full_Name);
+                  begin
+                     Metrics.all_Types.append (new_Type.all'Access);
+                     new_Entity := new_Type.all'Access;
+                  end;
+
+               when others =>
+                  State.ignore_Starter := Element;
+            end case;
          end;
 
       when others =>
@@ -464,14 +500,27 @@ begin
 
    if new_Entity /= null
    then
-      if Parent = null
-      then
-         Metrics.compilation_Unit.add (new_Entity);
+--        if Parent = null
+--        then
+--           Metrics.compilation_Unit.add (new_Entity);
+--           Metrics.compilation_Unit.Entity_is (new_Entity);
 --        else
 --           Parent.add_Child (new_Entity);
+--        end if;
+
+      if Metrics.current_Parent = null
+      then
+         Metrics.compilation_Unit.Entity_is (new_Entity);
+         ada.Text_IO.put_Line ("Lowering Metrics.current_Parent from null to " & new_Entity.Name);
+      else
+         Metrics.current_Parent.Children.append (new_Entity);
+         ada.Text_IO.put_Line ("Lowering Metrics.current_Parent from " & Metrics.current_Parent.Name &
+                                 " to " & new_Entity.Name);
       end if;
 
-      State.parent_Stack.append (new_Entity);   -- Allow children to know their parent.
+      new_Entity.Parent_is (Metrics.current_Parent);
+      Metrics.current_Parent := new_Entity;
+--        State.parent_Stack.append (new_Entity);   -- Allow children to know their parent.
    end if;
 
 exception

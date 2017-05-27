@@ -5,14 +5,14 @@ with asis.Elements,
      AdaM.library_Item,
      AdaM.library_Unit.declaration,
 
-     AdaM.Assist.Query.find_All.element_Processing,
-     AdaM.Assist.Query.find_All.Metrics,
+     AdaM.Assist.Query.find_Entities.element_Processing,
+     AdaM.Assist.Query.find_Entities.Metrics,
 
      Ada.Characters.Handling;
 with Ada.Text_IO; use Ada.Text_IO;
 
 
-package body AdaM.Assist.Query.find_All.unit_Processing
+package body AdaM.Assist.Query.find_Entities.unit_Processing
 is
 
    procedure Process_Unit (The_Unit : Asis.Compilation_Unit)
@@ -30,16 +30,16 @@ is
       --  The top-level structural element of the library item or subunit
       --  contained in The_Unit.
 
-      the_Name : constant String := to_String (asis.Compilation_Units.Unit_Full_Name (The_Unit));
+      the_Name : constant String          := to_String (asis.Compilation_Units.Unit_Full_Name (The_Unit));
       Kind     : constant asis.Unit_Kinds := asis.Compilation_Units.Unit_Kind (the_Unit);
 
    begin
 --        Metrics.new_Unit := adam.compilation_Unit.new_Unit ("anon");
-      put_Line (the_Name & "   " & asis.Unit_Kinds'Image (Kind));
+      put_Line ("Processing compilation unit    ***" & the_Name & "***  of kind " & asis.Unit_Kinds'Image (Kind));
 
       if Kind = asis.a_Package
       then
-         Metrics.current_compilation_Unit := AdaM.compilation_Unit.new_compliation_Unit;
+         Metrics.current_compilation_Unit := AdaM.compilation_Unit.new_compilation_Unit;
 --             := adam.compilation_Unit.new_library_Unit
 --                  (the_Name,
 --                   library_Item.new_Item (adam.library_Unit.declaration.new_Package.all'Access));
@@ -56,10 +56,10 @@ is
 
       for J in Cont_Clause_Elements'Range
       loop
-         AdaM.Assist.Query.find_All.element_Processing.Process_Construct (Cont_Clause_Elements (J));
+         AdaM.Assist.Query.find_Entities.element_Processing.Process_Construct (Cont_Clause_Elements (J));
       end loop;
 
-      AdaM.Assist.Query.find_All.element_Processing.Process_Construct (Unit_Decl);
+      AdaM.Assist.Query.find_Entities.element_Processing.Process_Construct (Unit_Decl);
 
       --  This procedure does not contain any exception handler because it
       --  supposes that Element_Processing.Process_Construct should handle
@@ -74,6 +74,17 @@ is
 --           AdaM.compilation_Unit.item (new_Unit.all) := Metrics.compilation_Unit;
 --           Metrics.Environment.add (new_Unit);
 --        end;
+
+      declare
+         new_Unit : constant AdaM.compilation_Unit.view := AdaM.compilation_Unit.new_compilation_Unit;
+      begin
+         AdaM.compilation_Unit.item (new_Unit.all) := Metrics.compilation_Unit;
+         Metrics.Environment.add (new_Unit);
+      end;
+
+
+      put_Line ("End of processing compilation unit    ***" & the_Name & "***  of kind " & asis.Unit_Kinds'Image (Kind));
+      new_Line (2);
    end Process_Unit;
 
-end AdaM.Assist.Query.find_All.unit_Processing;
+end AdaM.Assist.Query.find_Entities.unit_Processing;

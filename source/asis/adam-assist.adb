@@ -2,6 +2,9 @@ with
      AdaM.Assist.Query.find_All.Driver,
      AdaM.Assist.Query.find_All.Metrics,
 
+     AdaM.Assist.Query.find_Entities.Driver,
+     AdaM.Assist.Query.find_Entities.Metrics,
+
      Ada.Strings.unbounded,
      Ada.Strings.fixed;
 
@@ -26,6 +29,19 @@ is
 
       return Environ;
    end known_Environment;
+
+
+
+   function known_Entities return AdaM.Environment.item
+   is
+      Environ : Environment.item renames Query.find_Entities.Metrics.Environment;
+   begin
+      Environ.clear;
+      Query.find_Entities.Driver;
+
+      return Environ;
+   end known_Entities;
+
 
 
 

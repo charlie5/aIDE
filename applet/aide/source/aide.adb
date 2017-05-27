@@ -2,6 +2,9 @@ with
      aIDE.GUI,
      aIDE.Palette.of_packages,
 
+     AdaM.Entity,
+
+
      AdaM.Assist,
      AdaM.compilation,
      AdaM.library_Item,
@@ -67,7 +70,11 @@ is
       put_Line ("gnatmake output: " & Command_Output (to_Command ("gnatmake -c -gnatc -gnatt ./assets/asis/all_standard_ada.adb")));
 
       the_Environ := AdaM.Assist.known_Environment;
-      the_Environ.print;
+--        the_Environ.print;
+
+
+      the_entity_Environ := AdaM.Assist.known_Entities;
+      the_entity_Environ.print_Entities;
    end define_standard_Ada_Types;
 
 

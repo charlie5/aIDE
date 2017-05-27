@@ -343,7 +343,7 @@ is
          procedure build_Gui_for (the_Package       : in AdaM.a_Package.view;
                                   children_Notebook : in gtk_Notebook)
          is
-            the_Children                 :          AdaM.a_Package.Vector renames the_Package.Children;
+            the_Children                 :          AdaM.a_Package.Vector renames the_Package.child_Packages;
             the_packages_Palette_package : constant Palette.of_packages_subpackages.view
               := aIDE.Palette.of_packages_subpackages.to_packages_Palette_package;
          begin
@@ -385,9 +385,9 @@ is
       begin
          -- Recursively add sub-gui's for each package, rooted at 'Standard'.
          --
-         for i in 1 .. Integer (the_Environ.standard_Package.Children.Length)
+         for i in 1 .. Integer (a_Package.item (the_Environ.standard_Package.all).Children.Length)
          loop
-            build_Gui_for (the_Environ.standard_Package.Children.Element (i),
+            build_Gui_for (the_Environ.standard_Package.child_Packages.Element (i),
                            Self.all_Notebook);
          end loop;
 
