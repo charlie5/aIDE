@@ -1,5 +1,6 @@
 with
-     AdaM.Source;
+     AdaM.Source,
+     AdaM.Entity;
 
 private
 with
@@ -9,7 +10,8 @@ with
 package AdaM.Comment
 is
 
-   type Item is new Source.Entity with private;
+--     type Item is new Source.Entity with private;
+   type Item is new Entity.item with private;
    type View is access all Item'Class;
 
 
@@ -31,13 +33,17 @@ is
    function  Lines     (Self : in     Item)     return text_Lines;
    procedure Lines_are (Self : in out Item;   Now : in text_Lines);
 
-   overriding function to_Source (Self : in     Item) return text_Vectors.Vector;
+   overriding
+   function to_Source (Self : in     Item) return text_Vectors.Vector;
 
+   overriding
+   function  Name      (Self : in     Item) return String;
 
 
 private
 
-   type Item is new Source.Entity with
+--     type Item is new Source.Entity with
+   type Item is new Entity.item with
       record
          Lines : text_Lines;
       end record;

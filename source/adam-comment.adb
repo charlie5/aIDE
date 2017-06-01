@@ -10,7 +10,7 @@ is
 
    record_Version : constant                := 1;
    max_Comments   : constant                := 5_000;
-   null_Comment   : constant Comment.item := (Source.Entity with others => <>);
+   null_Comment   : constant Comment.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "comments",
@@ -59,6 +59,16 @@ is
 
    --  Attributes
    --
+
+
+   overriding
+   function  Name      (Self : in     Item) return String
+   is
+   begin
+      return "a_Comment";
+   end Name;
+
+
 
    overriding
    function Id   (Self : access Item) return AdaM.Id

@@ -9,8 +9,10 @@ with
 package AdaM.program_Unit
 is
 
-   type Item is abstract new Any.item
-                         and Entity.item with private;
+--     type Item is abstract new Any.item
+--                           and Entity.item with private;
+
+   type Item is abstract new Entity.item with private;
 
 
    -- View
@@ -50,10 +52,12 @@ is
 
 private
 
-   package Entity is new Entity.make_Entity (Any.item);
+--     package Entity is new Entity.make_Entity (Any.item);
 
 
---     type Item is new Any.item with
+--  --     type Item is new Any.item with
+--     type Item is abstract new Entity.item with
+
    type Item is abstract new Entity.item with
       record
          null;

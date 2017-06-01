@@ -1,5 +1,6 @@
 with
      AdaM.Source,
+     AdaM.Entity,
 
      ada.Streams,
      ada.Containers.Vectors;
@@ -13,7 +14,8 @@ with
 package AdaM.exception_Handler
 is
 
-   type Item is new Source.Entity with private;
+--     type Item is new Source.Entity with private;
+   type Item is new Entity.item with private;
 
 
    -- View
@@ -68,6 +70,8 @@ is
 
    function  Handler   (Self : in     Item) return access AdaM.Block.item'Class;
 
+   overriding
+   function  Name      (Self : in     Item) return String;
 
    --  Operations
    --
@@ -76,7 +80,8 @@ is
 
 private
 
-   type Item is new Source.Entity with
+--     type Item is new Source.Entity with
+   type Item is new Entity.item with
       record
          Exceptions : text_Lines;
          Handler    : access AdaM.Block.item'Class;

@@ -1,6 +1,7 @@
 with
      aIDE.Editor,
      AdaM.Source,
+     AdaM.Entity,
 
      Gtk.Widget,
      Gtk.Button,
@@ -33,9 +34,10 @@ is
 
    type Filter is (declare_Region, begin_Region);
 
-   procedure show    (Self : in out Item;   Invoked_by   : in aIDE.Editor.view;
-                                            Target       : in AdaM.Source.Entities_view;
-                                            Allowed      : in Filter);
+   procedure show (Self : in out Item;   Invoked_by   : in aIDE.Editor.view;
+--                                           Target       : in AdaM.Source.Entities_view;
+                                         Target       : in AdaM.Entity.Entities_view;
+                   Allowed      : in Filter);
    procedure freshen (Self : in out Item);
 
 
@@ -50,7 +52,8 @@ private
    type Item is new Palette.item with
       record
          Invoked_by : aIDE.Editor.view;
-         Target     : AdaM.Source.Entities_View;
+--           Target     : AdaM.Source.Entities_View;
+         Target     : AdaM.Entity.Entities_View;
 
          Top                     : gtk_Window;
          new_type_Frame          : gtk_Frame;

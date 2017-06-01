@@ -10,10 +10,10 @@ is
 
    record_Version : constant                 := 1;
    max_Sources    : constant                 := 5_000;
-   null_Source    : constant raw_Source.item := (Source.Entity with others => <>);
+   null_Source    : constant raw_Source.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
-                                           "raw_source",
+                                           "raw_Source",
                                            max_Sources,
                                            record_Version,
                                            raw_Source.item,
@@ -61,6 +61,14 @@ is
    --  Attributes
    --
 
+   overriding
+   function  Name      (Self : in     Item) return String
+   is
+   begin
+      return "raw_Source";
+   end Name;
+
+
 
    function Lines (Self : in Item) return text_Lines
    is
@@ -77,11 +85,10 @@ is
 
 
    overriding
-   function Id (Self : access Item) return AdaM.Id
+   function Id   (Self : access Item) return AdaM.Id
    is
    begin
-      raise Program_Error;
-      return null_Id;
+      return Pool.to_Id (Self);
    end Id;
 
 

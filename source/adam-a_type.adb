@@ -21,6 +21,7 @@ is
    --  Attributes
    --
 
+   overriding
    function Name (Self : in Item) return String
    is
    begin

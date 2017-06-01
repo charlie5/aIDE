@@ -1,12 +1,14 @@
 with
      AdaM.Source,
+     AdaM.Entity,
      ada.Streams;
 
 
 package AdaM.raw_source
 is
 
-   type Item is new Source.Entity with private;
+--     type Item is new Source.Entity with private;
+   type Item is new Entity.item with private;
    type View is access all Item'Class;
 
 
@@ -32,11 +34,14 @@ is
    overriding
    function to_Source (Self : in     Item) return text_Vectors.Vector;
 
+   overriding
+   function  Name      (Self : in     Item) return String;
 
 
 private
 
-   type Item is new Source.Entity with
+--     type Item is new Source.Entity with
+   type Item is new Entity.item with
       record
          Lines : text_Lines;
       end record;

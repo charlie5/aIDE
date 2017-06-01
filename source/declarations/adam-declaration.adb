@@ -10,7 +10,7 @@ is
 
    record_Version  : constant                := 1;
    max_Subprograms : constant                := 5_000;
-   null_Subprogram : constant Declaration.item := (others => <>);
+   null_Subprogram : constant Declaration.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "Declarations",
@@ -78,6 +78,16 @@ is
    begin
       Self.Name := +Now;
    end Name_is;
+
+
+
+   function  to_Source (Self : in     Item) return text_Vectors.Vector
+   is
+      the_Source : text_Vectors.Vector;
+   begin
+      raise Program_Error with "TODO";
+      return the_Source;
+   end to_Source;
 
 
 

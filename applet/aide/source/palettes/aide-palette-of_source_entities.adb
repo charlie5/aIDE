@@ -139,7 +139,8 @@ is
 
 
    procedure show (Self : in out Item;   Invoked_by   : in aIDE.Editor.view;
-                                         Target       : in AdaM.Source.Entities_view;
+--                                           Target       : in AdaM.Source.Entities_view;
+                                         Target       : in AdaM.Entity.Entities_view;
                                          Allowed      : in Filter)
    is
    begin

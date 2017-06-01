@@ -1,4 +1,5 @@
 with
+     AdaM.Entity,
      AdaM.Block,
      gtk.Widget;
 
@@ -43,7 +44,8 @@ private
 
    type my_Expander_Record is new Gtk_Expander_Record with
       record
-         Target : AdaM.Source.Entities_View;
+--           Target : AdaM.Source.Entities_View;
+         Target : AdaM.Entity.Entities_View;
          Editor : aIDE.Editor.of_block.view;
       end record;
 

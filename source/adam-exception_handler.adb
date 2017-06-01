@@ -11,7 +11,7 @@ is
 
    record_Version : constant             := 1;
    max_Exceptions : constant             := 5_000;
-   null_Exception : constant exception_Handler.item := (Source.Entity with others => <>);
+   null_Exception : constant exception_Handler.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "exception_handlers",
@@ -86,6 +86,16 @@ is
 
    --  Attributes
    --
+
+
+   overriding
+   function  Name      (Self : in     Item) return String
+   is
+   begin
+      return "exception_Handler";
+   end Name;
+
+
 
    overriding function Id   (Self : access Item) return AdaM.Id
    is

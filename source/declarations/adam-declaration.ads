@@ -1,5 +1,6 @@
 with
      AdaM.Any,
+     AdaM.Entity,
 
      Ada.Containers.Vectors,
      Ada.Streams;
@@ -8,7 +9,8 @@ with
 package AdaM.Declaration
 is
 
-   type Item is new Any.item with private;
+--     type Item is new Any.item with private;
+   type Item is new Entity.item with private;
 
 
    -- View
@@ -47,11 +49,13 @@ is
    function  Name    (Self : in     Item)     return String;
    procedure Name_is (Self : in out Item;   Now : in String);
 
+   function  to_Source (Self : in     Item) return text_Vectors.Vector;
 
 
 private
 
-   type Item is new Any.item with
+--     type Item is new Any.item with
+   type Item is new Entity.item with
       record
          Name : Text;
       end record;

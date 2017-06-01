@@ -9,9 +9,11 @@ with
 package AdaM.Declaration.of_exception
 is
 
-   type Item is new Declaration.item
-                and Source.Entity
-                and Entity.item   with private;
+--     type Item is new Declaration.item
+--                  and Source.Entity
+--                  and Entity.item   with private;
+
+   type Item is new Declaration.item with private;
 
    -- View
    --
@@ -47,17 +49,18 @@ is
    overriding
    function Id (Self : access Item) return AdaM.Id;
 
-   overriding
+--     overriding
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 
 
 private
 
-   package Entity is new Entity.make_Entity (Declaration.item);
+--     package Entity is new Entity.make_Entity (Declaration.item);
 
---     type Item is new Declaration.item
-   type Item is new Entity.item
-                and Source.Entity with
+   type Item is new Declaration.item with
+--     type Item is new Entity.item
+--     type Item is new Entity.item
+--                  and Source.Entity with
       record
          null;
       end record;

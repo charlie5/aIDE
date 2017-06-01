@@ -67,7 +67,8 @@ is
    --  Attributes
    --
 
-   overriding function Id   (Self : access Item) return AdaM.Id
+   overriding
+   function Id   (Self : access Item) return AdaM.Id
    is
    begin
       return Pool.to_Id (Self);
@@ -336,9 +337,8 @@ is
       AdaM.Context.view'write (Stream, Self.Context);
       Source.Entities  'write (Stream, Self.public_Entities);
 
---        Entity.view    'write (Stream, Self.parent_Entity);
---        Entity.view    'write (Stream, program_Unit.item (Self).parent_Entity);
---        Entity.Entities'write (Stream, program_Unit.item (Self).Children);
+      Entity.view    'write (Stream, Self.parent_Entity);
+      Entity.Entities'write (Stream, Self.Children);
    end Item_write;
 
 
@@ -361,23 +361,25 @@ is
          AdaM.Context.view'read (Stream, Self.Context);
          Source.Entities  'read (Stream, Self.public_Entities);
 
---           declare
---              Parent : a_Package.view;
---           begin
---              a_Package.view'read (Stream, Parent);
---
---              if Parent /= null
---              then
---                 program_Unit.item (Self).parent_Entity_is (Parent.all'Access);
---              end if;
---           end;
+         declare
+            Parent : a_Package.view;
+         begin
+            a_Package.view'read (Stream, Parent);
 
---           declare
---              Children : Entity.Entities;
---           begin
---              Entity.Entities'read (Stream, Children);
+            if Parent /= null
+            then
+--                 program_Unit.item (Self).parent_Entity_is (Parent.all'Access);
+               Self.parent_Entity_is (Parent.all'Access);
+            end if;
+         end;
+
+         declare
+            Children : Entity.Entities;
+         begin
+            Entity.Entities'read (Stream, Children);
 --              program_Unit.item (Self).Children_are (Children);
---           end;
+            Self.Children_are (Children);
+         end;
 
       when others =>
          raise Program_Error with "Illegal version number during package restore.";

@@ -12,8 +12,10 @@ with
 package AdaM.Subprogram
 is
 
-   type Item is new Source.Entity
-                and Entity.item   with private;
+--     type Item is new Source.Entity
+--                  and Entity.item   with private;
+
+   type Item is new Entity.item   with private;
 
 
    -- View
@@ -75,7 +77,7 @@ private
    function to_Source (the_Profile : in Profile) return text_Vectors.Vector;
 
 
-   package Entity is new Entity.make_Entity (Source.Entity);
+--     package Entity is new Entity.make_Entity (Source.Entity);
 
 
    type Item is new Entity.item with

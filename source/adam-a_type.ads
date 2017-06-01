@@ -9,8 +9,10 @@ package AdaM.a_Type
 is
 
 --     type Item is abstract new Any.Item -- Source.Entity
-   type Item is abstract new Source.Entity
-                         and Entity.item    with private;
+--     type Item is abstract new Source.Entity
+--                           and Entity.item    with private;
+
+   type Item is abstract new Entity.item    with private;
 
 
    -- View
@@ -43,6 +45,7 @@ is
    --  Attributes
    --
 
+   overriding
    function  Name      (Self : in     Item) return String;
    procedure Name_is   (Self : in out Item;   Now : in String);
 
@@ -66,7 +69,7 @@ is
 
 private
 
-   package Entity is new Entity.make_Entity (Source.Entity);
+--     package Entity is new Entity.make_Entity (Source.Entity);
 --     package Entity is new Entity.make_Entity (Adam.Any.item);
 
 

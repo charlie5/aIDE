@@ -10,7 +10,7 @@ is
 
    record_Version  : constant                := 1;
    max_Subprograms : constant                := 5_000;
-   null_Subprogram : constant Declaration.of_type.item := (others => <>);
+   null_Subprogram : constant Declaration.of_type.item := (Declaration.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "Declaration.of_types",

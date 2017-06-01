@@ -179,12 +179,14 @@ is
       -- Create all 'declare' entity widgets.
       --
       declare
-         the_Entities : constant AdaM.Source.Entities_View := Self.Block.my_Declarations;
+--           the_Entities : constant AdaM.Source.Entities_View := Self.Block.my_Declarations;
+         the_Entities : constant AdaM.Entity.Entities_View := Self.Block.my_Declarations;
       begin
          for i in 1 .. Integer (the_Entities.Length)
          loop
             declare
-               the_Entity : AdaM.Source.Entity_view renames the_Entities.Element (i);
+--                 the_Entity : AdaM.Source.Entity_view renames the_Entities.Element (i);
+               the_Entity : AdaM.Entity.view renames the_Entities.Element (i);
                the_Editor : constant aIDE.Editor.view        :=      aIDE.Editor.to_Editor (the_Entity);
             begin
                the_Editor.top_Widget.reparent (Self.declare_Box);
@@ -211,12 +213,14 @@ is
       -- Create all 'begin' entity widgets.
       --
       declare
-         the_Entities : constant access AdaM.Source.Entities := Self.Block.my_Statements;
+--           the_Entities : constant access AdaM.Source.Entities := Self.Block.my_Statements;
+         the_Entities : constant access AdaM.Entity.Entities := Self.Block.my_Statements;
       begin
          for i in 1 .. Integer (the_Entities.Length)
          loop
             declare
-               the_Entity :          AdaM.Source.Entity_view renames the_Entities.Element (i);
+--                 the_Entity :          AdaM.Source.Entity_view renames the_Entities.Element (i);
+               the_Entity :          AdaM.Entity.view renames the_Entities.Element (i);
                the_Editor : constant aIDE.Editor.view        :=      aIDE.Editor.to_Editor (the_Entity);
             begin
                the_Editor.top_Widget.reparent (Self.begin_Box);
@@ -240,7 +244,8 @@ is
       for i in 1 .. Integer (Self.Block.my_Handlers.Length)
       loop
          declare
-            the_Entity    : constant AdaM.Source.Entity_View     := Self.Block.my_Handlers.Element (i);
+--              the_Entity    : constant AdaM.Source.Entity_View     := Self.Block.my_Handlers.Element (i);
+            the_Entity    : constant AdaM.Entity.view     := Self.Block.my_Handlers.Element (i);
             the_Exception : constant AdaM.exception_Handler.view := AdaM.exception_Handler.view  (the_Entity);
          begin
             Self.exception_Handler := aIDE.Editor.of_exception_handler.new_Editor (the_Exception);

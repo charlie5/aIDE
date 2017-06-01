@@ -13,9 +13,12 @@ with Ada.Text_IO; use Ada.Text_IO;
 package body aIDE.Editor
 is
 
-   function to_Editor (Target : in AdaM.Source.Entity_view) return Editor.view
+--     function to_Editor (Target : in AdaM.Source.Entity_view) return Editor.view
+   function to_Editor (Target : in AdaM.Entity.view) return Editor.view
    is
+      use type AdaM.Entity.view;
       use AdaM.Source, AdaM.Comment;
+
       Self : Editor.view;
    begin
       if Target = null then raise Program_Error with "null Target"; end if;
