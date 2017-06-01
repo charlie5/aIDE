@@ -1,6 +1,6 @@
 with
-     AdaM.Assist.Query.find_All.Driver,
-     AdaM.Assist.Query.find_All.Metrics,
+--       AdaM.Assist.Query.find_All.Driver,
+--       AdaM.Assist.Query.find_All.Metrics,
 
      AdaM.Assist.Query.find_Entities.Driver,
      AdaM.Assist.Query.find_Entities.Metrics,
@@ -12,23 +12,23 @@ with
 package body AdaM.Assist
 is
 
-   function known_Types return AdaM.a_Type.Vector
-   is
-   begin
-      return AdaM.Assist.Query.find_all.Metrics.all_Types;
-   end known_Types;
+--     function known_Types return AdaM.a_Type.Vector
+--     is
+--     begin
+--        return AdaM.Assist.Query.find_all.Metrics.all_Types;
+--     end known_Types;
 
 
 
-   function known_Environment return AdaM.Environment.item
-   is
-      Environ : Environment.item renames AdaM.Assist.Query.find_All.Metrics.Environment;
-   begin
-      Environ.clear;
-      AdaM.Assist.Query.find_All.Driver;
-
-      return Environ;
-   end known_Environment;
+--     function known_Environment return AdaM.Environment.item
+--     is
+--        Environ : Environment.item renames AdaM.Assist.Query.find_All.Metrics.Environment;
+--     begin
+--        Environ.clear;
+--        AdaM.Assist.Query.find_All.Driver;
+--
+--        return Environ;
+--     end known_Environment;
 
 
 

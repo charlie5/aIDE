@@ -1,9 +1,25 @@
+with
+     Ada.Streams;
+
 
 package AdaM.Entity
 is
 
    type Item is limited interface;
+
+   -- View
+   --
    type View is access all Item'Class;
+
+   procedure View_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                         Self   : in              View);
+
+   procedure View_read  (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                         Self   : out             View);
+
+--     for View'write use View_write;
+--     for View'read  use View_read;
+
 
 
    --  Entities
@@ -20,12 +36,16 @@ is
    -- Entity Attributes
    --
 
+   function  Id        (Self : access Item) return AdaM.Id                 is abstract;
+
    function  to_Source (Self : in     Item) return text_Vectors.Vector     is abstract;
 
-   function  Parent    (Self : in     Item)     return Entity.view   is abstract;
-   procedure Parent_is (Self : in out Item;   Now : in Entity.View)  is abstract;
+   function  parent_Entity    (Self : in     Item)     return Entity.view   is abstract;
+   procedure parent_Entity_is (Self : in out Item;   Now : in Entity.View)  is abstract;
 
-   function  Children  (Self : access Item)     return Entities_view is abstract;
+   function  Children     (Self : access Item)     return Entities_view   is abstract;
+   function  Children     (Self : in     Item)     return Entities'Class  is abstract;
+   procedure Children_are (Self : in out Item;   Now : in Entities'Class) is abstract;
 
 
 --     procedure add_Child (Self : in out Item;   Child : in Entity.view)  is abstract;
@@ -44,17 +64,36 @@ is
    is
       type Item is abstract new T
                             and Entity.item with private;
+
+      -- View
+      --
       type View is access all Item'Class;
 
+--        procedure View_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+--                              Self   : in              View);
+--
+--        procedure View_read  (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+--                              Self   : out             View);
+--
+--        for View'write use View_write;
+--        for View'read  use View_read;
+
 
       overriding
-      function  Parent    (Self : in     Item)       return Entity.view;
+      function  parent_Entity    (Self : in     Item)       return Entity.view;
 
       overriding
-      procedure Parent_is (Self : in out Item;   Now : in Entity.View);
+      procedure parent_Entity_is (Self : in out Item;   Now : in Entity.View);
 
       overriding
-      function  Children  (Self : access     Item)     return Entities_view;
+      function  Children  (Self : access Item)     return Entities_view;
+
+      overriding
+      function  Children  (Self : in     Item)     return Entities'Class;
+
+      overriding
+      procedure Children_are (Self : in out Item;   Now : in Entities'Class);
+
 
    private
 
@@ -62,7 +101,7 @@ is
                              and Entity.item
       with
          record
-            Parent   :         Entity.view;
+            parent_Entity   :         Entity.view;
             Children : aliased Entities;
          end record;
 

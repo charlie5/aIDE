@@ -1,3 +1,9 @@
+with
+     Ada.Streams,
+     Ada.Tags,
+     AdaM.Factory;
+with Ada.Text_IO; use Ada.Text_IO;
+
 package body AdaM.Entity
 is
 
@@ -75,19 +81,19 @@ is
    is
 
       overriding
-      function  Parent    (Self : in     Item)       return Entity.view
+      function  parent_Entity    (Self : in     Item)       return Entity.view
       is
       begin
-         return Self.Parent;
-      end Parent;
+         return Self.parent_Entity;
+      end parent_Entity;
 
 
       overriding
-      procedure Parent_is (Self : in out Item;   Now : in Entity.View)
+      procedure parent_Entity_is (Self : in out Item;   Now : in Entity.View)
       is
       begin
-         Self.Parent := Now;
-      end Parent_is;
+         Self.parent_Entity := Now;
+      end parent_Entity_is;
 
 
       overriding
@@ -97,10 +103,114 @@ is
          return Self.Children'Access;
       end Children;
 
+
+      overriding
+      function  Children  (Self : in    Item)     return Entities'Class
+      is
+      begin
+         return Self.Children;
+      end Children;
+
+
+      overriding
+      procedure Children_are (Self : in out Item;   Now : in Entities'Class)
+      is
+      begin
+         put_Line ("AAAAAAAAAAAAAAAAAA " & ada.Tags.External_Tag (Now'Tag));
+         Self.Children := Entities (Now);
+      end Children_are;
+
+
+
+      -- Streams
+      --
+
+--        procedure View_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+--                              Self   : in              View)
+--        is
+--           use Ada.Tags;
+--        begin
+--           if Self = null
+--           then
+--              AdaM.Id'write  (Stream,  null_Id);
+--              return;
+--           end if;
+--
+--           AdaM.Id'write  (Stream,  Self.Id);
+--           String 'output (Stream,  external_Tag (Self.all'Tag));
+--        end View_write;
+--
+--
+--
+--        procedure View_read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+--                             Self   : out             View)
+--        is
+--           Id : AdaM.Id;
+--        begin
+--           AdaM.Id'read (Stream, Id);
+--
+--           if Id = null_Id
+--           then
+--              Self := null;
+--              return;
+--           end if;
+--
+--           declare
+--              use Ada.Tags;
+--              the_String : constant String  := String'Input   (Stream);                  -- Read tag as string from stream.
+--              the_Tag    : constant Tag     := Descendant_Tag (the_String, Item'Tag);    -- Convert to a tag.
+--           begin
+--              Self := View (AdaM.Factory.to_View (Id, the_Tag));
+--           end;
+--        end View_read;
+
+
+
    end make_Entity;
 
 
 
+   -- Streams
+   --
+
+   procedure View_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                         Self   : in              View)
+   is
+      use Ada.Tags;
+   begin
+      if Self = null
+      then
+         AdaM.Id'write  (Stream,  null_Id);
+         return;
+      end if;
+
+      AdaM.Id'write  (Stream,  Self.Id);
+      String 'output (Stream,  external_Tag (Self.all'Tag));
+   end View_write;
+
+
+
+   procedure View_read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                        Self   : out             View)
+   is
+      Id : AdaM.Id;
+   begin
+      AdaM.Id'read (Stream, Id);
+
+      if Id = null_Id
+      then
+         Self := null;
+         return;
+      end if;
+
+      declare
+         use Ada.Tags;
+         the_String : constant String  := String'Input   (Stream);                  -- Read tag as string from stream.
+         the_Tag    : constant Tag     := Descendant_Tag (the_String, Item'Tag);    -- Convert to a tag.
+      begin
+         Self := View (AdaM.Factory.to_View (Id, the_Tag));
+      end;
+   end View_read;
 
 
 

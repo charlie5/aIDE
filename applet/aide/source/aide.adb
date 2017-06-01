@@ -69,7 +69,7 @@ is
       put_Line ("rm *.adt: "        & command_Output (to_Command ("rm ./*.adt")));
       put_Line ("gnatmake output: " & Command_Output (to_Command ("gnatmake -c -gnatc -gnatt ./assets/asis/all_standard_ada.adb")));
 
-      the_Environ := AdaM.Assist.known_Environment;
+--        the_Environ := AdaM.Assist.known_Environment;
 --        the_Environ.print;
 
 
@@ -97,6 +97,7 @@ is
          the_Stream := Stream (the_File);
 
          AdaM.Environment.item'read (the_Stream, the_Environ);
+         AdaM.Environment.item'read (the_Stream, the_entity_Environ);
 
          Subprogram.view      'read (the_Stream, the_selected_App);
          Subprogram.Vector    'read (the_Stream, all_Apps);
@@ -134,9 +135,10 @@ is
          the_Stream := Stream (the_File);
 
          AdaM.Environment.item'write (the_Stream, the_Environ);
+         AdaM.Environment.item'write (the_Stream, the_entity_Environ);
 
          Subprogram.view      'write (the_Stream, the_selected_App);
-         Subprogram.Vector    'write (the_Stream, all_Apps);
+         Subprogram.vector    'write (the_Stream, all_Apps);
 
          Palette.of_packages.recent_Packages.write (the_Stream);
 

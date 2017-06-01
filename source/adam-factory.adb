@@ -8,6 +8,7 @@ with
      ada.Directories,
 
      System.Parameters;
+with Ada.Text_IO;
 
 
 package body AdaM.Factory
@@ -221,6 +222,13 @@ is
       procedure restore
       is
       begin
+         ada.Text_IO.put ("Restoring pool " & pool_Name);
+
+         if pool_Name = "subtypes"
+         then
+            ada.Text_IO.put ("SUBTYPES Restoring pool " & pool_Name);
+         end if;
+
          --  Restore storage pool state.
          --
          declare
@@ -270,6 +278,8 @@ is
             when Name_Error =>
                null;
          end;
+
+         ada.Text_IO.put_Line ("... restored");
       end restore;
 
 

@@ -31,16 +31,16 @@ begin
    then
       State.parent_Stack.delete_Last;   -- Children no longer need to know their parent.
 
-      if Metrics.current_Parent.Parent /= null
+      if Metrics.current_Parent.parent_Entity /= null
       then
          ada.Text_IO.put_Line ("Raising Metrics.current_Parent from " & Metrics.current_Parent.Name &
-                                 " to " & Metrics.current_Parent.Parent.Name);
+                                 " to " & Metrics.current_Parent.parent_Entity.Name);
       else
          ada.Text_IO.put_Line ("Raising Metrics.current_Parent from " & Metrics.current_Parent.Name &
                                  " to null");
       end if;
 
-      Metrics.current_Parent := Metrics.current_Parent.Parent;
+      Metrics.current_Parent := Metrics.current_Parent.parent_Entity;
       ada.Text_IO.new_Line;
 
    else

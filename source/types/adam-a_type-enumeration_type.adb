@@ -105,9 +105,35 @@ is
    overriding
    function  to_Source   (Self : in Item) return text_Vectors.Vector
    is
+      use ada.Strings.unbounded;
+      use type enumeration_literal.view;
+
       the_Source : text_Vectors.Vector;
+
+      procedure add (the_Line : in Text)
+      is
+      begin
+         the_Source.append (the_Line);
+      end add;
+
    begin
-      raise Program_Error with "TODO";
+      add (+"");
+      add ( "type " & Self.Name & " is ");
+
+      add (+"(");
+
+      for Each of Self.Literals
+      loop
+         if Each /= Self.Literals.last_Element
+         then
+            add (+Each.Name & ",");
+         else
+            add (+Each.Name);
+         end if;
+      end loop;
+
+      add (+");");
+
       return the_Source;
    end to_Source;
 

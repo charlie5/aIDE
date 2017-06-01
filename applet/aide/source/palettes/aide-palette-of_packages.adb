@@ -325,7 +325,7 @@ is
    is
       use AdaM;
 
-      the_Environ : AdaM.Environment.Item renames aIDE.the_Environ;
+--        the_Environ : AdaM.Environment.Item renames aIDE.the_Environ;
 
    begin
       -- Clear out old notebook pages.
@@ -387,7 +387,7 @@ is
          --
          for i in 1 .. Integer (a_Package.item (the_entity_Environ.standard_Package.all).child_Packages.Length)
          loop
-            build_Gui_for (the_Environ.standard_Package.child_Packages.Element (i),
+            build_Gui_for (the_entity_Environ.standard_Package.child_Packages.Element (i),
                            Self.all_Notebook);
          end loop;
 

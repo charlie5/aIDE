@@ -504,14 +504,14 @@ begin
       Metrics.compilation_Unit.Entity_is (new_Entity);
 
       ada.Text_IO.put_Line ("Lowering Metrics.current_Parent from null to " & new_Entity.Name);
-      new_Entity.Parent_is (null);
+      new_Entity.parent_Entity_is (null);
       Metrics.current_Parent := new_Entity;
    else
       Metrics.current_Parent.Children.append (new_Entity);
 
       ada.Text_IO.put_Line ("Lowering Metrics.current_Parent from " & Metrics.current_Parent.Name &
                               " to " & new_Entity.Name);
-      new_Entity.Parent_is (Metrics.current_Parent);
+      new_Entity.parent_Entity_is (Metrics.current_Parent);
       Metrics.current_Parent := new_Entity;
    end if;
 

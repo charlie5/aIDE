@@ -163,7 +163,7 @@ is
       the_Exceptions : AdaM.Declaration.of_exception.Vector;
       the_Exception  : AdaM.Declaration.of_exception.view;
    begin
-      put_Line ("PACKAGE NAME: " & (+Self.Name));
+      put_Line ("all_Exceptions PACKAGE NAME: " & (+Self.Name));
 
       for Each of Self.Children.all
       loop
@@ -326,6 +326,7 @@ is
                          Self   : in              Item)
    is
    begin
+      put_Line ("ZZZZZZZZZZZZZZ writing package name '" & (+Self.Name) & "'");
       Text'write (Stream, Self.Name);
 
       a_Package.view  'write (Stream, Self.Parent);
@@ -333,8 +334,11 @@ is
       a_Package.Vector'write (Stream, Self.child_Packages);
 
       AdaM.Context.view'write (Stream, Self.Context);
+      Source.Entities  'write (Stream, Self.public_Entities);
 
-      Source.Entities'write (Stream, Self.public_Entities);
+--        Entity.view    'write (Stream, Self.parent_Entity);
+--        Entity.view    'write (Stream, program_Unit.item (Self).parent_Entity);
+--        Entity.Entities'write (Stream, program_Unit.item (Self).Children);
    end Item_write;
 
 
@@ -348,6 +352,7 @@ is
       is
       when 1 =>
          Text'read (Stream, Self.Name);
+         put_Line ("KKKKKKKKKKKKKK '" & (+Self.Name) & "'");
 
          a_Package.view  'read (Stream, Self.Parent);
          a_Package.Vector'read (Stream, Self.Progenitors);
@@ -355,6 +360,24 @@ is
 
          AdaM.Context.view'read (Stream, Self.Context);
          Source.Entities  'read (Stream, Self.public_Entities);
+
+--           declare
+--              Parent : a_Package.view;
+--           begin
+--              a_Package.view'read (Stream, Parent);
+--
+--              if Parent /= null
+--              then
+--                 program_Unit.item (Self).parent_Entity_is (Parent.all'Access);
+--              end if;
+--           end;
+
+--           declare
+--              Children : Entity.Entities;
+--           begin
+--              Entity.Entities'read (Stream, Children);
+--              program_Unit.item (Self).Children_are (Children);
+--           end;
 
       when others =>
          raise Program_Error with "Illegal version number during package restore.";
