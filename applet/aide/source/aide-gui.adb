@@ -308,22 +308,23 @@ is
 --                                             Target     : in AdaM.Source.Entities_view)
    is
       use Palette.of_source_entities;
-      use type adam.Source.Entities_View;
+--        use type adam.Source.Entities_View;
+      use type adam.Entity.Entities_view;
 
       the_Editor : constant AIDE.Editor.of_block.view        := AIDE.Editor.of_block.view (Invoked_by);
       the_Filter :          Palette.of_source_entities.Filter;
    begin
---        if the_Editor.Target.my_Declarations = Target
---        then
+      if the_Editor.Target.my_Declarations = Target
+      then
          the_Filter := declare_Region;
---
---        elsif the_Editor.Target.my_Statements = Target
---        then
---           the_Filter := begin_Region;
---
---        else
---           raise Program_Error;
---        end if;
+
+      elsif the_Editor.Target.my_Statements = Target
+      then
+         the_Filter := begin_Region;
+
+      else
+         raise Program_Error;
+      end if;
 
       the_source_entities_Palette.show (Invoked_by, Target, the_Filter);
    end show_source_entities_Palette;

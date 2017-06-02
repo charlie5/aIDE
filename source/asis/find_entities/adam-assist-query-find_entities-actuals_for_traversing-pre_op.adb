@@ -68,8 +68,6 @@ is
    use type Source.Entity_View;
    use type Entity.view;
 
-
-
 begin
    if not Is_Nil (State.ignore_Starter)
    then
@@ -105,6 +103,10 @@ begin
 
       when Asis.A_Definition =>
          State.ignore_Starter := Element;
+
+      when asis.A_Pragma =>
+         State.ignore_Starter := Element;
+
 
       when Asis.A_Declaration =>
          declare
@@ -198,10 +200,6 @@ begin
 
                when asis.An_Exception_Declaration =>
                   declare
---                    use Adam;
---                    the_Unit      : constant asis.Compilation_Unit := Asis.Elements.Enclosing_Compilation_Unit (the_Declaration);
---                    the_unit_Name : constant Wide_String           := Asis.Compilation_Units.Unit_Full_Name (the_Unit);
-
                      Names    : constant asis.Defining_Name_List := Asis.Declarations.Names (Element);
                      the_Name :          String                  := to_String (Asis.Declarations.Defining_Name_Image (Names (1)));
 
@@ -484,11 +482,15 @@ begin
                   end;
 
                when others =>
+                  ada.Text_IO.put_Line ("========================= Ignoring " & asis.Declaration_Kinds'Image (the_Kind)
+                                       & "   named '" & to_String (Defining_Name_Image (the_Names (1))) & "'");
                   State.ignore_Starter := Element;
             end case;
          end;
 
       when others =>
+         ada.Text_IO.put_Line ("========================= Ignoring " & asis.Element_Kinds'Image (Argument_Kind));
+--                                 & "   named '" & to_String (Defining_Name_Image (the_Names (1))) & "'");
          State.ignore_Starter := Element;
    end case;
 
