@@ -1,5 +1,5 @@
 with
-     AdaM.Source,
+--       AdaM.Source,
 
      ada.Text_IO,
      ada.Tags,
@@ -63,7 +63,7 @@ is
       the_Types  : AdaM.a_Type.Vector;
 
       the_Unit   : AdaM.compilation_Unit.view;
-      the_Entity : AdaM.Source.Entity_View;
+--        the_Entity : AdaM.Source.Entity_View;
 
       use type AdaM.a_Type.view;
    begin
@@ -71,15 +71,15 @@ is
       loop
          the_Unit := Self.Units.Element (i);
 
-         for j in 1 .. the_Unit.Length
-         loop
-            the_Entity := the_Unit.Entity (j);
-
-            if the_Entity.all in AdaM.a_Type.item'Class
-            then
-               the_Types.append (AdaM.a_Type.view (the_Entity));
-            end if;
-         end loop;
+--           for j in 1 .. the_Unit.Length
+--           loop
+--              the_Entity := the_Unit.Entity (j);
+--
+--              if the_Entity.all in AdaM.a_Type.item'Class
+--              then
+--                 the_Types.append (AdaM.a_Type.view (the_Entity));
+--              end if;
+--           end loop;
       end loop;
 
       return the_Types;
@@ -89,11 +89,11 @@ is
 
    procedure print (Self : in Item)
    is
-      use AdaM.Source,
+      use -- AdaM.Source,
           ada.Strings.fixed,
           ada.Text_IO;
       the_Unit   : AdaM.compilation_Unit.view;
-      the_Entity : AdaM.Source.Entity_View;
+--        the_Entity : AdaM.Source.Entity_View;
 
       Depth      : Natural := 0;
 
@@ -113,14 +113,14 @@ is
          New_Line (2);
          ada.Text_IO.put_Line ("Unit.Name = " & the_Unit.Name);
 
-         for i in 1 .. the_Unit.Length
-         loop
-            the_Entity := the_Unit.Entity (i);
-
-            Depth := Depth + 1;
---              ada.Text_IO.put_Line (Indent & "Entity : " & the_Entity.Name & "   Tag = " & ada.Tags.Expanded_Name (the_Entity.all'Tag));
-            Depth := Depth - 1;
-         end loop;
+--           for i in 1 .. the_Unit.Length
+--           loop
+--              the_Entity := the_Unit.Entity (i);
+--
+--              Depth := Depth + 1;
+--  --              ada.Text_IO.put_Line (Indent & "Entity : " & the_Entity.Name & "   Tag = " & ada.Tags.Expanded_Name (the_Entity.all'Tag));
+--              Depth := Depth - 1;
+--           end loop;
       end loop;
 
       new_Line;
@@ -131,7 +131,7 @@ is
 
    procedure print_Entities (Self : in Item)
    is
-      use AdaM.Source,
+      use -- AdaM.Source,
           ada.Strings.fixed,
           ada.Text_IO;
 

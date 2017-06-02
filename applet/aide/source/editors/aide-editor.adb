@@ -17,7 +17,8 @@ is
    function to_Editor (Target : in AdaM.Entity.view) return Editor.view
    is
       use type AdaM.Entity.view;
-      use AdaM.Source, AdaM.Comment;
+      use -- AdaM.Source,
+          AdaM.Comment;
 
       Self : Editor.view;
    begin

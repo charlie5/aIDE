@@ -1,12 +1,13 @@
-with Asis,
-     AdaM.Source;
+with
+     Asis;
+--       AdaM.Source;
 
 package AdaM.Assist.Query.find_Entities.Actuals_for_traversing
 is
 
    type Traversal_State is
       record
-         parent_Stack   : AdaM.Source.Entities;
+--           parent_Stack   : AdaM.Source.Entities;
          ignore_Starter : asis.Element        := asis.Nil_Element;
       end record;
 

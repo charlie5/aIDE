@@ -4,7 +4,7 @@ with
      AdaM.Entity,
      AdaM.context_Line,
      AdaM.exception_Handler,
-     AdaM.Source,
+--       AdaM.Source,
      gtk.Button;
 
 

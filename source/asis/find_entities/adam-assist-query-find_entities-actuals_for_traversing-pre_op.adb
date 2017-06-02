@@ -65,7 +65,7 @@ is
 --     Parent     : AdaM.Entity.view;
    new_Entity : AdaM.Entity.view;
 
-   use type Source.Entity_View;
+--     use type Source.Entity_View;
    use type Entity.view;
 
 begin
@@ -254,8 +254,8 @@ begin
                            then
                               declare
                                  use ada.Strings.unbounded,
-                                     AdaM.a_Type,
-                                     AdaM.Source;
+                                     AdaM.a_Type;
+--                                       AdaM.Source;
 
                                  full_Name : Text;
                                  new_Type  : AdaM.a_Type.view;

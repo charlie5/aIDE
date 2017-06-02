@@ -124,41 +124,41 @@ is
 
 
 
-   procedure add (Self : in out Item;   Entity : in Source.Entity_View)
-   is
-      use type Source.Entity_View;
-   begin
-      if Entity = null
-      then
-         raise Program_Error with "Attempt to add a null entity";
-      end if;
-
-      Self.Entities.append (Entity);
-   end add;
-
-
-
-   procedure clear (Self : in out Item)
-   is
-   begin
-      Self.Entities.clear;
-   end clear;
+--     procedure add (Self : in out Item;   Entity : in Source.Entity_View)
+--     is
+--        use type Source.Entity_View;
+--     begin
+--        if Entity = null
+--        then
+--           raise Program_Error with "Attempt to add a null entity";
+--        end if;
+--
+--        Self.Entities.append (Entity);
+--     end add;
 
 
 
-   function Length (Self : in Item) return Natural
-   is
-   begin
-      return Natural (Self.Entities.Length);
-   end Length;
+--     procedure clear (Self : in out Item)
+--     is
+--     begin
+--        Self.Entities.clear;
+--     end clear;
 
 
 
-   function Entity   (Self : in Item;   Index : Positive) return Source.Entity_View
-   is
-   begin
-      return Self.Entities.Element (Index);
-   end Entity;
+--     function Length (Self : in Item) return Natural
+--     is
+--     begin
+--        return Natural (Self.Entities.Length);
+--     end Length;
+
+
+
+--     function Entity   (Self : in Item;   Index : Positive) return Source.Entity_View
+--     is
+--     begin
+--        return Self.Entities.Element (Index);
+--     end Entity;
 
 
 
@@ -207,7 +207,7 @@ is
    is
    begin
       Text'write (Stream, Self.Name);
-      Source.Entities'Output (Stream, Self.Entities);
+--        Source.Entities'Output (Stream, Self.Entities);
    end Item_write;
 
 
@@ -221,7 +221,7 @@ is
       is
       when 1 =>
          Text'read (Stream, Self.Name);
-         Self.Entities := Source.Entities'Input (Stream);
+--           Self.Entities := Source.Entities'Input (Stream);
 
       when others =>
          raise Program_Error with "Illegal version number during compilation unit restore.";

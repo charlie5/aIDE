@@ -1,6 +1,6 @@
 with
      aIDE.Editor,
-     AdaM.Source,
+--       AdaM.Source,
      AdaM.Entity,
 
      Gtk.Widget,

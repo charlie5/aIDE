@@ -1,6 +1,6 @@
 with
-     AdaM.Factory,
-     AdaM.Source.utility;
+     AdaM.Factory;
+--       AdaM.Source.utility;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Tags;
 with AdaM.Entity;
@@ -99,35 +99,35 @@ is
 
 
 
-   procedure add (Self : in out Item;   the_Declaration : in Source.Entity_View)
-   is
-   begin
-      Self.public_Entities.append (the_Declaration);     -- Add the new attribute to current attributes.
-   end add;
-
-
-   procedure rid (Self : in out Item;   the_Declaration : in Source.Entity_View)
-   is
-   begin
-      Self.public_Entities.delete (Self.public_Entities.find_Index (the_Declaration));     -- Remove the old attribute from current attributes.
-   end rid;
-
-
-
-
-   function  public_Entities (Self : access     Item) return access Source.Entities
-   is
-   begin
-      return Self.public_Entities'Access;
-   end public_Entities;
-
-
-   procedure public_Entities_are (Self : in out Item;   Now : in Source.Entities)
-   is
-   begin
-      Self.public_Entities := Now;
-   end public_Entities_are;
-
+--     procedure add (Self : in out Item;   the_Declaration : in Source.Entity_View)
+--     is
+--     begin
+--        Self.public_Entities.append (the_Declaration);     -- Add the new attribute to current attributes.
+--     end add;
+--
+--
+--     procedure rid (Self : in out Item;   the_Declaration : in Source.Entity_View)
+--     is
+--     begin
+--        Self.public_Entities.delete (Self.public_Entities.find_Index (the_Declaration));     -- Remove the old attribute from current attributes.
+--     end rid;
+--
+--
+--
+--
+--     function  public_Entities (Self : access     Item) return access Source.Entities
+--     is
+--     begin
+--        return Self.public_Entities'Access;
+--     end public_Entities;
+--
+--
+--     procedure public_Entities_are (Self : in out Item;   Now : in Source.Entities)
+--     is
+--     begin
+--        Self.public_Entities := Now;
+--     end public_Entities_are;
+--
 
 
 --     function all_Exceptions (Self : in     Item) return AdaM.Declaration.of_exception.Vector
@@ -207,7 +207,7 @@ is
 
       add (+"");
 
-      the_Source.append (Self.public_Entities.to_spec_Source);
+--        the_Source.append (Self.public_Entities.to_spec_Source);
 
       add (+"");
       add ( "end " & Self.Name & ";");
@@ -238,7 +238,7 @@ is
 
       add (+"");
 
-      the_Source.append (Self.public_Entities.to_spec_Source);
+--        the_Source.append (Self.public_Entities.to_spec_Source);
 
       add (+"");
       add ( "end " & Self.Name & ";");
@@ -281,9 +281,9 @@ is
 
    function requires_Body (Self : in Item) return Boolean
    is
-      use AdaM.Source.utility;
+--        use AdaM.Source.utility;
    begin
-      return contains_Subprograms (Self.public_Entities);
+      return False; -- contains_Subprograms (Self.public_Entities);
    end requires_Body;
 
 
@@ -335,7 +335,7 @@ is
       a_Package.Vector'write (Stream, Self.child_Packages);
 
       AdaM.Context.view'write (Stream, Self.Context);
-      Source.Entities  'write (Stream, Self.public_Entities);
+--        Source.Entities  'write (Stream, Self.public_Entities);
 
       Entity.view    'write (Stream, Self.parent_Entity);
       Entity.Entities'write (Stream, Self.Children);
@@ -359,7 +359,7 @@ is
          a_Package.Vector'read (Stream, Self.child_Packages);
 
          AdaM.Context.view'read (Stream, Self.Context);
-         Source.Entities  'read (Stream, Self.public_Entities);
+--           Source.Entities  'read (Stream, Self.public_Entities);
 
          declare
             Parent : a_Package.view;

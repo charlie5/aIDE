@@ -51,7 +51,7 @@ is
 
 
 
-      Metrics.compilation_Unit.clear;
+--        Metrics.compilation_Unit.clear;
       Metrics.compilation_Unit.Name_is (the_Name);
 
       for J in Cont_Clause_Elements'Range

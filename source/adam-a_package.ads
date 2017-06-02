@@ -1,6 +1,6 @@
 with
      AdaM.program_Unit,
-     AdaM.Source,
+--       AdaM.Source,
      AdaM.Context,
      AdaM.Declaration.of_exception,
 
@@ -40,6 +40,7 @@ is
    function  new_Package (Name : in     String := "") return a_Package.view;
    procedure free        (Self : in out a_Package.view);
 
+   overriding
    procedure destruct    (Self : in out Item);
 
 
@@ -49,20 +50,22 @@ is
    overriding
    function  Id               (Self : access Item) return AdaM.Id;
 
+   overriding
    function  Name             (Self : in     Item)     return String;
    procedure Name_is          (Self : in out Item;   Now : in String);
 
+   overriding
    function  to_Source        (Self : in     Item) return text_Vectors.Vector;
    function  to_spec_Source   (Self : in     Item) return text_Vectors.Vector;
    function  to_body_Source   (Self : in     Item) return text_Vectors.Vector;
 
    function  Context          (Self : in     Item) return Context.view;
 
-   function  public_Entities     (Self : access Item) return access Source.Entities;
-   procedure public_Entities_are (Self : in out Item;   Now : in Source.Entities);
-
-   procedure add           (Self : in out Item;   the_Declaration : in Source.Entity_View);
-   procedure rid           (Self : in out Item;   the_Declaration : in Source.Entity_View);
+--     function  public_Entities     (Self : access Item) return access Source.Entities;
+--     procedure public_Entities_are (Self : in out Item;   Now : in Source.Entities);
+--
+--     procedure add           (Self : in out Item;   the_Declaration : in Source.Entity_View);
+--     procedure rid           (Self : in out Item;   the_Declaration : in Source.Entity_View);
 
    function  all_Exceptions (Self : access     Item) return AdaM.Declaration.of_exception.Vector;
 
@@ -92,9 +95,9 @@ private
 
          Context      : AdaM.Context.view;
 
-         public_Entities  : aliased Source.Entities;
-         private_Entities :         Source.Entities;
-         body_Entities    :         Source.Entities;
+--           public_Entities  : aliased Source.Entities;
+--           private_Entities :         Source.Entities;
+--           body_Entities    :         Source.Entities;
       end record;
 
 

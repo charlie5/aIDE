@@ -122,7 +122,7 @@ is
 
    function to_Source (Self : in Item) return text_Vectors.Vector
    is
-      use AdaM.Source,
+      use -- AdaM.Source,
           ada.Strings.Unbounded;
 
       the_Line   : Text;

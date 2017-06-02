@@ -1,7 +1,7 @@
 with
      AdaM.Any,
      AdaM.Entity,
-     AdaM.Source,
+--       AdaM.Source,
      AdaM.Context,
      AdaM.library_Item,
      AdaM.Subunit,
@@ -62,11 +62,11 @@ is
    function library_Item (Self : in Item) return AdaM.library_Item.view;
 
 
-   procedure add     (Self : in out Item;   Entity : in Source.Entity_View);
-   procedure clear   (Self : in out Item);
+--     procedure add     (Self : in out Item;   Entity : in Source.Entity_View);
+--     procedure clear   (Self : in out Item);
 
-   function  Length  (Self : in Item) return Natural;
-   function  Entity  (Self : in Item;   Index : Positive) return Source.Entity_View;
+--     function  Length  (Self : in Item) return Natural;
+--     function  Entity  (Self : in Item;   Index : Positive) return Source.Entity_View;
 
    function  Name    (Self : in     Item)     return String;
    procedure Name_is (Self : in out Item;   Now : in String);
@@ -98,7 +98,7 @@ private
    type Item is new AdaM.Any.item with
       record
          Name     : Text;
-         Entities : Source.Entities;
+--           Entities : Source.Entities;
 
          Context      : AdaM.Context.view;
          library_Item : library_Item_or_Subunit;

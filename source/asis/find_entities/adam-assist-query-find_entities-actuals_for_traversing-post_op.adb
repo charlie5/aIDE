@@ -29,7 +29,7 @@ is
 begin
    if Is_Nil (State.ignore_Starter)
    then
-      State.parent_Stack.delete_Last;   -- Children no longer need to know their parent.
+--        State.parent_Stack.delete_Last;   -- Children no longer need to know their parent.
 
       if Metrics.current_Parent.parent_Entity /= null
       then
