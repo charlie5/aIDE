@@ -25,6 +25,11 @@ function Navigate return AdaM.Environment.item
 is
    Environ : AdaM.Environment.item;
 
+   type String_view is access String;
+   type Strings is array (Positive range <>) of String_view;
+
+   ada_Family : Strings := (1 => new String' ("ada.ads"));
+
    package CMD renames Ada.Command_Line;
    package LAL renames Libadalang.Analysis;
 
@@ -43,26 +48,13 @@ is
 
    function Node_Filter (N : LAL.Ada_Node) return Boolean
    is
-     (Enabled_Kinds (N.Kind) and then not Is_Navigation_Disabled (N));
-
-   procedure Stop_With_Error (Message    : String);
+     (             Enabled_Kinds (N.Kind)
+      and then not Is_Navigation_Disabled (N));
 
    procedure Process_File (Unit : LAL.Analysis_Unit; Filename : String);
 
    procedure Print_Navigation (Part_Name  : String;
                                Orig, Dest : access LAL.Ada_Node_Type'Class);
-
-
-   ---------------------
-   -- Stop_With_Error --
-   ---------------------
-
-   procedure Stop_With_Error (Message    : String)
-   is
-   begin
-      Put_Line (CMD.Command_Name & ": " & Message);
-      raise Fatal_Error;
-   end Stop_With_Error;
 
 
    ------------------
@@ -430,16 +422,19 @@ begin
 
 
 
+   for Each of ada_Family
+   loop
 
-   for I in 1 .. 1 loop -- CMD.Argument_Count loop
+--     for I in 1 .. 1 loop -- CMD.Argument_Count loop
       declare
-         Arg  : constant String := CMD.Argument (I);
-         Unit : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, Arg);
+         Prefix : constant String := "/usr/lib/gcc/x86_64-pc-linux-gnu/7.1.1/adainclude/";
+         Arg    : constant String := Each.all;
+         Unit   : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, Prefix & Arg);
 --           Unit : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, "standard.ads");
       begin
---           Put_Title ('#', Arg);
---           Process_File (Unit, Arg);
-         Process_File (Unit, "standard.ads");
+         Put_Title ('#', Arg);
+         Process_File (Unit, Prefix & Arg);
+--           Process_File (Unit, "standard.ads");
       end;
    end loop;
 
