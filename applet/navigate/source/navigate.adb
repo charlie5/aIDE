@@ -421,14 +421,13 @@ begin
    end add_package_Standard;
 
 
-
    for Each of ada_Family
    loop
 
 --     for I in 1 .. 1 loop -- CMD.Argument_Count loop
       declare
-         Prefix : constant String := "/usr/lib/gcc/x86_64-pc-linux-gnu/7.1.1/adainclude/";
-         Arg    : constant String := Each.all;
+         Prefix : constant String   := "/usr/lib/gcc/x86_64-pc-linux-gnu/7.1.1/adainclude/";
+         Arg    : constant String   := Each.all;
          Unit   : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, Prefix & Arg);
 --           Unit : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, "standard.ads");
       begin
