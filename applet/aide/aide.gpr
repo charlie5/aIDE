@@ -1,5 +1,6 @@
 with
      "../../library/adam",
+     "../navigate/navigate",
      "gtkada",
      "ashell",
      "common";

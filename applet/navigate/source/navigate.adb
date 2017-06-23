@@ -21,7 +21,7 @@ with AdaM.compilation_Unit;
 with AdaM.Declaration.of_package;
 with AdaM.a_Package;
 
-procedure Navigate
+function Navigate return AdaM.Environment.item
 is
    Environ : AdaM.Environment.item;
 
@@ -433,9 +433,9 @@ begin
 
    for I in 1 .. 1 loop -- CMD.Argument_Count loop
       declare
---           Arg  : constant String := CMD.Argument (I);
---           Unit : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, Arg);
-         Unit : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, "standard.ads");
+         Arg  : constant String := CMD.Argument (I);
+         Unit : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, Arg);
+--           Unit : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, "standard.ads");
       begin
 --           Put_Title ('#', Arg);
 --           Process_File (Unit, Arg);
@@ -446,7 +446,6 @@ begin
    LAL.Destroy (Ctx);
    Put_Line ("Done.");
 
-exception
-   when Fatal_Error =>
-      CMD.Set_Exit_Status (CMD.Failure);
+
+   return Environ;
 end Navigate;
