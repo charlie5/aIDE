@@ -15,3 +15,5 @@ applet/aide/launch_aide
 applet/aide/test
 .adam-store
 library/build
+applet/aide/build
+applet/navigate/build
