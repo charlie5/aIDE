@@ -2,7 +2,11 @@ with
      AdaM.Environment,
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
-     AdaM.a_Type.a_subtype;
+     AdaM.a_Type.a_subtype,
+     AdaM.a_Type.floating_point_type,
+     AdaM.a_Type.unconstrained_array_type,
+     AdaM.a_Type.ordinary_fixed_point_type,
+     AdaM.Declaration.of_exception;
 
 with Ada.Characters.Handling;
 with Ada.Command_Line;
@@ -48,7 +52,6 @@ is
    procedure Print_Navigation (Part_Name  : String;
                                Orig, Dest : access LAL.Ada_Node_Type'Class);
 
-   procedure Decode_Kinds (List : String);
 
    ---------------------
    -- Stop_With_Error --
@@ -80,10 +83,9 @@ is
       LAL.Populate_Lexical_Env (Unit);
 
       declare
-         It            : LAL.Local_Find_Iterator :=
-            LAL.Root (Unit).Find (Node_Filter'Access);
+         It            : LAL.Local_Find_Iterator := LAL.Root (Unit).Find (Node_Filter'Access);
+         At_Least_Once : Boolean                 := False;
          Node          : LAL.Ada_Node;
-         At_Least_Once : Boolean := False;
       begin
          while It.Next (Node) loop
             declare
@@ -158,46 +160,6 @@ is
       end if;
    end Print_Navigation;
 
-   ------------------
-   -- Decode_Kinds --
-   ------------------
-
-   procedure Decode_Kinds (List : String) is
-      Start : Positive := List'First;
-
-      procedure Process_Name (Name : String);
-
-      ------------------
-      -- Process_Name --
-      ------------------
-
-      procedure Process_Name (Name : String) is
-      begin
-         if Name'Length /= 0 then
-            begin
-               declare
-                  Kind : constant LAL.Ada_Node_Kind_Type :=
-                     LAL.Ada_Node_Kind_Type'Value (Name);
-               begin
-                  Enabled_Kinds (Kind) := True;
-               end;
-            exception
-               when Constraint_Error =>
-                  Stop_With_Error ("invalid kind name: " & Name);
-            end;
-         end if;
-      end Process_Name;
-
-   begin
-      for Cur in Start .. List'Last loop
-         if List (Cur) = ',' then
-            Process_Name (List (Start .. Cur - 1));
-            Start := Cur + 1;
-         elsif Cur = List'Last then
-            Process_Name (List (Start .. Cur));
-         end if;
-      end loop;
-   end Decode_Kinds;
 
    ----------------------------
    -- Is_Navigation_Disabled --
@@ -259,8 +221,7 @@ is
 begin
    Ctx := LAL.Create;
 
-   -- Add package Standard.
-   --
+   add_package_Standard:
    declare
       standard_Package : constant AdaM.a_Package.view := AdaM.a_Package.new_Package ("Standard");
 
@@ -305,7 +266,167 @@ begin
          standard_Package.Children.append (new_Subtype.all'Access);
       end add_Positive;
 
-   end;
+      add_short_short_Integer:
+      declare
+         new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
+           := AdaM.a_Type.signed_integer_type.new_Type (Name => "short_short_Integer");
+      begin
+         standard_Package.Children.append (new_integer_Type.all'Access);
+      end add_short_short_Integer;
+
+      add_short_Integer:
+      declare
+         new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
+           := AdaM.a_Type.signed_integer_type.new_Type (Name => "short_Integer");
+      begin
+         standard_Package.Children.append (new_integer_Type.all'Access);
+      end add_short_Integer;
+
+      add_long_Integer:
+      declare
+         new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
+           := AdaM.a_Type.signed_integer_type.new_Type (Name => "long_Integer");
+      begin
+         standard_Package.Children.append (new_integer_Type.all'Access);
+      end add_long_Integer;
+
+      add_long_long_Integer:
+      declare
+         new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
+           := AdaM.a_Type.signed_integer_type.new_Type (Name => "long_long_Integer");
+      begin
+         standard_Package.Children.append (new_integer_Type.all'Access);
+      end add_long_long_Integer;
+
+      add_short_Float:
+      declare
+         new_float_Type : constant AdaM.a_Type.floating_point_type.view
+           := AdaM.a_Type.floating_point_type.new_Type (Name => "short_Float");
+      begin
+         standard_Package.Children.append (new_float_Type.all'Access);
+      end add_short_Float;
+
+      add_Float:
+      declare
+         new_float_Type : constant AdaM.a_Type.floating_point_type.view
+           := AdaM.a_Type.floating_point_type.new_Type (Name => "Float");
+      begin
+         standard_Package.Children.append (new_float_Type.all'Access);
+      end add_Float;
+
+      add_long_Float:
+      declare
+         new_float_Type : constant AdaM.a_Type.floating_point_type.view
+           := AdaM.a_Type.floating_point_type.new_Type (Name => "long_Float");
+      begin
+         standard_Package.Children.append (new_float_Type.all'Access);
+      end add_long_Float;
+
+      add_long_long_Float:
+      declare
+         new_float_Type : constant AdaM.a_Type.floating_point_type.view
+           := AdaM.a_Type.floating_point_type.new_Type (Name => "long_long_Float");
+      begin
+         standard_Package.Children.append (new_float_Type.all'Access);
+      end add_long_long_Float;
+
+      add_Character:
+      declare
+         new_enum_Type : constant AdaM.a_Type.enumeration_type.view
+           := AdaM.a_Type.enumeration_type.new_Type (Name => "Character");
+      begin
+         standard_Package.Children.append (new_enum_Type.all'Access);
+      end add_Character;
+
+      add_wide_Character:
+      declare
+         new_enum_Type : constant AdaM.a_Type.enumeration_type.view
+           := AdaM.a_Type.enumeration_type.new_Type (Name => "wide_Character");
+      begin
+         standard_Package.Children.append (new_enum_Type.all'Access);
+      end add_wide_Character;
+
+      add_wide_wide_Character:
+      declare
+         new_enum_Type : constant AdaM.a_Type.enumeration_type.view
+           := AdaM.a_Type.enumeration_type.new_Type (Name => "wide_wide_Character");
+      begin
+         standard_Package.Children.append (new_enum_Type.all'Access);
+      end add_wide_wide_Character;
+
+      add_String:
+      declare
+         new_array_Type : constant AdaM.a_Type.unconstrained_array_type.view
+           := AdaM.a_Type.unconstrained_array_type.new_Type (Name => "String");
+      begin
+         standard_Package.Children.append (new_array_Type.all'Access);
+      end add_String;
+
+      add_wide_String:
+      declare
+         new_array_Type : constant AdaM.a_Type.unconstrained_array_type.view
+           := AdaM.a_Type.unconstrained_array_type.new_Type (Name => "wide_String");
+      begin
+         standard_Package.Children.append (new_array_Type.all'Access);
+      end add_wide_String;
+
+      add_wide_wide_String:
+      declare
+         new_array_Type : constant AdaM.a_Type.unconstrained_array_type.view
+           := AdaM.a_Type.unconstrained_array_type.new_Type (Name => "wide_wide_String");
+      begin
+         standard_Package.Children.append (new_array_Type.all'Access);
+      end add_wide_wide_String;
+
+      add_Duration:
+      declare
+         new_ordinary_fixed_Type : constant AdaM.a_Type.ordinary_fixed_point_type.view
+           := AdaM.a_Type.ordinary_fixed_point_type.new_Type (Name => "Duration");
+      begin
+         standard_Package.Children.append (new_ordinary_fixed_Type.all'Access);
+      end add_Duration;
+
+      add_constraint_Error:
+      declare
+         new_Exception : AdaM.Declaration.of_exception.view
+           := Adam.Declaration.of_exception.new_Declaration ("constraint_Error");
+      begin
+         standard_Package.Children.append (new_Exception.all'Access);
+      end add_constraint_Error;
+
+      add_program_Error:
+      declare
+         new_Exception : AdaM.Declaration.of_exception.view
+           := Adam.Declaration.of_exception.new_Declaration ("program_Error");
+      begin
+         standard_Package.Children.append (new_Exception.all'Access);
+      end add_program_Error;
+
+      add_storage_Error:
+      declare
+         new_Exception : AdaM.Declaration.of_exception.view
+           := Adam.Declaration.of_exception.new_Declaration ("storage_Error");
+      begin
+         standard_Package.Children.append (new_Exception.all'Access);
+      end add_storage_Error;
+
+      add_tasking_Error:
+      declare
+         new_Exception : AdaM.Declaration.of_exception.view
+           := Adam.Declaration.of_exception.new_Declaration ("tasking_Error");
+      begin
+         standard_Package.Children.append (new_Exception.all'Access);
+      end add_tasking_Error;
+
+      add_numeric_Error:   -- TODO: Make this a proper exception renaming as per 'standard.ads'.
+      declare
+         new_Exception : AdaM.Declaration.of_exception.view
+           := Adam.Declaration.of_exception.new_Declaration ("numeric_Error");
+      begin
+         standard_Package.Children.append (new_Exception.all'Access);
+      end add_numeric_Error;
+
+   end add_package_Standard;
 
 
 
