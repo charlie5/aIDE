@@ -100,7 +100,7 @@
 --       Ada.Task_Attributes,
 --       Ada.Task_Identification,
 --       Ada.Task_Termination,
---       Ada.Text_IO,
+--       Ada.Text_IO;
 --       Ada.Text_IO.Bounded_IO,
 --       Ada.Text_IO.Complex_IO,
 --       Ada.Text_IO.Editing,

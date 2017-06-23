@@ -21,6 +21,10 @@
                   <object class="GtkTextView" id="comment_text_View">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <style>
+                      <class name="* { background-color: red; }"/>
+                      <class name="* { color: red; }"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="expand">True</property>
