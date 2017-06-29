@@ -1,5 +1,10 @@
 with
      AdaM.Environment,
+     AdaM.Entity,
+     AdaM.compilation_Unit,
+     AdaM.Declaration.of_package,
+     AdaM.a_Pragma,
+     AdaM.a_Package,
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
      AdaM.a_Type.a_subtype,
@@ -9,6 +14,7 @@ with
      AdaM.Declaration.of_exception;
 
 with Ada.Characters.Handling;
+with ada.strings.fixed;
 with Ada.Command_Line;
 with Ada.Text_IO; use Ada.Text_IO;
 
@@ -17,13 +23,18 @@ with Langkit_Support.Text;
 with Libadalang.Analysis;
 
 with Put_Title;
-with AdaM.compilation_Unit;
-with AdaM.Declaration.of_package;
-with AdaM.a_Package;
+with ada.Wide_Wide_Text_IO;
+with ada.Characters.Conversions;
 
 function Navigate return AdaM.Environment.item
 is
    Environ : AdaM.Environment.item;
+
+   current_compilation_Unit    : AdaM.compilation_Unit.view;
+   --     current_package_Declaration : AdaM.Declaration.of_package.view;
+
+   current_Parent : AdaM.Entity.view;
+
 
    type String_view is access String;
    type Strings is array (Positive range <>) of String_view;
@@ -37,7 +48,7 @@ is
    is (Langkit_Support.Text.Image (Node.Short_Image));
 
    function To_Lower (S : String) return String
-      renames Ada.Characters.Handling.To_Lower;
+                      renames Ada.Characters.Handling.To_Lower;
 
    Fatal_Error   : exception;
    Ctx           : LAL.Analysis_Context;
@@ -56,81 +67,277 @@ is
    procedure Print_Navigation (Part_Name  : String;
                                Orig, Dest : access LAL.Ada_Node_Type'Class);
 
+   At_Least_Once : Boolean := False;
 
-   ------------------
-   -- Process_File --
-   ------------------
 
-   procedure Process_File (Unit : LAL.Analysis_Unit; Filename : String) is
+   Depth : Natural := 0;
+
+   function Indent return String
+   is
+      use Ada.Strings.fixed;
    begin
-      if LAL.Has_Diagnostics (Unit) then
-         for D of LAL.Diagnostics (Unit) loop
+      return Depth * "   ";
+   end Indent;
+
+   procedure log (Message : in String)
+   is
+   begin
+      put_Line (Indent & Message);
+   end log;
+
+
+   procedure process (Node : in LAL.Ada_Node)
+   is
+      use type AdaM.Entity.view,
+               LAL.Ada_Node;
+
+      new_Entity          : AdaM.Entity.view;
+      Processed_Something : Boolean := True;
+   begin
+      if Node = null
+      then
+         Depth := Depth + 1;
+         new_Line;
+         log ("Null Node");
+         Depth := Depth - 1;
+
+         return;
+      end if;
+
+      Depth := Depth + 1;
+      new_Line;
+
+
+      -- Pre-op
+      --
+      case Node.Kind
+      is
+         --  Packages
+         --
+         when LAL.Ada_Base_Package_Decl =>
+            Print_Navigation
+              ("Body", Node,
+               LAL.Base_Package_Decl (Node).P_Body_Part);
+
+            declare
+               use ada.Characters.Conversions;
+               Name        : constant String              := to_String (LAL.Package_Decl (Node).P_Defining_Name.Text);
+               new_Package : constant AdaM.a_Package.view := AdaM.a_Package.new_Package (Name);
+            begin
+               put_Line (Indent & "PACKAGE NAME: '" & Name & "'");
+               current_compilation_Unit.Entity_is (new_Package.all'Access);
+
+               new_Entity := new_Package.all'Access;
+            end;
+
+
+         when LAL.Ada_Package_Body =>
+            Print_Navigation
+              (Indent & "Decl", Node, LAL.Package_Body (Node).P_Decl_Part);
+
+         when LAL.Ada_Generic_Package_Decl =>
+            Print_Navigation
+              (Indent & "Body", Node,
+               LAL.Generic_Package_Decl (Node).P_Body_Part);
+
+            --  Subprograms
+            --
+         when LAL.Ada_Subp_Decl =>
+            Print_Navigation
+              (Indent & "Body", Node, LAL.Subp_Decl (Node).P_Body_Part);
+
+         when LAL.Ada_Subp_Body =>
+            Print_Navigation
+              (Indent & "Decl", Node, LAL.Subp_Body (Node).P_Decl_Part);
+
+         when LAL.Ada_Generic_Subp_Decl =>
+            Print_Navigation
+              (Indent & "Body", Node,
+               LAL.Generic_Subp_Decl (Node).P_Body_Part);
+
+         when LAL.Ada_Pragma_Node =>
+            log ("Processing an Ada_Pragma_Node");
+
+            declare
+               use ada.Characters.Conversions;
+               Name        : constant String             := to_String (LAL.Pragma_Node (Node).F_Id.Text);
+               new_Pragma  : constant AdaM.a_Pragma.view := AdaM.a_Pragma.new_Pragma (Name);
+            begin
+               log ("Pragma Name: '" & Name & "'");
+               new_Entity := new_Pragma.all'Access;
+            end;
+
+         -- Others
+         --
+         when others =>
+            Put_Line (Indent & "Skip pre-processing of " & Short_Image (Node));
+            Processed_Something := False;
+
+      end case;
+
+      At_Least_Once := At_Least_Once or else Processed_Something;
+
+
+
+
+      if new_Entity /= null
+      then
+         if current_Parent = null
+         then
+            ada.Text_IO.put_Line (Indent & "Lowering current_Parent from null to " & new_Entity.Name);
+            new_Entity.parent_Entity_is (null);
+         else
+            current_Parent.Children.append (new_Entity);
+
+            ada.Text_IO.put_Line (Indent & "Lowering current_Parent from " & current_Parent.Name &
+                                    " to " & new_Entity.Name);
+            new_Entity.parent_Entity_is (current_Parent);
+         end if;
+
+         current_Parent := new_Entity;
+      end if;
+
+
+
+      -- Recurse into children.
+      --
+      put_Line (Indent & "Child Count: " & Integer'Image (Node.Child_Count));
+
+      for i in 1 .. Node.child_Count
+      loop
+         process (Node.Child (i));
+      end loop;
+
+
+
+      -- Post-op.
+      --
+      if    new_Entity     /= null
+        and current_Parent /= null
+      then
+         if current_Parent.parent_Entity /= null
+         then
+            ada.Text_IO.put_Line (Indent & "Raising current_Parent from " & current_Parent.Name &
+                                    " to " & current_Parent.parent_Entity.Name);
+         else
+            ada.Text_IO.put_Line (Indent & "Raising current_Parent from " & current_Parent.Name &
+                                    " to null");
+         end if;
+
+         current_Parent := current_Parent.parent_Entity;
+      end if;
+
+      Depth := Depth - 1;
+
+   exception
+      when LAL.Property_Error =>
+         Put_Line (Indent & "Error when processing " & Short_Image (Node));
+         At_Least_once := True;
+   end process;
+
+
+
+   procedure process_File (Unit     : in LAL.Analysis_Unit;
+                           Filename : in String)
+   is
+   begin
+      if LAL.Has_Diagnostics (Unit)
+      then
+         for D of LAL.Diagnostics (Unit)
+         loop
             Put_Line ("error: " & Filename & ": "
                       & Langkit_Support.Diagnostics.To_Pretty_String (D));
          end loop;
          New_Line;
+
          return;
       end if;
+
+      current_compilation_Unit := AdaM.compilation_Unit.new_compilation_Unit (Name => Filename);
+      Environ.add (current_compilation_Unit);
+
 
       LAL.Populate_Lexical_Env (Unit);
 
       declare
-         It            : LAL.Local_Find_Iterator := LAL.Root (Unit).Find (Node_Filter'Access);
-         At_Least_Once : Boolean                 := False;
-         Node          : LAL.Ada_Node;
+--           It            : LAL.Local_Find_Iterator := LAL.Root (Unit).Find (Node_Filter'Access);
+         Node          : LAL.Ada_Node := LAL.Root (Unit);
+--           Node_Ok       : Boolean     := It.Next (Node);
       begin
-         while It.Next (Node) loop
-            declare
-               Processed_Something : Boolean := True;
-            begin
-               case Node.Kind is
+         process (Node);
 
-                  --  Packages
+--           while It.Next (Node)
+--           loop
 
-                  when LAL.Ada_Base_Package_Decl =>
 
-                     Print_Navigation
-                       ("Body", Node,
-                        LAL.Base_Package_Decl (Node).P_Body_Part);
-                  when LAL.Ada_Package_Body =>
-                     Print_Navigation
-                       ("Decl", Node, LAL.Package_Body (Node).P_Decl_Part);
+--              declare
+--                 Processed_Something : Boolean := True;
+--              begin
+--                 case Node.Kind
+--                 is
+--                    --  Packages
+--                    --
+--                    when LAL.Ada_Base_Package_Decl =>
+--                       Print_Navigation
+--                         ("Body", Node,
+--                          LAL.Base_Package_Decl (Node).P_Body_Part);
+--
+--                       declare
+--                          use ada.Characters.Conversions;
+--                          Name        : constant String              := to_String (LAL.Package_Decl (Node).P_Defining_Name.Text);
+--                          new_Package : constant AdaM.a_Package.view := AdaM.a_Package.new_Package (Name);
+--                       begin
+--                          put_Line ("PACKAGE NAME: '" & Name & "'");
+--                          current_compilation_Unit.Entity_is (new_Package.all'Access);
+--                       end;
+--
+--
+--                    when LAL.Ada_Package_Body =>
+--                       Print_Navigation
+--                         ("Decl", Node, LAL.Package_Body (Node).P_Decl_Part);
+--
+--                    when LAL.Ada_Generic_Package_Decl =>
+--                       Print_Navigation
+--                         ("Body", Node,
+--                          LAL.Generic_Package_Decl (Node).P_Body_Part);
+--
+--                       --  Subprograms
+--                       --
+--                    when LAL.Ada_Subp_Decl =>
+--                       Print_Navigation
+--                         ("Body", Node, LAL.Subp_Decl (Node).P_Body_Part);
+--
+--                    when LAL.Ada_Subp_Body =>
+--                       Print_Navigation
+--                         ("Decl", Node, LAL.Subp_Body (Node).P_Decl_Part);
+--
+--                    when LAL.Ada_Generic_Subp_Decl =>
+--                       Print_Navigation
+--                         ("Body", Node,
+--                          LAL.Generic_Subp_Decl (Node).P_Body_Part);
+--
+--                       -- Others
+--                       --
+--                    when others =>
+--                       Put_Line ("Skip processing of " & Short_Image (Node));
+--                       Processed_Something := False;
+--
+--                 end case;
+--
+--                 At_Least_Once := At_Least_Once or else Processed_Something;
+--
+--              exception
+--                 when LAL.Property_Error =>
+--                    Put_Line ("Error when processing " & Short_Image (Node));
+--                    At_Least_once := True;
+--              end;
+--           end loop;
 
-                  when LAL.Ada_Generic_Package_Decl =>
-                     Print_Navigation
-                       ("Body", Node,
-                        LAL.Generic_Package_Decl (Node).P_Body_Part);
-
-                  --  Subprograms
-
-                  when LAL.Ada_Subp_Decl =>
-                     Print_Navigation
-                       ("Body", Node, LAL.Subp_Decl (Node).P_Body_Part);
-                  when LAL.Ada_Subp_Body =>
-                     Print_Navigation
-                       ("Decl", Node, LAL.Subp_Body (Node).P_Decl_Part);
-
-                  when LAL.Ada_Generic_Subp_Decl =>
-                     Print_Navigation
-                       ("Body", Node,
-                        LAL.Generic_Subp_Decl (Node).P_Body_Part);
-
-                  when others =>
-                     Put_Line ("Skip processing of " & Short_Image (Node));
-                     Processed_Something := False;
-
-               end case;
-               At_Least_Once := At_Least_Once or else Processed_Something;
-            exception
-               when LAL.Property_Error =>
-                  Put_Line ("Error when processing " & Short_Image (Node));
-                  At_Least_once := True;
-            end;
-         end loop;
          if not At_Least_Once then
             Put_Line ("<no node to process>");
          end if;
-            New_Line;
+
+         New_Line;
       end;
    end Process_File;
 
@@ -138,8 +345,9 @@ is
    -- Print_Navigation --
    ----------------------
 
-   procedure Print_Navigation
-     (Part_Name : String; Orig, Dest : access LAL.Ada_Node_Type'Class) is
+   procedure Print_Navigation (Part_Name  : String;
+                               Orig, Dest : access LAL.Ada_Node_Type'Class)
+   is
    begin
       if Dest = null then
          Put_Line
@@ -157,7 +365,8 @@ is
    -- Is_Navigation_Disabled --
    ----------------------------
 
-   function Is_Navigation_Disabled (N : LAL.Ada_Node) return Boolean is
+   function Is_Navigation_Disabled (N : LAL.Ada_Node) return Boolean
+   is
 
       function Lowercase_Name (Id : LAL.Identifier) return String is
         (To_Lower (Langkit_Support.Text.Image (LAL.Text (Id.F_Tok))));
@@ -185,7 +394,7 @@ is
                if Assoc.F_Id.Kind = LAL.Ada_Identifier then
                   declare
                      Id : constant LAL.Identifier :=
-                        LAL.Identifier (Assoc.F_Id);
+                       LAL.Identifier (Assoc.F_Id);
                   begin
                      return Lowercase_Name (Id) = "disable_navigation";
                   end;
@@ -199,15 +408,13 @@ is
       case N.Kind is
          when LAL.Ada_Base_Package_Decl =>
             return Has_Disable_Navigation
-               (LAL.Base_Package_Decl (N).F_Aspects);
+              (LAL.Base_Package_Decl (N).F_Aspects);
+
          when others =>
             return False;
       end case;
    end Is_Navigation_Disabled;
 
-
-   current_compilation_Unit    : AdaM.compilation_Unit.view;
---     current_package_Declaration : AdaM.Declaration.of_package.view;
 
 
 begin
@@ -424,16 +631,16 @@ begin
    for Each of ada_Family
    loop
 
---     for I in 1 .. 1 loop -- CMD.Argument_Count loop
+      --     for I in 1 .. 1 loop -- CMD.Argument_Count loop
       declare
          Prefix : constant String   := "/usr/lib/gcc/x86_64-pc-linux-gnu/7.1.1/adainclude/";
          Arg    : constant String   := Each.all;
          Unit   : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, Prefix & Arg);
---           Unit : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, "standard.ads");
+         --           Unit : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, "standard.ads");
       begin
          Put_Title ('#', Arg);
          Process_File (Unit, Prefix & Arg);
---           Process_File (Unit, "standard.ads");
+         --           Process_File (Unit, "standard.ads");
       end;
    end loop;
 
