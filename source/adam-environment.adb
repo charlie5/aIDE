@@ -87,6 +87,99 @@ is
 
 
 
+   function package_Name (Identifier : in String) return String
+   is
+      use Ada.Strings,
+          Ada.Strings.fixed;
+      I : constant Natural := Index (Identifier, ".", going => Backward);
+   begin
+      if I = 0
+      then
+         return "Standard";
+      end if;
+
+      return Identifier (Identifier'First .. I - 1);
+   end package_Name;
+
+
+
+   function simple_Name (Identifier : in String) return String
+   is
+      use Ada.Strings,
+          Ada.Strings.fixed;
+      I : constant Natural := Index (Identifier, ".", going => Backward);
+   begin
+      if I = 0
+      then
+         return Identifier;
+      end if;
+
+      return Identifier (I + 1 .. Identifier'Last);
+   end simple_Name;
+
+
+
+   function Split (Identifier : in String) return text_Lines
+   is
+      use Ada.Strings,
+          Ada.Strings.fixed;
+
+      First : Natural := Identifier'First;
+      Last  : Natural;
+
+      I     : Natural;
+      Lines : text_Lines;
+   begin
+      loop
+         I := Index (Identifier, ".", from => First);
+
+         if I = 0
+         then
+            Last := Identifier'Last;
+            Lines.append (+Identifier (First .. Last));
+            exit;
+         end if;
+
+         Last  := I - 1;
+         Lines.append (+Identifier (First .. Last));
+         First := I + 1;
+      end loop;
+
+      return Lines;
+   end Split;
+
+
+
+   function  find (Self : in Item;   Identifier : in String) return AdaM.a_Package.view
+   is
+      the_Package : AdaM.a_Package.view := Self.standard_Package;
+   begin
+      if Identifier /= "Standard"
+      then
+         declare
+            Names : constant text_Lines := Split (Identifier);
+         begin
+            for Each of Names
+            loop
+               the_Package := the_Package.child_Package (+Each);
+            end loop;
+         end;
+      end if;
+
+      return the_Package;
+   end find;
+
+
+
+   function  find (Self : in Item;   Identifier : in String) return AdaM.a_Type.view
+   is
+      the_Package : AdaM.a_Package.view := Self.find (package_Name (Identifier));
+   begin
+      return the_Package.find (simple_Name (Identifier));
+   end find;
+
+
+
    procedure print (Self : in Item)
    is
       use -- AdaM.Source,

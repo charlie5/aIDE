@@ -188,7 +188,7 @@ is
    function  Children  (Self : access Item)     return Entities_view
    is
    begin
-      return Self.Children'Access;
+      return Self.Children'unchecked_Access;
    end Children;
 
 

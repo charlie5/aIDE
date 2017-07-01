@@ -1,6 +1,6 @@
 with
      AdaM.program_Unit,
---       AdaM.Source,
+     AdaM.a_Type,
      AdaM.Context,
      AdaM.Declaration.of_exception,
 
@@ -77,8 +77,12 @@ is
 
 --     function  Children  (Self : in     Item'Class) return a_Package.Vector;
    function  child_Packages  (Self : in     Item'Class) return a_Package.Vector;
+   function  child_Package   (Self : in     Item'Class;   Named : in String) return a_Package.view;
 
    procedure add_Child (Self : in out Item;   Child : in a_Package.View);
+
+   function  find (Self : in Item;   Named : in String) return AdaM.a_Type.view;
+
 
 
 

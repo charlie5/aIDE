@@ -1,7 +1,7 @@
 with
      AdaM.Any,
      AdaM.Entity,
---       AdaM.Source,
+--     AdaM.a_Type,
      AdaM.Context,
      AdaM.library_Item,
      AdaM.Subunit,
@@ -75,8 +75,6 @@ is
 
    function  Entity    (Self : in     Item)     return AdaM.Entity.view;
    procedure Entity_is (Self : in out Item;   Now : in AdaM.Entity.view);
-
-
 
 
 

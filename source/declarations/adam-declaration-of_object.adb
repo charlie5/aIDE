@@ -30,6 +30,7 @@ is
    end define;
 
 
+   overriding
    procedure destruct (Self : in out Item)
    is
    begin
@@ -37,11 +38,13 @@ is
    end destruct;
 
 
-   function new_Declaration return View
+   function new_Declaration (Name : in String) return View
    is
       new_View : constant Declaration.of_object.view := Pool.new_Item;
    begin
       define (Declaration.of_object.item (new_View.all));
+      new_View.Name_is (Name);
+
       return new_View;
    end new_Declaration;
 
@@ -64,6 +67,35 @@ is
    begin
       return Pool.to_Id (Self);
    end Id;
+
+
+   procedure is_Constant (Self : in out Item;   Now : in Boolean := True)
+   is
+   begin
+      Self.is_Constant := Now;
+   end is_Constant;
+
+
+   function  is_Constant (Self : in     Item) return Boolean
+   is
+   begin
+      return Self.is_Constant;
+   end is_Constant;
+
+
+
+   procedure Type_is  (Self : in out Item;   Now : in AdaM.a_Type.view)
+   is
+   begin
+      Self.my_Type := Now;
+   end Type_is;
+
+
+   function  my_Type (Self : in     Item)     return AdaM.a_Type.view
+   is
+   begin
+      return Self.my_Type;
+   end my_Type;
 
 
    -- Streams

@@ -3,6 +3,7 @@ with
      AdaM.Entity,
      AdaM.compilation_Unit,
      AdaM.Declaration.of_package,
+     AdaM.Declaration.of_object,
      AdaM.a_Pragma,
      AdaM.a_Package,
      AdaM.a_Type.enumeration_type,
@@ -39,7 +40,8 @@ is
    type String_view is access String;
    type Strings is array (Positive range <>) of String_view;
 
-   ada_Family : Strings := (1 => new String' ("ada.ads"));
+   ada_Family : Strings := (1 => new String' ("ada.ads"),
+                            2 => new String' ("a-string.ads"));
 
    package CMD renames Ada.Command_Line;
    package LAL renames Libadalang.Analysis;
@@ -86,6 +88,85 @@ is
    end log;
 
 
+
+   function parse_object_Declaration (Node : in LAL.Object_Decl) return AdaM.Declaration.of_object.view
+   is
+      use ada.Characters.Conversions;
+      Name        : constant String                          := to_String (Node.P_Defining_Name.Text);
+      new_Object  : constant AdaM.Declaration.of_object.view := AdaM.Declaration.of_object.new_Declaration (Name);
+   begin
+      Depth := Depth + 1;
+      log ("Object Name: '" & Name & "'");
+
+
+      -- Parse children.
+      --
+      put_Line (Indent & "Child Count: " & Integer'Image (Node.Child_Count));
+
+      for i in 1 .. Node.child_Count
+      loop
+         declare
+            use type LAL.Ada_Node;
+            Child : LAL.Ada_Node := Node.Child (i);
+         begin
+            if Child = null
+            then
+               log ("Null Node");
+
+            else
+               case Child.Kind
+               is
+                  when LAL.Ada_Constant_Present =>
+                     new_Object.is_Constant;
+                     log ("Object is constant");
+
+                  when LAL.Ada_Subtype_Indication =>
+                     log ("Ada_Subtype_Indication found");
+
+                     declare
+                        Name : constant String := to_String (LAL.Subtype_Indication (Child).F_Name.Text);
+                     begin
+                        log ("Subtype Name : '" & Name & "'");
+                        new_Object.Type_is (Environ.find (Name));
+                     end;
+
+
+               --  Packages
+               --
+--              when LAL.Ada_Base_Package_Decl =>
+--                 Print_Navigation
+--                   ("Body", Node,
+--                    LAL.Base_Package_Decl (Node).P_Body_Part);
+--
+--                 declare
+--                    use ada.Characters.Conversions;
+--                    Name        : constant String              := to_String (LAL.Package_Decl (Node).P_Defining_Name.Text);
+--                    new_Package : constant AdaM.a_Package.view := AdaM.a_Package.new_Package (Name);
+--                 begin
+--                    put_Line (Indent & "PACKAGE NAME: '" & Name & "'");
+--                    current_compilation_Unit.Entity_is (new_Package.all'Access);
+--
+--                    new_Entity := new_Package.all'Access;
+--                 end;
+
+               -- Others
+               --
+               when others =>
+                  Put_Line (Indent & "Skip pre-processing of " & Short_Image (Child));
+               end case;
+            end if;
+         end;
+      end loop;
+
+      Depth := Depth - 1;
+
+      return new_Object;
+   end parse_object_Declaration;
+
+
+
+
+
    procedure process (Node : in LAL.Ada_Node)
    is
       use type AdaM.Entity.view,
@@ -93,6 +174,7 @@ is
 
       new_Entity          : AdaM.Entity.view;
       Processed_Something : Boolean := True;
+      skip_Children       : Boolean := False;
    begin
       if Node = null
       then
@@ -115,16 +197,18 @@ is
          --  Packages
          --
          when LAL.Ada_Base_Package_Decl =>
-            Print_Navigation
-              ("Body", Node,
-               LAL.Base_Package_Decl (Node).P_Body_Part);
+--              Print_Navigation
+--                ("Body", Node,
+--                 LAL.Base_Package_Decl (Node).P_Body_Part);
 
             declare
                use ada.Characters.Conversions;
                Name        : constant String              := to_String (LAL.Package_Decl (Node).P_Defining_Name.Text);
                new_Package : constant AdaM.a_Package.view := AdaM.a_Package.new_Package (Name);
             begin
-               put_Line (Indent & "PACKAGE NAME: '" & Name & "'");
+               log ("Processing an Ada_Base_Package_Decl");
+               log ("Package Name: '" & Name & "'");
+
                current_compilation_Unit.Entity_is (new_Package.all'Access);
 
                new_Entity := new_Package.all'Access;
@@ -167,6 +251,19 @@ is
                new_Entity := new_Pragma.all'Access;
             end;
 
+         when LAL.Ada_Object_Decl =>
+            log ("Processing an Ada_Object_Decl");
+            new_Entity := parse_object_Declaration (LAL.Object_Decl (Node)).all'Access;
+            skip_Children := True;
+--              declare
+--                 use ada.Characters.Conversions;
+--                 Name        : constant String             := to_String (LAL.Object_Decl (Node).P_Defining_Name.Text);
+--                 new_Object  : constant AdaM.Declaration.of_object.view := AdaM.Declaration.of_object.new_Declaration (Name);
+--              begin
+--                 log ("Object Name: '" & Name & "'");
+--                 new_Entity := new_Object.all'Access;
+--              end;
+
          -- Others
          --
          when others =>
@@ -199,15 +296,17 @@ is
 
 
 
-      -- Recurse into children.
-      --
-      put_Line (Indent & "Child Count: " & Integer'Image (Node.Child_Count));
+      if not skip_Children
+      then
+         -- Recurse into children.
+         --
+         put_Line (Indent & "Child Count: " & Integer'Image (Node.Child_Count));
 
-      for i in 1 .. Node.child_Count
-      loop
-         process (Node.Child (i));
-      end loop;
-
+         for i in 1 .. Node.child_Count
+         loop
+            process (Node.Child (i));
+         end loop;
+      end if;
 
 
       -- Post-op.
@@ -468,7 +567,7 @@ begin
       add_short_short_Integer:
       declare
          new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
-           := AdaM.a_Type.signed_integer_type.new_Type (Name => "short_short_Integer");
+           := AdaM.a_Type.signed_integer_type.new_Type (Name => "Short_Short_Integer");
       begin
          standard_Package.Children.append (new_integer_Type.all'Access);
       end add_short_short_Integer;
@@ -476,7 +575,7 @@ begin
       add_short_Integer:
       declare
          new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
-           := AdaM.a_Type.signed_integer_type.new_Type (Name => "short_Integer");
+           := AdaM.a_Type.signed_integer_type.new_Type (Name => "Short_Integer");
       begin
          standard_Package.Children.append (new_integer_Type.all'Access);
       end add_short_Integer;
@@ -484,7 +583,7 @@ begin
       add_long_Integer:
       declare
          new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
-           := AdaM.a_Type.signed_integer_type.new_Type (Name => "long_Integer");
+           := AdaM.a_Type.signed_integer_type.new_Type (Name => "Long_Integer");
       begin
          standard_Package.Children.append (new_integer_Type.all'Access);
       end add_long_Integer;
@@ -492,7 +591,7 @@ begin
       add_long_long_Integer:
       declare
          new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
-           := AdaM.a_Type.signed_integer_type.new_Type (Name => "long_long_Integer");
+           := AdaM.a_Type.signed_integer_type.new_Type (Name => "Long_Long_Integer");
       begin
          standard_Package.Children.append (new_integer_Type.all'Access);
       end add_long_long_Integer;
@@ -500,7 +599,7 @@ begin
       add_short_Float:
       declare
          new_float_Type : constant AdaM.a_Type.floating_point_type.view
-           := AdaM.a_Type.floating_point_type.new_Type (Name => "short_Float");
+           := AdaM.a_Type.floating_point_type.new_Type (Name => "Short_Float");
       begin
          standard_Package.Children.append (new_float_Type.all'Access);
       end add_short_Float;
@@ -516,7 +615,7 @@ begin
       add_long_Float:
       declare
          new_float_Type : constant AdaM.a_Type.floating_point_type.view
-           := AdaM.a_Type.floating_point_type.new_Type (Name => "long_Float");
+           := AdaM.a_Type.floating_point_type.new_Type (Name => "Long_Float");
       begin
          standard_Package.Children.append (new_float_Type.all'Access);
       end add_long_Float;
@@ -524,7 +623,7 @@ begin
       add_long_long_Float:
       declare
          new_float_Type : constant AdaM.a_Type.floating_point_type.view
-           := AdaM.a_Type.floating_point_type.new_Type (Name => "long_long_Float");
+           := AdaM.a_Type.floating_point_type.new_Type (Name => "Long_Long_Float");
       begin
          standard_Package.Children.append (new_float_Type.all'Access);
       end add_long_long_Float;
@@ -540,7 +639,7 @@ begin
       add_wide_Character:
       declare
          new_enum_Type : constant AdaM.a_Type.enumeration_type.view
-           := AdaM.a_Type.enumeration_type.new_Type (Name => "wide_Character");
+           := AdaM.a_Type.enumeration_type.new_Type (Name => "Wide_Character");
       begin
          standard_Package.Children.append (new_enum_Type.all'Access);
       end add_wide_Character;
@@ -548,7 +647,7 @@ begin
       add_wide_wide_Character:
       declare
          new_enum_Type : constant AdaM.a_Type.enumeration_type.view
-           := AdaM.a_Type.enumeration_type.new_Type (Name => "wide_wide_Character");
+           := AdaM.a_Type.enumeration_type.new_Type (Name => "Wide_Wide_Character");
       begin
          standard_Package.Children.append (new_enum_Type.all'Access);
       end add_wide_wide_Character;
@@ -564,7 +663,7 @@ begin
       add_wide_String:
       declare
          new_array_Type : constant AdaM.a_Type.unconstrained_array_type.view
-           := AdaM.a_Type.unconstrained_array_type.new_Type (Name => "wide_String");
+           := AdaM.a_Type.unconstrained_array_type.new_Type (Name => "Wide_String");
       begin
          standard_Package.Children.append (new_array_Type.all'Access);
       end add_wide_String;
@@ -572,7 +671,7 @@ begin
       add_wide_wide_String:
       declare
          new_array_Type : constant AdaM.a_Type.unconstrained_array_type.view
-           := AdaM.a_Type.unconstrained_array_type.new_Type (Name => "wide_wide_String");
+           := AdaM.a_Type.unconstrained_array_type.new_Type (Name => "Wide_Wide_String");
       begin
          standard_Package.Children.append (new_array_Type.all'Access);
       end add_wide_wide_String;
@@ -588,7 +687,7 @@ begin
       add_constraint_Error:
       declare
          new_Exception : AdaM.Declaration.of_exception.view
-           := Adam.Declaration.of_exception.new_Declaration ("constraint_Error");
+           := Adam.Declaration.of_exception.new_Declaration ("Constraint_Error");
       begin
          standard_Package.Children.append (new_Exception.all'Access);
       end add_constraint_Error;
@@ -596,7 +695,7 @@ begin
       add_program_Error:
       declare
          new_Exception : AdaM.Declaration.of_exception.view
-           := Adam.Declaration.of_exception.new_Declaration ("program_Error");
+           := Adam.Declaration.of_exception.new_Declaration ("Program_Error");
       begin
          standard_Package.Children.append (new_Exception.all'Access);
       end add_program_Error;
@@ -604,7 +703,7 @@ begin
       add_storage_Error:
       declare
          new_Exception : AdaM.Declaration.of_exception.view
-           := Adam.Declaration.of_exception.new_Declaration ("storage_Error");
+           := Adam.Declaration.of_exception.new_Declaration ("Storage_Error");
       begin
          standard_Package.Children.append (new_Exception.all'Access);
       end add_storage_Error;
@@ -612,7 +711,7 @@ begin
       add_tasking_Error:
       declare
          new_Exception : AdaM.Declaration.of_exception.view
-           := Adam.Declaration.of_exception.new_Declaration ("tasking_Error");
+           := Adam.Declaration.of_exception.new_Declaration ("Tasking_Error");
       begin
          standard_Package.Children.append (new_Exception.all'Access);
       end add_tasking_Error;
@@ -620,7 +719,7 @@ begin
       add_numeric_Error:   -- TODO: Make this a proper exception renaming as per 'standard.ads'.
       declare
          new_Exception : AdaM.Declaration.of_exception.view
-           := Adam.Declaration.of_exception.new_Declaration ("numeric_Error");
+           := Adam.Declaration.of_exception.new_Declaration ("Numeric_Error");
       begin
          standard_Package.Children.append (new_Exception.all'Access);
       end add_numeric_Error;

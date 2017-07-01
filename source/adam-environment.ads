@@ -1,8 +1,9 @@
 with
      AdaM.compilation_Unit,
      AdaM.a_Package,
-     AdaM.a_Type;
-
+     AdaM.a_Type,
+     Ada.Strings.Unbounded.Hash,
+     ada.Containers.Hashed_Maps;
 
 package AdaM.Environment
 --
@@ -27,14 +28,24 @@ is
    procedure standard_package_is (Self : in out Item;   Now : in AdaM.a_Package.view);
    function  standard_Package    (Self : in     Item)     return AdaM.a_Package.view;
 
+   function  find (Self : in Item;   Identifier : in String) return AdaM.a_Type.view;
 
 
 private
+--     use type AdaM.a_Type.view;
+--     package name_Maps_of_types is new ada.Containers.Hashed_Maps (Key_Type        => Text,
+--                                                                   Element_Type    => AdaM.a_Type.view,
+--                                                                   Hash            => Ada.Strings.Unbounded.Hash,
+--                                                                   Equivalent_Keys => "=");
+--     subtype name_Map_of_types is name_Maps_of_types.Map;
+
 
    type Item is tagged
       record
          Units            : Compilation_Unit.Vector;
          standard_Package : AdaM.a_Package.view;
+
+--           all_Types        : name_Map_of_types;
       end record;
 
 

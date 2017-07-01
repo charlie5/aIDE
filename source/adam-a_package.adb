@@ -312,11 +312,52 @@ is
    end child_Packages;
 
 
+   function  child_Package   (Self : in     Item'Class;   Named : in String) return a_Package.view
+   is
+   begin
+      for Each of Self.child_Packages
+      loop
+         if Each.Name = Named
+         then
+            return Each;
+         end if;
+      end loop;
+
+      return null;
+   end child_Package;
+
+
+
    procedure add_Child (Self : in out Item;   Child : in a_Package.View)
    is
    begin
       Self.child_Packages.append (Child);
    end add_Child;
+
+
+
+   function  find (Self : in Item;   Named : in String) return AdaM.a_Type.view
+   is
+
+   begin
+      for Each of Self.Children.all
+      loop
+         put_Line ("--- find type in package " & (+Self.Name) & "   ---    Tag => " & ada.Tags.External_Tag (Each.all'Tag));
+
+         if Each.all in AdaM.a_Type.item'Class
+         then
+            if Each.Name = Named
+            then
+               return AdaM.a_Type.view (Each);
+            end if;
+         end if;
+      end loop;
+
+      put_Line ("*** NOT FOUND ***");
+      return null;
+   end find;
+
+
 
 
 
