@@ -82,6 +82,22 @@ is
 
 
 
+   procedure add_Argument (Self : in out Item;   Now : in String)
+   is
+   begin
+      Self.Arguments.append (+Now);
+   end add_Argument;
+
+   function  Arguments    (Self : in     Item)     return text_Lines
+   is
+   begin
+      return Self.Arguments;
+   end Arguments;
+
+
+
+
+
 
    overriding
    function to_Source (Self : in Item) return text_Vectors.Vector

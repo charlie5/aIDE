@@ -43,6 +43,7 @@ is
    ada_Family : Strings := (1 => new String' ("ada.ads"),
                             2 => new String' ("a-string.ads"));
 
+
    package CMD renames Ada.Command_Line;
    package LAL renames Libadalang.Analysis;
 
@@ -130,6 +131,16 @@ is
                         new_Object.Type_is (Environ.find (Name));
                      end;
 
+                  when LAL.Ada_Char_Literal =>
+                     log ("Ada_Char_Literal found");
+
+                     declare
+                        Value : constant String := to_String (LAL.Char_Literal (Child).Text);
+                     begin
+                        log ("Literal value : '" & Value & "'");
+                        new_Object.Initialiser_is (Value);
+                     end;
+
 
                --  Packages
                --
@@ -151,8 +162,9 @@ is
 
                -- Others
                --
-               when others =>
-                  Put_Line (Indent & "Skip pre-processing of " & Short_Image (Child));
+                  when others =>
+                     Put_Line (Indent & "Skip pre-processing of " & Short_Image (Child)
+                               & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Child.Kind));
                end case;
             end if;
          end;
@@ -162,6 +174,75 @@ is
 
       return new_Object;
    end parse_object_Declaration;
+
+
+
+   function parse_Pragma (Node : in LAL.Pragma_Node) return AdaM.a_Pragma.view
+   is
+      use ada.Characters.Conversions;
+
+      Name        : constant String             := to_String (LAL.Pragma_Node (Node).F_Id.Text);
+      new_Pragma  : constant AdaM.a_Pragma.view := AdaM.a_Pragma.new_Pragma (Name);
+
+   begin
+      Depth := Depth + 1;
+      log ("Object Name: '" & Name & "'");
+
+
+      -- Parse children.
+      --
+      put_Line (Indent & "Child Count: " & Integer'Image (Node.Child_Count));
+
+      for i in 1 .. Node.child_Count
+      loop
+         declare
+            use type LAL.Ada_Node;
+            Child : LAL.Ada_Node := Node.Child (i);
+         begin
+            if Child = null
+            then
+               log ("Null Node");
+
+            else
+               case Child.Kind
+               is
+                  when LAL.Ada_Base_Assoc_List =>
+--                       log ("ADA_BASE_ASSOC_LIST");
+
+                     declare
+                        List : LAL.Base_Assoc_List := LAL.Base_Assoc_List (Child);
+                     begin
+                        if not List.Is_Empty_List
+                        then
+                           List.Print;
+--                             put_Line ("LIST CHILD COUNT: " & Natural'Image (List.Child_Count));
+
+                           declare
+                              Pragma_Arg : LAL.Pragma_Argument_Assoc := LAL.Pragma_Argument_Assoc (List.Child (1));
+                              Arg        : String := to_String (Pragma_Arg.F_Expr.Text);
+                           begin
+--                                Pragma_Arg.Print;
+--                                put_Line ("'" & Arg & "'");
+
+                              new_Pragma.add_Argument (Arg);
+                           end;
+                        end if;
+                     end;
+
+                     -- Others
+                     --
+                  when others =>
+                     Put_Line (Indent & "Skip pre-processing of " & Short_Image (Child)
+                               & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Child.Kind));
+               end case;
+            end if;
+         end;
+      end loop;
+
+      Depth := Depth - 1;
+
+      return new_Pragma;
+   end parse_Pragma;
 
 
 
@@ -242,19 +323,15 @@ is
          when LAL.Ada_Pragma_Node =>
             log ("Processing an Ada_Pragma_Node");
 
-            declare
-               use ada.Characters.Conversions;
-               Name        : constant String             := to_String (LAL.Pragma_Node (Node).F_Id.Text);
-               new_Pragma  : constant AdaM.a_Pragma.view := AdaM.a_Pragma.new_Pragma (Name);
-            begin
-               log ("Pragma Name: '" & Name & "'");
-               new_Entity := new_Pragma.all'Access;
-            end;
+            new_Entity := parse_Pragma (LAL.Pragma_Node (Node)).all'Access;
+            skip_Children := True;
 
          when LAL.Ada_Object_Decl =>
             log ("Processing an Ada_Object_Decl");
+
             new_Entity := parse_object_Declaration (LAL.Object_Decl (Node)).all'Access;
             skip_Children := True;
+
 --              declare
 --                 use ada.Characters.Conversions;
 --                 Name        : constant String             := to_String (LAL.Object_Decl (Node).P_Defining_Name.Text);
@@ -744,7 +821,8 @@ begin
    end loop;
 
    LAL.Destroy (Ctx);
-   Put_Line ("Done.");
+   put_Line ("Done.");
+   new_Line;
 
 
    return Environ;

@@ -133,7 +133,6 @@ is
                                              Self.Parent,
                                              use_simple_Name => True);
    begin
-      put_Line ("YAY");
 --        gtk_New (the_Button, Named);
 --
 --        Button_Callbacks.connect (the_Button,

@@ -168,7 +168,7 @@ is
 
       for Each of Self.Children.all
       loop
-         put_Line ("*************   Tag: " & ada.Tags.External_Tag (Each.all'Tag));
+--           put_Line ("*************   Tag: " & ada.Tags.External_Tag (Each.all'Tag));
 --              raise program_Error with "sdfhslkad";
 
 --           the_Exception := Declaration.of_exception.view (Each);
@@ -368,7 +368,6 @@ is
                          Self   : in              Item)
    is
    begin
-      put_Line ("ZZZZZZZZZZZZZZ writing package name '" & (+Self.Name) & "'");
       Text'write (Stream, Self.Name);
 
       a_Package.view  'write (Stream, Self.Parent);

@@ -51,6 +51,9 @@ is
    procedure Type_is (Self : in out Item;   Now : in AdaM.a_Type.view);
    function  my_Type (Self : in     Item)     return AdaM.a_Type.view;
 
+   procedure Initialiser_is (Self : in out Item;   Now : in String);
+   function  Initialiser    (Self : in     Item)     return String;
+
 
 private
 
@@ -58,6 +61,7 @@ private
       record
          is_Constant : Boolean    := False;
          my_Type     : a_Type.view;
+         Initialiser : Text;
       end record;
 
 end AdaM.Declaration.of_object;

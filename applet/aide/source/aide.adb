@@ -7,7 +7,7 @@ with
      AdaM.Entity,
 
 
-     AdaM.Assist,
+--       AdaM.Assist,
      AdaM.compilation,
      AdaM.library_Item,
      AdaM.library_Unit,

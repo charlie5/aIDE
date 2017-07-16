@@ -52,6 +52,12 @@ is
    function  Name        (Self : in     Item)     return String;
    procedure Name_is     (Self : in out Item;   Now : in String);
 
+   procedure add_Argument (Self : in out Item;   Now : in String);
+   function  Arguments    (Self : in     Item)     return text_Lines;
+
+
+
+
    overriding
    function to_Source    (Self : in     Item) return text_Vectors.Vector;
 
@@ -60,7 +66,8 @@ private
 
    type Item is new Entity.item with
       record
-         Name         : Text;
+         Name      : Text;
+         Arguments : text_Lines;
       end record;
 
 
