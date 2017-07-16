@@ -164,7 +164,7 @@ is
       the_Exceptions : AdaM.Declaration.of_exception.Vector;
       the_Exception  : AdaM.Declaration.of_exception.view;
    begin
-      put_Line ("all_Exceptions PACKAGE NAME: " & (+Self.Name));
+--        put_Line ("all_Exceptions PACKAGE NAME: " & (+Self.Name));
 
       for Each of Self.Children.all
       loop
@@ -342,7 +342,7 @@ is
    begin
       for Each of Self.Children.all
       loop
-         put_Line ("--- find type in package " & (+Self.Name) & "   ---    Tag => " & ada.Tags.External_Tag (Each.all'Tag));
+--           put_Line ("--- find type in package " & (+Self.Name) & "   ---    Tag => " & ada.Tags.External_Tag (Each.all'Tag));
 
          if Each.all in AdaM.a_Type.item'Class
          then

@@ -113,7 +113,6 @@ is
             if Child = null
             then
                log ("Null Node");
-
             else
                case Child.Kind
                is
@@ -141,27 +140,6 @@ is
                         new_Object.Initialiser_is (Value);
                      end;
 
-
-               --  Packages
-               --
---              when LAL.Ada_Base_Package_Decl =>
---                 Print_Navigation
---                   ("Body", Node,
---                    LAL.Base_Package_Decl (Node).P_Body_Part);
---
---                 declare
---                    use ada.Characters.Conversions;
---                    Name        : constant String              := to_String (LAL.Package_Decl (Node).P_Defining_Name.Text);
---                    new_Package : constant AdaM.a_Package.view := AdaM.a_Package.new_Package (Name);
---                 begin
---                    put_Line (Indent & "PACKAGE NAME: '" & Name & "'");
---                    current_compilation_Unit.Entity_is (new_Package.all'Access);
---
---                    new_Entity := new_Package.all'Access;
---                 end;
-
-               -- Others
-               --
                   when others =>
                      Put_Line (Indent & "Skip pre-processing of " & Short_Image (Child)
                                & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Child.Kind));
@@ -214,7 +192,7 @@ is
                      begin
                         if not List.Is_Empty_List
                         then
-                           List.Print;
+--                             List.Print;
 --                             put_Line ("LIST CHILD COUNT: " & Natural'Image (List.Child_Count));
 
                            declare
