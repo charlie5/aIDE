@@ -245,8 +245,6 @@ is
             Name          : String         := LAL.Text (Child.F_Tok);
             new_Exception : AdaM.Declaration.of_exception.view := AdaM.Declaration.of_exception.new_Declaration (Name);
          begin
-            log ("KKKKKKKK Name: '" & Name & "'");
-
             current_Parent.Children.append (new_Exception.all'Access);
             new_Exception.parent_Entity_is (current_Parent);
          end;
@@ -257,6 +255,69 @@ is
 
 
 
+   function parse_Enumeration (Node : in LAL.Enum_Type_Decl) return AdaM.a_Type.enumeration_type.view
+   is
+      use ada.Characters.Conversions;
+
+      Name            : constant String                            := to_String (Node.P_Defining_Name.Text);
+      new_Enumeration : constant AdaM.a_Type.enumeration_type.view := AdaM.a_Type.enumeration_type.new_Type (Name);
+
+--        Ids : LAL.Identifier_List := Node.F_Ids;
+   begin
+      Depth := Depth + 1;
+
+      log ("Name: '" & Name & "'");
+
+      -- Parse children.
+      --
+      put_Line (Indent & "Child Count: " & Integer'Image (Node.Child_Count));
+
+      for i in 1 .. Node.child_Count
+      loop
+         declare
+            use type LAL.Ada_Node;
+            Child : LAL.Ada_Node := Node.Child (i);
+         begin
+            if Child = null
+            then
+               log ("Null Node");
+
+            else
+               case Child.Kind
+               is
+                  when LAL.Ada_Enum_Literal_Decl_List =>
+                     log ("parsing Ada_Enum_Literal_Decl_List");
+
+                     declare
+                        List : LAL.Enum_Literal_Decl_List := LAL.Enum_Literal_Decl_List (Child);
+                     begin
+                        for i in 1 .. List.child_Count
+                        loop
+                           declare
+                              Literal : LAL.Enum_Literal_Decl := LAL.Enum_Literal_Decl (List.Child (i));
+                              Name    : String                := to_String (Literal.P_Defining_Name.Text);
+
+                           begin
+                              log ("'" & Name & "'");
+                              new_Enumeration.add_Literal (Name);
+                           end;
+                        end loop;
+                     end;
+
+                     -- Others
+                     --
+                  when others =>
+                     Put_Line (Indent & "Skip pre-processing of " & Short_Image (Child)
+                               & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Child.Kind));
+               end case;
+            end if;
+         end;
+      end loop;
+
+      Depth := Depth - 1;
+
+      return new_Enumeration;
+   end parse_Enumeration;
 
 
 
@@ -356,10 +417,14 @@ is
          when LAL.Ada_Exception_Decl =>
             log ("Processing an Ada_Exception_Decl");
 
---              new_Entity    := AdaM.Entity.view (parse_Exception (LAL.Exception_Decl (Node)));
             parse_Exception (LAL.Exception_Decl (Node));
             skip_Children := True;
 
+         when LAL.Ada_Enum_Type_Decl =>
+            log ("Processing an Ada_Enum_Type_Decl");
+
+            new_Entity := parse_Enumeration (LAL.Enum_Type_Decl (Node)).all'Access;
+            skip_Children := True;
 
          -- Others
          --
