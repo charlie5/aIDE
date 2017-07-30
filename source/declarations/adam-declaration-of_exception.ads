@@ -17,7 +17,8 @@ is
 
    -- View
    --
-   type View is access all Item'Class;
+   type View  is access all Item'Class;
+   type Views is array (Positive range <>) of View;
 
    procedure View_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
                          Self   : in              View);

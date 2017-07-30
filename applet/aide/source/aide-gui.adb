@@ -226,7 +226,7 @@ is
       -- Hide unused pages in the top notebook.
       --
       the_top_Notebook.get_Nth_Page (0).hide;
-      the_top_Notebook.get_Nth_Page (2).hide;
+--        the_top_Notebook.get_Nth_Page (2).hide;
       the_top_Notebook.get_Nth_Page (3).hide;
       the_top_Notebook.get_Nth_Page (4).hide;
 

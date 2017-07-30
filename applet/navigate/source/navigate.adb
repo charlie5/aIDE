@@ -159,7 +159,7 @@ is
    is
       use ada.Characters.Conversions;
 
-      Name        : constant String             := to_String (LAL.Pragma_Node (Node).F_Id.Text);
+      Name        : constant String             := to_String (Node.F_Id.Text);
       new_Pragma  : constant AdaM.a_Pragma.view := AdaM.a_Pragma.new_Pragma (Name);
 
    begin
@@ -221,6 +221,40 @@ is
 
       return new_Pragma;
    end parse_Pragma;
+
+
+
+
+   procedure parse_Exception (Node : in LAL.Exception_Decl)
+   is
+      use ada.Characters.Conversions;
+
+      Ids : LAL.Identifier_List := Node.F_Ids;
+   begin
+      Depth := Depth + 1;
+
+      -- Parse children.
+      --
+      put_Line (Indent & "Ids Child Count: " & Integer'Image (Ids.Child_Count));
+
+      for i in 1 .. Ids.child_Count
+      loop
+         declare
+            use type LAL.Ada_Node;
+            Child         : LAL.Identifier := LAL.Identifier (Ids.Child (i));
+            Name          : String         := LAL.Text (Child.F_Tok);
+            new_Exception : AdaM.Declaration.of_exception.view := AdaM.Declaration.of_exception.new_Declaration (Name);
+         begin
+            log ("KKKKKKKK Name: '" & Name & "'");
+
+            current_Parent.Children.append (new_Exception.all'Access);
+            new_Exception.parent_Entity_is (current_Parent);
+         end;
+      end loop;
+
+      Depth := Depth - 1;
+   end parse_Exception;
+
 
 
 
@@ -318,6 +352,14 @@ is
 --                 log ("Object Name: '" & Name & "'");
 --                 new_Entity := new_Object.all'Access;
 --              end;
+
+         when LAL.Ada_Exception_Decl =>
+            log ("Processing an Ada_Exception_Decl");
+
+--              new_Entity    := AdaM.Entity.view (parse_Exception (LAL.Exception_Decl (Node)));
+            parse_Exception (LAL.Exception_Decl (Node));
+            skip_Children := True;
+
 
          -- Others
          --

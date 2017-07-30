@@ -25,7 +25,7 @@ is
       ("Windows_NT", "Linux", "MacOSX");
    Os : Os_Type := external ("OS");
 
-   for Source_Dirs use (".", "source", "source/editors", "source/asis/**", "source/palettes");
+   for Source_Dirs use (".", "source", "source/editors", "source/palettes");
 
    package Builder is
       for Default_Switches ("ada") use ("-g", "-j5");
