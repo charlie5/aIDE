@@ -32,8 +32,8 @@ function Navigate return AdaM.Environment.item
 is
    Environ : AdaM.Environment.item;
 
-   current_compilation_Unit    : AdaM.compilation_Unit.view;
-   --     current_package_Declaration : AdaM.Declaration.of_package.view;
+   current_compilation_Unit : AdaM.compilation_Unit.view;
+   current_Package          : AdaM.Declaration.of_package.view;
 
    current_Parent : AdaM.Entity.view;
 
@@ -74,6 +74,10 @@ is
    At_Least_Once : Boolean := False;
 
 
+
+
+
+
    Depth : Natural := 0;
 
    function Indent return String
@@ -91,6 +95,10 @@ is
 
 
 
+   procedure process (Node : in LAL.Ada_Node);
+
+
+
    function parse_object_Declaration (Node : in LAL.Object_Decl) return AdaM.Declaration.of_object.view
    is
       use ada.Characters.Conversions;
@@ -99,7 +107,6 @@ is
    begin
       Depth := Depth + 1;
       log ("Object Name: '" & Name & "'");
-
 
       -- Parse children.
       --
@@ -322,6 +329,59 @@ is
 
 
 
+
+   function parse_Package (Node : in LAL.Package_Decl) return AdaM.Declaration.of_package.view
+   is
+      use AdaM.Assist,
+          AdaM.Environment,
+          ada.Characters.Conversions;
+
+      use type AdaM.Declaration.of_package.view;
+
+      Name        : constant String              := to_String (Node.P_Defining_Name.Text);
+
+      new_Package : constant AdaM.Declaration.of_package.view := AdaM.Declaration.of_package.new_Package (Name);
+
+      parent_Name : constant String              := Adam.Environment.parent_Name (Name);   -- strip_Tail_of (Name);
+      Parent      :          AdaM.a_Package.view; -- := Environ.fetch (parent_Name);
+
+   begin
+      if current_Package = null
+      then
+         Parent := Environ.fetch (parent_Name);
+      else
+         Parent := current_Package;
+      end if;
+
+      log ("Package Name: '" & Name & "'     Parent Name: '" & parent_Name & "'      '" & Parent.Name & "'");
+
+      Parent.add_Child (new_Package);
+      new_Package.Parent_is (Parent);
+
+      current_compilation_Unit.Entity_is (new_Package.all'Access);
+      current_Package := new_Package;
+      log ("Setting current package to " & current_Package.Name);
+
+
+      -- Parse children.
+      --
+--        put_Line (Indent & "Child Count: " & Integer'Image (Node.Child_Count));
+--
+--        for i in 1 .. Node.child_Count
+--        loop
+--           process (Node.Child (i));
+--        end loop;
+--
+--        current_Package := current_Package.Parent;
+
+      return new_Package;
+   end parse_Package;
+
+
+
+
+
+
    procedure process (Node : in LAL.Ada_Node)
    is
       use type AdaM.Entity.view,
@@ -330,6 +390,7 @@ is
       new_Entity          : AdaM.Entity.view;
       Processed_Something : Boolean := True;
       skip_Children       : Boolean := False;
+
    begin
       if Node = null
       then
@@ -352,32 +413,10 @@ is
          --  Packages
          --
          when LAL.Ada_Base_Package_Decl =>
---              Print_Navigation
---                ("Body", Node,
---                 LAL.Base_Package_Decl (Node).P_Body_Part);
+            log ("Processing an Ada_Base_Package_Decl");
 
-            declare
-               use AdaM.Assist,
-                   AdaM.Environment,
-                   ada.Characters.Conversions;
-
-               Name        : constant String              := to_String (LAL.Package_Decl (Node).P_Defining_Name.Text);
-               new_Package : constant AdaM.a_Package.view := AdaM.a_Package.new_Package (Name);
-
-               parent_Name : constant String              := Adam.Environment.parent_Name (Name);   -- strip_Tail_of (Name);
-               Parent      : constant AdaM.a_Package.view := Environ.fetch (parent_Name);
-            begin
-               log ("Processing an Ada_Base_Package_Decl");
-               log ("Package Name: '" & Name & "'     Parent Name: '" & parent_Name & "'      '" & Parent.Name & "'");
-
-               Parent.add_Child (new_Package);
-               new_Package.Parent_is (Parent);
-
-               current_compilation_Unit.Entity_is (new_Package.all'Access);
-
-               new_Entity := new_Package.all'Access;
-            end;
-
+            new_Entity := parse_Package (LAL.Package_Decl (Node)).all'Access;
+--              skip_Children := True;
 
          when LAL.Ada_Package_Body =>
             Print_Navigation
@@ -447,8 +486,6 @@ is
       At_Least_Once := At_Least_Once or else Processed_Something;
 
 
-
-
       if new_Entity /= null
       then
          if current_Parent = null
@@ -465,7 +502,6 @@ is
 
          current_Parent := new_Entity;
       end if;
-
 
 
       if not skip_Children
@@ -498,6 +534,17 @@ is
          current_Parent := current_Parent.parent_Entity;
       end if;
 
+      case Node.Kind
+      is
+         when LAL.Ada_Base_Package_Decl =>
+            log ("Setting current package to " & current_Package.Parent.Name);
+            current_Package := current_Package.Parent;
+
+         when others =>
+            null;
+      end case;
+
+
       Depth := Depth - 1;
 
    exception
@@ -527,82 +574,14 @@ is
       current_compilation_Unit := AdaM.compilation_Unit.new_compilation_Unit (Name => Filename);
       Environ.add (current_compilation_Unit);
 
+      current_Package := null;
 
       LAL.Populate_Lexical_Env (Unit);
 
       declare
---           It            : LAL.Local_Find_Iterator := LAL.Root (Unit).Find (Node_Filter'Access);
-         Node          : LAL.Ada_Node := LAL.Root (Unit);
---           Node_Ok       : Boolean     := It.Next (Node);
+         Node : LAL.Ada_Node := LAL.Root (Unit);
       begin
          process (Node);
-
---           while It.Next (Node)
---           loop
-
-
---              declare
---                 Processed_Something : Boolean := True;
---              begin
---                 case Node.Kind
---                 is
---                    --  Packages
---                    --
---                    when LAL.Ada_Base_Package_Decl =>
---                       Print_Navigation
---                         ("Body", Node,
---                          LAL.Base_Package_Decl (Node).P_Body_Part);
---
---                       declare
---                          use ada.Characters.Conversions;
---                          Name        : constant String              := to_String (LAL.Package_Decl (Node).P_Defining_Name.Text);
---                          new_Package : constant AdaM.a_Package.view := AdaM.a_Package.new_Package (Name);
---                       begin
---                          put_Line ("PACKAGE NAME: '" & Name & "'");
---                          current_compilation_Unit.Entity_is (new_Package.all'Access);
---                       end;
---
---
---                    when LAL.Ada_Package_Body =>
---                       Print_Navigation
---                         ("Decl", Node, LAL.Package_Body (Node).P_Decl_Part);
---
---                    when LAL.Ada_Generic_Package_Decl =>
---                       Print_Navigation
---                         ("Body", Node,
---                          LAL.Generic_Package_Decl (Node).P_Body_Part);
---
---                       --  Subprograms
---                       --
---                    when LAL.Ada_Subp_Decl =>
---                       Print_Navigation
---                         ("Body", Node, LAL.Subp_Decl (Node).P_Body_Part);
---
---                    when LAL.Ada_Subp_Body =>
---                       Print_Navigation
---                         ("Decl", Node, LAL.Subp_Body (Node).P_Decl_Part);
---
---                    when LAL.Ada_Generic_Subp_Decl =>
---                       Print_Navigation
---                         ("Body", Node,
---                          LAL.Generic_Subp_Decl (Node).P_Body_Part);
---
---                       -- Others
---                       --
---                    when others =>
---                       Put_Line ("Skip processing of " & Short_Image (Node));
---                       Processed_Something := False;
---
---                 end case;
---
---                 At_Least_Once := At_Least_Once or else Processed_Something;
---
---              exception
---                 when LAL.Property_Error =>
---                    Put_Line ("Error when processing " & Short_Image (Node));
---                    At_Least_once := True;
---              end;
---           end loop;
 
          if not At_Least_Once then
             Put_Line ("<no node to process>");
@@ -612,9 +591,8 @@ is
       end;
    end Process_File;
 
-   ----------------------
-   -- Print_Navigation --
-   ----------------------
+
+
 
    procedure Print_Navigation (Part_Name  : String;
                                Orig, Dest : access LAL.Ada_Node_Type'Class)

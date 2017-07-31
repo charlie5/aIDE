@@ -12,7 +12,8 @@ is
 --     type Item is abstract new Any.item
 --                           and Entity.item with private;
 
-   type Item is abstract new Entity.item with private;
+--     type Item is abstract new Entity.item with private;
+   type Item is interface;
 
 
    -- View
@@ -39,7 +40,7 @@ is
    --
 --     function  new_Subprogram         return program_Unit.view;
 --     procedure free           (Self : in out program_Unit.view);
-   procedure destruct       (Self : in out program_Unit.item);
+--     procedure destruct       (Self : in out program_Unit.item);
 
 
    -- Attributes
@@ -58,9 +59,12 @@ private
 --  --     type Item is new Any.item with
 --     type Item is abstract new Entity.item with
 
-   type Item is abstract new Entity.item with
-      record
-         null;
-      end record;
+--     type Item is abstract new Entity.item with
+--        record
+--           null;
+--        end record;
+
+
+   procedure dummy;
 
 end AdaM.program_Unit;

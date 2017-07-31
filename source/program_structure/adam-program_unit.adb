@@ -30,11 +30,14 @@ is
    end define;
 
 
-   procedure destruct (Self : in out Item)
-   is
-   begin
-      null;
-   end destruct;
+   procedure dummy is begin null; end;
+
+
+--     procedure destruct (Self : in out Item)
+--     is
+--     begin
+--        null;
+--     end destruct;
 
 
 --     function new_Subprogram return View
