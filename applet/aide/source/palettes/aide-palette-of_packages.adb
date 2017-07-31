@@ -387,6 +387,7 @@ is
          --
          for i in 1 .. Integer (a_Package.item (the_entity_Environ.standard_Package.all).child_Packages.Length)
          loop
+            put_Line ("Building GUI for '" & the_entity_Environ.standard_Package.child_Packages.Element (i).Name & "'");
             build_Gui_for (the_entity_Environ.standard_Package.child_Packages.Element (i),
                            Self.all_Notebook);
          end loop;

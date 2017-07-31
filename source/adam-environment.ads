@@ -28,7 +28,14 @@ is
    procedure standard_package_is (Self : in out Item;   Now : in AdaM.a_Package.view);
    function  standard_Package    (Self : in     Item)     return AdaM.a_Package.view;
 
-   function  find (Self : in Item;   Identifier : in String) return AdaM.a_Type.view;
+   function  find  (Self : in Item;   Identifier : in String) return AdaM.a_Type.view;
+
+   function  find  (Self : in Item;   Identifier : in String) return AdaM.a_Package.view;
+   function  fetch (Self : in Item;   Identifier : in String) return AdaM.a_Package.view;
+
+
+   function  parent_Name (Identifier : in String) return String;
+   function  simple_Name (Identifier : in String) return String;
 
 
 private

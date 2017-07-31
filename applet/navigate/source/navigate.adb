@@ -12,7 +12,8 @@ with
      AdaM.a_Type.floating_point_type,
      AdaM.a_Type.unconstrained_array_type,
      AdaM.a_Type.ordinary_fixed_point_type,
-     AdaM.Declaration.of_exception;
+     AdaM.Declaration.of_exception,
+     AdaM.Assist;
 
 with Ada.Characters.Handling;
 with ada.strings.fixed;
@@ -40,11 +41,11 @@ is
    type String_view is access String;
    type Strings is array (Positive range <>) of String_view;
 
-   ada_Family : Strings := (1 => new String' ("ada.ads"),
-                            2 => new String' ("a-string.ads"));
+   ada_Family : Strings := (new String' ("ada.ads"),
+                            new String' ("a-string.ads"),
+                            new String' ("a-calend.ads"));
 
 
-   package CMD renames Ada.Command_Line;
    package LAL renames Libadalang.Analysis;
 
    function Short_Image (Node : access LAL.Ada_Node_Type'Class) return String
@@ -356,12 +357,21 @@ is
 --                 LAL.Base_Package_Decl (Node).P_Body_Part);
 
             declare
-               use ada.Characters.Conversions;
+               use AdaM.Assist,
+                   AdaM.Environment,
+                   ada.Characters.Conversions;
+
                Name        : constant String              := to_String (LAL.Package_Decl (Node).P_Defining_Name.Text);
                new_Package : constant AdaM.a_Package.view := AdaM.a_Package.new_Package (Name);
+
+               parent_Name : constant String              := Adam.Environment.parent_Name (Name);   -- strip_Tail_of (Name);
+               Parent      : constant AdaM.a_Package.view := Environ.fetch (parent_Name);
             begin
                log ("Processing an Ada_Base_Package_Decl");
-               log ("Package Name: '" & Name & "'");
+               log ("Package Name: '" & Name & "'     Parent Name: '" & parent_Name & "'      '" & Parent.Name & "'");
+
+               Parent.add_Child (new_Package);
+               new_Package.Parent_is (Parent);
 
                current_compilation_Unit.Entity_is (new_Package.all'Access);
 

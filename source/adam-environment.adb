@@ -6,6 +6,8 @@ with
      ada.Strings.fixed;
 with AdaM.Entity;
 
+use ada.Text_IO;
+
 
 package body AdaM.Environment
 is
@@ -87,7 +89,7 @@ is
 
 
 
-   function package_Name (Identifier : in String) return String
+   function parent_Name (Identifier : in String) return String
    is
       use Ada.Strings,
           Ada.Strings.fixed;
@@ -99,7 +101,7 @@ is
       end if;
 
       return Identifier (Identifier'First .. I - 1);
-   end package_Name;
+   end parent_Name;
 
 
 
@@ -157,11 +159,13 @@ is
       if Identifier /= "Standard"
       then
          declare
+            use type AdaM.a_Package.view;
             Names : constant text_Lines := Split (Identifier);
          begin
             for Each of Names
             loop
                the_Package := the_Package.child_Package (+Each);
+               exit when the_Package = null;
             end loop;
          end;
       end if;
@@ -171,9 +175,46 @@ is
 
 
 
+   function  fetch (Self : in Item;   Identifier : in String) return AdaM.a_Package.view
+   is
+      use type AdaM.a_Package.view;
+
+      the_Package : AdaM.a_Package.view := Self.standard_Package;
+      Parent      : AdaM.a_Package.view;
+      Names       : constant text_Lines := Split (Identifier);
+   begin
+      put_Line ("JJJJJJJJJ " & Identifier);
+
+      if Identifier = "Standard"
+      then
+         return the_Package;
+      end if;
+
+      for Each of Names
+      loop
+         put_Line ("KKKKKKKKKKK " & (+Each));
+
+         Parent      := the_Package;
+         the_Package := the_Package.child_Package (+Each);
+
+         if the_Package = null
+         then
+            -- Create a new package."
+            --
+            the_Package := AdaM.a_Package.new_Package (Parent.Name & "." & (+Each));
+            the_Package.Parent_is (Parent);
+            Parent.add_Child (the_Package);
+         end if;
+      end loop;
+
+      return the_Package;
+   end fetch;
+
+
+
    function  find (Self : in Item;   Identifier : in String) return AdaM.a_Type.view
    is
-      the_Package : AdaM.a_Package.view := Self.find (package_Name (Identifier));
+      the_Package : AdaM.a_Package.view := Self.find (parent_Name (Identifier));
    begin
       return the_Package.find (simple_Name (Identifier));
    end find;
