@@ -340,7 +340,8 @@ is
 
       Name        : constant String              := to_String (Node.P_Defining_Name.Text);
 
-      new_Package : constant AdaM.Declaration.of_package.view := AdaM.Declaration.of_package.new_Package (Name);
+--        new_Package : constant AdaM.Declaration.of_package.view := AdaM.Declaration.of_package.new_Package (Name);
+      new_Package : AdaM.Declaration.of_package.view; -- := AdaM.Declaration.of_package.new_Package (Name);
 
       parent_Name : constant String              := Adam.Environment.parent_Name (Name);   -- strip_Tail_of (Name);
       Parent      :          AdaM.a_Package.view; -- := Environ.fetch (parent_Name);
@@ -353,7 +354,9 @@ is
          Parent := current_Package;
       end if;
 
-      log ("Package Name: '" & Name & "'     Parent Name: '" & parent_Name & "'      '" & Parent.Name & "'");
+      new_Package := AdaM.Declaration.of_package.new_Package (simple_Name (Name));
+
+      log ("Package Name: '" & new_Package.Name & "'     Parent Name: '" & Parent.Name & "'");
 
       Parent.add_Child (new_Package);
       new_Package.Parent_is (Parent);

@@ -354,6 +354,7 @@ is
             the_packages_Palette_package.top_Widget.reparent (children_Notebook);
             children_Notebook.set_Tab_Label_Text (the_packages_Palette_package.top_Widget,
                                                   the_Package.Name);
+            put_Line ("PACKAGE NAME ZZZZZZZZZZZ   " & the_Package.Name);
             -- Configure event handling.
             --
             declare
