@@ -362,6 +362,22 @@ is
 
 
 
+   function  full_Name  (Self : in Item) return String
+   is
+   begin
+      if Self.Parent = null   -- Is the Standard package.
+      then
+         return "Standard";
+      end if;
+
+      if Self.Parent.Name = "Standard"
+      then
+         return +Self.Name;
+      else
+         return Self.Parent.full_Name & "." & (+Self.Name);
+      end if;
+   end full_Name;
+
 
 
    -- Streams

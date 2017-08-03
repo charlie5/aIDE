@@ -142,6 +142,26 @@ is
 
 
 
+
+   procedure my_add_Exception   (Self : in out Item;   the_Exception : in AdaM.Declaration.of_exception.view)
+   is
+   begin
+      Self.my_Exceptions.append (the_Exception);
+   end my_add_Exception;
+
+
+
+   function  my_exception_Count (Self : in     Item)     return Natural
+   is
+   begin
+      return Natural (Self.my_Exceptions.Length);
+   end my_exception_Count;
+
+
+
+
+
+
    function Handler   (Self : in     Item) return access AdaM.Block.item'Class
    is
    begin

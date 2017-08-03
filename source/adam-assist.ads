@@ -8,4 +8,7 @@ is
 
    function Split (the_Text : in String) return text_Lines;
 
+
+   function identifier_Suffix (Identifier : in String;   Count : in Positive) return String;
+
 end AdaM.Assist;

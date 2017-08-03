@@ -3,7 +3,8 @@ with
 
 with Gtk.Button;
 with Gtk.Window;
-with Adam.exception_Handler;
+with Adam.exception_Handler,
+     AdaM.Declaration.of_exception;
 with Gtk.Notebook;
 with Gtk.Table;
 
@@ -32,7 +33,8 @@ is
                                                Slot       : in Positive);
 
    procedure choice_is  (Self : in out Item;   Now          : in String;
-                                               package_Name : in String);
+                                               package_Name : in String;
+                                               the_Exception : in AdaM.Declaration.of_exception.view);
 
    procedure freshen    (Self : in out Item);
 

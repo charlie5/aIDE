@@ -240,8 +240,9 @@ is
    --  Operations
    --
 
-   procedure choice_is (Self : in out Item;   Now          : in String;
-                                              package_Name : in String)
+   procedure choice_is (Self : in out Item;   Now           : in String;
+                                              package_Name  : in String;
+                                              the_Exception : in AdaM.Declaration.of_exception.view)
    is
       use adam;
       full_Name : constant String := package_Name & "." & Now;
@@ -253,6 +254,7 @@ is
       Self.Invoked_by.Set_Tooltip_Text (full_Name);
 
       Self.Target.exception_Name_is (Self.Slot, full_Name);
+      Self.Target.my_add_Exception (the_Exception);
 
       Self.Top.hide;
    end choice_is;
@@ -331,9 +333,10 @@ is
             --
             for Each of the_Package.all_Exceptions
             loop
-               the_exceptions_Palette_package.add_Exception (named        => Each.Name,
-                                                             package_Name => the_Package.Name);
---                                                               package_Name => full_Name (the_Package));
+               the_exceptions_Palette_package.add_Exception (Each, the_Package);
+--                 the_exceptions_Palette_package.add_Exception (named        => Each.Name,
+--                                                               package_Name => the_Package.Name);
+--  --                                                               package_Name => full_Name (the_Package));
             end loop;
 
             -- Configure event handling.

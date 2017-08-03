@@ -1,5 +1,7 @@
 with
+     AdaM.a_Package,
      aIDE.Palette.of_packages,
+
      Gtk.Button,
      Gtk.Notebook,
      gtk.Widget;
@@ -19,7 +21,8 @@ is
 
    function  to_packages_Palette_package return View;
 
-   function  new_Button (Named            : in String;
+   function  new_Button (for_Package      : in AdaM.a_Package.view;
+                         Named            : in String;
                          packages_Palette : in Palette.of_packages.view) return Gtk.Button.gtk_Button;
 
 

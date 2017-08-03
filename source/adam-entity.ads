@@ -75,6 +75,7 @@ is
 
    function  Name      (Self : in     Item) return String is abstract;
 
+--     function  full_Name (Self : in Item'Class) return String;
 
 
 --     generic

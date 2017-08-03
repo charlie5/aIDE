@@ -1,5 +1,7 @@
 with
      aIDE.Palette.of_exceptions,
+     AdaM.a_Package,
+     AdaM.Declaration.of_exception,
      gtk.Widget;
 
 private
@@ -33,6 +35,9 @@ is
 
    procedure add_Exception     (Self : access Item;   Named        : in String;
                                                       package_Name : in String);
+
+   procedure add_Exception     (Self : access Item;   the_Exception : in AdaM.Declaration.of_exception.view;
+                                                      the_Package   : in AdaM.a_Package.view);
 
 
 private

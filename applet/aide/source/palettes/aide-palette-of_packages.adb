@@ -3,6 +3,7 @@ with
      aIDE.Palette.of_packages_subpackages,
      AdaM.a_Package,
      AdaM.Environment,
+     AdaM.Assist,
 
      Glib,
      Glib.Error,
@@ -42,8 +43,9 @@ is
    is
       type package_Usage is
          record
-            Name  : AdaM.Text;      -- The package name.
-            Count : Natural;        -- Number of times the package has been used.
+            the_Package : AdaM.a_Package.view;
+            Name        : AdaM.Text;      -- The package name.
+            Count       : Natural;        -- Number of times the package has been used.
          end record;
 
       function "<" (L, R : in package_Usage) return Boolean
@@ -64,11 +66,12 @@ is
       the_usage_Stats : package_Usage_Sets.Set;
 
 
-      procedure register_Usage (the_Package : in AdaM.Text)
+      procedure register_Usage (package_Name : in AdaM.Text;
+                                the_Package  : in AdaM.a_Package.view)
       is
          use package_Usage_Sets;
 
-         the_type_Usage : package_Usage             := (the_Package,  others => <>);
+         the_type_Usage : package_Usage             := (the_Package, package_Name,  others => <>);
          Current        : constant package_Usage_Sets.Cursor := the_usage_Stats.find (the_type_Usage);
       begin
          if Current /= No_Element
@@ -80,6 +83,88 @@ is
             the_usage_Stats.insert (the_type_Usage);
          end if;
       end register_Usage;
+
+
+
+
+      procedure register_Usage (the_Package : in AdaM.a_Package.view)
+      is
+         use package_Usage_Sets;
+
+         the_type_Usage :          package_Usage             := (the_Package,  others => <>);
+         Current        : constant package_Usage_Sets.Cursor := the_usage_Stats.find (the_type_Usage);
+      begin
+         if Current /= No_Element
+         then
+            the_type_Usage.Count := Element (Current).Count + 1;
+            the_usage_Stats.replace_Element (Current, the_type_Usage);
+         else
+            the_type_Usage.Count := 1;
+            the_usage_Stats.insert (the_type_Usage);
+         end if;
+      end register_Usage;
+
+
+
+      function  fetch return AdaM.a_Package.vector
+      is
+         use package_Usage_Sets,
+             ada.Containers;
+
+--           the_Lines : AdaM.text_Lines;
+         the_Packages : AdaM.a_Package.vector;
+
+         package type_Usage_Vectors is new ada.Containers.Vectors (Positive, package_Usage);
+         use     type_Usage_Vectors;
+
+         the_usage_List : type_Usage_Vectors.Vector;
+
+      begin
+         declare
+            Cursor : package_Usage_Sets.Cursor := the_usage_Stats.First;
+         begin
+            while has_Element (Cursor)
+            loop
+               if Element (Cursor).Count > 0 then
+                  the_usage_List.append (Element (Cursor));
+               end if;
+
+               exit when the_Packages.Length = 25;     -- Limit results to 25 entries.
+               next (Cursor);
+            end loop;
+         end;
+
+         declare
+            function "<" (L, R : in package_Usage) return Boolean
+            is
+            begin
+               return L.Count > R.Count;
+            end "<";
+
+            package Sorter is new type_Usage_Vectors.Generic_Sorting ("<");
+         begin
+            Sorter.sort (the_usage_List);
+         end;
+
+         declare
+            Cursor : type_Usage_Vectors.Cursor := the_usage_List.First;
+         begin
+            while has_Element (Cursor)
+            loop
+               if Element (Cursor).Count > 0
+               then
+                  the_Packages.append (Element (Cursor).the_Package);
+               end if;
+
+               next (Cursor);
+            end loop;
+         end;
+
+         return the_Packages;
+      end fetch;
+
+
+
 
 
       function  fetch return AdaM.text_Lines
@@ -164,7 +249,7 @@ is
                                    Self       : in     aIDE.Palette.of_packages.view)
    is
    begin
-      Self.choice_is (Self.new_package_Entry.get_Text);
+      Self.choice_is (Self.new_package_Entry.get_Text, null);
       Self.Top.hide;
    end on_ok_Button_clicked;
 
@@ -186,6 +271,7 @@ is
       record
          package_Name : AdaM.Text;
          Palette      : aIDE.Palette.of_packages.view;
+         the_Package  : Adam.a_Package.view;
       end record;
 
 
@@ -212,7 +298,7 @@ is
 
       if the_page_Num = the_Notebook.get_current_Page
       then
-         Self.choice_is (+Info.package_Name);
+         Self.choice_is (+Info.package_Name, Info.the_Package);
          Self.Top.hide;
       else
          the_Notebook.set_current_Page (the_page_Num);
@@ -290,20 +376,27 @@ is
    --  Operations
    --
 
-   procedure choice_is (Self : in out Item;   package_Name : in String)
+   procedure choice_is (Self : in out Item;   package_Name : in String;
+                                              the_Package  : in AdaM.a_Package.view)
    is
-      use AdaM;
+      use AdaM,
+          AdaM.Assist;
+
       full_Name : constant String := package_Name;
    begin
-      recent_Packages.register_Usage (+full_Name);
+      recent_Packages.register_Usage (+full_Name, the_Package);
       Self.build_recent_List;
 
       if Self.Invoked_by /= null
       then
-         Self.Invoked_by.set_Label (full_Name);
+--           Self.Invoked_by.set_Label (full_Name);
+         Self.Invoked_by.set_Label        (identifier_Suffix (the_Package.full_Name, 2));
+         Self.Invoked_by.set_Tooltip_Text (the_Package.full_Name);
       end if;
 
       Self.Target.Name_is  (full_Name);
+      Self.Target.Package_is (the_Package.all'Access);
+
       Self.Top.hide;
    end choice_is;
 
@@ -367,7 +460,8 @@ is
                                                "button-release-event",
                                                on_tab_Label_clicked'Access,
                                                (package_name => +the_Package.Name,
-                                                palette      => Self'unchecked_Access));
+                                                palette      => Self'unchecked_Access,
+                                                the_Package  => the_Package));
             end;
 
             --  Build each childs Gui.
@@ -412,7 +506,8 @@ is
 
    procedure build_recent_List (Self : in out Item)
    is
-      the_Recent : constant AdaM.text_Lines := recent_Packages.fetch;
+--        the_Recent : constant AdaM.text_Lines := recent_Packages.fetch;
+      the_Recent : constant AdaM.a_Package.vector := recent_Packages.fetch;
       the_Button : gtk_Button;
 
       Row, Col   : Guint := 0;
@@ -423,9 +518,10 @@ is
       loop
          declare
             use AdaM;
-            the_Package : AdaM.Text renames the_Recent.Element (i);
+            the_Package : AdaM.a_Package.view renames the_Recent.Element (i);
          begin
-            the_Button := aIDE.Palette.of_packages_subpackages.new_Button (Named            => +the_Package,
+            the_Button := aIDE.Palette.of_packages_subpackages.new_Button (for_Package      => the_Package,
+                                                                           Named            => the_Package.Name,
                                                                            packages_Palette => Self'unchecked_Access);
             Self.recent_Table.attach (the_Button,
                                       Col, Col + 1,

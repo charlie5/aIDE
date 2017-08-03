@@ -2,6 +2,10 @@ with
      AdaM.Any,
      ada.Streams;
 
+limited
+with
+     AdaM.Declaration.of_package;
+
 
 package AdaM.context_Line
 is
@@ -49,6 +53,13 @@ is
 
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 
+
+   type Package_view is access all Declaration.of_package.item'Class;
+
+   function  my_Package (Self : in     Item)     return Package_view;
+   procedure Package_is (Self : in out Item;   Now : in Package_view);
+
+
    function  Name      (Self : access Item)     return access Text;
    function  Name      (Self : in     Item)     return String;
    procedure Name_is   (Self : in out Item;   Now : in String);
@@ -60,8 +71,10 @@ is
 
 private
 
+
    type Item is new Any.Item with
       record
+         my_Package   : Package_view;
          package_Name : aliased Text;
          Used         :         Boolean;
       end record;

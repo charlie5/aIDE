@@ -1,4 +1,6 @@
 with
+     AdaM.a_Package,
+
      Glib,
      Glib.Error,
      Glib.Object,
@@ -24,6 +26,7 @@ is
 
    type button_Info is
       record
+         the_Package      : AdaM.a_Package.view;
          package_Name     : AdaM.Text;
          packages_Palette : aIDE.Palette.of_packages.view;
       end record;
@@ -34,7 +37,7 @@ is
    is
       use AdaM;
    begin
-      the_Info.packages_Palette.choice_is (+the_Info.package_Name);
+      the_Info.packages_Palette.choice_is (+the_Info.package_Name, the_Info.the_Package);
    end on_select_Button_clicked;
 
 
@@ -71,7 +74,8 @@ is
 
 
 
-   function new_Button (Named            : in String;
+   function new_Button (for_Package      : in AdaM.a_Package.view;
+                        Named            : in String;
                         packages_Palette : in palette.of_packages.view) return gtk_Button
    is
       use AdaM;
@@ -82,8 +86,10 @@ is
       Button_Callbacks.connect (the_Button,
                                 "clicked",
                                 on_select_Button_clicked'Access,
-                                (+Named,
+                                (for_Package,
+                                 +Named,
                                  packages_Palette));
+
       return the_Button;
    end new_Button;
 

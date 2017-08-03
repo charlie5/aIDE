@@ -1,6 +1,7 @@
 with
 --       AdaM.Source,
      AdaM.Entity,
+     AdaM.Declaration.of_exception,
 
      ada.Streams,
      ada.Containers.Vectors;
@@ -65,6 +66,9 @@ is
    procedure add_Exception   (Self : in out Item;   Name : in String);
    function  exception_Count (Self : in     Item)     return Natural;
 
+   procedure my_add_Exception   (Self : in out Item;   the_Exception : in AdaM.Declaration.of_exception.view);
+   function  my_exception_Count (Self : in     Item)     return Natural;
+
    overriding
    function  to_Source (Self : in     Item) return text_Lines;
 
@@ -83,6 +87,8 @@ private
 --     type Item is new Source.Entity with
    type Item is new Entity.item with
       record
+         my_Exceptions : AdaM.Declaration.of_exception.vector;
+
          Exceptions : text_Lines;
          Handler    : access AdaM.Block.item'Class;
          Parent     : access AdaM.Block.item'Class;

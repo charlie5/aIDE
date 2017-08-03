@@ -1,5 +1,6 @@
 with
      AdaM.context_Line,
+     AdaM.a_Package,
      Gtk.Button,
      gtk.Widget,
      Ada.Streams;
@@ -33,7 +34,8 @@ is
    --
    procedure show      (Self : in out Item;   Invoked_by   : in     Gtk.Button.gtk_Button;
                                               Target       : in     AdaM.context_Line.view);
-   procedure choice_is (Self : in out Item;   package_Name : in     String);
+   procedure choice_is (Self : in out Item;   package_Name : in String;
+                                              the_Package  : in AdaM.a_Package.view);
    procedure freshen   (Self : in out Item);
 
 
@@ -43,8 +45,12 @@ is
 
    package recent_Packages
    is
-      procedure register_Usage (the_Package : in AdaM.Text);
+      procedure register_Usage (package_Name : in AdaM.Text;
+                                the_Package  : in AdaM.a_Package.view);
       function  fetch return AdaM.text_Lines;
+
+      procedure register_Usage (the_Package : in AdaM.a_Package.view);
+      function  fetch return AdaM.a_Package.vector;
 
       procedure read  (From : access Ada.Streams.Root_Stream_Type'Class);
       procedure write (To   : access Ada.Streams.Root_Stream_Type'Class);

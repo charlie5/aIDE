@@ -1,5 +1,6 @@
 with
-     AdaM.Factory;
+     AdaM.Factory,
+     AdaM.Declaration.of_package;
 
 
 package body AdaM.context_Line
@@ -87,6 +88,24 @@ is
    end Id;
 
 
+
+   function  my_Package (Self : in     Item)     return Package_view
+   is
+   begin
+      return Self.my_Package;
+   end my_Package;
+
+
+
+   procedure Package_is (Self : in out Item;   Now : in Package_view)
+   is
+   begin
+      Self.my_Package := Now;
+   end Package_is;
+
+
+
+
    function  Name (Self : access Item) return access Text
    is
    begin
@@ -130,7 +149,8 @@ is
    is
       use ada.Strings.unbounded;
 
-      the_Line   : Text               := +"with " & Self.Name & ";";
+--        the_Line   : Text               := +"with " & Self.Name & ";";
+      the_Line   : Text               := +"with " & Self.my_Package.full_Name & ";";
       the_Source : text_Vectors.Vector;
    begin
       if Self.Used then

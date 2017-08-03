@@ -51,6 +51,20 @@ is
 
 
 
+--     function full_Name (Self : in Item'Class) return String
+--     is
+--     begin
+--        if Self.parent_Entity = null
+--        then
+--           return Self.Name;
+--        else
+--           return Self.parent_Entity.full_Name & "." & Self.Name;
+--        end if;
+--     end full_Name;
+
+
+
+
    function to_spec_Source (Self : in Item) return text_Vectors.Vector
    is
       pragma Unreferenced (Self);

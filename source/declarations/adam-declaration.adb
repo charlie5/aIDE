@@ -80,6 +80,12 @@ is
    end Name_is;
 
 
+--     function full_Name (Self : in Item) return String
+--     is
+--     begin
+--        return Self.parent_Entity.full_Name & "." & Self.Name;
+--     end full_Name;
+
 
    function  to_Source (Self : in     Item) return text_Vectors.Vector
    is

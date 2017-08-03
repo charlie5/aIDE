@@ -58,6 +58,9 @@ is
 --     overriding
 --     procedure Name_is          (Self : in out Item;   Now : in String);
 
+--     overriding
+   function  full_Name  (Self : in Item) return String;
+
    overriding
    function  to_Source        (Self : in     Item) return text_Vectors.Vector;
    function  to_spec_Source   (Self : in     Item) return text_Vectors.Vector;

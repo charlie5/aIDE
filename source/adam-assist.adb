@@ -6,6 +6,47 @@ with
 package body AdaM.Assist
 is
 
+   function identifier_Suffix (Identifier : in String;   Count : in Positive) return String
+   is
+      use Ada.Strings,
+          Ada.Strings.fixed,
+          Ada.Strings.Unbounded;
+
+      Dot   : Natural  := Index (Identifier, ".", Backward);
+      Depth : Positive := 1;
+
+--        First : Positive;
+      Last  : Positive := Identifier'Last;
+
+      Suffix : Text;
+
+   begin
+      while Depth <= Count
+      loop
+         if Dot = 0
+         then
+            insert (Suffix, 1, Identifier (Identifier'First .. Last));
+            exit;
+         end if;
+
+         if Depth /= 1
+         then
+            insert (Suffix, 1, ".");
+         end if;
+
+         insert (Suffix, 1, Identifier (Dot + 1 .. Last));
+
+         Last  := Dot - 1;
+         Dot   := Index (Identifier, ".", from => Last, going => Backward);
+         Depth := Depth + 1;
+      end loop;
+
+      return +Suffix;
+   end identifier_Suffix;
+
+
+
+
    function Tail_of (the_full_Name : in String) return String
    is
       use Ada.Strings,

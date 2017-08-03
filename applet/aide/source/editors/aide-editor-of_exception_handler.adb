@@ -43,7 +43,7 @@ is
    procedure On_Clicked (the_Button : access Gtk_Button_Record'Class;
                          Pair       : in     editor_slot_Pair)
    is
---        use gtk.Button;
+      --        use gtk.Button;
    begin
       aIDE.GUI.show_exceptions_Palette (Invoked_by => gtk_Button (the_Button),
                                         Target     => Pair.Editor.exception_Handler,
@@ -57,7 +57,7 @@ is
 
 
    function on_when_Label_clicked (the_Label : access Gtk.Label.Gtk_Label_Record'Class;
-                                   Self      : in     editor.of_exception_handler.view) return Boolean
+                                   Self      : in     Editor.of_exception_handler.view) return Boolean
    is
       function next_free_Slot return Natural
       is
@@ -77,7 +77,9 @@ is
    begin
       if Slot = 0
       then
+         Self.exception_Handler.my_add_Exception (null);
          Self.exception_Handler.add_Exception ("constraint_Error");
+
          Self.add_new_exception_Button (Self.exception_Handler.exception_Count);
       else
          Self.exception_Handler.exception_Name_is (Slot, "constraint_Error");
@@ -122,7 +124,8 @@ is
       Button_user_Handler.Connect (new_Button,
                                    "clicked",
                                    On_Clicked'Access,
-                                   (View (Self), Slot));
+                                   (View (Self),
+                                    Slot));
    end add_new_exception_Button;
 
 
