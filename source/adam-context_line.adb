@@ -154,7 +154,7 @@ is
       the_Source : text_Vectors.Vector;
    begin
       if Self.Used then
-         append (the_Line, "   use " & Self.Name & ";");
+         append (the_Line, "   use " & Self.my_Package.full_Name & ";");
       end if;
 
       the_Source.append (the_Line);

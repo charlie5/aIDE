@@ -389,6 +389,7 @@ is
 
       if Self.Invoked_by /= null
       then
+         put_Line ("HHHHHHHHHHHHHHHH  " & the_Package.full_Name);
 --           Self.Invoked_by.set_Label (full_Name);
          Self.Invoked_by.set_Label        (identifier_Suffix (the_Package.full_Name, 2));
          Self.Invoked_by.set_Tooltip_Text (the_Package.full_Name);

@@ -29,12 +29,12 @@ is
             exit;
          end if;
 
-         if Depth /= 1
+         insert (Suffix, 1, Identifier (Dot + 1 .. Last));
+
+         if Depth /= Count
          then
             insert (Suffix, 1, ".");
          end if;
-
-         insert (Suffix, 1, Identifier (Dot + 1 .. Last));
 
          Last  := Dot - 1;
          Dot   := Index (Identifier, ".", from => Last, going => Backward);
