@@ -179,7 +179,8 @@ is
    begin
       Lines.append (+"when ");
 
-      for i in 1 .. Integer (Self.Exceptions.Length)
+--        for i in 1 .. Integer (Self.Exceptions.Length)
+      for i in 1 .. Integer (Self.my_Exceptions.Length)
       loop
          if not Self.is_Free (i)
          then
@@ -187,7 +188,8 @@ is
                Lines.append (+" | ");
             end if;
 
-            Lines.append (+Self.exception_Name (i));
+--              Lines.append (+Self.exception_Name (i));
+            Lines.append (+Self.my_Exceptions.Element (i).full_Name);
             not_First := True;
          end if;
       end loop;

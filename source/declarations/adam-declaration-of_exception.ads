@@ -50,6 +50,9 @@ is
    overriding
    function Id (Self : access Item) return AdaM.Id;
 
+   function full_Name (Self : in Item) return String;
+
+
 --     overriding
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 

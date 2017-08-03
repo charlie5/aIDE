@@ -244,14 +244,16 @@ is
                                               package_Name  : in String;
                                               the_Exception : in AdaM.Declaration.of_exception.view)
    is
-      use adam;
+      use adam,
+          AdaM.Assist;
+
       full_Name : constant String := package_Name & "." & Now;
    begin
       recent_Exceptions.register_Usage (+full_Name);
       Self.build_recent_List;
 
-      Self.Invoked_by.Set_Label (Now);
-      Self.Invoked_by.Set_Tooltip_Text (full_Name);
+      Self.Invoked_by.Set_Label (identifier_Suffix (the_Exception.full_Name, 2));
+      Self.Invoked_by.Set_Tooltip_Text (the_Exception.full_Name);
 
       Self.Target.exception_Name_is (Self.Slot, full_Name);
       Self.Target.my_add_Exception (the_Exception);
