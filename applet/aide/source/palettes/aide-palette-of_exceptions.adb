@@ -40,7 +40,6 @@ is
       type exception_Usage is
          record
             the_Exception : AdaM.Declaration.of_exception.view;
-            Name          : AdaM.Text;
             Count         : Natural;
          end record;
 
@@ -48,14 +47,14 @@ is
       is
          use type AdaM.Text;
       begin
-         return L.Name < R.Name;
+         return L.the_Exception.Name < R.the_Exception.Name;
       end "<";
 
       overriding function "=" (L, R : in exception_Usage) return Boolean
       is
          use type AdaM.Text;
       begin
-         return L.Name = R.Name;
+         return L.the_Exception.Name = R.the_Exception.Name;
       end "=";
 
       package exception_Usage_Sets is new ada.Containers.Ordered_Sets (exception_Usage);
@@ -240,7 +239,7 @@ is
       the_Label : String := the_Button.Get_Label;
    begin
       Self.Invoked_by.hide;
-      Self.Target.exception_Name_is (Self.Slot, null); -- "free");
+      Self.Target.my_Exception_is (Self.Slot, null); -- "free");
 
       Self.Top.hide;
    end on_delete_Button_clicked;
@@ -260,7 +259,7 @@ is
 
    type label_Info is
       record
-         package_Name : AdaM.Text;
+--           package_Name : AdaM.Text;
          Palette      : aIDE.Palette.of_exceptions.view;
       end record;
 
@@ -335,10 +334,10 @@ is
    --
 
    procedure choice_is (Self : in out Item;   Now           : in String;
-                                              package_Name  : in String;
+--                                                package_Name  : in String;
                                               the_Exception : in AdaM.Declaration.of_exception.view)
    is
-      use adam,
+      use AdaM,
           AdaM.Assist;
 
 --        full_Name : constant String := package_Name & "." & Now;
@@ -352,7 +351,7 @@ is
       Self.Invoked_by.Set_Label (AdaM.Assist.strip_standard_Prefix (identifier_Suffix (full_Name, 2)));
       Self.Invoked_by.Set_Tooltip_Text (full_Name);
 
-      Self.Target.exception_Name_is (Self.Slot, the_Exception);
+      Self.Target.my_Exception_is (Self.Slot, the_Exception);
 --        Self.Target.my_add_Exception (the_Exception);
 
       Self.Top.hide;

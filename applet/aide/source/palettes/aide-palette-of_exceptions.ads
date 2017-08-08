@@ -33,7 +33,7 @@ is
                                                Slot       : in Positive);
 
    procedure choice_is  (Self : in out Item;   Now          : in String;
-                                               package_Name : in String;
+--                                                 package_Name : in String;
                                                the_Exception : in AdaM.Declaration.of_exception.view);
 
    procedure freshen    (Self : in out Item);

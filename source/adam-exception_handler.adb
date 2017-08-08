@@ -120,19 +120,19 @@ is
 --     end exception_Name_is;
 
 
-   function exception_Name (Self : in Item;   Id : in Positive) return AdaM.Declaration.of_exception.view
+   function my_Exception (Self : in Item;   Id : in Positive) return AdaM.Declaration.of_exception.view
    is
    begin
-      return Self.my_Exceptions.Element (Id);
-   end exception_Name;
+      return Self.Exceptions.Element (Id);
+   end my_Exception;
 
 
-   procedure exception_Name_is (Self : in out Item;   Id  : in Positive;
+   procedure my_Exception_is (Self : in out Item;   Id  : in Positive;
                                                       Now : in AdaM.Declaration.of_exception.view)
    is
    begin
-      Self.my_Exceptions.Replace_Element (Id, Now);
-   end exception_Name_is;
+      Self.Exceptions.Replace_Element (Id, Now);
+   end my_Exception_is;
 
 
 
@@ -140,7 +140,7 @@ is
    is
       use type Declaration.of_exception.view;
    begin
-      return Self.my_Exceptions.Element (Slot) = null;
+      return Self.Exceptions.Element (Slot) = null;
    end is_Free;
 
 
@@ -161,19 +161,19 @@ is
 
 
 
-   procedure my_add_Exception   (Self : in out Item;   the_Exception : in AdaM.Declaration.of_exception.view)
+   procedure add_Exception   (Self : in out Item;   the_Exception : in AdaM.Declaration.of_exception.view)
    is
    begin
-      Self.my_Exceptions.append (the_Exception);
-   end my_add_Exception;
+      Self.Exceptions.append (the_Exception);
+   end add_Exception;
 
 
 
-   function  my_exception_Count (Self : in     Item)     return Natural
+   function  exception_Count (Self : in     Item)     return Natural
    is
    begin
-      return Natural (Self.my_Exceptions.Length);
-   end my_exception_Count;
+      return Natural (Self.Exceptions.Length);
+   end exception_Count;
 
 
 
@@ -201,7 +201,7 @@ is
       Lines.append (+"when ");
 
 --        for i in 1 .. Integer (Self.Exceptions.Length)
-      for i in 1 .. Integer (Self.my_Exceptions.Length)
+      for i in 1 .. Integer (Self.Exceptions.Length)
       loop
          if not Self.is_Free (i)
          then
@@ -210,11 +210,11 @@ is
             end if;
 
             --              Lines.append (+Self.exception_Name (i));
-            if Self.my_Exceptions.Element (i) = null
+            if Self.Exceptions.Element (i) = null
             then
                Lines.append (+"constraint_Error");
             else
-               Lines.append (+Self.my_Exceptions.Element (i).full_Name);
+               Lines.append (+Self.Exceptions.Element (i).full_Name);
             end if;
 
             not_First := True;

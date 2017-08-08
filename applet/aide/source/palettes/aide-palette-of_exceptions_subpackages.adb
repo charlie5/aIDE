@@ -18,7 +18,7 @@ is
 
    type button_Info is
       record
-         package_Name  : Text;
+--           package_Name  : Text;
          Self          : aIDE.Palette.of_exceptions.view;
          the_Exception : AdaM.Declaration.of_exception.view;
       end record;
@@ -30,7 +30,7 @@ is
       the_exception_Name : constant String := assist.Tail_of (the_Button.Get_Label);
    begin
       the_Info.Self.choice_is (the_exception_Name,
-                               +the_Info.package_Name,
+--                                 +the_Info.package_Name,
                                the_Info.the_Exception);
    end on_exception_Button_clicked;
 
@@ -91,7 +91,7 @@ is
       Button_Callbacks.connect (the_Button,
                                 "clicked",
                                 on_exception_Button_clicked'Access,
-                                (+package_Name,
+                                (--+package_Name,
                                  exceptions_Palette,
                                  for_Exception));
       return the_Button;
@@ -119,7 +119,7 @@ is
       Button_Callbacks.connect (the_Button,
                                 "clicked",
                                 on_exception_Button_clicked'Access,
-                                (+package_Name,
+                                (--+package_Name,
                                  exceptions_Palette,
                                  the_Exception));
       return the_Button;

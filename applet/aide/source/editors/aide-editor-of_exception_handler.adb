@@ -66,7 +66,7 @@ is
       function next_free_Slot return Natural
       is
       begin
-         for i in 1 .. Self.exception_Handler.my_exception_Count
+         for i in 1 .. Self.exception_Handler.exception_Count
          loop
             if Self.exception_Handler.is_Free (i) then
                return i;
@@ -84,13 +84,13 @@ is
       if Slot = 0
       then
 --           Self.exception_Handler.my_add_Exception (null);
-         Self.exception_Handler.my_add_Exception (aIDE.the_entity_Environ.find ("Constraint_Error"));
+         Self.exception_Handler.add_Exception (aIDE.the_entity_Environ.find ("Constraint_Error"));
 --           Self.exception_Handler.add_Exception ("constraint_Error");
 
-         Self.add_new_exception_Button (Self.exception_Handler.my_exception_Count);
+         Self.add_new_exception_Button (Self.exception_Handler.exception_Count);
       else
 --           Self.exception_Handler.exception_Name_is (Slot, null);
-         Self.exception_Handler.exception_Name_is (Slot, aIDE.the_entity_Environ.find ("Constraint_Error")); --"constraint_Error");
+         Self.exception_Handler.my_Exception_is (Slot, aIDE.the_entity_Environ.find ("Constraint_Error")); --"constraint_Error");
          Self.exception_Button (Slot).Show_All;
       end if;
 
@@ -115,7 +115,7 @@ is
       use type AdaM.Declaration.of_exception.view;
 
       new_Button    : gtk_Button;
-      the_Exception : AdaM.Declaration.of_exception.view := Self.exception_Handler.exception_Name (slot);
+      the_Exception : AdaM.Declaration.of_exception.view := Self.exception_Handler.my_Exception (slot);
    begin
       gtk_New (new_Button);
 
@@ -180,7 +180,7 @@ is
       Self.block_Editor := aIDE.Editor.of_block.Forge.to_block_Editor (Self.exception_Handler.Handler);
       Self.block_Editor.top_Widget.reparent (Self.handler_Alignment);
 
-      for i in 1 .. Self.exception_Handler.my_exception_Count
+      for i in 1 .. Self.exception_Handler.exception_Count
       loop
          Self.add_new_exception_Button (i);
       end loop;

@@ -62,15 +62,15 @@ is
 --     function  exception_Name    (Self : in     Item;   Id  : in Positive) return String;
 --     procedure exception_Name_is (Self : in out Item;   Id  : in Positive;
 --                                                        Now : in String);
-   function  exception_Name    (Self : in     Item;   Id  : in Positive) return Declaration.of_exception.view;
-   procedure exception_Name_is (Self : in out Item;   Id  : in Positive;
+   function  my_Exception    (Self : in     Item;   Id  : in Positive) return Declaration.of_exception.view;
+   procedure my_Exception_is (Self : in out Item;   Id  : in Positive;
                                                       Now : in Declaration.of_exception.view);
 
 --     procedure add_Exception   (Self : in out Item;   Name : in String);
 --     function  exception_Count (Self : in     Item)     return Natural;
 
-   procedure my_add_Exception   (Self : in out Item;   the_Exception : in AdaM.Declaration.of_exception.view);
-   function  my_exception_Count (Self : in     Item)     return Natural;
+   procedure add_Exception   (Self : in out Item;   the_Exception : in AdaM.Declaration.of_exception.view);
+   function  exception_Count (Self : in     Item)     return Natural;
 
    overriding
    function  to_Source (Self : in     Item) return text_Lines;
@@ -90,9 +90,7 @@ private
 --     type Item is new Source.Entity with
    type Item is new Entity.item with
       record
-         my_Exceptions : AdaM.Declaration.of_exception.vector;
-
---           Exceptions : text_Lines;
+         Exceptions :        AdaM.Declaration.of_exception.vector;
          Handler    : access AdaM.Block.item'Class;
          Parent     : access AdaM.Block.item'Class;
       end record;
