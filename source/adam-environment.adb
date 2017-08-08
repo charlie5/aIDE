@@ -1,12 +1,11 @@
 with
---       AdaM.Source,
+     AdaM.Entity,
 
-     ada.Text_IO,
-     ada.Tags,
-     ada.Strings.fixed;
-with AdaM.Entity;
+     Ada.Text_IO,
+     Ada.Tags,
+     Ada.Strings.fixed;
 
-use ada.Text_IO;
+use Ada.Text_IO;
 
 
 package body AdaM.Environment
@@ -46,13 +45,7 @@ is
 
    procedure standard_package_is (Self : in out Item;   Now : in AdaM.a_Package.view)
    is
-      use type AdaM.a_Package.view;
    begin
-      if Now = null
-      then
-         raise program_Error with "sdfkgasdjkfgslkadgf";
-      end if;
-
       Self.standard_Package := Now;
    end standard_package_is;
 
@@ -94,6 +87,10 @@ is
    end all_Types;
 
 
+
+
+
+   -- TODO: Move these to AdaM.Assist.
 
    function parent_Name (Identifier : in String) return String
    is
@@ -162,9 +159,6 @@ is
    is
       the_Package : AdaM.a_Package.view := Self.standard_Package;
    begin
-      put_Line (Integer'Image (Integer (Self.Units.Length)));
-      put_Line ("the_Package.full_Name) = " & the_Package.full_Name);
-
       if Identifier /= "Standard"
       then
          declare
@@ -177,8 +171,6 @@ is
                exit when the_Package = null;
             end loop;
          end;
-      else
-         put_Line ("STANDARD");
       end if;
 
       return the_Package;
@@ -194,8 +186,6 @@ is
       Parent      : AdaM.a_Package.view;
       Names       : constant text_Lines := Split (Identifier);
    begin
-      put_Line ("JJJJJJJJJ " & Identifier);
-
       if Identifier = "Standard"
       then
          return the_Package;
@@ -203,14 +193,12 @@ is
 
       for Each of Names
       loop
-         put_Line ("KKKKKKKKKKK " & (+Each));
-
          Parent      := the_Package;
          the_Package := the_Package.child_Package (+Each);
 
          if the_Package = null
          then
-            -- Create a new package."
+            -- Create a new package.
             --
             the_Package := AdaM.a_Package.new_Package (Parent.Name & "." & (+Each));
             the_Package.Parent_is (Parent);
@@ -236,7 +224,6 @@ is
    is
       the_Package : constant AdaM.a_Package.view := Self.find (parent_Name (Identifier));
    begin
-      put_Line ("ZZZZZZZZZZZZZZZZZZZZZZ parent_Name (Identifier) = '" & parent_Name (Identifier) & "'");
       return the_Package.find (simple_Name (Identifier));
    end find;
 
@@ -244,9 +231,7 @@ is
 
    procedure print (Self : in Item)
    is
-      use -- AdaM.Source,
-          ada.Strings.fixed;
---            ada.Text_IO;
+      use Ada.Strings.fixed;
       the_Unit   : AdaM.compilation_Unit.view;
 --        the_Entity : AdaM.Source.Entity_View;
 
@@ -286,9 +271,7 @@ is
 
    procedure print_Entities (Self : in Item)
    is
-      use -- AdaM.Source,
-          ada.Strings.fixed;
---            ada.Text_IO;
+      use Ada.Strings.fixed;
 
       the_Unit   : AdaM.compilation_Unit.view;
       top_Entity : AdaM.Entity.view;
@@ -304,12 +287,10 @@ is
       procedure print (the_Entity : in Entity.view)
       is
       begin
---           put_Line ("Entity.Name = " & the_Entity.Name & "     of kind " & );
-
          Depth := Depth + 1;
          put_Line (Indent
                    & "Entity.Name : "             & the_Entity.Name
-                   & "                    Tag = " & ada.Tags.Expanded_Name (the_Entity.all'Tag));
+                   & "                    Tag = " & Ada.Tags.Expanded_Name (the_Entity.all'Tag));
          Depth := Depth - 1;
 
          for Each of the_Entity.Children.all

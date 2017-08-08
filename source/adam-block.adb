@@ -1,6 +1,7 @@
 with
      AdaM.Factory;
 
+
 package body AdaM.Block
 is
 
@@ -9,7 +10,6 @@ is
 
    record_Version : constant            := 1;
    max_Blocks     : constant            := 5_000;
---     null_Block     : constant Block.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "blocks",
@@ -17,7 +17,6 @@ is
                                            record_Version,
                                            Block.item,
                                            Block.view);
---                                             null_Block);
 
 
    --  Forge
@@ -81,7 +80,6 @@ is
 
 
 
---     function  my_Declarations (Self : access Item)     return Source.Entities_View
    function  my_Declarations (Self : access Item)     return Entity.Entities_View
    is
    begin
@@ -89,7 +87,6 @@ is
    end my_Declarations;
 
 
---     function  my_Statements (Self : access Item)     return Source.Entities_View
    function  my_Statements (Self : access Item)     return Entity.Entities_View
    is
    begin
@@ -97,7 +94,6 @@ is
    end my_Statements;
 
 
---     function  my_Handlers (Self : access Item)     return Source.Entities_View
    function  my_Handlers (Self : access Item)     return Entity.Entities_View
    is
    begin
@@ -124,8 +120,7 @@ is
    overriding
    function to_Source (Self : in Item) return text_Vectors.Vector
    is
-      use -- AdaM.Source,
-          ada.Strings.Unbounded;
+      use Ada.Strings.unbounded;
 
       the_Line   : Text;
       the_Source : text_Vectors.Vector;
@@ -151,7 +146,6 @@ is
          the_Source.append (the_Line);
       end if;
 
---        the_Source.append (to_spec_Source (Self.my_Declarations));
       the_Source.append (Entity.to_spec_Source (Self.my_Declarations));
 
       the_Line := +("begin");
@@ -162,7 +156,6 @@ is
          the_Line := +("null;");
          the_Source.append (the_Line);
       else
---           the_Source.append (Statement.to_Source (Self.Statements));
          the_Source.append (Entity.to_spec_Source (Self.my_Statements));
       end if;
 
@@ -171,7 +164,6 @@ is
          the_Line := +("exception");
          the_Source.append (the_Line);
 
---           the_Source.append (exception_Handler.to_Source (Self.Handlers));
          the_Source.append (Entity.to_spec_Source (Self.my_Handlers));
       end if;
 

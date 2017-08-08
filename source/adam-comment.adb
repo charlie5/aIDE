@@ -10,7 +10,6 @@ is
 
    record_Version : constant                := 1;
    max_Comments   : constant                := 5_000;
---     null_Comment   : constant Comment.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "comments",
@@ -18,7 +17,6 @@ is
                                            record_Version,
                                            Comment.item,
                                            Comment.view);
---                                             null_Comment);
 
    --  Forge
    --
@@ -98,13 +96,6 @@ is
    function to_Source (Self : in Item) return text_Vectors.Vector
    is
       the_Source : text_Vectors.Vector;
-
---        procedure add (the_Line : in Text)
---        is
---        begin
---           the_Source.append (the_Line);
---        end add;
-
    begin
       for i in 1 .. Self.Lines.Length
       loop

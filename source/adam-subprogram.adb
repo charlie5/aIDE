@@ -10,7 +10,6 @@ is
 
    record_Version  : constant                 := 1;
    max_Subprograms : constant                 := 5_000;
---     null_Subprogram : constant Subprogram.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "subprograms",
@@ -18,7 +17,6 @@ is
                                            record_Version,
                                            Subprogram.item,
                                            Subprogram.view);
---                                             null_Subprogram);
 
    --  Profile
    --
@@ -154,7 +152,8 @@ is
 
       append (the_Line, Self.Name);
 
-      if has_Parameters then
+      if has_Parameters
+      then
          the_Line := +"(";
          the_Source.append (the_Line);
       end if;
@@ -163,7 +162,8 @@ is
 
       the_Source.append (Self.Profile.to_Source);
 
-      if has_Parameters then
+      if has_Parameters
+      then
          the_Line := +")";
          the_Source.append (the_Line);
       end if;

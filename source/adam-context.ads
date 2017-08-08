@@ -29,12 +29,12 @@ is
 
    overriding
    function  Id        (Self : access Item) return AdaM.Id;
-   function  Lines     (Self : in     Item) return context_Line.Vector;
+   function  Lines     (Self : in     Item) return context_Line.vector;
 
    procedure add       (Self : in out Item;   the_Line : in context_Line.view);
    procedure rid       (Self : in out Item;   the_Line : in context_Line.view);
 
-   function  to_Source (Self : in     Item) return text_Vectors.Vector;
+   function  to_Source (Self : in     Item) return text_Vectors.vector;
 
 
 
@@ -42,7 +42,7 @@ private
 
    type Item is new Any.Item with
       record
-         Lines : context_Line.Vector;
+         Lines : context_Line.vector;
       end record;
 
 

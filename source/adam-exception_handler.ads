@@ -1,5 +1,4 @@
 with
---       AdaM.Source,
      AdaM.Entity,
      AdaM.Declaration.of_exception,
 
@@ -15,7 +14,6 @@ with
 package AdaM.exception_Handler
 is
 
---     type Item is new Source.Entity with private;
    type Item is new Entity.item with private;
 
 
@@ -59,15 +57,9 @@ is
 
    function  is_Free   (Self : in     Item;   Slot : in Positive) return Boolean;
 
---     function  exception_Name    (Self : in     Item;   Id  : in Positive) return String;
---     procedure exception_Name_is (Self : in out Item;   Id  : in Positive;
---                                                        Now : in String);
    function  my_Exception    (Self : in     Item;   Id  : in Positive) return Declaration.of_exception.view;
    procedure my_Exception_is (Self : in out Item;   Id  : in Positive;
-                                                      Now : in Declaration.of_exception.view);
-
---     procedure add_Exception   (Self : in out Item;   Name : in String);
---     function  exception_Count (Self : in     Item)     return Natural;
+                                                    Now : in Declaration.of_exception.view);
 
    procedure add_Exception   (Self : in out Item;   the_Exception : in AdaM.Declaration.of_exception.view);
    function  exception_Count (Self : in     Item)     return Natural;
@@ -80,6 +72,7 @@ is
    overriding
    function  Name      (Self : in     Item) return String;
 
+
    --  Operations
    --
 
@@ -87,7 +80,6 @@ is
 
 private
 
---     type Item is new Source.Entity with
    type Item is new Entity.item with
       record
          Exceptions :        AdaM.Declaration.of_exception.vector;

@@ -10,7 +10,6 @@ is
 
    record_Version : constant                 := 1;
    max_Sources    : constant                 := 5_000;
---     null_Source    : constant raw_Source.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "raw_Source",
@@ -18,7 +17,6 @@ is
                                            record_Version,
                                            raw_Source.item,
                                            raw_Source.view);
---                                             null_Source);
 
    --  Forge
    --

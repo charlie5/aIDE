@@ -1,14 +1,13 @@
 with
---       AdaM.Any,
---       AdaM.Source,
      AdaM.Entity,
      AdaM.exception_Handler,
-     ada.Streams;
+
+     Ada.Streams;
+
 
 package AdaM.Block
 is
 
---     type Item is new Any.Item with private;
    type Item is new Entity.Item with private;
    type View is access all Item'Class;
 
@@ -33,10 +32,6 @@ is
    overriding
    function  to_Source       (Self : in     Item) return text_Vectors.Vector;
 
---     function  my_Declarations (Self : access Item) return Source.Entities_View;
---     function  my_Statements   (Self : access Item) return Source.Entities_View;
---     function  my_Handlers     (Self : access Item) return Source.Entities_View;
-
    function  my_Declarations (Self : access Item) return Entity.Entities_View;
    function  my_Statements   (Self : access Item) return Entity.Entities_View;
    function  my_Handlers     (Self : access Item) return Entity.Entities_View;
@@ -48,14 +43,9 @@ is
 
 private
 
---     type Item is new Any.Item with
    type Item is new Entity.Item with
       record
-         Name            : Text;
-
---           my_Declarations : aliased AdaM.Source.Entities;
---           my_Statements   : aliased AdaM.Source.Entities;
---           my_Handlers     : aliased AdaM.Source.Entities;
+         Name            :         Text;
 
          my_Declarations : aliased AdaM.Entity.Entities;
          my_Statements   : aliased AdaM.Entity.Entities;

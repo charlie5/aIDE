@@ -10,15 +10,14 @@ is
 
    record_Version : constant                := 1;
    max_Statements : constant                := 5_000;
-   null_Statement : constant Statement.item := (Source.Entity with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "statements",
                                            max_Statements,
                                            record_Version,
                                            Statement.item,
-                                           Statement.view,
-                                           null_Statement);
+                                           Statement.view);
+
    --  Forge
    --
 
@@ -64,7 +63,8 @@ is
    --  Attributes
    --
 
-   overriding function Id (Self : access Item) return AdaM.Id
+   overriding
+   function Id (Self : access Item) return AdaM.Id
    is
    begin
       return Pool.to_Id (Self);
@@ -72,6 +72,18 @@ is
 
 
 
+   overriding
+   function Name      (Self : in     Item) return String
+   is
+      pragma Unreferenced (Self);
+   begin
+      return "a_Statement";
+   end Name;
+
+
+
+
+   overriding
    function to_Source (Self : in Item) return text_Vectors.Vector
    is
    begin

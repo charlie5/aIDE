@@ -10,7 +10,6 @@ is
 
    record_Version : constant                := 1;
    max_Parameters : constant                := 5_000;
---     null_Parameter : constant Parameter.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "parameters",
@@ -18,7 +17,6 @@ is
                                            record_Version,
                                            Parameter.item,
                                            Parameter.view);
---                                             null_Parameter);
 
    --  Vector
    --
@@ -32,7 +30,8 @@ is
       loop
          the_Source.append (the_Parameters.Element (Integer (i)).to_Source);
 
-         if i /= the_Parameters.Length then
+         if i /= the_Parameters.Length
+         then
             the_Source.append (+";");
          end if;
 

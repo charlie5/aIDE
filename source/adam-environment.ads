@@ -4,8 +4,6 @@ with
      AdaM.a_Type,
      AdaM.Declaration.of_exception;
 
---       Ada.Strings.Unbounded.Hash,
---       ada.Containers.Hashed_Maps;
 
 package AdaM.Environment
 --
@@ -41,22 +39,13 @@ is
    function  simple_Name (Identifier : in String) return String;
 
 
-private
---     use type AdaM.a_Type.view;
---     package name_Maps_of_types is new ada.Containers.Hashed_Maps (Key_Type        => Text,
---                                                                   Element_Type    => AdaM.a_Type.view,
---                                                                   Hash            => Ada.Strings.Unbounded.Hash,
---                                                                   Equivalent_Keys => "=");
---     subtype name_Map_of_types is name_Maps_of_types.Map;
 
+private
 
    type Item is tagged
       record
          Units            : Compilation_Unit.Vector;
          standard_Package : AdaM.a_Package.view;
-
---           all_Types        : name_Map_of_types;
       end record;
-
 
 end AdaM.Environment;

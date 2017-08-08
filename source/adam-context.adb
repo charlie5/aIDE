@@ -10,7 +10,6 @@ is
 
    record_Version : constant              := 1;
    max_Contexts   : constant              := 5_000;
---     null_Context   : constant Context.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "contexts",
@@ -18,7 +17,6 @@ is
                                            record_Version,
                                            Context.item,
                                            Context.view);
---                                             null_Context);
 
 
    --  Forge
@@ -29,7 +27,6 @@ is
    begin
       null;
    end define;
-
 
 
    procedure destruct (Self : in out Item)

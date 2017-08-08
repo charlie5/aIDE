@@ -1,5 +1,4 @@
 with
---       AdaM.Source,
      AdaM.Entity;
 
 private
@@ -10,7 +9,6 @@ with
 package AdaM.Comment
 is
 
---     type Item is new Source.Entity with private;
    type Item is new Entity.item with private;
    type View is access all Item'Class;
 
@@ -42,7 +40,6 @@ is
 
 private
 
---     type Item is new Source.Entity with
    type Item is new Entity.item with
       record
          Lines : text_Lines;

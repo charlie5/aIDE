@@ -74,7 +74,7 @@ private
 
    type Item is new Any.Item with
       record
-         my_Package   : Package_view;
+         my_Package   :         Package_view;
          package_Name : aliased Text;
          Used         :         Boolean;
       end record;

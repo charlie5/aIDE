@@ -11,7 +11,6 @@ is
 
    record_Version    : constant            := 1;
    max_context_Lines : constant            := 5_000;
---     null_context_Line : constant context_Line.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "context_lines",
@@ -19,7 +18,6 @@ is
                                            record_Version,
                                            context_Line.item,
                                            context_Line.view);
---                                             null_context_Line);
 
    --  Vector
    --
@@ -47,7 +45,6 @@ is
       Self.package_Name := +Name;
       Self.Used         := False;
    end define;
-
 
 
    procedure destruct (Self : in out Item)
@@ -149,7 +146,6 @@ is
    is
       use ada.Strings.unbounded;
 
---        the_Line   : Text               := +"with " & Self.Name & ";";
       the_Line   : Text               := +"with " & Self.my_Package.full_Name & ";";
       the_Source : text_Vectors.Vector;
    begin

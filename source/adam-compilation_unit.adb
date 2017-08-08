@@ -10,7 +10,6 @@ is
 
    record_Version : constant            := 1;
    max_Units      : constant            := 5_000;
---     null_Unit      : constant compilation_Unit.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "compilation_Units",
@@ -18,7 +17,6 @@ is
                                            record_Version,
                                            compilation_Unit.item,
                                            compilation_Unit.view);
---                                             null_Unit);
 
    --  Forge
    --
@@ -106,8 +104,6 @@ is
    end Id;
 
 
-
-
    function Kind         (Self : in Item) return unit_Kind
    is
    begin
@@ -123,45 +119,6 @@ is
 
 
 
-
---     procedure add (Self : in out Item;   Entity : in Source.Entity_View)
---     is
---        use type Source.Entity_View;
---     begin
---        if Entity = null
---        then
---           raise Program_Error with "Attempt to add a null entity";
---        end if;
---
---        Self.Entities.append (Entity);
---     end add;
-
-
-
---     procedure clear (Self : in out Item)
---     is
---     begin
---        Self.Entities.clear;
---     end clear;
-
-
-
---     function Length (Self : in Item) return Natural
---     is
---     begin
---        return Natural (Self.Entities.Length);
---     end Length;
-
-
-
---     function Entity   (Self : in Item;   Index : Positive) return Source.Entity_View
---     is
---     begin
---        return Self.Entities.Element (Index);
---     end Entity;
-
-
-
    function  Name    (Self : in     Item)     return String
    is
    begin
@@ -174,11 +131,6 @@ is
    begin
       Self.Name := +Now;
    end Name_is;
-
-
-
-
-
 
 
 

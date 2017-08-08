@@ -8,9 +8,6 @@ with
 package AdaM.a_Pragma
 is
 
---     type Item is new Source.Entity
---                  and Entity.item   with private;
-
    type Item is new Entity.item   with private;
 
 

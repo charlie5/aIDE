@@ -1,6 +1,6 @@
 with
-     ada.Strings.Unbounded,
-     ada.Containers.Vectors;
+     Ada.Strings.unbounded,
+     Ada.Containers.vectors;
 
 
 package AdaM

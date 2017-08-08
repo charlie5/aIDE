@@ -10,7 +10,6 @@ is
 
    record_Version : constant                 := 1;
    max_Pragmas    : constant                 := 5_000;
---     null_Pragma    : constant a_Pragma.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "Pragmas",
@@ -18,7 +17,6 @@ is
                                            record_Version,
                                            a_Pragma.item,
                                            a_Pragma.view);
---                                             null_Pragma);
 
    --  Forge
    --
@@ -97,9 +95,6 @@ is
 
 
 
-
-
-
    overriding
    function to_Source (Self : in Item) return text_Vectors.Vector
    is
@@ -113,6 +108,7 @@ is
 
       return the_Source;
    end to_Source;
+
 
 
    -- Streams

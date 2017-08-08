@@ -1,5 +1,5 @@
 with
-     AdaM.Source;
+     AdaM.Entity;
 
 private
 with
@@ -9,7 +9,7 @@ with
 package AdaM.Statement
 is
 
-   type Item is new Source.Entity with private;
+   type Item is new Entity.item with private;
    type View is access all Item'Class;
 
 
@@ -27,6 +27,11 @@ is
 
    overriding
    function Id        (Self : access Item) return AdaM.Id;
+
+   overriding
+   function Name      (Self : in     Item) return String;
+
+   overriding
    function to_Source (Self : in     Item) return text_Vectors.Vector;
 
    procedure add      (Self : in out Item;   the_Line : in String);
@@ -35,7 +40,7 @@ is
 
 private
 
-   type Item is new Source.Entity with
+   type Item is new Entity.item with
       record
          Lines : Text_vectors.Vector;
       end record;

@@ -1,6 +1,7 @@
 with
      AdaM.Block,
      AdaM.Factory;
+
 with Ada.Text_IO; use Ada.Text_IO;
 
 
@@ -12,7 +13,6 @@ is
 
    record_Version : constant             := 1;
    max_Exceptions : constant             := 5_000;
---     null_Exception : constant exception_Handler.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "exception_handlers",
@@ -20,7 +20,6 @@ is
                                            record_Version,
                                            exception_Handler.item,
                                            exception_Handler.view);
---                                             null_Exception);
 
    --  Vector
    --
@@ -42,11 +41,9 @@ is
    --  Forge
    --
 
-   procedure define (Self : in out Item) -- ;   Name : in String)
+   procedure define (Self : in out Item)
    is
    begin
---        Self.Exceptions.append (+Name);
-
       Self.Handler := AdaM.Block.new_Block ("");
    end define;
 
@@ -60,14 +57,11 @@ is
 
 
 
-   function new_Handler (--Name   : in String := "";
-                         Parent : in AdaM.Block.view) return exception_Handler.view
+   function new_Handler (Parent : in AdaM.Block.view) return exception_Handler.view
    is
       new_Item : constant exception_Handler.view := Pool.new_Item;
    begin
-      define (exception_Handler.item (new_Item.all)); -- ,
---                Name);
-
+      define (exception_Handler.item (new_Item.all));
       new_Item.Parent := Parent;
 
       return new_Item;
@@ -88,7 +82,6 @@ is
    --  Attributes
    --
 
-
    overriding
    function  Name      (Self : in     Item) return String
    is
@@ -106,20 +99,6 @@ is
    end Id;
 
 
---     function exception_Name (Self : in Item;   Id : in Positive) return String
---     is
---     begin
---        return Self.my_Exceptions.Element (Id).full_Name;
---     end exception_Name;
---
---
---     procedure exception_Name_is (Self : in out Item;   Id  : in Positive;
---                                                        Now : in String)
---     is
---     begin
---        Self.Exceptions.Replace_Element (Id, +Now);
---     end exception_Name_is;
-
 
    function my_Exception (Self : in Item;   Id : in Positive) return AdaM.Declaration.of_exception.view
    is
@@ -129,7 +108,7 @@ is
 
 
    procedure my_Exception_is (Self : in out Item;   Id  : in Positive;
-                                                      Now : in AdaM.Declaration.of_exception.view)
+                                                    Now : in AdaM.Declaration.of_exception.view)
    is
    begin
       Self.Exceptions.Replace_Element (Id, Now);
@@ -146,21 +125,6 @@ is
 
 
 
---     procedure add_Exception  (Self : in out Item;   Name : in String)
---     is
---     begin
---        Self.Exceptions.Append (+Name);
---     end add_Exception;
---
---
---     function  exception_Count (Self : in     Item)     return Natural
---     is
---     begin
---        return Natural (Self.Exceptions.Length);
---     end exception_Count;
---
-
-
 
    procedure add_Exception   (Self : in out Item;   the_Exception : in AdaM.Declaration.of_exception.view)
    is
@@ -175,8 +139,6 @@ is
    begin
       return Natural (Self.Exceptions.Length);
    end exception_Count;
-
-
 
 
 
@@ -198,7 +160,6 @@ is
       Lines     : text_Lines;
       not_First : Boolean   := False;
    begin
-      put_Line ("KKK1");
       Lines.append (+"when ");
 
 --        for i in 1 .. Integer (Self.Exceptions.Length)
@@ -210,7 +171,6 @@ is
                Lines.append (+" | ");
             end if;
 
-            --              Lines.append (+Self.exception_Name (i));
             if Self.Exceptions.Element (i) = null
             then
                Lines.append (+"constraint_Error");
@@ -225,7 +185,6 @@ is
       Lines.append (+" => ");
       Lines.append (Self.Handler.to_Source);
 
-      put_Line ("KKK2");
       return Lines;
    end to_Source;
 

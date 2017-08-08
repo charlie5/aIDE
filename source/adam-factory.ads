@@ -92,8 +92,6 @@ is
       type Item is new AdaM.Any.Item with private;
       type View is access all Item'Class;
 
---        null_Item : Item;
-
    package Pools
    is
       function  to_View (Id   : in AdaM.Id) return View;

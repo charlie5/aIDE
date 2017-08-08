@@ -12,12 +12,9 @@ is
           Ada.Strings.fixed,
           Ada.Strings.Unbounded;
 
-      Dot   : Natural  := Index (Identifier, ".", Backward);
-      Depth : Positive := 1;
-
---        First : Positive;
-      Last  : Positive := Identifier'Last;
-
+      Dot    : Natural  := Index (Identifier, ".", Backward);
+      Depth  : Positive := 1;
+      Last   : Positive := Identifier'Last;
       Suffix : Text;
 
    begin

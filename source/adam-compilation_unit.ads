@@ -1,13 +1,12 @@
 with
      AdaM.Any,
      AdaM.Entity,
---     AdaM.a_Type,
      AdaM.Context,
      AdaM.library_Item,
      AdaM.Subunit,
 
-     ada.Containers.Vectors,
-     ada.Streams;
+     Ada.Containers.Vectors,
+     Ada.Streams;
 
 
 package AdaM.compilation_Unit
@@ -56,25 +55,16 @@ is
    -- Attributes
    --
    overriding
-   function  Id      (Self : access Item) return AdaM.Id;
+   function  Id           (Self : access Item) return AdaM.Id;
 
-   function Kind         (Self : in Item) return unit_Kind;
-   function library_Item (Self : in Item) return AdaM.library_Item.view;
+   function  Kind         (Self : in Item) return unit_Kind;
+   function  library_Item (Self : in Item) return AdaM.library_Item.view;
 
+   function  Name         (Self : in     Item)     return String;
+   procedure Name_is      (Self : in out Item;   Now : in String);
 
---     procedure add     (Self : in out Item;   Entity : in Source.Entity_View);
---     procedure clear   (Self : in out Item);
-
---     function  Length  (Self : in Item) return Natural;
---     function  Entity  (Self : in Item;   Index : Positive) return Source.Entity_View;
-
-   function  Name    (Self : in     Item)     return String;
-   procedure Name_is (Self : in out Item;   Now : in String);
-
-
-
-   function  Entity    (Self : in     Item)     return AdaM.Entity.view;
-   procedure Entity_is (Self : in out Item;   Now : in AdaM.Entity.view);
+   function  Entity       (Self : in     Item)     return AdaM.Entity.view;
+   procedure Entity_is    (Self : in out Item;   Now : in AdaM.Entity.view);
 
 
 
@@ -95,14 +85,10 @@ private
 
    type Item is new AdaM.Any.item with
       record
-         Name     : Text;
---           Entities : Source.Entities;
-
+         Name         : Text;
          Context      : AdaM.Context.view;
          library_Item : library_Item_or_Subunit;
-
-
-         Entity : AdaM.Entity.view;
+         Entity       : AdaM.Entity.view;
       end record;
 
 

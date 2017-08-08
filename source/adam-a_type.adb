@@ -73,8 +73,8 @@ is
 
       declare
          use Ada.Tags;
-         the_String : constant String  := String'Input   (Stream);                  -- Read tag as string from stream.
-         the_Tag    : constant Tag     := Descendant_Tag (the_String, Item'Tag);    -- Convert to a tag.
+         the_String : constant String := String'Input   (Stream);                  -- Read tag as string from stream.
+         the_Tag    : constant Tag    := Descendant_Tag (the_String, Item'Tag);    -- Convert to a tag.
       begin
          Self := View (AdaM.Factory.to_View (Id, the_Tag));
       end;

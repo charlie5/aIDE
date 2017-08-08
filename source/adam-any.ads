@@ -14,7 +14,6 @@ is
    type view_Resolver is access procedure;
 
    procedure register_view_Resolver (the_Resolver : in view_Resolver);
-
    procedure resolve_all_Views;
 
 end AdaM.Any;
