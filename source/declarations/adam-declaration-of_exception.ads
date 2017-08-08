@@ -1,6 +1,6 @@
 with
 --       AdaM.Source,
-     AdaM.Entity,
+--       AdaM.Entity,
 
      Ada.Containers.Vectors,
      Ada.Streams;
@@ -54,6 +54,7 @@ is
 
 
 --     overriding
+   overriding
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 
 

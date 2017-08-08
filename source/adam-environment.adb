@@ -245,8 +245,8 @@ is
    procedure print (Self : in Item)
    is
       use -- AdaM.Source,
-          ada.Strings.fixed,
-          ada.Text_IO;
+          ada.Strings.fixed;
+--            ada.Text_IO;
       the_Unit   : AdaM.compilation_Unit.view;
 --        the_Entity : AdaM.Source.Entity_View;
 
@@ -287,8 +287,8 @@ is
    procedure print_Entities (Self : in Item)
    is
       use -- AdaM.Source,
-          ada.Strings.fixed,
-          ada.Text_IO;
+          ada.Strings.fixed;
+--            ada.Text_IO;
 
       the_Unit   : AdaM.compilation_Unit.view;
       top_Entity : AdaM.Entity.view;

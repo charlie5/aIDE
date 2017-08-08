@@ -1,5 +1,5 @@
 with
-     Ada.Streams,
+--       Ada.Streams,
      Ada.Tags,
      AdaM.Factory;
 with Ada.Text_IO; use Ada.Text_IO;

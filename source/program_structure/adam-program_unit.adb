@@ -1,5 +1,5 @@
-with
-     AdaM.Factory;
+--  with
+--       AdaM.Factory;
 
 
 package body AdaM.program_Unit
@@ -23,14 +23,14 @@ is
    --  Forge
    --
 
-   procedure define (Self : in out Item)
-   is
-   begin
-      null;
-   end define;
+--     procedure define (Self : in out Item)
+--     is
+--     begin
+--        null;
+--     end define;
 
 
-   procedure dummy is begin null; end;
+   procedure dummy is begin null; end dummy;
 
 
 --     procedure destruct (Self : in out Item)

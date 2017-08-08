@@ -32,7 +32,7 @@ is
                                                Target     : in adam.exception_Handler.view;
                                                Slot       : in Positive);
 
-   procedure choice_is  (Self : in out Item;   Now          : in String;
+   procedure choice_is  (Self : in out Item;   --Now          : in String;
 --                                                 package_Name : in String;
                                                the_Exception : in AdaM.Declaration.of_exception.view);
 

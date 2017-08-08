@@ -66,6 +66,7 @@ is
    end Id;
 
 
+   overriding
    function Name (Self : in Item) return String
    is
    begin
@@ -87,8 +88,10 @@ is
 --     end full_Name;
 
 
+   overriding
    function  to_Source (Self : in     Item) return text_Vectors.Vector
    is
+      pragma Unreferenced (Self);
       the_Source : text_Vectors.Vector;
    begin
       raise Program_Error with "TODO";

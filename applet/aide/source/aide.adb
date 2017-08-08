@@ -59,6 +59,7 @@ is
    -- Applet State
    --
    first_Run : Boolean := False;
+   pragma Unreferenced (first_Run);
 
 
    procedure define_standard_Ada_Types

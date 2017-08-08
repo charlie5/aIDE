@@ -30,7 +30,7 @@ is
    procedure on_rid_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                     the_Editor : in     aIDE.Editor.of_enumeration_type.view)
    is
-
+      pragma Unreferenced (the_Editor);
    begin
       the_Button.get_Parent.destroy;
    end on_rid_Button_clicked;
@@ -48,6 +48,7 @@ is
    function on_is_Label_clicked (the_Label : access Gtk_Label_Record'Class;
                                  Self      : in     aIDE.Editor.of_enumeration_type.view) return Boolean
    is
+      pragma Unreferenced (the_Label);
    begin
       Self.Target.add_Literal ("literal");
       Self.freshen;
@@ -71,6 +72,7 @@ is
          the_Builder :          Gtk_Builder;
          Error       : aliased  GError;
          Result      :          Guint;
+         pragma Unreferenced (Result);
 
       begin
          Self.Target := the_Target;

@@ -69,6 +69,7 @@ is
          the_Builder : Gtk_Builder;
          Error       : aliased  GError;
          Result      :          Guint;
+         pragma Unreferenced (Result);
 
       begin
          Gtk_New (the_Builder);

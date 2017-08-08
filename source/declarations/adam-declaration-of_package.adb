@@ -2,7 +2,7 @@ with
      AdaM.Factory;
 --       AdaM.Source.utility;
 with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Tags;
+--  with Ada.Tags;
 with AdaM.Entity;
 
 
@@ -14,7 +14,7 @@ is
 
    record_Version : constant            := 1;
    max_Packages   : constant            := 5_000;
-   null_Package   : constant Declaration.of_package.item := (Declaration.item with others => <>);
+--     null_Package   : constant Declaration.of_package.item := (Declaration.item with others => <>);
 --  --     null_Package   : constant a_Package.item := (program_Unit.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
@@ -164,7 +164,7 @@ is
       use type Declaration.of_exception.view;
 
       the_Exceptions : AdaM.Declaration.of_exception.Vector;
-      the_Exception  : AdaM.Declaration.of_exception.view;
+--        the_Exception  : AdaM.Declaration.of_exception.view;
    begin
 --        put_Line ("all_Exceptions PACKAGE NAME: " & (+Self.Name));
 

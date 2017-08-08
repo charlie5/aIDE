@@ -72,6 +72,7 @@ is
 
 
 
+   overriding
    function Name (Self : in Item) return String
    is
    begin
@@ -120,6 +121,7 @@ is
 
 
 
+   overriding
    function to_Source (Self : in Item) return text_Vectors.Vector
    is
       use -- AdaM.Source,

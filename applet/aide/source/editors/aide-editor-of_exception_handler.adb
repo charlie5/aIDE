@@ -36,6 +36,7 @@ is
    procedure on_rid_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                     Pair       : in     editor_slot_Pair)
    is
+      pragma Unreferenced (the_Button);
       the_Editor : editor.of_exception_handler.view := Pair.Editor;
    begin
       the_Editor.exception_Handler.destruct;
@@ -63,6 +64,7 @@ is
    function on_when_Label_clicked (the_Label : access Gtk.Label.Gtk_Label_Record'Class;
                                    Self      : in     Editor.of_exception_handler.view) return Boolean
    is
+      pragma Unreferenced (the_Label);
       function next_free_Slot return Natural
       is
       begin
@@ -115,7 +117,7 @@ is
       use type AdaM.Declaration.of_exception.view;
 
       new_Button    : gtk_Button;
-      the_Exception : AdaM.Declaration.of_exception.view := Self.exception_Handler.my_Exception (slot);
+      the_Exception : constant AdaM.Declaration.of_exception.view := Self.exception_Handler.my_Exception (slot);
    begin
       gtk_New (new_Button);
 
@@ -155,6 +157,7 @@ is
       the_Builder :          Gtk_Builder;
       Error       : aliased  GError;
       Result      :          Guint;
+      pragma Unreferenced (Result);
 
    begin
       Self.exception_Handler := the_Handler;

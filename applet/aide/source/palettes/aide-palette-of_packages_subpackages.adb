@@ -1,5 +1,5 @@
 with
-     AdaM.a_Package,
+--       AdaM.a_Package,
 
      Glib,
      Glib.Error,
@@ -35,6 +35,7 @@ is
    procedure on_select_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                        the_Info   : in     button_Info)
    is
+      pragma Unreferenced (the_Button);
       use AdaM;
    begin
       the_Info.packages_Palette.choice_is (+the_Info.package_Name, the_Info.the_Package);
@@ -53,6 +54,7 @@ is
       the_Builder :          Gtk_Builder;
       Error       : aliased  GError;
       Result      :          Guint;
+      pragma Unreferenced (Result);
 
    begin
       Gtk_New (the_Builder);

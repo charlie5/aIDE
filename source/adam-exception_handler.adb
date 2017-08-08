@@ -92,6 +92,7 @@ is
    overriding
    function  Name      (Self : in     Item) return String
    is
+      pragma Unreferenced (Self);
    begin
       return "exception_Handler";
    end Name;

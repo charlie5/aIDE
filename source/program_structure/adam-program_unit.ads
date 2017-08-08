@@ -1,9 +1,9 @@
 with
-     AdaM.Any,
-     AdaM.Entity,
+--       AdaM.Any,
+--       AdaM.Entity,
 
-     Ada.Containers.Vectors,
-     Ada.Streams;
+     Ada.Containers.Vectors;
+--       Ada.Streams;
 
 
 package AdaM.program_Unit

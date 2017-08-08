@@ -1,5 +1,5 @@
 with
-     AdaM.Any,
+--       AdaM.Any,
      AdaM.Entity,
 
      Ada.Containers.Vectors,
@@ -47,10 +47,12 @@ is
    function Id (Self : access Item) return AdaM.Id;
 
    procedure Name_is   (Self : in out Item;   Now : in String);
+   overriding
    function  Name      (Self : in     Item)     return String;
 
 --     function  full_Name (Self : in     Item)     return String;
 
+   overriding
    function  to_Source (Self : in     Item) return text_Vectors.Vector;
 
 

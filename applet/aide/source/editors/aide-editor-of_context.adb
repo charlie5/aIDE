@@ -19,6 +19,7 @@ is
    function on_context_Label_clicked (the_Label : access Gtk_Label_Record'Class;
                                       Self      : in     aIDE.Editor.of_context.view) return Boolean
    is
+      pragma Unreferenced (the_Label);
       use AdaM;
 
       the_Line        : constant AdaM.context_Line          .view := AdaM.context_Line.new_context_Line ("anon");
@@ -47,6 +48,7 @@ is
          the_Builder :          Gtk_Builder;
          Error       : aliased  GError;
          Result      :          Guint;
+         pragma Unreferenced (Result);
 
       begin
          Gtk_New (the_Builder);

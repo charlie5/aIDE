@@ -1,5 +1,5 @@
 with
-     AdaM.Any,
+--       AdaM.Any,
 --       AdaM.Source,
      AdaM.Entity,
      AdaM.exception_Handler,
@@ -28,7 +28,9 @@ is
 
    overriding
    function  Id              (Self : access Item) return AdaM.Id;
+   overriding
    function  Name            (Self : in     Item) return String;
+   overriding
    function  to_Source       (Self : in     Item) return text_Vectors.Vector;
 
 --     function  my_Declarations (Self : access Item) return Source.Entities_View;

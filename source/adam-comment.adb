@@ -64,6 +64,7 @@ is
    overriding
    function  Name      (Self : in     Item) return String
    is
+      pragma Unreferenced (Self);
    begin
       return "a_Comment";
    end Name;
@@ -98,11 +99,11 @@ is
    is
       the_Source : text_Vectors.Vector;
 
-      procedure add (the_Line : in Text)
-      is
-      begin
-         the_Source.append (the_Line);
-      end add;
+--        procedure add (the_Line : in Text)
+--        is
+--        begin
+--           the_Source.append (the_Line);
+--        end add;
 
    begin
       for i in 1 .. Self.Lines.Length

@@ -33,6 +33,7 @@ is
    procedure on_raw_source_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                            Self       : in     aIDE.Palette.of_source_entities.view)
    is
+      pragma Unreferenced (the_Button);
       new_Source : constant AdaM.raw_Source.view := AdaM.raw_Source.new_Source;
    begin
       Self.Target.append (new_Source.all'Access);
@@ -47,6 +48,7 @@ is
    procedure on_comment_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                         Self       : in     aIDE.Palette.of_source_entities.view)
    is
+      pragma Unreferenced (the_Button);
       new_Comment : constant AdaM.Comment.view := AdaM.Comment.new_Comment;
    begin
       Self.Target.append (new_Comment.all'Access);
@@ -60,6 +62,7 @@ is
    procedure on_enumeration_type_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                                  Self       : in     aIDE.Palette.of_source_entities.view)
    is
+      pragma Unreferenced (the_Button);
       new_Enumeration : constant AdaM.a_Type.enumeration_type.view := AdaM.a_Type.enumeration_type.new_Type ("");
    begin
       Self.Target.append (new_Enumeration.all'Access);
@@ -83,6 +86,7 @@ is
       the_Builder :          Gtk_Builder;
       Error       : aliased  GError;
       Result      :          Guint;
+      pragma Unreferenced (Result);
 
    begin
       gtk_New (the_Builder);

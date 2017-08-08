@@ -7,7 +7,7 @@ with
      AdaM.a_Type.enumeration_type,
      ada.Tags;
 
-with Ada.Text_IO; use Ada.Text_IO;
+--  with Ada.Text_IO; use Ada.Text_IO;
 
 
 package body aIDE.Editor

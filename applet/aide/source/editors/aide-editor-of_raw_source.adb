@@ -72,6 +72,7 @@ is
    procedure on_rid_Button_clicked (the_Button            : access Gtk_Button_Record'Class;
                                     the_raw_source_Editor : in     aIDE.Editor.of_raw_source.view)
    is
+      pragma Unreferenced (the_raw_source_Editor);
 
    begin
       the_Button.get_Parent.get_Parent.get_Parent.destroy;
@@ -97,6 +98,7 @@ is
          the_Builder :          Gtk_Builder;
          Error       : aliased  GError;
          Result      :          Guint;
+         pragma Unreferenced (Result);
 
       begin
          Self.Comment := the_Comment;

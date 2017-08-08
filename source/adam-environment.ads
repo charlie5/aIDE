@@ -2,10 +2,10 @@ with
      AdaM.compilation_Unit,
      AdaM.a_Package,
      AdaM.a_Type,
-     AdaM.Declaration.of_exception,
+     AdaM.Declaration.of_exception;
 
-     Ada.Strings.Unbounded.Hash,
-     ada.Containers.Hashed_Maps;
+--       Ada.Strings.Unbounded.Hash,
+--       ada.Containers.Hashed_Maps;
 
 package AdaM.Environment
 --

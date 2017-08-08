@@ -1,4 +1,4 @@
-with Ada.Text_IO;          use Ada.Text_IO;
+--  with Ada.Text_IO;          use Ada.Text_IO;
 
 with Glib;                 use Glib;
 with Glib.Error;           use Glib.Error;
@@ -27,9 +27,10 @@ is
    procedure on_exception_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                           the_Info   : in     button_Info)
    is
-      the_exception_Name : constant String := assist.Tail_of (the_Button.Get_Label);
+      pragma Unreferenced (the_Button);
+--        the_exception_Name : constant String := assist.Tail_of (the_Button.Get_Label);
    begin
-      the_Info.Self.choice_is (the_exception_Name,
+      the_Info.Self.choice_is (--the_exception_Name,
 --                                 +the_Info.package_Name,
                                the_Info.the_Exception);
    end on_exception_Button_clicked;
@@ -49,6 +50,7 @@ is
       the_Builder : Gtk_Builder;
       Error       : aliased  GError;
       Result      :          Guint;
+      pragma Unreferenced (Result);
 
    begin
       Gtk_New (the_Builder);

@@ -1,7 +1,7 @@
 with
      aIDE,
      aIDE.Palette.of_packages_subpackages,
-     AdaM.a_Package,
+--       AdaM.a_Package,
      AdaM.Environment,
      AdaM.Assist,
 
@@ -248,6 +248,7 @@ is
    procedure on_ok_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                    Self       : in     aIDE.Palette.of_packages.view)
    is
+      pragma Unreferenced (the_Button);
    begin
       Self.choice_is (Self.new_package_Entry.get_Text, null);
       Self.Top.hide;
@@ -257,6 +258,7 @@ is
    procedure on_close_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                       Self       : in     aIDE.Palette.of_packages.view)
    is
+      pragma Unreferenced (the_Button);
    begin
       Self.Top.hide;
    end on_close_Button_clicked;
@@ -321,6 +323,7 @@ is
       the_Builder :          Gtk_Builder;
       Error       : aliased  GError;
       Result      :          Guint;
+      pragma Unreferenced (Result);
 
    begin
       gtk_New (the_Builder);

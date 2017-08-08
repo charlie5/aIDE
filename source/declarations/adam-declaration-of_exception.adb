@@ -1,5 +1,6 @@
 with
      AdaM.Factory,
+     AdaM.Entity,
      AdaM.a_Package;
 
 
@@ -31,6 +32,7 @@ is
    end define;
 
 
+   overriding
    procedure destruct (Self : in out Item)
    is
    begin

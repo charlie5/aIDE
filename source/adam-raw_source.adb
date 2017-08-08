@@ -64,6 +64,7 @@ is
    overriding
    function  Name      (Self : in     Item) return String
    is
+      pragma Unreferenced (Self);
    begin
       return "raw_Source";
    end Name;

@@ -1,6 +1,6 @@
 with
-     aIDE.Palette.of_exceptions_subpackages,
-     AdaM.Declaration.of_exception;
+     aIDE.Palette.of_exceptions_subpackages;
+--       AdaM.Declaration.of_exception;
 
 with Ada.Text_IO;          use Ada.Text_IO;
 
@@ -10,8 +10,8 @@ with Glib.Object;          use Glib.Object;
 
 with Gtk.Builder;          use Gtk.Builder;
 with Gtk.Button;           use Gtk.Button;
-with Gtk.Handlers,
-     Gtk.Label;
+with Gtk.Handlers;
+--       Gtk.Label;
 
 with Common_Gtk;           use Common_Gtk;
 with Gtk.Window;           use Gtk.Window;
@@ -236,7 +236,8 @@ is
    procedure on_delete_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                        Self       : in     aIDE.Palette.of_exceptions.view)
    is
-      the_Label : String := the_Button.Get_Label;
+      pragma Unreferenced (the_Button);
+--        the_Label : String := the_Button.Get_Label;
    begin
       Self.Invoked_by.hide;
       Self.Target.my_Exception_is (Self.Slot, null); -- "free");
@@ -249,27 +250,28 @@ is
    procedure on_close_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                       Self       : in     aIDE.Palette.of_exceptions.view)
    is
+      pragma Unreferenced (the_Button);
    begin
       Self.Top.Hide;
    end on_close_Button_clicked;
 
 
 
-   use gtk.Label;
+--     use gtk.Label;
 
-   type label_Info is
-      record
---           package_Name : AdaM.Text;
-         Palette      : aIDE.Palette.of_exceptions.view;
-      end record;
+--     type label_Info is
+--        record
+--  --           package_Name : AdaM.Text;
+--           Palette      : aIDE.Palette.of_exceptions.view;
+--        end record;
 
 
    package Button_Callbacks is new Gtk.Handlers.User_Callback (Gtk_Button_Record,
                                                                aIDE.Palette.of_exceptions.view);
 
-   package Label_return_Callbacks is new Gtk.Handlers.User_Return_Callback (gtk.Label.Gtk_Label_Record,
-                                                                            Boolean,
-                                                                            label_Info);
+--     package Label_return_Callbacks is new Gtk.Handlers.User_Return_Callback (gtk.Label.Gtk_Label_Record,
+--                                                                              Boolean,
+--                                                                              label_Info);
 
 
 
@@ -282,6 +284,7 @@ is
       the_Builder :          Gtk_Builder;
       Error       : aliased  GError;
       Result      :          Guint;
+      pragma Unreferenced (Result);
 
    begin
       gtk_New (the_Builder);
@@ -333,7 +336,7 @@ is
    --  Operations
    --
 
-   procedure choice_is (Self : in out Item;   Now           : in String;
+   procedure choice_is (Self : in out Item;   --Now           : in String;
 --                                                package_Name  : in String;
                                               the_Exception : in AdaM.Declaration.of_exception.view)
    is
@@ -514,7 +517,7 @@ is
             use adam,
                 ada.Strings.Unbounded;
 --              the_Exception : adam.Text renames the_Recent.Element (i);
-            the_Exception : adam.Declaration.of_exception.view := the_Recent.Element (i);
+            the_Exception : constant adam.Declaration.of_exception.view := the_Recent.Element (i);
          begin
             put_Line ("Recent: " & the_Exception.full_Name);
             put_Line ("Named : " & assist.      Tail_of (the_Exception.full_Name));
