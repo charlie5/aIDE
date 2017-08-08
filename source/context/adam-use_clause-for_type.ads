@@ -37,6 +37,7 @@ is
    --
    function  new_Subprogram         return use_Clause.for_type.view;
    procedure free           (Self : in out use_Clause.for_type.view);
+   overriding
    procedure destruct       (Self : in out use_Clause.for_type.item);
 
 

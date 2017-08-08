@@ -38,6 +38,7 @@ is
    --
    function  new_Subprogram         return library_Unit.a_body.view;
    procedure free           (Self : in out library_Unit.a_body.view);
+   overriding
    procedure destruct       (Self : in out library_Unit.a_body.item);
 
 

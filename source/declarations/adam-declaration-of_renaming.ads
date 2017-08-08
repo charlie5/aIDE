@@ -33,6 +33,7 @@ is
    --
    function  new_Declaration        return Declaration.of_renaming.view;
    procedure free           (Self : in out Declaration.of_renaming.view);
+   overriding
    procedure destruct       (Self : in out Declaration.of_renaming.item);
 
 

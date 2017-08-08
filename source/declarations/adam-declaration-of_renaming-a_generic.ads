@@ -1,6 +1,4 @@
 with
-     AdaM.Any,
-
      Ada.Containers.Vectors,
      Ada.Streams;
 
@@ -35,6 +33,7 @@ is
    --
    function  new_Declaration        return Declaration.of_renaming.a_generic.view;
    procedure free           (Self : in out Declaration.of_renaming.a_generic.view);
+   overriding
    procedure destruct       (Self : in out Declaration.of_renaming.a_generic.item);
 
 

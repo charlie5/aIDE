@@ -33,6 +33,7 @@ is
    --
    function  new_Declaration        return Declaration.of_null_procedure.view;
    procedure free           (Self : in out Declaration.of_null_procedure.view);
+   overriding
    procedure destruct       (Self : in out Declaration.of_null_procedure.item);
 
 

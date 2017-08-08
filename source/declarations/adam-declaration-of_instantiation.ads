@@ -33,6 +33,7 @@ is
    --
    function  new_Declaration        return Declaration.of_instantiation.view;
    procedure free           (Self : in out Declaration.of_instantiation.view);
+   overriding
    procedure destruct       (Self : in out Declaration.of_instantiation.item);
 
 

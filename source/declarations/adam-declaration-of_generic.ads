@@ -33,6 +33,7 @@ is
    --
    function  new_Declaration        return Declaration.of_generic.view;
    procedure free           (Self : in out Declaration.of_generic.view);
+   overriding
    procedure destruct       (Self : in out Declaration.of_generic.item);
 
 

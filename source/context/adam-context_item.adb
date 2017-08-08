@@ -10,15 +10,13 @@ is
 
    record_Version  : constant                := 1;
    max_Subprograms : constant                := 5_000;
-   null_Subprogram : constant context_Item.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "context_Items",
                                            max_Subprograms,
                                            record_Version,
                                            context_Item.item,
-                                           context_Item.view,
-                                           null_Subprogram);
+                                           context_Item.view);
 
    --  Forge
    --

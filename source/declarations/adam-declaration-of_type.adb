@@ -10,15 +10,13 @@ is
 
    record_Version  : constant                := 1;
    max_Subprograms : constant                := 5_000;
-   null_Subprogram : constant Declaration.of_type.item := (Declaration.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "Declaration.of_types",
                                            max_Subprograms,
                                            record_Version,
                                            Declaration.of_type.item,
-                                           Declaration.of_type.view,
-                                           null_Subprogram);
+                                           Declaration.of_type.view);
 
    --  Forge
    --
@@ -30,6 +28,7 @@ is
    end define;
 
 
+   overriding
    procedure destruct (Self : in out Item)
    is
    begin
