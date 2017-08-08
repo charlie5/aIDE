@@ -1,4 +1,6 @@
-with aIDE.Palette.of_exceptions_subpackages;
+with
+     aIDE.Palette.of_exceptions_subpackages,
+     AdaM.Declaration.of_exception;
 
 with Ada.Text_IO;          use Ada.Text_IO;
 
@@ -28,8 +30,8 @@ is
 
    package recent_Exceptions
    is
-      procedure register_Usage (the_Exception : in adam.Text);
-      function  fetch return adam.text_Lines;
+      procedure register_Usage (the_Exception : in AdaM.Declaration.of_exception.view);
+      function  fetch                       return AdaM.Declaration.of_exception.vector;
    end recent_Exceptions;
 
 
@@ -37,20 +39,21 @@ is
    is
       type exception_Usage is
          record
-            Name  : adam.Text;
-            Count : Natural;
+            the_Exception : AdaM.Declaration.of_exception.view;
+            Name          : AdaM.Text;
+            Count         : Natural;
          end record;
 
       function "<" (L, R : in exception_Usage) return Boolean
       is
-         use type adam.Text;
+         use type AdaM.Text;
       begin
          return L.Name < R.Name;
       end "<";
 
       overriding function "=" (L, R : in exception_Usage) return Boolean
       is
-         use type adam.Text;
+         use type AdaM.Text;
       begin
          return L.Name = R.Name;
       end "=";
@@ -59,13 +62,38 @@ is
       the_usage_Stats : exception_Usage_Sets.Set;
 
 
-      procedure register_Usage (the_Exception : in adam.Text)
+--        procedure register_Usage (the_Exception : in adam.Text)
+--        is
+--           use exception_Usage_Sets;
+--
+--           the_exception_Usage : exception_Usage             := (the_Exception,  others => <>);
+--           Current             : constant exception_Usage_Sets.Cursor := the_usage_Stats.find (the_exception_Usage);
+--        begin
+--           if Current /= No_Element
+--           then
+--              the_exception_Usage.Count := Element (Current).Count + 1;
+--              the_usage_Stats.replace_Element (Current, the_exception_Usage);
+--           else
+--              the_exception_Usage.Count := 1;
+--              the_usage_Stats.insert (the_exception_Usage);
+--           end if;
+--        end register_Usage;
+
+      procedure register_Usage (the_Exception : in AdaM.Declaration.of_exception.view)
       is
          use exception_Usage_Sets;
+         use type AdaM.Declaration.of_exception.view;
 
-         the_exception_Usage : exception_Usage             := (the_Exception,  others => <>);
+         the_exception_Usage :          exception_Usage             := (the_Exception,  others => <>);
          Current             : constant exception_Usage_Sets.Cursor := the_usage_Stats.find (the_exception_Usage);
       begin
+         if the_Exception = null
+         then
+            raise program_Error with "NULLLLLLLL exception !!!";
+         else
+            put_Line ("ALL FINEEEEEEEEEEEEEEEEEEEEEE");
+         end if;
+
          if Current /= No_Element
          then
             the_exception_Usage.Count := Element (Current).Count + 1;
@@ -77,17 +105,19 @@ is
       end register_Usage;
 
 
-      function  fetch return adam.text_Lines
+
+      function  fetch return AdaM.Declaration.of_exception.vector
       is
          use exception_Usage_Sets,
              ada.Containers;
 
-         the_Lines : adam.text_Lines;
+--           the_Lines : AdaM.text_Lines;
+         the_Exceptions : AdaM.Declaration.of_exception.vector;
 
-         package exception_Usage_Vectors is new ada.Containers.Vectors (Positive, exception_Usage);
-         use     exception_Usage_Vectors;
+         package type_Usage_Vectors is new ada.Containers.Vectors (Positive, exception_Usage);
+         use     type_Usage_Vectors;
 
-         the_usage_List : exception_Usage_Vectors.Vector;
+         the_usage_List : type_Usage_Vectors.Vector;
 
       begin
          declare
@@ -99,7 +129,7 @@ is
                   the_usage_List.append (Element (Cursor));
                end if;
 
-               exit when the_Lines.Length = 25;
+               exit when the_Exceptions.Length = 25;     -- Limit results to 25 entries.
                next (Cursor);
             end loop;
          end;
@@ -111,27 +141,91 @@ is
                return L.Count > R.Count;
             end "<";
 
-            package Sorter is new exception_Usage_Vectors.Generic_Sorting ("<");
+            package Sorter is new type_Usage_Vectors.Generic_Sorting ("<");
          begin
             Sorter.sort (the_usage_List);
          end;
 
          declare
-            Cursor : exception_Usage_Vectors.Cursor := the_usage_List.First;
+            use type AdaM.Declaration.of_exception.view;
+
+            Cursor : type_Usage_Vectors.Cursor := the_usage_List.First;
          begin
             while has_Element (Cursor)
             loop
-               if Element (Cursor).Count > 0 then
-                  the_Lines.Append (Element (Cursor).Name);
+               if Element (Cursor).Count > 0
+               then
+                  if Element (Cursor).the_Exception = null
+                  then
+                     raise Program_Error with "KKKKKKKKKKKKKKKKKKKKK";
+                  end if;
+
+                  the_Exceptions.append (Element (Cursor).the_Exception);
                end if;
 
-               exit when the_Lines.Length = 25;
                next (Cursor);
             end loop;
          end;
 
-         return the_Lines;
+         return the_Exceptions;
       end fetch;
+
+
+--        function  fetch return adam.text_Lines
+--        is
+--           use exception_Usage_Sets,
+--               ada.Containers;
+--
+--           the_Lines : adam.text_Lines;
+--
+--           package exception_Usage_Vectors is new ada.Containers.Vectors (Positive, exception_Usage);
+--           use     exception_Usage_Vectors;
+--
+--           the_usage_List : exception_Usage_Vectors.Vector;
+--
+--        begin
+--           declare
+--              Cursor : exception_Usage_Sets.Cursor := the_usage_Stats.First;
+--           begin
+--              while has_Element (Cursor)
+--              loop
+--                 if Element (Cursor).Count > 0 then
+--                    the_usage_List.append (Element (Cursor));
+--                 end if;
+--
+--                 exit when the_Lines.Length = 25;
+--                 next (Cursor);
+--              end loop;
+--           end;
+--
+--           declare
+--              function "<" (L, R : in exception_Usage) return Boolean
+--              is
+--              begin
+--                 return L.Count > R.Count;
+--              end "<";
+--
+--              package Sorter is new exception_Usage_Vectors.Generic_Sorting ("<");
+--           begin
+--              Sorter.sort (the_usage_List);
+--           end;
+--
+--           declare
+--              Cursor : exception_Usage_Vectors.Cursor := the_usage_List.First;
+--           begin
+--              while has_Element (Cursor)
+--              loop
+--                 if Element (Cursor).Count > 0 then
+--                    the_Lines.Append (Element (Cursor).Name);
+--                 end if;
+--
+--                 exit when the_Lines.Length = 25;
+--                 next (Cursor);
+--              end loop;
+--           end;
+--
+--           return the_Lines;
+--        end fetch;
 
    end recent_Exceptions;
 
@@ -146,7 +240,7 @@ is
       the_Label : String := the_Button.Get_Label;
    begin
       Self.Invoked_by.hide;
-      Self.Target.exception_Name_is (Self.Slot, "free");
+      Self.Target.exception_Name_is (Self.Slot, null); -- "free");
 
       Self.Top.hide;
    end on_delete_Button_clicked;
@@ -247,16 +341,19 @@ is
       use adam,
           AdaM.Assist;
 
-      full_Name : constant String := package_Name & "." & Now;
+--        full_Name : constant String := package_Name & "." & Now;
+      full_Name : constant String := the_Exception.full_Name;
+
    begin
-      recent_Exceptions.register_Usage (+full_Name);
+--        recent_Exceptions.register_Usage (+full_Name);
+      recent_Exceptions.register_Usage (the_Exception);
       Self.build_recent_List;
 
-      Self.Invoked_by.Set_Label (identifier_Suffix (the_Exception.full_Name, 2));
-      Self.Invoked_by.Set_Tooltip_Text (the_Exception.full_Name);
+      Self.Invoked_by.Set_Label (AdaM.Assist.strip_standard_Prefix (identifier_Suffix (full_Name, 2)));
+      Self.Invoked_by.Set_Tooltip_Text (full_Name);
 
-      Self.Target.exception_Name_is (Self.Slot, full_Name);
-      Self.Target.my_add_Exception (the_Exception);
+      Self.Target.exception_Name_is (Self.Slot, the_Exception);
+--        Self.Target.my_add_Exception (the_Exception);
 
       Self.Top.hide;
    end choice_is;
@@ -404,7 +501,8 @@ is
 
    procedure build_recent_List (Self : in out Item)
    is
-      the_Recent : constant adam.text_Lines := recent_Exceptions.fetch;
+--        the_Recent : constant adam.text_Lines := recent_Exceptions.fetch;
+      the_Recent : constant adam.Declaration.of_exception.vector := recent_Exceptions.fetch;
       the_Button : gtk_Button;
 
       Row, Col   : Guint := 0;
@@ -416,14 +514,18 @@ is
          declare
             use adam,
                 ada.Strings.Unbounded;
-            the_Exception : adam.Text renames the_Recent.Element (i);
+--              the_Exception : adam.Text renames the_Recent.Element (i);
+            the_Exception : adam.Declaration.of_exception.view := the_Recent.Element (i);
          begin
-            put_Line (+("Recent: " & the_Exception));
+            put_Line ("Recent: " & the_Exception.full_Name);
+            put_Line ("Named : " & assist.      Tail_of (the_Exception.full_Name));
+            put_Line ("package_Name: " & assist.strip_Tail_of (the_Exception.full_Name));
 
 --              gtk_New (the_Button, +the_Exception);
             the_Button := aIDE.Palette.of_exceptions_subpackages.new_Button
-                             (Named              => assist.      Tail_of (+the_Exception),
-                              package_Name       => assist.strip_Tail_of (+the_Exception),
+                             (for_Exception      => the_Exception,
+                              Named              => assist.      Tail_of (the_Exception.full_Name),
+                              package_Name       => assist.strip_Tail_of (the_Exception.full_Name),
                               exceptions_Palette => Self'unchecked_Access,
                               use_simple_Name    => False);
 

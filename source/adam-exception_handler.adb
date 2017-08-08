@@ -1,6 +1,7 @@
 with
      AdaM.Block,
      AdaM.Factory;
+with Ada.Text_IO; use Ada.Text_IO;
 
 
 package body AdaM.exception_Handler
@@ -41,10 +42,10 @@ is
    --  Forge
    --
 
-   procedure define (Self : in out Item;   Name : in String)
+   procedure define (Self : in out Item) -- ;   Name : in String)
    is
    begin
-      Self.Exceptions.append (+Name);
+--        Self.Exceptions.append (+Name);
 
       Self.Handler := AdaM.Block.new_Block ("");
    end define;
@@ -59,13 +60,13 @@ is
 
 
 
-   function new_Handler (Name   : in String := "";
+   function new_Handler (--Name   : in String := "";
                          Parent : in AdaM.Block.view) return exception_Handler.view
    is
       new_Item : constant exception_Handler.view := Pool.new_Item;
    begin
-      define (exception_Handler.item (new_Item.all),
-              Name);
+      define (exception_Handler.item (new_Item.all)); -- ,
+--                Name);
 
       new_Item.Parent := Parent;
 
@@ -104,42 +105,59 @@ is
    end Id;
 
 
-   function exception_Name (Self : in Item;   Id : in Positive) return String
+--     function exception_Name (Self : in Item;   Id : in Positive) return String
+--     is
+--     begin
+--        return Self.my_Exceptions.Element (Id).full_Name;
+--     end exception_Name;
+--
+--
+--     procedure exception_Name_is (Self : in out Item;   Id  : in Positive;
+--                                                        Now : in String)
+--     is
+--     begin
+--        Self.Exceptions.Replace_Element (Id, +Now);
+--     end exception_Name_is;
+
+
+   function exception_Name (Self : in Item;   Id : in Positive) return AdaM.Declaration.of_exception.view
    is
    begin
-      return +(Self.Exceptions.Element (Id));
+      return Self.my_Exceptions.Element (Id);
    end exception_Name;
 
 
    procedure exception_Name_is (Self : in out Item;   Id  : in Positive;
-                                                      Now : in String)
+                                                      Now : in AdaM.Declaration.of_exception.view)
    is
    begin
-      Self.Exceptions.Replace_Element (Id, +Now);
+      Self.my_Exceptions.Replace_Element (Id, Now);
    end exception_Name_is;
+
 
 
    function  is_Free   (Self : in     Item;   Slot : in Positive) return Boolean
    is
+      use type Declaration.of_exception.view;
    begin
-      return Self.Exceptions.Element (Slot) = "free";
+      return Self.my_Exceptions.Element (Slot) = null;
    end is_Free;
 
 
 
-   procedure add_Exception  (Self : in out Item;   Name : in String)
-   is
-   begin
-      Self.Exceptions.Append (+Name);
-   end add_Exception;
-
-
-   function  exception_Count (Self : in     Item)     return Natural
-   is
-   begin
-      return Natural (Self.Exceptions.Length);
-   end exception_Count;
-
+--     procedure add_Exception  (Self : in out Item;   Name : in String)
+--     is
+--     begin
+--        Self.Exceptions.Append (+Name);
+--     end add_Exception;
+--
+--
+--     function  exception_Count (Self : in     Item)     return Natural
+--     is
+--     begin
+--        return Natural (Self.Exceptions.Length);
+--     end exception_Count;
+--
 
 
 
@@ -174,9 +192,12 @@ is
    function to_Source (Self : in Item) return text_Lines
    is
       use text_Vectors;
+      use type AdaM.Declaration.of_exception.view;
+
       Lines     : text_Lines;
       not_First : Boolean   := False;
    begin
+      put_Line ("KKK1");
       Lines.append (+"when ");
 
 --        for i in 1 .. Integer (Self.Exceptions.Length)
@@ -188,8 +209,14 @@ is
                Lines.append (+" | ");
             end if;
 
---              Lines.append (+Self.exception_Name (i));
-            Lines.append (+Self.my_Exceptions.Element (i).full_Name);
+            --              Lines.append (+Self.exception_Name (i));
+            if Self.my_Exceptions.Element (i) = null
+            then
+               Lines.append (+"constraint_Error");
+            else
+               Lines.append (+Self.my_Exceptions.Element (i).full_Name);
+            end if;
+
             not_First := True;
          end if;
       end loop;
@@ -197,6 +224,7 @@ is
       Lines.append (+" => ");
       Lines.append (Self.Handler.to_Source);
 
+      put_Line ("KKK2");
       return Lines;
    end to_Source;
 

@@ -341,7 +341,6 @@ is
 
    function  find (Self : in Item;   Named : in String) return AdaM.a_Type.view
    is
-
    begin
       for Each of Self.Children.all
       loop
@@ -359,6 +358,29 @@ is
       put_Line ("*** NOT FOUND ***");
       return null;
    end find;
+
+
+
+   function  find (Self : in Item;   Named : in String) return AdaM.Declaration.of_exception.view
+   is
+   begin
+      for Each of Self.Children.all
+      loop
+--           put_Line ("--- find type in package " & (+Self.Name) & "   ---    Tag => " & ada.Tags.External_Tag (Each.all'Tag));
+
+         if Each.all in AdaM.Declaration.of_exception.item'Class
+         then
+            if Each.Name = Named
+            then
+               return AdaM.Declaration.of_exception.view (Each);
+            end if;
+         end if;
+      end loop;
+
+      put_Line ("*** NOT FOUND ***");
+      return null;
+   end find;
+
 
 
 

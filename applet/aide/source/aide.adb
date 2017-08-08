@@ -52,6 +52,7 @@ with
      ada.Strings.unbounded,
      ada.Streams.Stream_IO,
      ada.Text_IO;
+with Ada.Text_IO;
 
 package body aIDE
 is
@@ -99,7 +100,7 @@ is
 
          the_Stream := Stream (the_File);
 
-         AdaM.Environment.item'read (the_Stream, the_Environ);
+--           AdaM.Environment.item'read (the_Stream, the_Environ);
          AdaM.Environment.item'read (the_Stream, the_entity_Environ);
 
          Subprogram.view      'read (the_Stream, the_selected_App);
@@ -113,6 +114,7 @@ is
          when ada.Streams.Stream_IO.Name_Error =>
             first_Run := True;
 
+            Ada.Text_IO.put_Line ("define_standard_Ada_Types **************************************");
             define_standard_Ada_Types;
 
             the_selected_App := Subprogram.new_Subprogram (Name => anonymous_Procedure);   -- Create initial test precedure..
@@ -137,7 +139,7 @@ is
 
          the_Stream := Stream (the_File);
 
-         AdaM.Environment.item'write (the_Stream, the_Environ);
+--           AdaM.Environment.item'write (the_Stream, the_Environ);
          AdaM.Environment.item'write (the_Stream, the_entity_Environ);
 
          Subprogram.view      'write (the_Stream, the_selected_App);

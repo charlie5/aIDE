@@ -10,7 +10,7 @@ is
 
 
 private
-   the_Environ      : AdaM.Environment.item;
+--     the_Environ      : AdaM.Environment.item;
 
    all_Apps         : AdaM.Subprogram.vector;
    the_selected_App : AdaM.Subprogram.view;

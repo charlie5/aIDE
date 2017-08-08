@@ -36,7 +36,7 @@ is
          when 2 =>
             declare
                new_Handler : constant AdaM.exception_Handler.view
-                 := AdaM.exception_Handler.new_Handler ("constraint_Error",
+                 := AdaM.exception_Handler.new_Handler (--"constraint_Error",
                                                         Expander.Editor.Block);
             begin
                Expander.Editor.Block.add (new_Handler);

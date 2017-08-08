@@ -22,7 +22,8 @@ is
 
    function to_exceptions_Palette_package return View;
 
-   function new_Button (Named           : in String;
+   function new_Button (for_Exception   : in AdaM.Declaration.of_exception.view;
+                        Named           : in String;
                         package_Name    : in String;
                         exceptions_Palette   : in palette.of_exceptions.view;
                         use_simple_Name : in Boolean) return Gtk.Button.gtk_Button;
@@ -33,8 +34,8 @@ is
    function  top_Widget        (Self : in     Item) return gtk.Widget.Gtk_Widget;
    function  children_Notebook (Self : in     Item) return gtk.Notebook.gtk_Notebook;
 
-   procedure add_Exception     (Self : access Item;   Named        : in String;
-                                                      package_Name : in String);
+--     procedure add_Exception     (Self : access Item;   Named        : in String;
+--                                                        package_Name : in String);
 
    procedure add_Exception     (Self : access Item;   the_Exception : in AdaM.Declaration.of_exception.view;
                                                       the_Package   : in AdaM.a_Package.view);

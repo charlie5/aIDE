@@ -46,6 +46,19 @@ is
 
 
 
+   function strip_standard_Prefix (Identifier : in String) return String
+   is
+      Token : constant String := "Standard.";
+   begin
+      if Identifier (Identifier'First .. Identifier'First + Token'Length - 1) = Token
+      then
+         return Identifier (Identifier'First + Token'Length .. Identifier'Last);
+      else
+         return Identifier;
+      end if;
+   end strip_standard_Prefix;
+
+
 
    function Tail_of (the_full_Name : in String) return String
    is
@@ -120,5 +133,6 @@ is
       the_Lines.append (+the_Text (First .. the_Text'Last));
       return the_Lines;
    end Split;
+
 
 end AdaM.Assist;

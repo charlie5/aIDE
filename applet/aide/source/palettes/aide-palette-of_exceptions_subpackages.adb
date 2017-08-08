@@ -71,7 +71,8 @@ is
 
 
 
-   function new_Button (Named              : in String;
+   function new_Button (for_Exception      : in AdaM.Declaration.of_exception.view;
+                        Named              : in String;
                         package_Name       : in String;
                         exceptions_Palette : in palette.of_exceptions.view;
                         use_simple_Name    : in Boolean) return gtk.Button.gtk_Button
@@ -92,7 +93,7 @@ is
                                 on_exception_Button_clicked'Access,
                                 (+package_Name,
                                  exceptions_Palette,
-                                 null));
+                                 for_Exception));
       return the_Button;
    end new_Button;
 
@@ -156,24 +157,24 @@ is
    --  Operations
    --
 
-   procedure add_Exception (Self : access Item;   Named        : in String;
-                                                  package_Name : in String)
-   is
-      the_Button : constant gtk_Button := new_Button (Named,
-                                                      package_Name,
-                                                      Self.Parent,
-                                                      use_simple_Name => True);
-   begin
---        gtk_New (the_Button, Named);
+--     procedure add_Exception (Self : access Item;   Named        : in String;
+--                                                    package_Name : in String)
+--     is
+--        the_Button : constant gtk_Button := new_Button (Named,
+--                                                        package_Name,
+--                                                        Self.Parent,
+--                                                        use_simple_Name => True);
+--     begin
+--  --        gtk_New (the_Button, Named);
+--  --
+--  --        Button_Callbacks.connect (the_Button,
+--  --                                  "clicked",
+--  --                                  on_exception_Button_clicked'Access,
+--  --                                  (+package_Name,
+--  --                                    Self.Parent));
 --
---        Button_Callbacks.connect (the_Button,
---                                  "clicked",
---                                  on_exception_Button_clicked'Access,
---                                  (+package_Name,
---                                    Self.Parent));
-
-      Self.exceptions_Box.pack_Start (the_Button);
-   end add_Exception;
+--        Self.exceptions_Box.pack_Start (the_Button);
+--     end add_Exception;
 
 
 

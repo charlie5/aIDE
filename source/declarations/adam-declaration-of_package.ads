@@ -89,6 +89,7 @@ is
    procedure add_Child (Self : in out Item;   Child : in Declaration.of_package.view);
 
    function  find (Self : in Item;   Named : in String) return AdaM.a_Type.view;
+   function  find (Self : in Item;   Named : in String) return AdaM.Declaration.of_exception.view;
 
 
 

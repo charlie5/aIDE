@@ -46,7 +46,13 @@ is
 
    procedure standard_package_is (Self : in out Item;   Now : in AdaM.a_Package.view)
    is
+      use type AdaM.a_Package.view;
    begin
+      if Now = null
+      then
+         raise program_Error with "sdfkgasdjkfgslkadgf";
+      end if;
+
       Self.standard_Package := Now;
    end standard_package_is;
 
@@ -156,6 +162,9 @@ is
    is
       the_Package : AdaM.a_Package.view := Self.standard_Package;
    begin
+      put_Line (Integer'Image (Integer (Self.Units.Length)));
+      put_Line ("the_Package.full_Name) = " & the_Package.full_Name);
+
       if Identifier /= "Standard"
       then
          declare
@@ -168,6 +177,8 @@ is
                exit when the_Package = null;
             end loop;
          end;
+      else
+         put_Line ("STANDARD");
       end if;
 
       return the_Package;
@@ -214,8 +225,18 @@ is
 
    function  find (Self : in Item;   Identifier : in String) return AdaM.a_Type.view
    is
-      the_Package : AdaM.a_Package.view := Self.find (parent_Name (Identifier));
+      the_Package : constant AdaM.a_Package.view := Self.find (parent_Name (Identifier));
    begin
+      return the_Package.find (simple_Name (Identifier));
+   end find;
+
+
+
+   function  find  (Self : in Item;   Identifier : in String) return AdaM.Declaration.of_exception.view
+   is
+      the_Package : constant AdaM.a_Package.view := Self.find (parent_Name (Identifier));
+   begin
+      put_Line ("ZZZZZZZZZZZZZZZZZZZZZZ parent_Name (Identifier) = '" & parent_Name (Identifier) & "'");
       return the_Package.find (simple_Name (Identifier));
    end find;
 

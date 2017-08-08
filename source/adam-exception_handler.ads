@@ -44,7 +44,7 @@ is
    --  Forge
    --
 
-   function  new_Handler (Name   : in String := "";
+   function  new_Handler (-- Name   : in String := "";
                           Parent : in AdaM.Block.view) return exception_Handler.view;
 
    procedure free        (Self : in out exception_Handler.view);
@@ -59,12 +59,15 @@ is
 
    function  is_Free   (Self : in     Item;   Slot : in Positive) return Boolean;
 
-   function  exception_Name    (Self : in     Item;   Id  : in Positive) return String;
+--     function  exception_Name    (Self : in     Item;   Id  : in Positive) return String;
+--     procedure exception_Name_is (Self : in out Item;   Id  : in Positive;
+--                                                        Now : in String);
+   function  exception_Name    (Self : in     Item;   Id  : in Positive) return Declaration.of_exception.view;
    procedure exception_Name_is (Self : in out Item;   Id  : in Positive;
-                                                      Now : in String);
+                                                      Now : in Declaration.of_exception.view);
 
-   procedure add_Exception   (Self : in out Item;   Name : in String);
-   function  exception_Count (Self : in     Item)     return Natural;
+--     procedure add_Exception   (Self : in out Item;   Name : in String);
+--     function  exception_Count (Self : in     Item)     return Natural;
 
    procedure my_add_Exception   (Self : in out Item;   the_Exception : in AdaM.Declaration.of_exception.view);
    function  my_exception_Count (Self : in     Item)     return Natural;
@@ -89,7 +92,7 @@ private
       record
          my_Exceptions : AdaM.Declaration.of_exception.vector;
 
-         Exceptions : text_Lines;
+--           Exceptions : text_Lines;
          Handler    : access AdaM.Block.item'Class;
          Parent     : access AdaM.Block.item'Class;
       end record;

@@ -87,7 +87,7 @@ is
 --        if Self.parent_Entity.Name = "Standard"
       if Self.parent_Entity = null
       then
-         return +Self.Name;
+         return "Standard." & (+Self.Name);
       else
          return a_Package.view (Self.parent_Entity).full_Name & "." & (+Self.Name);
       end if;
