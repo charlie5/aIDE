@@ -12,15 +12,15 @@ is
 
    record_Version : constant             := 1;
    max_Exceptions : constant             := 5_000;
-   null_Exception : constant exception_Handler.item := (Entity.item with others => <>);
+--     null_Exception : constant exception_Handler.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "exception_handlers",
                                            max_Exceptions,
                                            record_Version,
                                            exception_Handler.item,
-                                           exception_Handler.view,
-                                           null_Exception);
+                                           exception_Handler.view);
+--                                             null_Exception);
 
    --  Vector
    --

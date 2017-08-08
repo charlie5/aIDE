@@ -10,15 +10,15 @@ is
 
    record_Version : constant                := 1;
    max_Parameters : constant                := 5_000;
-   null_Parameter : constant Parameter.item := (others => <>);
+--     null_Parameter : constant Parameter.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "parameters",
                                            max_Parameters,
                                            record_Version,
                                            Parameter.item,
-                                           Parameter.view,
-                                           null_Parameter);
+                                           Parameter.view);
+--                                             null_Parameter);
 
    --  Vector
    --

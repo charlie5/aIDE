@@ -10,15 +10,15 @@ is
 
    record_Version : constant                 := 1;
    max_Pragmas    : constant                 := 5_000;
-   null_Pragma    : constant a_Pragma.item := (Entity.item with others => <>);
+--     null_Pragma    : constant a_Pragma.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "Pragmas",
                                            max_Pragmas,
                                            record_Version,
                                            a_Pragma.item,
-                                           a_Pragma.view,
-                                           null_Pragma);
+                                           a_Pragma.view);
+--                                             null_Pragma);
 
    --  Forge
    --

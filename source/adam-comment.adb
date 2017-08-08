@@ -10,15 +10,15 @@ is
 
    record_Version : constant                := 1;
    max_Comments   : constant                := 5_000;
-   null_Comment   : constant Comment.item := (Entity.item with others => <>);
+--     null_Comment   : constant Comment.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "comments",
                                            max_Comments,
                                            record_Version,
                                            Comment.item,
-                                           Comment.view,
-                                           null_Comment);
+                                           Comment.view);
+--                                             null_Comment);
 
    --  Forge
    --

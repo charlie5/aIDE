@@ -9,15 +9,15 @@ is
 
    record_Version : constant            := 1;
    max_Blocks     : constant            := 5_000;
-   null_Block     : constant Block.item := (Entity.item with others => <>);
+--     null_Block     : constant Block.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "blocks",
                                            max_Blocks,
                                            record_Version,
                                            Block.item,
-                                           Block.view,
-                                           null_Block);
+                                           Block.view);
+--                                             null_Block);
 
 
    --  Forge

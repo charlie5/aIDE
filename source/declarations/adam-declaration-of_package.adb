@@ -15,15 +15,15 @@ is
    record_Version : constant            := 1;
    max_Packages   : constant            := 5_000;
    null_Package   : constant Declaration.of_package.item := (Declaration.item with others => <>);
---     null_Package   : constant a_Package.item := (program_Unit.item with others => <>);
+--  --     null_Package   : constant a_Package.item := (program_Unit.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "packages",
                                            max_Packages,
                                            record_Version,
                                            Declaration.of_package.item,
-                                           Declaration.of_package.view,
-                                           null_Package);
+                                           Declaration.of_package.view);
+--                                             null_Package);
 
    --  Forge
    --

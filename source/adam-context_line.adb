@@ -11,15 +11,15 @@ is
 
    record_Version    : constant            := 1;
    max_context_Lines : constant            := 5_000;
-   null_context_Line : constant context_Line.item := (others => <>);
+--     null_context_Line : constant context_Line.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "context_lines",
                                            max_context_Lines,
                                            record_Version,
                                            context_Line.item,
-                                           context_Line.view,
-                                           null_context_Line);
+                                           context_Line.view);
+--                                             null_context_Line);
 
    --  Vector
    --

@@ -11,15 +11,15 @@ is
 
    record_Version  : constant                := 1;
    max_Subprograms : constant                := 5_000;
-   null_Subprogram : constant Declaration.of_exception.item := (Entity.item with others => <>);
+--     null_Subprogram : constant Declaration.of_exception.item := (Entity.item with others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "Declarations.of_exception",
                                            max_Subprograms,
                                            record_Version,
                                            Declaration.of_exception.item,
-                                           Declaration.of_exception.view,
-                                           null_Subprogram);
+                                           Declaration.of_exception.view);
+--                                             null_Subprogram);
 
    --  Forge
    --

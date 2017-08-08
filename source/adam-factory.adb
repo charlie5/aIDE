@@ -1,5 +1,5 @@
 with
-     interfaces.C.Pointers,
+     interfaces.C,
 
      ada.Streams.Stream_IO,
      ada.Containers.Vectors,

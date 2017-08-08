@@ -10,15 +10,15 @@ is
 
    record_Version : constant            := 1;
    max_Units      : constant            := 5_000;
-   null_Unit      : constant compilation_Unit.item := (others => <>);
+--     null_Unit      : constant compilation_Unit.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "compilation_Units",
                                            max_Units,
                                            record_Version,
                                            compilation_Unit.item,
-                                           compilation_Unit.view,
-                                           null_Unit);
+                                           compilation_Unit.view);
+--                                             null_Unit);
 
    --  Forge
    --

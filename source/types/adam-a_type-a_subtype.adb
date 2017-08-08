@@ -9,15 +9,15 @@ is
 
    record_Version : constant                := 1;
    max_Types      : constant                := 5_000;
-   null_Type      : constant a_subtype.item := (a_Type.elementary_Type with others => <>);
+--     null_Type      : constant a_subtype.item := (a_Type.elementary_Type with others => <>);
 
    package Pool is new AdaM.Factory.Pools (storage_Folder => ".adam-store",
                                            pool_Name      => "subtypes",
                                            max_Items      => max_Types,
                                            record_Version => record_Version,
                                            Item           => a_subtype.item,
-                                           View           => a_subtype.view,
-                                           null_Item      => null_Type);
+                                           View           => a_subtype.view);
+--                                             null_Item      => null_Type);
 
    --  Forge
    --
