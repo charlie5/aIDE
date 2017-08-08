@@ -78,21 +78,16 @@ is
          return 0;
       end next_free_Slot;
 
-      Slot : constant Natural := next_free_Slot;
+      Slot              : constant Natural                            := next_free_Slot;
+      default_Exception : constant AdaM.Declaration.of_exception.view := aIDE.the_entity_Environ.find ("Constraint_Error");
 
    begin
-      put_Line ("SLOT: " & Integer'Image (Slot));
-
       if Slot = 0
       then
---           Self.exception_Handler.my_add_Exception (null);
-         Self.exception_Handler.add_Exception (aIDE.the_entity_Environ.find ("Constraint_Error"));
---           Self.exception_Handler.add_Exception ("constraint_Error");
-
+         Self.exception_Handler.add_Exception (default_Exception);
          Self.add_new_exception_Button (Self.exception_Handler.exception_Count);
       else
---           Self.exception_Handler.exception_Name_is (Slot, null);
-         Self.exception_Handler.my_Exception_is (Slot, aIDE.the_entity_Environ.find ("Constraint_Error")); --"constraint_Error");
+         Self.exception_Handler.my_Exception_is (Slot, default_Exception);
          Self.exception_Button (Slot).Show_All;
       end if;
 
