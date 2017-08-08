@@ -8,17 +8,15 @@ is
    --  Storage Pool
    --
 
-   record_Version  : constant                := 1;
-   max_Subprograms : constant                := 5_000;
-   null_Subprogram : constant Declaration.of_number.item := (others => <>);
+   record_Version  : constant := 1;
+   max_Subprograms : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "Declaration.of_numbers",
                                            max_Subprograms,
                                            record_Version,
                                            Declaration.of_number.item,
-                                           Declaration.of_number.view,
-                                           null_Subprogram);
+                                           Declaration.of_number.view);
 
    --  Forge
    --
@@ -30,6 +28,7 @@ is
    end define;
 
 
+   overriding
    procedure destruct (Self : in out Item)
    is
    begin
@@ -43,7 +42,7 @@ is
    begin
       define (Declaration.of_number.item (new_View.all));
       return new_View;
-   end new_Subprogram;
+   end new_Declaration;
 
 
    procedure free (Self : in out Declaration.of_number.view)

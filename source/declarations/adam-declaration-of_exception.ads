@@ -1,17 +1,10 @@
 with
---       AdaM.Source,
---       AdaM.Entity,
-
      Ada.Containers.Vectors,
      Ada.Streams;
 
 
 package AdaM.Declaration.of_exception
 is
-
---     type Item is new Declaration.item
---                  and Source.Entity
---                  and Entity.item   with private;
 
    type Item is new Declaration.item with private;
 
@@ -53,19 +46,13 @@ is
    function full_Name (Self : in Item) return String;
 
 
---     overriding
    overriding
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 
 
 private
 
---     package Entity is new Entity.make_Entity (Declaration.item);
-
    type Item is new Declaration.item with
---     type Item is new Entity.item
---     type Item is new Entity.item
---                  and Source.Entity with
       record
          null;
       end record;

@@ -1,9 +1,8 @@
 with
-     AdaM.Factory;
---       AdaM.Source.utility;
+     AdaM.Factory,
+     AdaM.Entity;
+
 with Ada.Text_IO; use Ada.Text_IO;
---  with Ada.Tags;
-with AdaM.Entity;
 
 
 package body AdaM.Declaration.of_package
@@ -12,10 +11,8 @@ is
    --  Storage Pool
    --
 
-   record_Version : constant            := 1;
-   max_Packages   : constant            := 5_000;
---     null_Package   : constant Declaration.of_package.item := (Declaration.item with others => <>);
---  --     null_Package   : constant a_Package.item := (program_Unit.item with others => <>);
+   record_Version : constant := 1;
+   max_Packages   : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "packages",
@@ -23,7 +20,6 @@ is
                                            record_Version,
                                            Declaration.of_package.item,
                                            Declaration.of_package.view);
---                                             null_Package);
 
    --  Forge
    --

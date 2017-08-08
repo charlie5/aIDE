@@ -10,9 +10,8 @@ is
    --  Storage Pool
    --
 
-   record_Version  : constant                := 1;
-   max_Subprograms : constant                := 5_000;
---     null_Subprogram : constant Declaration.of_exception.item := (Entity.item with others => <>);
+   record_Version  : constant := 1;
+   max_Subprograms : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "Declarations.of_exception",
@@ -20,7 +19,6 @@ is
                                            record_Version,
                                            Declaration.of_exception.item,
                                            Declaration.of_exception.view);
---                                             null_Subprogram);
 
    --  Forge
    --
@@ -70,23 +68,10 @@ is
 
 
 
---     function full_Name (Self : in Item) return String
---     is
---     begin
---        return Self.parent_Entity.Name & "." & (+Self.Name);
---     end full_Name;
-
-
    function  full_Name  (Self : in Item) return String
    is
       use type Entity.view;
    begin
---        if Self.parent_Entity = null   -- Is the top level entity.
---        then
---           return "Standard";
---        end if;
-
---        if Self.parent_Entity.Name = "Standard"
       if Self.parent_Entity = null
       then
          return "Standard." & (+Self.Name);
@@ -94,7 +79,6 @@ is
          return a_Package.view (Self.parent_Entity).full_Name & "." & (+Self.Name);
       end if;
    end full_Name;
-
 
 
 
@@ -114,6 +98,7 @@ is
 
       return the_Source;
    end to_Source;
+
 
 
    -- Streams

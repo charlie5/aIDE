@@ -1,5 +1,4 @@
 with
---       AdaM.Any,
      AdaM.Entity,
 
      Ada.Containers.Vectors,
@@ -9,7 +8,6 @@ with
 package AdaM.Declaration
 is
 
---     type Item is new Any.item with private;
    type Item is new Entity.item with private;
 
 
@@ -56,9 +54,9 @@ is
    function  to_Source (Self : in     Item) return text_Vectors.Vector;
 
 
+
 private
 
---     type Item is new Any.item with
    type Item is new Entity.item with
       record
          Name : Text;

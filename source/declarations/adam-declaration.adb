@@ -8,9 +8,8 @@ is
    --  Storage Pool
    --
 
-   record_Version  : constant                := 1;
-   max_Subprograms : constant                := 5_000;
---     null_Subprogram : constant Declaration.item := (Entity.item with others => <>);
+   record_Version  : constant := 1;
+   max_Subprograms : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "Declarations",
@@ -18,7 +17,6 @@ is
                                            record_Version,
                                            Declaration.item,
                                            Declaration.view);
---                                             null_Subprogram);
 
    --  Forge
    --

@@ -11,7 +11,6 @@ with
 package AdaM.Declaration.of_package
 is
 
---     type Item is new program_Unit.Item with private;
    type Item is new Declaration.item
                 and program_Unit.item with private;
 
@@ -53,13 +52,8 @@ is
    overriding
    function  Id               (Self : access Item) return AdaM.Id;
 
---     overriding
---     function  Name             (Self : in     Item)     return String;
---     overriding
---     procedure Name_is          (Self : in out Item;   Now : in String);
 
---     overriding
-   function  full_Name  (Self : in Item) return String;
+   function  full_Name        (Self : in Item) return String;
 
    overriding
    function  to_Source        (Self : in     Item) return text_Vectors.Vector;
@@ -68,21 +62,14 @@ is
 
    function  Context          (Self : in     Item) return Context.view;
 
---     function  public_Entities     (Self : access Item) return access Source.Entities;
---     procedure public_Entities_are (Self : in out Item;   Now : in Source.Entities);
---
---     procedure add           (Self : in out Item;   the_Declaration : in Source.Entity_View);
---     procedure rid           (Self : in out Item;   the_Declaration : in Source.Entity_View);
+   function  all_Exceptions   (Self : access Item) return AdaM.Declaration.of_exception.Vector;
 
-   function  all_Exceptions (Self : access     Item) return AdaM.Declaration.of_exception.Vector;
-
-   function  requires_Body (Self : in Item) return Boolean;
+   function  requires_Body    (Self : in Item) return Boolean;
 
 
    procedure Parent_is (Self : in out Item;   Now : in Declaration.of_package.View);
    function  Parent    (Self : in     Item) return Declaration.of_package.view;
 
---     function  Children  (Self : in     Item'Class) return a_Package.Vector;
    function  child_Packages  (Self : in     Item'Class) return Declaration.of_package.Vector;
    function  child_Package   (Self : in     Item'Class;   Named : in String) return Declaration.of_package.view;
 
@@ -96,8 +83,6 @@ is
 
 private
 
-
---     type Item is new program_Unit.item with
    type Item is new Declaration.item
                 and program_Unit.item with
       record
