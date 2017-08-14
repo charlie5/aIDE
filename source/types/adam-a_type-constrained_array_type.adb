@@ -8,17 +8,14 @@ is
    --
 
    record_Version : constant                             := 1;
-   max_Types      : constant                             := 5_000;
-   null_Type      : constant constrained_array_type.item := (Entity.item with others => <>);
+   pool_Size      : constant                             := 5_000;
 
    package Pool is new AdaM.Factory.Pools (storage_Folder => ".adam-store",
                                            pool_Name      => "constrained_array_types",
-                                           max_Items      => max_Types,
+                                           max_Items      => pool_Size,
                                            record_Version => record_Version,
                                            Item           => constrained_array_type.item,
-                                           View           => constrained_array_type.view,
-                                           null_Item      => null_Type);
-
+                                           View           => constrained_array_type.view);
 
    --  Forge
    --

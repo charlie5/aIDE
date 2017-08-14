@@ -1,5 +1,5 @@
 with
-     ada.Streams;
+     Ada.Streams;
 
 
 package AdaM.a_Type.signed_integer_type

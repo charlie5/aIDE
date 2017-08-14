@@ -7,17 +7,15 @@ is
    --  Storage Pool
    --
 
-   record_Version : constant                       := 1;
-   max_Types      : constant                       := 5_000;
---     null_Type      : constant enumeration_Type.item := (a_Type.discrete_Type with others => <>);
+   record_Version : constant := 1;
+   pool_Size      : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (storage_Folder => ".adam-store",
                                            pool_Name      => "enumeration_types",
-                                           max_Items      => max_Types,
+                                           max_Items      => pool_Size,
                                            record_Version => record_Version,
                                            Item           => enumeration_Type.item,
                                            View           => enumeration_Type.view);
---                                             null_Item      => null_Type);
 
 
    --  Forge

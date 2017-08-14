@@ -8,16 +8,14 @@ is
    --
 
    record_Version : constant := 1;
-   max_Types      : constant := 5_000;
-   null_Type      : constant derived_record_extension_type.item := (record_type.item with others => <>);
+   pool_Size      : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (storage_Folder => ".adam-store",
                                            pool_Name      => "derived_record_extension_types",
-                                           max_Items      => max_Types,
+                                           max_Items      => pool_Size,
                                            record_Version => record_Version,
                                            Item           => derived_record_extension_type.item,
-                                           View           => derived_record_extension_type.view,
-                                           null_Item      => null_Type);
+                                           View           => derived_record_extension_type.view);
 
    --  Forge
    --

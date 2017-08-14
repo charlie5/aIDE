@@ -8,16 +8,14 @@ is
    --
 
    record_Version : constant                := 1;
-   max_Types      : constant                := 5_000;
-   null_Type      : constant task_type.item := (a_Type.elementary_Type with others => <>);
+   pool_Size      : constant                := 5_000;
 
    package Pool is new AdaM.Factory.Pools (storage_Folder => ".adam-store",
                                            pool_Name      => "task_types",
-                                           max_Items      => max_Types,
+                                           max_Items      => pool_Size,
                                            record_Version => record_Version,
                                            Item           => task_type.item,
-                                           View           => task_type.view,
-                                           null_Item      => null_Type);
+                                           View           => task_type.view);
 
    --  Forge
    --

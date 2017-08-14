@@ -1,6 +1,6 @@
 with
-     ada.Streams,
-     ada.Containers.Vectors;
+     Ada.Streams,
+     Ada.Containers.Vectors;
 
 
 package AdaM.a_Type.enumeration_literal

@@ -7,17 +7,15 @@ is
    --  Storage Pool
    --
 
-   record_Version : constant                         := 1;
-   max_Types      : constant                         := 5_000;
-   null_Type      : constant tagged_record_type.item := (record_type.item with others => <>);
+   record_Version : constant := 1;
+   pool_Size      : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (storage_Folder => ".adam-store",
                                            pool_Name      => "tagged_record_types",
-                                           max_Items      => max_Types,
+                                           max_Items      => pool_Size,
                                            record_Version => record_Version,
                                            Item           => tagged_record_type.item,
-                                           View           => tagged_record_type.view,
-                                           null_Item      => null_Type);
+                                           View           => tagged_record_type.view);
 
    --  Forge
    --

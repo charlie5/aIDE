@@ -8,17 +8,14 @@ is
    --
 
    record_Version : constant                  := 1;
-   max_Types      : constant                  := 5_000;
-   null_Type      : constant record_type.item := (a_Type.composite_Type with others => <>);
+   pool_Size      : constant                  := 5_000;
 
    package Pool is new AdaM.Factory.Pools (storage_Folder => ".adam-store",
                                            pool_Name      => "record_types",
-                                           max_Items      => max_Types,
+                                           max_Items      => pool_Size,
                                            record_Version => record_Version,
                                            Item           => record_type.item,
-                                           View           => record_type.view,
-                                           null_Item      => null_Type);
-
+                                           View           => record_type.view);
    --  Forge
    --
 

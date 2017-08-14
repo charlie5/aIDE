@@ -1,5 +1,5 @@
 with
-     ada.Streams;
+     Ada.Streams;
 
 
 package AdaM.a_Type.decimal_fixed_point_type

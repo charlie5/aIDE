@@ -1,6 +1,6 @@
 with
      AdaM.a_Type.record_type,
-     ada.Streams;
+     Ada.Streams;
 
 
 package AdaM.a_Type.tagged_record_type

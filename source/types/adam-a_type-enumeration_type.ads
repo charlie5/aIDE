@@ -1,6 +1,6 @@
 with
      AdaM.a_Type.enumeration_literal,
-     ada.Streams;
+     Ada.Streams;
 
 
 package AdaM.a_Type.enumeration_type
