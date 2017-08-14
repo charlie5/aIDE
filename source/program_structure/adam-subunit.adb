@@ -8,9 +8,8 @@ is
    --  Storage Pool
    --
 
-   record_Version  : constant                := 1;
-   pool_Size : constant                := 5_000;
---     null_Subprogram : constant Subunit.item := (others => <>);
+   record_Version : constant := 1;
+   pool_Size      : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "Subunits",
@@ -18,7 +17,6 @@ is
                                            record_Version,
                                            Subunit.item,
                                            Subunit.view);
---                                             null_Subprogram);
 
    --  Forge
    --

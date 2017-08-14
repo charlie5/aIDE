@@ -8,17 +8,15 @@ is
    --  Storage Pool
    --
 
-   record_Version  : constant                := 1;
-   pool_Size : constant                := 5_000;
-   null_Subprogram : constant library_Unit.renaming_declaration.item := (others => <>);
+   record_Version : constant := 1;
+   pool_Size      : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "library_Units-renaming_declaration",
                                            pool_Size,
                                            record_Version,
                                            library_Unit.renaming_declaration.item,
-                                           library_Unit.renaming_declaration.view,
-                                           null_Subprogram);
+                                           library_Unit.renaming_declaration.view);
 
    --  Forge
    --

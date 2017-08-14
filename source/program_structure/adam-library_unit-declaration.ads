@@ -47,6 +47,7 @@ is
    function  new_Intantiation return library_Unit.declaration.view;
 
    procedure free           (Self : in out library_Unit.declaration.view);
+   overriding
    procedure destruct       (Self : in out library_Unit.declaration.item);
 
 

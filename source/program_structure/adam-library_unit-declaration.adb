@@ -8,17 +8,15 @@ is
    --  Storage Pool
    --
 
-   record_Version  : constant                := 1;
-   pool_Size : constant                := 5_000;
-   null_Subprogram : constant library_Unit.declaration.item := (others => <>);
+   record_Version : constant := 1;
+   pool_Size      : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "library_Units-declaration",
                                            pool_Size,
                                            record_Version,
                                            library_Unit.declaration.item,
-                                           library_Unit.declaration.view,
-                                           null_Subprogram);
+                                           library_Unit.declaration.view);
 
    --  Forge
    --
@@ -30,6 +28,7 @@ is
    end define;
 
 
+   overriding
    procedure destruct (Self : in out Item)
    is
    begin
@@ -52,7 +51,7 @@ is
    function  new_Package      return library_Unit.declaration.view
    is
       new_unit_Declaration : constant library_Unit.declaration.view    := Pool.new_Item;
-      new_Package          : constant AdaM.Declaration.of_package.view := AdaM.Declaration.of_package.new_Declaration;
+      new_Package          : constant AdaM.Declaration.of_package.view := AdaM.Declaration.of_package.new_Package;
    begin
       define (library_Unit.declaration.item (new_unit_Declaration.all));
       new_unit_Declaration.Declaration := (a_Package, new_Package);

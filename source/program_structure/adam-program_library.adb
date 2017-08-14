@@ -8,8 +8,8 @@ is
    --  Storage Pool
    --
 
-   record_Version  : constant                := 1;
-   pool_Size : constant                := 5_000;
+   record_Version : constant := 1;
+   pool_Size      : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "program_libraries",
