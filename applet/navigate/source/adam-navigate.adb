@@ -28,7 +28,8 @@ with Put_Title;
 with ada.Wide_Wide_Text_IO;
 with ada.Characters.Conversions;
 
-function Navigate return AdaM.Environment.item
+
+function AdaM.Navigate return AdaM.Environment.item
 is
    Environ : AdaM.Environment.item;
 
@@ -904,4 +905,4 @@ begin
 
 
    return Environ;
-end Navigate;
+end AdaM.Navigate;

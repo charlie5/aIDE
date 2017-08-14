@@ -1,5 +1,5 @@
 with
-     Navigate,
+     AdaM.Navigate,
 
      aIDE.GUI,
      aIDE.Palette.of_packages,
@@ -78,7 +78,7 @@ is
 
 
 --        the_entity_Environ := AdaM.Assist.known_Entities;
-      the_entity_Environ := Navigate;
+      the_entity_Environ := AdaM.Navigate;
       the_entity_Environ.print_Entities;
    end define_standard_Ada_Types;
 
