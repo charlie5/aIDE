@@ -88,7 +88,7 @@ is
    begin
       for Each of Self.Literals
       loop
-         if Each.Name = Value
+         if +Each.Name = Value
          then
             Self.Literals.delete (Self.Literals.find_Index (Each));
             return;
@@ -124,9 +124,9 @@ is
       loop
          if Each /= Self.Literals.last_Element
          then
-            add (+Each.Name & ",");
+            add (+(+Each.Name) & ",");
          else
-            add (+Each.Name);
+            add (+(+Each.Name));
          end if;
       end loop;
 

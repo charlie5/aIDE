@@ -6,15 +6,17 @@ with
 package body AdaM.Assist
 is
 
-   function identifier_Suffix (Identifier : in String;   Count : in Positive) return String
+   function identifier_Suffix (Id : in Identifier;   Count : in Positive) return String
    is
       use Ada.Strings,
           Ada.Strings.fixed,
           Ada.Strings.Unbounded;
 
-      Dot    : Natural  := Index (Identifier, ".", Backward);
+      the_Id : constant String := String (Id);
+
+      Dot    : Natural  := Index (the_Id, ".", Backward);
       Depth  : Positive := 1;
-      Last   : Positive := Identifier'Last;
+      Last   : Positive := Id'Last;
       Suffix : Text;
 
    begin
@@ -22,11 +24,11 @@ is
       loop
          if Dot = 0
          then
-            insert (Suffix, 1, Identifier (Identifier'First .. Last));
+            insert (Suffix, 1, the_Id (the_Id'First .. Last));
             exit;
          end if;
 
-         insert (Suffix, 1, Identifier (Dot + 1 .. Last));
+         insert (Suffix, 1, the_Id (Dot + 1 .. Last));
 
          if Depth /= Count
          then
@@ -34,7 +36,7 @@ is
          end if;
 
          Last  := Dot - 1;
-         Dot   := Index (Identifier, ".", from => Last, going => Backward);
+         Dot   := Index (the_Id, ".", from => Last, going => Backward);
          Depth := Depth + 1;
       end loop;
 
@@ -43,15 +45,16 @@ is
 
 
 
-   function strip_standard_Prefix (Identifier : in String) return String
+   function strip_standard_Prefix (Id : in Identifier) return String
    is
-      Token : constant String := "Standard.";
+      the_Id : constant String := String (Id);
+      Token  : constant String := "Standard.";
    begin
-      if Identifier (Identifier'First .. Identifier'First + Token'Length - 1) = Token
+      if the_Id (the_Id'First .. the_Id'First + Token'Length - 1) = Token
       then
-         return Identifier (Identifier'First + Token'Length .. Identifier'Last);
+         return the_Id (the_Id'First + Token'Length .. the_Id'Last);
       else
-         return Identifier;
+         return the_Id;
       end if;
    end strip_standard_Prefix;
 
@@ -129,6 +132,74 @@ is
 
       the_Lines.append (+the_Text (First .. the_Text'Last));
       return the_Lines;
+   end Split;
+
+
+
+   function parent_Name (Id : in Identifier) return Identifier
+   is
+      use Ada.Strings,
+          Ada.Strings.fixed;
+
+      the_Id : constant String  := String (Id);
+      I      : constant Natural := Index (the_Id, ".", going => Backward);
+   begin
+      if I = 0
+      then
+         return "Standard";
+      end if;
+
+      return Identifier (the_Id (the_Id'First .. I - 1));
+   end parent_Name;
+
+
+
+   function simple_Name (Id : in Identifier) return Identifier
+   is
+      use Ada.Strings,
+          Ada.Strings.fixed;
+
+      I : constant Natural := Index (String (Id), ".", going => Backward);
+   begin
+      if I = 0
+      then
+         return Id;
+      end if;
+
+      return Id (I + 1 .. Id'Last);
+   end simple_Name;
+
+
+
+   function Split (Id : in Identifier) return text_Lines
+   is
+      use Ada.Strings,
+          Ada.Strings.fixed;
+
+      the_Id : constant String := String (Id);
+
+      First  : Natural := the_Id'First;
+      Last   : Natural;
+
+      I      : Natural;
+      Lines  : text_Lines;
+   begin
+      loop
+         I := Index (the_Id, ".", from => First);
+
+         if I = 0
+         then
+            Last := the_Id'Last;
+            Lines.append (+the_Id (First .. Last));
+            exit;
+         end if;
+
+         Last  := I - 1;
+         Lines.append (+the_Id (First .. Last));
+         First := I + 1;
+      end loop;
+
+      return Lines;
    end Split;
 
 

@@ -40,7 +40,7 @@ is
    --
 
    overriding
-   function  Name      (Self : in     Item) return String;
+   function  Name      (Self : in     Item) return Identifier;
    procedure Name_is   (Self : in out Item;   Now : in String);
 
 

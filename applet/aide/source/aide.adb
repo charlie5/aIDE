@@ -173,8 +173,9 @@ is
    --  Apps
    --
 
-   function fetch_App (Named : in String) return adam.Subprogram.view
+   function fetch_App (Named : in AdaM.Identifier) return adam.Subprogram.view
    is
+      use AdaM;
    begin
       for Each of all_Apps
       loop
@@ -221,9 +222,10 @@ is
          for Each of all_Apps
          loop
             declare
+               use AdaM;
                the_App : constant AdaM.Subprogram.view := Each;
             begin
-               log ("   ... " & the_App.Name);
+               log ("   ... " & (+the_App.Name));
 
                --  Generate the app body source.
                --
@@ -235,7 +237,7 @@ is
                   the_File     :          File_type;
                   the_Filename : constant String   :=   generated_source_Path
                                                       & "/"
-                                                      & to_Lower (the_App.Name) & ".adb";
+                                                      & to_Lower (String (the_App.Name)) & ".adb";
                   the_Source   : constant AdaM.Text_Vectors.Vector := the_App.to_Source;
                begin
                   create (the_File,  out_File,  the_Filename);
@@ -281,7 +283,7 @@ is
          add ("   for Main use (");
          for Each of all_Apps
          loop
-            add ("        """ & to_Lower (Each.Name) & ".adb""");
+            add ("        """ & to_Lower (String (Each.Name)) & ".adb""");
             if Each /= all_Apps.last_Element
             then
                add (",");
@@ -344,13 +346,14 @@ is
       for Each of all_Apps
       loop
          declare
-            use ada.Characters.handling;
-            app_Filename : constant String := to_Lower ("./" & Each.Name);
+            use AdaM,
+                Ada.Characters.handling;
+            app_Filename : constant String := to_Lower ("./" & String (Each.Name));
          begin
             if Exists (app_Filename)
             then
                log ("", 2);
-               log ("Launching '" & Each.Name & "' ...");
+               log ("Launching '" & (+Each.Name) & "' ...");
                log;
 
                declare

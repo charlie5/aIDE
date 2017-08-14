@@ -9,7 +9,12 @@ is
    function Split (the_Text : in String) return text_Lines;
 
 
-   function identifier_Suffix     (Identifier : in String;   Count : in Positive) return String;
-   function strip_standard_Prefix (Identifier : in String) return String;
+   function identifier_Suffix     (Id : in Identifier;   Count : in Positive) return String;
+   function strip_standard_Prefix (Id : in Identifier) return String;
+
+   function  parent_Name (Id : in Identifier) return Identifier;
+   function  simple_Name (Id : in Identifier) return Identifier;
+
+   function  Split       (Id : in Identifier) return text_Lines;
 
 end AdaM.Assist;

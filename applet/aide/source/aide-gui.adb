@@ -116,14 +116,15 @@ is
       the_app_Editor.Target_is (the_new_App);
 
       declare
-         use Gtk,
+         use AdaM,
+             Gtk,
              Gtk.Tree_Model;
 
          Iter   :          gtk_tree_Iter;
          Parent : constant gtk_tree_Iter := Null_Iter;
       begin
          the_app_tree_Store.append          (Iter, Parent);
-         the_app_tree_Store.set             (Iter, 0, the_new_App.Name);
+         the_app_tree_Store.set             (Iter, 0, +the_new_App.Name);
          the_app_tree_Selection.select_Iter (Iter);
       end;
    end on_new_app_Button_clicked;
@@ -158,7 +159,8 @@ is
 
    procedure on_app_Selection_changed (Selection : access Gtk.Tree_Selection.Gtk_Tree_Selection_Record'Class)
    is
-      use gtk.Tree_Model,
+      use AdaM,
+          gtk.Tree_Model,
           ada.Text_IO;
       Iter      : Gtk_Tree_Iter;
       the_model : Gtk_Tree_Model;
@@ -170,7 +172,7 @@ is
          declare
             app_Name : constant String := gtk.Tree_Model.Get_String (the_model, Iter, 0);
          begin
-            the_app_Editor.Target_is (fetch_App (app_Name));
+            the_app_Editor.Target_is (fetch_App (+app_Name));
          end;
       end if;
    end on_app_Selection_changed;
@@ -257,14 +259,15 @@ is
       for Each of all_Apps
       loop
          declare
-            use Gtk.Tree_Model;
+            use AdaM,
+                Gtk.Tree_Model;
             use type AdaM.Subprogram.view;
 
             Iter   :          gtk_tree_Iter;
             Parent : constant gtk_tree_Iter := Null_Iter;
          begin
             the_app_tree_Store.append (Iter, Parent);
-            the_app_tree_Store.set    (Iter, 0, Each.Name);
+            the_app_tree_Store.set    (Iter, 0, +Each.Name);
 
             if Each = all_Apps.first_Element
             then

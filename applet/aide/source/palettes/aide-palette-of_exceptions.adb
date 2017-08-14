@@ -45,14 +45,14 @@ is
 
       function "<" (L, R : in exception_Usage) return Boolean
       is
-         use type AdaM.Text;
+         use type AdaM.Identifier;
       begin
          return L.the_Exception.Name < R.the_Exception.Name;
       end "<";
 
       overriding function "=" (L, R : in exception_Usage) return Boolean
       is
-         use type AdaM.Text;
+         use type AdaM.Identifier;
       begin
          return L.the_Exception.Name = R.the_Exception.Name;
       end "=";
@@ -351,7 +351,7 @@ is
       recent_Exceptions.register_Usage (the_Exception);
       Self.build_recent_List;
 
-      Self.Invoked_by.Set_Label (AdaM.Assist.strip_standard_Prefix (identifier_Suffix (full_Name, 2)));
+      Self.Invoked_by.Set_Label (AdaM.Assist.strip_standard_Prefix (+identifier_Suffix (+full_Name, 2)));
       Self.Invoked_by.Set_Tooltip_Text (full_Name);
 
       Self.Target.my_Exception_is (Self.Slot, the_Exception);
@@ -428,7 +428,7 @@ is
 
             the_exceptions_Palette_package.top_Widget.Reparent (children_Notebook);
             children_Notebook.set_Tab_Label_Text (the_exceptions_Palette_package.top_Widget,
-                                                  the_Package.Name);
+                                                  +the_Package.Name);
 
             -- Build the exceptions sub-pane.
             --

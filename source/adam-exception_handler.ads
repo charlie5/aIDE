@@ -70,7 +70,7 @@ is
    function  Handler   (Self : in     Item) return access AdaM.Block.item'Class;
 
    overriding
-   function  Name      (Self : in     Item) return String;
+   function  Name      (Self : in     Item) return Identifier;
 
 
    --  Operations

@@ -17,7 +17,7 @@ private
 
    procedure build_Project;
 
-   function  fetch_App (Named : in String) return adam.Subprogram.view;
+   function  fetch_App (Named : in AdaM.Identifier) return adam.Subprogram.view;
 
 
    anonymous_Procedure : constant String := "Anon";

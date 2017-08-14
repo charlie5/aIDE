@@ -1,5 +1,6 @@
 with
      AdaM.Entity,
+     AdaM.Assist,
 
      Ada.Text_IO,
      Ada.Tags,
@@ -90,73 +91,74 @@ is
 
 
 
-   -- TODO: Move these to AdaM.Assist.
+--     -- TODO: Move these to AdaM.Assist.
+--
+--     function parent_Name (Identifier : in String) return String
+--     is
+--        use Ada.Strings,
+--            Ada.Strings.fixed;
+--        I : constant Natural := Index (Identifier, ".", going => Backward);
+--     begin
+--        if I = 0
+--        then
+--           return "Standard";
+--        end if;
+--
+--        return Identifier (Identifier'First .. I - 1);
+--     end parent_Name;
+--
+--
+--
+--     function simple_Name (Identifier : in String) return String
+--     is
+--        use Ada.Strings,
+--            Ada.Strings.fixed;
+--        I : constant Natural := Index (Identifier, ".", going => Backward);
+--     begin
+--        if I = 0
+--        then
+--           return Identifier;
+--        end if;
+--
+--        return Identifier (I + 1 .. Identifier'Last);
+--     end simple_Name;
+--
+--
+--
+--     function Split (Identifier : in String) return text_Lines
+--     is
+--        use Ada.Strings,
+--            Ada.Strings.fixed;
+--
+--        First : Natural := Identifier'First;
+--        Last  : Natural;
+--
+--        I     : Natural;
+--        Lines : text_Lines;
+--     begin
+--        loop
+--           I := Index (Identifier, ".", from => First);
+--
+--           if I = 0
+--           then
+--              Last := Identifier'Last;
+--              Lines.append (+Identifier (First .. Last));
+--              exit;
+--           end if;
+--
+--           Last  := I - 1;
+--           Lines.append (+Identifier (First .. Last));
+--           First := I + 1;
+--        end loop;
+--
+--        return Lines;
+--     end Split;
 
-   function parent_Name (Identifier : in String) return String
+
+
+   function  find (Self : in Item;   Identifier : in AdaM.Identifier) return AdaM.a_Package.view
    is
-      use Ada.Strings,
-          Ada.Strings.fixed;
-      I : constant Natural := Index (Identifier, ".", going => Backward);
-   begin
-      if I = 0
-      then
-         return "Standard";
-      end if;
-
-      return Identifier (Identifier'First .. I - 1);
-   end parent_Name;
-
-
-
-   function simple_Name (Identifier : in String) return String
-   is
-      use Ada.Strings,
-          Ada.Strings.fixed;
-      I : constant Natural := Index (Identifier, ".", going => Backward);
-   begin
-      if I = 0
-      then
-         return Identifier;
-      end if;
-
-      return Identifier (I + 1 .. Identifier'Last);
-   end simple_Name;
-
-
-
-   function Split (Identifier : in String) return text_Lines
-   is
-      use Ada.Strings,
-          Ada.Strings.fixed;
-
-      First : Natural := Identifier'First;
-      Last  : Natural;
-
-      I     : Natural;
-      Lines : text_Lines;
-   begin
-      loop
-         I := Index (Identifier, ".", from => First);
-
-         if I = 0
-         then
-            Last := Identifier'Last;
-            Lines.append (+Identifier (First .. Last));
-            exit;
-         end if;
-
-         Last  := I - 1;
-         Lines.append (+Identifier (First .. Last));
-         First := I + 1;
-      end loop;
-
-      return Lines;
-   end Split;
-
-
-
-   function  find (Self : in Item;   Identifier : in String) return AdaM.a_Package.view
-   is
+      use AdaM.Assist;
       the_Package : AdaM.a_Package.view := Self.standard_Package;
    begin
       if Identifier /= "Standard"
@@ -178,8 +180,9 @@ is
 
 
 
-   function  fetch (Self : in Item;   Identifier : in String) return AdaM.a_Package.view
+   function  fetch (Self : in Item;   Identifier : in AdaM.Identifier) return AdaM.a_Package.view
    is
+      use AdaM.Assist;
       use type AdaM.a_Package.view;
 
       the_Package : AdaM.a_Package.view := Self.standard_Package;
@@ -211,8 +214,9 @@ is
 
 
 
-   function  find (Self : in Item;   Identifier : in String) return AdaM.a_Type.view
+   function  find (Self : in Item;   Identifier : in AdaM.Identifier) return AdaM.a_Type.view
    is
+      use AdaM.Assist;
       the_Package : constant AdaM.a_Package.view := Self.find (parent_Name (Identifier));
    begin
       return the_Package.find (simple_Name (Identifier));
@@ -220,8 +224,9 @@ is
 
 
 
-   function  find  (Self : in Item;   Identifier : in String) return AdaM.Declaration.of_exception.view
+   function  find (Self : in Item;   Identifier : in AdaM.Identifier) return AdaM.Declaration.of_exception.view
    is
+      use AdaM.Assist;
       the_Package : constant AdaM.a_Package.view := Self.find (parent_Name (Identifier));
    begin
       return the_Package.find (simple_Name (Identifier));
@@ -289,7 +294,7 @@ is
       begin
          Depth := Depth + 1;
          put_Line (Indent
-                   & "Entity.Name : "             & the_Entity.Name
+                   & "Entity.Name : "             & (+the_Entity.Name)
                    & "                    Tag = " & Ada.Tags.Expanded_Name (the_Entity.all'Tag));
          Depth := Depth - 1;
 
@@ -309,7 +314,7 @@ is
 
          New_Line (2);
          put_Line ("Unit.Name = " & the_Unit.Name);
-         put_Line ("Top Entity.Name = " & top_Entity.Name);
+         put_Line ("Top Entity.Name = " & (+top_Entity.Name));
 
          print (top_Entity);
       end loop;

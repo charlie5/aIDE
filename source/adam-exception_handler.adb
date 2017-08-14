@@ -83,7 +83,7 @@ is
    --
 
    overriding
-   function  Name      (Self : in     Item) return String
+   function  Name      (Self : in     Item) return Identifier
    is
       pragma Unreferenced (Self);
    begin

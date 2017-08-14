@@ -41,7 +41,7 @@ is
       new_View : constant Declaration.of_object.view := Pool.new_Item;
    begin
       define (Declaration.of_object.item (new_View.all));
-      new_View.Name_is (Name);
+      new_View.Name_is (+Name);
 
       return new_View;
    end new_Declaration;

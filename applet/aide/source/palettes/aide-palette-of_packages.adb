@@ -392,9 +392,8 @@ is
 
       if Self.Invoked_by /= null
       then
-         put_Line ("HHHHHHHHHHHHHHHH  " & the_Package.full_Name);
 --           Self.Invoked_by.set_Label (full_Name);
-         Self.Invoked_by.set_Label        (identifier_Suffix (the_Package.full_Name, 2));
+         Self.Invoked_by.set_Label        (identifier_Suffix (+the_Package.full_Name, 2));
          Self.Invoked_by.set_Tooltip_Text (the_Package.full_Name);
       end if;
 
@@ -450,8 +449,7 @@ is
 
             the_packages_Palette_package.top_Widget.reparent (children_Notebook);
             children_Notebook.set_Tab_Label_Text (the_packages_Palette_package.top_Widget,
-                                                  the_Package.Name);
-            put_Line ("PACKAGE NAME ZZZZZZZZZZZ   " & the_Package.Name);
+                                                  +the_Package.Name);
             -- Configure event handling.
             --
             declare
@@ -463,7 +461,7 @@ is
                label_return_Callbacks.connect (the_tab_Label,
                                                "button-release-event",
                                                on_tab_Label_clicked'Access,
-                                               (package_name => +the_Package.Name,
+                                               (package_name => +(+the_Package.Name),
                                                 palette      => Self'unchecked_Access,
                                                 the_Package  => the_Package));
             end;
@@ -486,7 +484,7 @@ is
          --
          for i in 1 .. Integer (a_Package.item (the_entity_Environ.standard_Package.all).child_Packages.Length)
          loop
-            put_Line ("Building GUI for '" & the_entity_Environ.standard_Package.child_Packages.Element (i).Name & "'");
+            put_Line ("Building GUI for '" & (+the_entity_Environ.standard_Package.child_Packages.Element (i).Name) & "'");
             build_Gui_for (the_entity_Environ.standard_Package.child_Packages.Element (i),
                            Self.all_Notebook);
          end loop;
@@ -525,7 +523,7 @@ is
             the_Package : AdaM.a_Package.view renames the_Recent.Element (i);
          begin
             the_Button := aIDE.Palette.of_packages_subpackages.new_Button (for_Package      => the_Package,
-                                                                           Named            => the_Package.Name,
+                                                                           Named            => +the_Package.Name,
                                                                            packages_Palette => Self'unchecked_Access);
             Self.recent_Table.attach (the_Button,
                                       Col, Col + 1,

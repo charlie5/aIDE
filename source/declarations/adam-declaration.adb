@@ -65,17 +65,17 @@ is
 
 
    overriding
-   function Name (Self : in Item) return String
+   function Name (Self : in Item) return Identifier
    is
    begin
       return +Self.Name;
    end Name;
 
 
-   procedure Name_is (Self : in out Item;   Now : in String)
+   procedure Name_is (Self : in out Item;   Now : in Identifier)
    is
    begin
-      Self.Name := +Now;
+      Self.Name := +(+Now);
    end Name_is;
 
 

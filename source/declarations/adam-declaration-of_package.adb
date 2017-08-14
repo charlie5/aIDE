@@ -24,10 +24,10 @@ is
    --  Forge
    --
 
-   procedure define (Self : in out Item;   Name : in String)
+   procedure define (Self : in out Item;   Name : in Identifier)
    is
    begin
-      Self.Name    := +Name;
+      Self.Name    := +(+Name);
       Self.Context := AdaM.Context.new_Context ("");
    end define;
 
@@ -42,7 +42,7 @@ is
 
 
 
-   function new_Package (Name : in String := "") return View
+   function new_Package (Name : in Identifier := "") return View
    is
       new_View : constant Declaration.of_package.view := Pool.new_Item;
    begin
@@ -335,7 +335,7 @@ is
 
 
 
-   function  find (Self : in Item;   Named : in String) return AdaM.a_Type.view
+   function  find (Self : in Item;   Named : in Identifier) return AdaM.a_Type.view
    is
    begin
       for Each of Self.Children.all
@@ -357,7 +357,7 @@ is
 
 
 
-   function  find (Self : in Item;   Named : in String) return AdaM.Declaration.of_exception.view
+   function  find (Self : in Item;   Named : in Identifier) return AdaM.Declaration.of_exception.view
    is
    begin
       for Each of Self.Children.all

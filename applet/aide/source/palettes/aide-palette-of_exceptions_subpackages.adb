@@ -184,8 +184,8 @@ is
    procedure add_Exception (Self : access Item;   the_Exception : in AdaM.Declaration.of_exception.view;
                                                   the_Package   : in AdaM.a_Package.view)
    is
-      the_Button : constant gtk_Button := new_Button (the_Exception.Name,
-                                                      the_Package.Name,     -- "", --the_Exception.package_Name,
+      the_Button : constant gtk_Button := new_Button (+the_Exception.Name,
+                                                      +the_Package.Name,     -- "", --the_Exception.package_Name,
                                                       Self.Parent,
                                                       use_simple_Name => True,
                                                       the_Exception   => the_Exception);

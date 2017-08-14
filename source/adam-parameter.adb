@@ -172,11 +172,11 @@ is
       end mode_Text;
 
    begin
-      the_Source.append (Self.Name & " : " & mode_Text & " " & Self.my_Type.Name);
+      the_Source.append ((+Self.Name) & " : " & mode_Text & " " & (+(+Self.my_Type.Name)));
 
       if Self.Default /= ""
       then
-         the_Source.append  (+" := " & Self.Default);
+         the_Source.append  (+" := " & (+Self.Default));
       end if;
 
       return the_Source;

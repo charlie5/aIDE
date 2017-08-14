@@ -39,7 +39,7 @@ is
    --  Forge
    --
 
-   function  new_Package (Name : in     String := "") return Declaration.of_package.view;
+   function  new_Package (Name : in     Identifier := "") return Declaration.of_package.view;
    procedure free        (Self : in out Declaration.of_package.view);
 
    overriding
@@ -75,8 +75,8 @@ is
 
    procedure add_Child (Self : in out Item;   Child : in Declaration.of_package.view);
 
-   function  find (Self : in Item;   Named : in String) return AdaM.a_Type.view;
-   function  find (Self : in Item;   Named : in String) return AdaM.Declaration.of_exception.view;
+   function  find (Self : in Item;   Named : in Identifier) return AdaM.a_Type.view;
+   function  find (Self : in Item;   Named : in Identifier) return AdaM.Declaration.of_exception.view;
 
 
 

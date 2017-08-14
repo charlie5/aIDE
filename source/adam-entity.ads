@@ -53,7 +53,7 @@ is
    function  Children     (Self : in     Item)     return Entities'Class;
    procedure Children_are (Self : in out Item;   Now : in Entities'Class);
 
-   function  Name      (Self : in     Item) return String is abstract;
+   function  Name      (Self : in     Item) return Identifier is abstract;
 --     function  full_Name (Self : in Item'Class) return String;
 
 

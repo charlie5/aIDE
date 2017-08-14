@@ -38,6 +38,28 @@ is
    Error : exception;
 
 
+   -- Identifiers
+   --
+
+   type Identifier is new String;
+
+   function "+" (Id : in Identifier) return String
+   is (String (Id));
+
+   function "+" (the_String : in String) return Identifier
+   is (Identifier (the_String));
+
+
+   function "+" (the_Text : in Text) return Identifier
+   is (Identifier (String' (+the_Text)));
+--       renames ada.Strings.Unbounded.To_String;
+--
+--     function "+" (Id : in Identifier) return Text
+--     is (
+--       renames ada.Strings.Unbounded.To_Unbounded_String;
+
+
+
 
 private
 

@@ -98,8 +98,9 @@ is
    overriding
    procedure freshen (Self : in out Item)
    is
+      use AdaM;
    begin
-      Self.name_Entry.Set_Text (Self.Subprogram.Name);
+      Self.name_Entry.Set_Text (+Self.Subprogram.Name);
 
       Self.context_Editor.Context_is (Self.Subprogram.Context);
       Self.  block_Editor.Target_is (Self.Subprogram.Block);

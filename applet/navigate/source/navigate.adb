@@ -132,9 +132,9 @@ is
                      log ("Ada_Subtype_Indication found");
 
                      declare
-                        Name : constant String := to_String (LAL.Subtype_Indication (Child).F_Name.Text);
+                        Name : constant AdaM.Identifier := AdaM.Identifier (to_String (LAL.Subtype_Indication (Child).F_Name.Text));
                      begin
-                        log ("Subtype Name : '" & Name & "'");
+                        log ("Subtype Name : '" & String (Name) & "'");
                         new_Object.Type_is (Environ.find (Name));
                      end;
 
@@ -332,18 +332,19 @@ is
 
    function parse_Package (Node : in LAL.Package_Decl) return AdaM.Declaration.of_package.view
    is
-      use AdaM.Assist,
+      use AdaM,
+          AdaM.Assist,
           AdaM.Environment,
           ada.Characters.Conversions;
 
       use type AdaM.Declaration.of_package.view;
 
-      Name        : constant String              := to_String (Node.P_Defining_Name.Text);
+      Name        : constant AdaM.Identifier := AdaM.Identifier (to_String (Node.P_Defining_Name.Text));
 
 --        new_Package : constant AdaM.Declaration.of_package.view := AdaM.Declaration.of_package.new_Package (Name);
       new_Package : AdaM.Declaration.of_package.view; -- := AdaM.Declaration.of_package.new_Package (Name);
 
-      parent_Name : constant String              := Adam.Environment.parent_Name (Name);   -- strip_Tail_of (Name);
+      parent_Name : constant AdaM.Identifier    := Adam.Assist.parent_Name (Name);   -- strip_Tail_of (Name);
       Parent      :          AdaM.a_Package.view; -- := Environ.fetch (parent_Name);
 
    begin
@@ -356,14 +357,14 @@ is
 
       new_Package := AdaM.Declaration.of_package.new_Package (simple_Name (Name));
 
-      log ("Package Name: '" & new_Package.Name & "'     Parent Name: '" & Parent.Name & "'");
+      log ("Package Name: '" & (+new_Package.Name) & "'     Parent Name: '" & (+Parent.Name) & "'");
 
       Parent.add_Child (new_Package);
       new_Package.Parent_is (Parent);
 
       current_compilation_Unit.Entity_is (new_Package.all'Access);
       current_Package := new_Package;
-      log ("Setting current package to " & current_Package.Name);
+      log ("Setting current package to " & (+current_Package.Name));
 
 
       -- Parse children.
@@ -387,6 +388,7 @@ is
 
    procedure process (Node : in LAL.Ada_Node)
    is
+      use AdaM;
       use type AdaM.Entity.view,
                LAL.Ada_Node;
 
@@ -493,13 +495,13 @@ is
       then
          if current_Parent = null
          then
-            ada.Text_IO.put_Line (Indent & "Lowering current_Parent from null to " & new_Entity.Name);
+            ada.Text_IO.put_Line (Indent & "Lowering current_Parent from null to " & (+new_Entity.Name));
             new_Entity.parent_Entity_is (null);
          else
             current_Parent.Children.append (new_Entity);
 
-            ada.Text_IO.put_Line (Indent & "Lowering current_Parent from " & current_Parent.Name &
-                                    " to " & new_Entity.Name);
+            ada.Text_IO.put_Line (Indent & "Lowering current_Parent from " & (+current_Parent.Name) &
+                                    " to " & (+new_Entity.Name));
             new_Entity.parent_Entity_is (current_Parent);
          end if;
 
@@ -527,10 +529,10 @@ is
       then
          if current_Parent.parent_Entity /= null
          then
-            ada.Text_IO.put_Line (Indent & "Raising current_Parent from " & current_Parent.Name &
-                                    " to " & current_Parent.parent_Entity.Name);
+            ada.Text_IO.put_Line (Indent & "Raising current_Parent from " & (+current_Parent.Name) &
+                                    " to " & (+current_Parent.parent_Entity.Name));
          else
-            ada.Text_IO.put_Line (Indent & "Raising current_Parent from " & current_Parent.Name &
+            ada.Text_IO.put_Line (Indent & "Raising current_Parent from " & (+current_Parent.Name) &
                                     " to null");
          end if;
 
@@ -540,7 +542,7 @@ is
       case Node.Kind
       is
          when LAL.Ada_Base_Package_Decl =>
-            log ("Setting current package to " & current_Package.Parent.Name);
+            log ("Setting current package to " & (+current_Package.Parent.Name));
             current_Package := current_Package.Parent;
 
          when others =>

@@ -86,7 +86,7 @@ is
 
 
    overriding
-   function Name (Self : in Item) return String
+   function Name (Self : in Item) return Identifier
    is
    begin
       return +Self.Name;
@@ -173,7 +173,7 @@ is
 
       the_Source.append (Self.Block.to_Source);
 
-      the_Line := +"end " & Self.Name & ";";
+      the_Line := +"end " & (+Self.Name) & ";";
       the_Source.append (the_Line);
 
       return the_Source;

@@ -33,7 +33,7 @@ is
    function to_Source (Self : in     Item) return text_Vectors.Vector;
 
    overriding
-   function  Name      (Self : in     Item) return String;
+   function  Name      (Self : in     Item) return Identifier;
 
 
 private

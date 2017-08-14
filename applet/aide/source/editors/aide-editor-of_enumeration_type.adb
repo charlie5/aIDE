@@ -65,7 +65,8 @@ is
    is
       function to_Editor (the_Target : in AdaM.a_Type.enumeration_type.view) return View
       is
-         use Glib;
+         use AdaM,
+             Glib;
 
          Self        : constant Editor.of_enumeration_type.view := new Editor.of_enumeration_type.item;
 
@@ -91,7 +92,7 @@ is
          Self.literals_Box := gtk_Box    (the_Builder.get_Object ("literals_Box"));
          Self.rid_Button   := gtk_Button (the_Builder.get_Object ("rid_Button"));
 
-         Self.name_Entry.Set_Text (Self.Target.Name);
+         Self.name_Entry.Set_Text (+Self.Target.Name);
 
          Entry_return_Callbacks.connect (Self.name_Entry,
                                          "focus-out-event",

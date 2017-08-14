@@ -30,9 +30,9 @@ is
    procedure on_rid_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                     the_Editor : in     aIDE.Editor.of_enumeration_literal.view)
    is
-
+      use AdaM;
    begin
-      the_Editor.Targets_Parent.rid_Literal (the_Editor.Target.Name);
+      the_Editor.Targets_Parent.rid_Literal (+the_Editor.Target.Name);
       the_Button.get_Parent.destroy;
    end on_rid_Button_clicked;
 
@@ -51,6 +51,7 @@ is
       function to_Editor (the_Target     : in AdaM.a_Type.enumeration_literal.view;
                           targets_Parent : in enumeration_type_view) return View
       is
+         use AdaM;
          Self        : constant Editor.of_enumeration_literal.view := new Editor.of_enumeration_literal.item;
 
          the_Builder :          Gtk_Builder;
@@ -74,7 +75,7 @@ is
          Self.name_Entry   := Gtk_Entry  (the_Builder.get_Object ("name_Entry"));
          Self.rid_Button   := gtk_Button (the_Builder.get_Object ("rid_Button"));
 
-         Self.name_Entry.Set_Text (Self.Target.Name);
+         Self.name_Entry.Set_Text (+Self.Target.Name);
 
          Entry_return_Callbacks.connect (Self.name_Entry,
                                          "focus-out-event",
