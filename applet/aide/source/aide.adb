@@ -29,6 +29,7 @@ with
      AdaM.Declaration.of_subtype,
      AdaM.Declaration.of_object,
      AdaM.Declaration.of_subprogram,
+     AdaM.Declaration.of_number,
      AdaM.Declaration.of_null_procedure,
      AdaM.Declaration.of_expression_function,
      AdaM.Declaration.of_renaming.a_generic,

@@ -9,11 +9,11 @@ is
    --
 
    record_Version  : constant                := 1;
-   max_Subprograms : constant                := 5_000;
+   pool_Size : constant                := 5_000;
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "task_Units",
-                                           max_Subprograms,
+                                           pool_Size,
                                            record_Version,
                                            task_Unit.item,
                                            task_Unit.view);

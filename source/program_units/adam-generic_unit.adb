@@ -8,12 +8,12 @@ is
    --  Storage Pool
    --
 
-   record_Version  : constant                := 1;
-   max_Subprograms : constant                := 5_000;
+   record_Version : constant := 1;
+   pool_Size      : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "generic_units",
-                                           max_Subprograms,
+                                           pool_Size,
                                            record_Version,
                                            generic_Unit.item,
                                            generic_Unit.view);

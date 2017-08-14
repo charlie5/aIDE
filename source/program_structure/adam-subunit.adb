@@ -9,12 +9,12 @@ is
    --
 
    record_Version  : constant                := 1;
-   max_Subprograms : constant                := 5_000;
+   pool_Size : constant                := 5_000;
 --     null_Subprogram : constant Subunit.item := (others => <>);
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "Subunits",
-                                           max_Subprograms,
+                                           pool_Size,
                                            record_Version,
                                            Subunit.item,
                                            Subunit.view);

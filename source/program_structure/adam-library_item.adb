@@ -8,17 +8,15 @@ is
    --  Storage Pool
    --
 
-   record_Version  : constant                := 1;
-   max_Subprograms : constant                := 5_000;
---     null_Subprogram : constant library_Item.item := (others => <>);
+   record_Version  : constant := 1;
+   pool_Size       : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (".adam-store",
                                            "library_items",
-                                           max_Subprograms,
+                                           pool_Size,
                                            record_Version,
                                            library_Item.item,
                                            library_Item.view);
---                                             null_Subprogram);
 
    --  Forge
    --
