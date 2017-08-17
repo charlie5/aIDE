@@ -1,6 +1,7 @@
 with
      aIDE.Editor.of_subprogram,
      aIDE.Editor.of_block,
+     aIDE.Editor.of_package,
      aIDE.Palette.of_source_Entities,
      aIDE.Palette.of_exceptions,
 
@@ -45,7 +46,8 @@ is
 
    --  Editors
    --
-   the_app_Editor : aIDE.Editor.of_subprogram.view;
+   the_app_Editor     : aIDE.Editor.of_subprogram.view;
+   the_package_Editor : aIDE.Editor.of_Package.view;
 
 
    -- Palettes
@@ -77,6 +79,23 @@ is
    --
    build_project_Button   : Gtk_Button;
    the_build_log_Textview : Gtk_Text_View;
+
+
+
+   -- Package Tab Widgets
+   --
+
+   new_package_Button    : Gtk_Button;
+   rid_package_Button    : Gtk_Button;
+
+   the_package_tree_Store     : gtk_tree_Store;
+   the_package_tree_View      : gtk_tree_View;
+   the_package_tree_Selection : Gtk.Tree_Selection.gtk_Tree_Selection;
+
+   the_package_Alignment : Gtk_Alignment;
+
+
+
 
 
    -- Gui Callbacks
@@ -285,9 +304,27 @@ is
       top_Window.show;     -- Display our main window and all of its children.
       enable_bold_Tabs_for (the_top_Notebook);
 
+      -- The Package Editor
+      --
+
+      the_package_Alignment      := Gtk_Alignment  (glade_Builder.Get_Object ("package_editor_Alignment"));
+      new_package_Button         := Gtk_Button     (glade_Builder.Get_Object ("new_package_Button"));
+      rid_package_Button         := Gtk_Button     (glade_Builder.Get_Object ("rid_package_Button"));
+      the_package_tree_Store     := gtk_tree_Store (glade_Builder.Get_Object ("package_tree_Store"));
+      the_package_tree_View      := gtk_tree_View  (glade_Builder.Get_Object ("package_tree_View"));
+      the_package_tree_Selection := the_package_tree_View.Get_Selection;
+
+      -- The Palettes
+      --
+
       the_packages_Palette        := aIDE.Palette.of_packages.to_packages_Palette;
       the_source_entities_Palette := aIDE.Palette.of_source_entities.to_source_entities_Palette;
       the_exceptions_Palette      := aIDE.Palette.of_exceptions.to_exceptions_Palette;
+
+
+      the_package_Editor := aIDE.Editor.of_package.Forge.to_package_Editor (the_applet_Package);
+      the_package_Editor.top_Widget.Reparent (New_Parent => the_package_Alignment);
+
 
       gtk.Main.main;       -- Enter main GtkAda event loop.
    end open;
@@ -386,6 +423,37 @@ is
    begin
       the_exceptions_Palette.show (Invoked_by, Target, Slot);
    end show_exceptions_Palette;
+
+
+
+
+   procedure update_selected_package_Name (new_Name : in String)
+   is
+      use gtk.Tree_Model, ada.Text_IO;
+
+      the_Selection : Gtk_Tree_Iter;
+      the_Model     : Gtk_Tree_Model;
+   begin
+      the_package_tree_Selection.get_Selected (the_Model, the_Selection);
+
+      if the_Selection /= null_Iter
+      then
+         declare
+--              use ada.Characters.handling,
+--                  ada.Directories;
+
+            old_Name : constant String := gtk.Tree_Model.get_String (the_Model, the_Selection, 0);
+         begin
+            if new_Name /= old_Name
+            then
+               the_package_tree_Store.set (the_Selection, 0, new_Name);
+--                 build_Package;
+            end if;
+         end;
+      else
+         put_Line ("update_selected_package_Name : *** Null Iter ***");
+      end if;
+   end update_selected_package_Name;
 
 
 end aIDE.GUI;

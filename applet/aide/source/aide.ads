@@ -1,6 +1,9 @@
+private
 with
      AdaM.Subprogram,
+     AdaM.a_Package,
      AdaM.Environment;
+
 
 package aIDE
 is
@@ -23,6 +26,7 @@ private
    anonymous_Procedure : constant String := "Anon";
 
 
+   the_applet_Package : adam.a_Package.view;
 
 
 

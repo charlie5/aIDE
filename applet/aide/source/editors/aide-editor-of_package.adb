@@ -1,5 +1,6 @@
-with aIDE.GUI,
-     adam.Source,
+with
+     aIDE.GUI,
+--       adam.Source,
      aIDE.Style;
 
 with Ada.Text_IO;          use Ada.Text_IO;
@@ -14,7 +15,7 @@ with Gtk.GEntry;           use Gtk.GEntry;
 with Gtk.Handlers;
 with Gtk.Text_View;        use Gtk.Text_View;
 
-with Common;               use Common;
+with Common_Gtk;           use Common_Gtk;
 with Gtk.Alignment;        use Gtk.Alignment;
 
 
@@ -30,7 +31,7 @@ is
    is
       the_Text : constant String := the_Entry.Get_Text;
    begin
-      Self.my_Package.Name_is (the_Text);
+      Self.my_Package.Name_is (AdaM.Identifier (the_Text));
       aIDE.GUI.update_selected_package_Name (the_Text);
 
       return False;
@@ -51,7 +52,7 @@ is
       put_Line ("on_declarations_Label_clicked");
 
       aIDE.GUI.show_source_entities_Palette (Invoked_by => Self.all'Access,
-                                             Target     => Self.my_Package.public_Entities);
+                                             Target     => Self.my_Package.Children);   -- .public_Entities);
 --        the_Declaration.Type_is (adam.Applet.fetch_Type ("Standard.Integer"));
 
 --        Self.my_Package.add (the_Entity);
@@ -100,7 +101,7 @@ is
 
          Self.declarations_Label  := gtk_Label           (the_Builder.get_Object ("declarations_Label"));
 
-         Self.context_Editor := aIDE.Editor.context.Forge.to_context_Editor (Self.my_Package.Context);
+         Self.context_Editor := aIDE.Editor.of_context.Forge.to_context_Editor (Self.my_Package.Context);
          Self.context_Editor.top_Widget.Reparent (new_Parent => Self.context_Alignment);
 
          Self.  declare_Text := Gtk_Text_View (the_Builder.get_Object (  "declare_Textview"));
@@ -134,10 +135,11 @@ is
 
 
 
+   overriding
    procedure freshen (Self : in out Item)
    is
    begin
-      Self.name_Entry.set_Text (Self.my_Package.Name);
+      Self.name_Entry.set_Text (String (Self.my_Package.Name));
 
 
       -- Destroy all prior public entity widgets.
@@ -154,16 +156,21 @@ is
       -- Create all public entity widgets.
       --
       declare
-         the_Entities : constant access adam.Source.Entity_Vector := Self.my_Package.public_Entities;
+--           the_Entities : constant access adam.Source.Entity_Vector := Self.my_Package.public_Entities;
+         the_Entities : constant adam.Entity.Entities_view := Self.my_Package.Children;
       begin
          for i in 1 .. Integer (the_Entities.Length)
          loop
 --              put_Line ("kkk = " & Integer'Image (i));
             declare
-               the_Entity : adam.Source.Entity_view renames the_Entities.Element (i);
-               the_Editor : constant aIDE.Editor.view        :=      aIDE.Editor.to_Editor (the_Entity);
+--                 the_Entity : adam.Source.Entity_view renames the_Entities.Element (i);
+               the_Entity :          adam.Entity.view renames the_Entities.Element (i);
+               the_Editor : constant aIDE.Editor.view :=      aIDE.Editor.to_Editor (the_Entity);
             begin
-               the_Editor.top_Widget.reparent (Self.public_entities_Box);
+               if the_Editor /= null
+               then
+                  the_Editor.top_Widget.reparent (Self.public_entities_Box);
+               end if;
             end;
          end loop;
       end;

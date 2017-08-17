@@ -6,6 +6,7 @@ with
      AdaM.Comment,
      AdaM.a_Type.enumeration_type,
      ada.Tags;
+with Ada.Text_IO; use Ada.Text_IO;
 
 --  with Ada.Text_IO; use Ada.Text_IO;
 
@@ -51,7 +52,9 @@ is
          end;
 
       else
-         raise Program_Error with "no editor is known for entity of type " & ada.Tags.Expanded_Name (Target.all'Tag);
+         put_Line ("Warning: no editor is known for entity of type " & ada.Tags.Expanded_Name (Target.all'Tag));
+         return null;
+--           raise Program_Error with "no editor is known for entity of type " & ada.Tags.Expanded_Name (Target.all'Tag);
       end if;
 
 

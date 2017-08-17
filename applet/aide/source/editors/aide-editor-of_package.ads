@@ -4,7 +4,7 @@ with
 
 private
 with
-     aIDE.Editor.context,
+     aIDE.Editor.of_context,
      gtk.Text_View,
      gtk.Alignment,
      gtk.gEntry,
@@ -33,6 +33,7 @@ is
    function  my_Package (Self : in     Item)     return adam.a_Package.view;
    procedure Package_is (Self : in out Item;   Now : in adam.a_Package.view);
 
+   overriding
    procedure freshen    (Self : in out Item);
 
 
@@ -54,7 +55,7 @@ private
          my_Package         : adam.a_Package.view;
 
          Notebook           : gtk_Notebook;
-         context_Editor     : aIDE.Editor.context.view;
+         context_Editor     : aIDE.Editor.of_context.view;
 
          context_Alignment  : gtk_Alignment;
          name_Entry         : gtk_Entry;

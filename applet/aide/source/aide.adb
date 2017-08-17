@@ -109,6 +109,8 @@ is
 
          Palette.of_packages.recent_Packages.read (the_Stream);
 
+         a_Package .view  'read (the_Stream, the_applet_Package);
+
          close (the_File);
 
       exception
@@ -120,6 +122,9 @@ is
 
             the_selected_App := Subprogram.new_Subprogram (Name => anonymous_Procedure);   -- Create initial test precedure..
             all_Apps.append (the_selected_App);
+
+--              the_applet_Package := adam.a_Package.new_Package (Name => "no_Name");   -- Create initial test package.
+            the_applet_Package := the_entity_Environ.standard_Package;
       end;
    end define;
 
@@ -147,6 +152,8 @@ is
          Subprogram.vector    'write (the_Stream, all_Apps);
 
          Palette.of_packages.recent_Packages.write (the_Stream);
+
+         a_Package.view  'write (the_Stream, the_applet_Package);
 
          close (the_File);
       end;

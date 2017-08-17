@@ -32,4 +32,7 @@ is
 
    the_packages_Palette   : aIDE.Palette.of_packages.view;
 
+
+   procedure update_selected_package_Name (new_Name : in String);
+
 end aIDE.GUI;
