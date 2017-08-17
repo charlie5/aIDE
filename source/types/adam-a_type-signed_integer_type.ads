@@ -29,12 +29,20 @@ is
    overriding
    function  to_Source   (Self : in Item) return text_Vectors.Vector;
 
+   function  First    (Self : in     Item)     return Long_Long_Integer;
+   procedure First_is (Self : in out Item;   Now : in Long_Long_Integer);
+
+   function  Last    (Self : in     Item)     return Long_Long_Integer;
+   procedure Last_is (Self : in out Item;   Now : in Long_Long_Integer);
+
+
 
 private
 
    type Item is new a_Type.integer_Type with
       record
-         null;
+         First : Long_Long_Integer := 0;
+         Last  : Long_Long_Integer := Long_Long_Integer'Last;
       end record;
 
 

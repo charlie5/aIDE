@@ -76,9 +76,6 @@ is
 
 
 
-
-
-
    Depth : Natural := 0;
 
    function Indent return String
@@ -701,6 +698,9 @@ begin
          new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
            := AdaM.a_Type.signed_integer_type.new_Type (Name => "Integer");
       begin
+         new_integer_Type.First_is (Long_Long_Integer (Integer'First));
+         new_integer_Type.Last_is  (Long_Long_Integer (Integer'Last));
+
          standard_Package.Children.append (new_integer_Type.all'Access);
       end add_Integer;
 
@@ -725,6 +725,9 @@ begin
          new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
            := AdaM.a_Type.signed_integer_type.new_Type (Name => "Short_Short_Integer");
       begin
+         new_integer_Type.First_is (Long_Long_Integer (Short_Short_Integer'First));
+         new_integer_Type.Last_is  (Long_Long_Integer (Short_Short_Integer'Last));
+
          standard_Package.Children.append (new_integer_Type.all'Access);
       end add_short_short_Integer;
 
@@ -733,6 +736,9 @@ begin
          new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
            := AdaM.a_Type.signed_integer_type.new_Type (Name => "Short_Integer");
       begin
+         new_integer_Type.First_is (Long_Long_Integer (short_Integer'First));
+         new_integer_Type.Last_is  (Long_Long_Integer (short_Integer'Last));
+
          standard_Package.Children.append (new_integer_Type.all'Access);
       end add_short_Integer;
 
@@ -741,6 +747,9 @@ begin
          new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
            := AdaM.a_Type.signed_integer_type.new_Type (Name => "Long_Integer");
       begin
+         new_integer_Type.First_is (Long_Long_Integer (long_Integer'First));
+         new_integer_Type.Last_is  (Long_Long_Integer (long_Integer'Last));
+
          standard_Package.Children.append (new_integer_Type.all'Access);
       end add_long_Integer;
 
@@ -749,8 +758,12 @@ begin
          new_integer_Type : constant AdaM.a_Type.signed_integer_type.view
            := AdaM.a_Type.signed_integer_type.new_Type (Name => "Long_Long_Integer");
       begin
+         new_integer_Type.First_is (Long_Long_Integer'First);
+         new_integer_Type.Last_is  (Long_Long_Integer'Last);
+
          standard_Package.Children.append (new_integer_Type.all'Access);
       end add_long_long_Integer;
+
 
       add_short_Float:
       declare

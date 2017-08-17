@@ -79,6 +79,37 @@ is
 
 
 
+
+   function  First    (Self : in     Item)     return Long_Long_Integer
+   is
+   begin
+      return Self.First;
+   end First;
+
+
+   procedure First_is (Self : in out Item;   Now : in Long_Long_Integer)
+   is
+   begin
+      Self.First := Now;
+   end First_is;
+
+
+   function  Last    (Self : in     Item)     return Long_Long_Integer
+   is
+   begin
+      return Self.Last;
+   end Last;
+
+
+   procedure Last_is (Self : in out Item;   Now : in Long_Long_Integer)
+   is
+   begin
+      Self.Last := Now;
+   end Last_is;
+
+
+
+
    -- Streams
    --
 

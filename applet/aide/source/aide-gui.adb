@@ -361,7 +361,7 @@ is
       Ada.Text_IO.put_Line ("EDITOR TAG " & ada.tags.External_Tag (Invoked_by.all'Tag));
       Ada.Text_IO.put_Line ("EDITOR TAG " & ada.tags.External_Tag (aide.Editor.of_block.item'Tag));
 
-      if Invoked_by.all'Tag = aide.Editor.of_block.item'Tag
+      if Invoked_by.all in aide.Editor.of_block.item'Class
       then
          the_Editor := AIDE.Editor.of_block.view (Invoked_by);
 
@@ -377,7 +377,7 @@ is
             raise Program_Error;
          end if;
 
-      elsif Invoked_by.all'Tag = aide.Editor.of_package.item'Tag
+      elsif Invoked_by.all in aide.Editor.of_package.item'Class
       then
 --           the_Editor := AIDE.Editor.of_package.view (Invoked_by);
          the_Filter := declare_Region;

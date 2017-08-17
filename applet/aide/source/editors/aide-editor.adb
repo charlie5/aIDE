@@ -1,14 +1,17 @@
 with
      aIDE.Editor.of_comment,
      aIDE.Editor.of_enumeration_type,
+     aIDE.Editor.of_signed_integer_type,
      aIDE.Editor.of_raw_source,
+
      AdaM.raw_Source,
      AdaM.Comment,
      AdaM.a_Type.enumeration_type,
-     ada.Tags;
-with Ada.Text_IO; use Ada.Text_IO;
+     AdaM.a_Type.signed_integer_type,
 
---  with Ada.Text_IO; use Ada.Text_IO;
+     Ada.Tags;
+
+with Ada.Text_IO; use Ada.Text_IO;
 
 
 package body aIDE.Editor
@@ -47,6 +50,15 @@ is
          declare
             new_Editor : constant Editor.of_enumeration_type.view
               := Editor.of_enumeration_type.Forge.to_Editor (AdaM.a_Type.enumeration_type.view (Target));
+         begin
+            Self := Editor.view (new_Editor);
+         end;
+
+      elsif Target.all in AdaM.a_Type.signed_integer_type.item'Class
+      then
+         declare
+            new_Editor : constant Editor.of_signed_integer_type.view
+              := Editor.of_signed_integer_type.Forge.to_Editor (AdaM.a_Type.signed_integer_type.view (Target));
          begin
             Self := Editor.view (new_Editor);
          end;
