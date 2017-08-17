@@ -44,7 +44,7 @@ is
    procedure define (Self : in out Item)
    is
    begin
-      Self.Handler := AdaM.Block.new_Block ("");
+      Self.Handler := Block_view (AdaM.Block.new_Block (""));
    end define;
 
 
@@ -62,7 +62,7 @@ is
       new_Item : constant exception_Handler.view := Pool.new_Item;
    begin
       define (exception_Handler.item (new_Item.all));
-      new_Item.Parent := Parent;
+      new_Item.Parent := Block_view (Parent);
 
       return new_Item;
    end new_Handler;
@@ -200,4 +200,21 @@ is
    procedure View_read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
                         Self   : out             View)
                         renames Pool.View_read;
+
+
+   procedure Block_view_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                               Self   : in              Block_view)
+   is
+   begin
+      Block.View_write (Stream, Block.view (Self));
+   end Block_view_write;
+
+   procedure Block_view_read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                              Self   : out             Block_view)
+   is
+   begin
+      Block.View_read (Stream, Block.view (Self));
+   end Block_view_read;
+
+
 end AdaM.exception_Handler;

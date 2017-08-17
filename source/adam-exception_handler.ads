@@ -42,6 +42,18 @@ is
    --  Forge
    --
 
+   type Block_view is access all Block.item'Class;
+
+   procedure Block_view_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                               Self   : in              Block_view);
+
+   procedure Block_view_read  (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                               Self   : out             Block_view);
+
+   for Block_view'write use Block_view_write;
+   for Block_view'read  use Block_view_read;
+
+
    function  new_Handler (-- Name   : in String := "";
                           Parent : in AdaM.Block.view) return exception_Handler.view;
 
@@ -83,8 +95,8 @@ private
    type Item is new Entity.item with
       record
          Exceptions :        AdaM.Declaration.of_exception.vector;
-         Handler    : access AdaM.Block.item'Class;
-         Parent     : access AdaM.Block.item'Class;
+         Handler    : Block_view; -- access AdaM.Block.item'Class;
+         Parent     : Block_view; -- access AdaM.Block.item'Class;
       end record;
 
 end AdaM.exception_Handler;

@@ -12,6 +12,10 @@ is
    type View is access all Item'Class;
 
 
+   procedure View_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                         Self   : in              View);
+   procedure View_read  (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                         Self   : out             View);
 
    --  Forge
    --
@@ -56,10 +60,6 @@ private
 
    -- Streams
    --
-   procedure View_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-                         Self   : in              View);
-   procedure View_read  (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-                         Self   : out             View);
 
    for View'write use View_write;
    for View'read  use View_read;
