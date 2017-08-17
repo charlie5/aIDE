@@ -27,6 +27,8 @@ with
 
      ada.Characters.latin_1,
      ada.Text_IO;
+with Ada.Text_IO;
+with Ada.Tags;
 
 
 package body aIDE.GUI
@@ -349,21 +351,39 @@ is
    is
       use Palette.of_source_entities;
 --        use type adam.Source.Entities_View;
-      use type adam.Entity.Entities_view;
+      use type adam.Entity.Entities_view,
+               Ada.Tags.Tag;
 
-      the_Editor : constant AIDE.Editor.of_block.view        := AIDE.Editor.of_block.view (Invoked_by);
+--        the_Editor : constant AIDE.Editor.of_block.view        := AIDE.Editor.of_block.view (Invoked_by);
+      the_Editor :          aIDE.Editor.of_block.view;
       the_Filter :          Palette.of_source_entities.Filter;
    begin
-      if the_Editor.Target.my_Declarations = Target
+      Ada.Text_IO.put_Line ("EDITOR TAG " & ada.tags.External_Tag (Invoked_by.all'Tag));
+      Ada.Text_IO.put_Line ("EDITOR TAG " & ada.tags.External_Tag (aide.Editor.of_block.item'Tag));
+
+      if Invoked_by.all'Tag = aide.Editor.of_block.item'Tag
       then
+         the_Editor := AIDE.Editor.of_block.view (Invoked_by);
+
+         if the_Editor.Target.my_Declarations = Target
+         then
+            the_Filter := declare_Region;
+
+         elsif the_Editor.Target.my_Statements = Target
+         then
+            the_Filter := begin_Region;
+
+         else
+            raise Program_Error;
+         end if;
+
+      elsif Invoked_by.all'Tag = aide.Editor.of_package.item'Tag
+      then
+--           the_Editor := AIDE.Editor.of_package.view (Invoked_by);
          the_Filter := declare_Region;
 
-      elsif the_Editor.Target.my_Statements = Target
-      then
-         the_Filter := begin_Region;
-
       else
-         raise Program_Error;
+         raise Program_Error with ada.tags.External_Tag (Invoked_by.all'Tag) & " not yet supported.";
       end if;
 
       the_source_entities_Palette.show (Invoked_by, Target, the_Filter);
