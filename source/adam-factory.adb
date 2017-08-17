@@ -144,6 +144,11 @@ is
       function to_View (Id : in AdaM.Id) return Any_view
       is
       begin
+         if Id not in item_Id
+         then
+            raise Constraint_Error with "AdaM.Factory ~ Bad pool Id (" & item_Id'Image (Id) & ") for pool " & pool_Name;
+         end if;
+
          declare
             the_View : constant View := Pool (Id)'Access;
          begin
@@ -155,9 +160,15 @@ is
 
       function to_Id (From : in View) return AdaM.Id
       is
-         Start : constant View := Pool (Pool'First)'Access;
+         Start  : constant View    := Pool (Pool'First)'Access;
+         the_Id :          AdaM.Id := AdaM.Id (From - Start) + 1;
       begin
-         return AdaM.Id (From - Start) + 1;
+         if the_Id not in item_Id
+         then
+            raise Constraint_Error with "AdaM.Factory ~ Bad pool Id (" & item_Id'Image (the_Id) & ") for pool " & pool_Name;
+         end if;
+
+         return the_Id;
       end to_Id;
 
 

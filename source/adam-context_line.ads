@@ -54,7 +54,18 @@ is
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 
 
+
    type Package_view is access all Declaration.of_package.item'Class;
+
+   procedure Package_view_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                                 Self   : in              Package_view);
+
+   procedure Package_view_read  (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                                 Self   : out             Package_view);
+
+   for Package_view'write use Package_view_write;
+   for Package_view'read  use Package_view_read;
+
 
    function  my_Package (Self : in     Item)     return Package_view;
    procedure Package_is (Self : in out Item;   Now : in Package_view);

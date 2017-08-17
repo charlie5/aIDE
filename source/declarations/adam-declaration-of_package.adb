@@ -429,7 +429,7 @@ is
       is
       when 1 =>
          Text'read (Stream, Self.Name);
-         put_Line ("KKKKKKKKKKKKKK '" & (+Self.Name) & "'");
+--           put_Line ("KKKKKKKKKKKKKK '" & (+Self.Name) & "'");
 
          Declaration.of_package.view  'read (Stream, Self.Parent);
          Declaration.of_package.Vector'read (Stream, Self.Progenitors);

@@ -171,4 +171,20 @@ is
    procedure View_read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
                         Self   : out             View)
                         renames Pool.View_read;
+
+
+   procedure Package_view_write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                                 Self   : in              Package_view)
+   is
+   begin
+      Declaration.of_package.View_write (Stream, Declaration.of_package.view (Self));
+   end Package_view_write;
+
+   procedure Package_view_read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                                Self   : out             Package_view)
+   is
+   begin
+      Declaration.of_package.View_read (Stream, Declaration.of_package.view (Self));
+   end Package_view_read;
+
 end AdaM.context_Line;
