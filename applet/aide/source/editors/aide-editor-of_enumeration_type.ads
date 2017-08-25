@@ -42,6 +42,8 @@ private
          top_Box              : gtk_Box;
          name_Entry           : Gtk_Entry;
          is_Label             : Gtk_Label;
+         open_parenthesis_Label  : Gtk_Label;
+         close_parenthesis_Label : Gtk_Label;
          literals_Box         : gtk_Box;
          rid_Button           : gtk_Button;
       end record;

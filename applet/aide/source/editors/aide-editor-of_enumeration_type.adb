@@ -2,10 +2,15 @@ with
      aIDE.Editor.of_enumeration_literal,
      AdaM.a_Type.enumeration_literal,
 
-     glib.Error,
+     Pango.Attributes,
 
-     gtk.Builder,
-     gtk.Handlers;
+     gLib.Error,
+
+     Gtk.Builder,
+     Gtk.Handlers,
+
+     Ada.Containers;
+with Pango.Enums;
 
 
 package body aIDE.Editor.of_enumeration_type
@@ -92,7 +97,22 @@ is
          Self.literals_Box := gtk_Box    (the_Builder.get_Object ("literals_Box"));
          Self.rid_Button   := gtk_Button (the_Builder.get_Object ("rid_Button"));
 
+         Self.open_parenthesis_Label  := Gtk_Label  (the_Builder.get_Object ("open_parenthesis_Label"));
+         Self.close_parenthesis_Label := Gtk_Label  (the_Builder.get_Object ("close_parenthesis_Label"));
+
+
          Self.name_Entry.Set_Text (+Self.Target.Name);
+
+         declare
+            use type Ada.Containers.Count_Type;
+            Attributes : Pango.Attributes.Pango_Attr_List := Pango.Attributes.Pango_Attr_List_New;
+            Scale      : gDouble := Gdouble (2 * Self.Target.Literals.Length);
+         begin
+            Attributes.Change (pango.Attributes.Attr_Scale_New (Scale));
+            Self. open_parenthesis_Label.set_Attributes (Attributes);
+            Self.close_parenthesis_Label.set_Attributes (Attributes);
+--              Self.close_parenthesis_Label.Set_Size_Request (Height => 10);
+         end;
 
          Entry_return_Callbacks.connect (Self.name_Entry,
                                          "focus-out-event",
@@ -113,6 +133,7 @@ is
          return Self;
       end to_Editor;
    end Forge;
+
 
 
    procedure destroy_Callback (Widget : not null access Gtk.Widget.Gtk_Widget_Record'Class)
@@ -138,6 +159,23 @@ is
                                                                           targets_Parent => Self.Target.all'Access);
          Self.literals_Box.pack_Start (literal_Editor.top_Widget);
       end loop;
+
+
+      declare
+         use type Ada.Containers.Count_Type;
+         Attributes : Pango.Attributes.Pango_Attr_List := Pango.Attributes.Pango_Attr_List_New;
+         Scale      : gDouble                          := Gdouble (2 * Self.Target.Literals.Length);
+      begin
+         Attributes.Change (pango.Attributes.Attr_Scale_New (Scale));
+         Self. open_parenthesis_Label.set_Attributes (Attributes);
+
+         Attributes.change (pango.Attributes.Attr_Stretch_New (Stretch => Pango.Enums.Pango_Stretch_Expanded));
+--           Self.open_parenthesis_Label.set_Attributes (Attributes);
+--           Self.open_parenthesis_Label.Set_Size_Request (Height => 10);
+         Self.close_parenthesis_Label.set_Attributes (Attributes);
+--           Self.close_parenthesis_Label.Set_Size_Request (Height => 10);
+      end;
+
    end freshen;
 
 

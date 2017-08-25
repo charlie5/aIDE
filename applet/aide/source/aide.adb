@@ -123,8 +123,8 @@ is
             the_selected_App := Subprogram.new_Subprogram (Name => anonymous_Procedure);   -- Create initial test precedure..
             all_Apps.append (the_selected_App);
 
---              the_applet_Package := adam.a_Package.new_Package (Name => "no_Name");   -- Create initial test package.
             the_applet_Package := the_entity_Environ.standard_Package;
+--              the_applet_Package := the_entity_Environ.find ("Ada.Strings");
       end;
    end define;
 
