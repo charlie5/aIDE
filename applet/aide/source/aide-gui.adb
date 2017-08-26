@@ -4,6 +4,7 @@ with
      aIDE.Editor.of_package,
      aIDE.Palette.of_source_Entities,
      aIDE.Palette.of_exceptions,
+     aIDE.Editor.of_pragma,
 
      Common_Gtk,
      Glib,

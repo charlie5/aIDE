@@ -1,11 +1,13 @@
 with
      aIDE.Editor.of_comment,
+     aIDE.Editor.of_pragma,
      aIDE.Editor.of_enumeration_type,
      aIDE.Editor.of_signed_integer_type,
      aIDE.Editor.of_raw_source,
 
      AdaM.raw_Source,
      AdaM.Comment,
+     AdaM.a_Pragma,
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
 
@@ -41,6 +43,14 @@ is
       then
          declare
             new_Editor : constant Editor.of_comment.view := Editor.of_comment.Forge.to_comment_Editor (AdaM.Comment.view (Target));
+         begin
+            Self := Editor.view (new_Editor);
+         end;
+
+      elsif Target.all in AdaM.a_Pragma.item'Class
+      then
+         declare
+            new_Editor : constant Editor.of_pragma.view := Editor.of_pragma.Forge.new_Editor (AdaM.a_Pragma.view (Target));
          begin
             Self := Editor.view (new_Editor);
          end;

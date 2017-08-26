@@ -200,16 +200,18 @@ is
                         then
 --                             List.Print;
 --                             put_Line ("LIST CHILD COUNT: " & Natural'Image (List.Child_Count));
-
-                           declare
-                              Pragma_Arg : LAL.Pragma_Argument_Assoc := LAL.Pragma_Argument_Assoc (List.Child (1));
-                              Arg        : String := to_String (Pragma_Arg.F_Expr.Text);
-                           begin
+                           for i in 1 .. List.Child_Count
+                           loop
+                              declare
+                                 Pragma_Arg : LAL.Pragma_Argument_Assoc := LAL.Pragma_Argument_Assoc (List.Child (i));
+                                 Arg        : String := to_String (Pragma_Arg.F_Expr.Text);
+                              begin
 --                                Pragma_Arg.Print;
 --                                put_Line ("'" & Arg & "'");
 
-                              new_Pragma.add_Argument (Arg);
-                           end;
+                                 new_Pragma.add_Argument (Arg);
+                              end;
+                           end loop;
                         end if;
                      end;
 
@@ -681,6 +683,17 @@ begin
       Environ.add (current_compilation_Unit);
       Environ.standard_package_is (standard_Package);
       current_compilation_Unit.Entity_is (standard_Package.all'Access);
+
+      add_pragma_Pure:
+      declare
+         new_Pragma : constant AdaM.a_Pragma.view
+           := AdaM.a_Pragma.new_Pragma (Name => "Pure");
+      begin
+         new_Pragma.add_Argument ("Standard");
+
+         standard_Package.Children.append (new_Pragma.all'Access);
+      end add_pragma_Pure;
+
 
       add_Boolean:
       declare

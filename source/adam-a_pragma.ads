@@ -34,29 +34,29 @@ is
    --  Forge
    --
 
-   function  new_Pragma (Name : in     String := "") return a_Pragma.view;
-   procedure free           (Self : in out a_Pragma.view);
-   procedure destruct       (Self : in out a_Pragma.item);
+   function  new_Pragma   (Name : in     String := "") return a_Pragma.view;
+   procedure free         (Self : in out a_Pragma.view);
+   procedure destruct     (Self : in out a_Pragma.item);
 
 
    --  Attributes
    --
 
    overriding
-   function Id           (Self : access Item) return AdaM.Id;
+   function Id            (Self : access Item) return AdaM.Id;
 
    overriding
-   function  Name        (Self : in     Item)     return Identifier;
-   procedure Name_is     (Self : in out Item;   Now : in String);
+   function  Name         (Self : in     Item)     return Identifier;
+   procedure Name_is      (Self : in out Item;   Now : in String);
 
    procedure add_Argument (Self : in out Item;   Now : in String);
    function  Arguments    (Self : in     Item)     return text_Lines;
 
 
 
-
    overriding
-   function to_Source    (Self : in     Item) return text_Vectors.Vector;
+   function to_Source     (Self : in     Item) return text_Vectors.Vector;
+
 
 
 private
@@ -66,6 +66,5 @@ private
          Name      : Text;
          Arguments : text_Lines;
       end record;
-
 
 end AdaM.a_Pragma;
