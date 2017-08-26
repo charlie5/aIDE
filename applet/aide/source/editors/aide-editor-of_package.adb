@@ -32,7 +32,7 @@ is
       the_Text : constant String := the_Entry.Get_Text;
    begin
       Self.my_Package.Name_is (AdaM.Identifier (the_Text));
-      aIDE.GUI.update_selected_package_Name (the_Text);
+      aIDE.GUI.update_selected_package_Name (String (Self.my_Package.full_Name));
 
       return False;
    end on_name_Entry_leave;

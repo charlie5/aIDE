@@ -49,9 +49,9 @@ is
 
    package recent_Packages
    is
-      procedure register_Usage (package_Name : in AdaM.Text;
-                                the_Package  : in AdaM.a_Package.view);
-      function  fetch return AdaM.text_Lines;
+--        procedure register_Usage (package_Name : in AdaM.Text;
+--                                  the_Package  : in AdaM.a_Package.view);
+--        function  fetch return AdaM.text_Lines;
 
       procedure register_Usage (the_Package : in AdaM.a_Package.view);
       function  fetch return AdaM.a_Package.vector;

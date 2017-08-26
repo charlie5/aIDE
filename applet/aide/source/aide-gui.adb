@@ -475,34 +475,40 @@ is
 
 
 
-
    procedure update_selected_package_Name (new_Name : in String)
    is
-      use gtk.Tree_Model, ada.Text_IO;
-
-      the_Selection : Gtk_Tree_Iter;
-      the_Model     : Gtk_Tree_Model;
    begin
-      the_package_tree_Selection.get_Selected (the_Model, the_Selection);
-
-      if the_Selection /= null_Iter
-      then
-         declare
---              use ada.Characters.handling,
---                  ada.Directories;
-
-            old_Name : constant String := gtk.Tree_Model.get_String (the_Model, the_Selection, 0);
-         begin
-            if new_Name /= old_Name
-            then
-               the_package_tree_Store.set (the_Selection, 0, new_Name);
---                 build_Package;
-            end if;
-         end;
-      else
-         put_Line ("update_selected_package_Name : *** Null Iter ***");
-      end if;
+      choose_package_Button.set_Label (new_Name);
    end update_selected_package_Name;
+
+
+--     procedure update_selected_package_Name (new_Name : in String)
+--     is
+--        use gtk.Tree_Model, ada.Text_IO;
+--
+--        the_Selection : Gtk_Tree_Iter;
+--        the_Model     : Gtk_Tree_Model;
+--     begin
+--        the_package_tree_Selection.get_Selected (the_Model, the_Selection);
+--
+--        if the_Selection /= null_Iter
+--        then
+--           declare
+--  --              use ada.Characters.handling,
+--  --                  ada.Directories;
+--
+--              old_Name : constant String := gtk.Tree_Model.get_String (the_Model, the_Selection, 0);
+--           begin
+--              if new_Name /= old_Name
+--              then
+--                 the_package_tree_Store.set (the_Selection, 0, new_Name);
+--  --                 build_Package;
+--              end if;
+--           end;
+--        else
+--           put_Line ("update_selected_package_Name : *** Null Iter ***");
+--        end if;
+--     end update_selected_package_Name;
 
 
 

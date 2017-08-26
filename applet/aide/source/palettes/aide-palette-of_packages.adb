@@ -45,45 +45,45 @@ is
       type package_Usage is
          record
             the_Package : AdaM.a_Package.view;
-            Name        : AdaM.Text;      -- The package name.
+--              Name        : AdaM.Text;      -- The package name.
             Count       : Natural;        -- Number of times the package has been used.
          end record;
 
       function "<" (L, R : in package_Usage) return Boolean
       is
-         use type AdaM.Text;
+         use type AdaM.Identifier;
       begin
-         return L.Name < R.Name;
+         return L.the_Package.full_Name < R.the_Package.full_Name;
       end "<";
 
       overriding function "=" (L, R : in package_Usage) return Boolean
       is
-         use type AdaM.Text;
+         use type AdaM.Identifier;
       begin
-         return L.Name = R.Name;
+         return L.the_Package.full_Name = R.the_Package.full_Name;
       end "=";
 
       package package_Usage_Sets is new ada.Containers.Ordered_Sets (package_Usage);
       the_usage_Stats : package_Usage_Sets.Set;
 
 
-      procedure register_Usage (package_Name : in AdaM.Text;
-                                the_Package  : in AdaM.a_Package.view)
-      is
-         use package_Usage_Sets;
-
-         the_type_Usage : package_Usage             := (the_Package, package_Name,  others => <>);
-         Current        : constant package_Usage_Sets.Cursor := the_usage_Stats.find (the_type_Usage);
-      begin
-         if Current /= No_Element
-         then
-            the_type_Usage.Count := Element (Current).Count + 1;
-            the_usage_Stats.replace_Element (Current, the_type_Usage);
-         else
-            the_type_Usage.Count := 1;
-            the_usage_Stats.insert (the_type_Usage);
-         end if;
-      end register_Usage;
+--        procedure register_Usage (package_Name : in AdaM.Text;
+--                                  the_Package  : in AdaM.a_Package.view)
+--        is
+--           use package_Usage_Sets;
+--
+--           the_type_Usage :          package_Usage             := (the_Package, package_Name,  others => <>);
+--           Current        : constant package_Usage_Sets.Cursor := the_usage_Stats.find (the_type_Usage);
+--        begin
+--           if Current /= No_Element
+--           then
+--              the_type_Usage.Count := Element (Current).Count + 1;
+--              the_usage_Stats.replace_Element (Current, the_type_Usage);
+--           else
+--              the_type_Usage.Count := 1;
+--              the_usage_Stats.insert (the_type_Usage);
+--           end if;
+--        end register_Usage;
 
 
 
@@ -165,64 +165,61 @@ is
       end fetch;
 
 
-
-
-
-      function  fetch return AdaM.text_Lines
-      is
-         use package_Usage_Sets,
-             ada.Containers;
-
-         the_Lines : AdaM.text_Lines;
-
-         package type_Usage_Vectors is new ada.Containers.Vectors (Positive, package_Usage);
-         use     type_Usage_Vectors;
-
-         the_usage_List : type_Usage_Vectors.Vector;
-
-      begin
-         declare
-            Cursor : package_Usage_Sets.Cursor := the_usage_Stats.First;
-         begin
-            while has_Element (Cursor)
-            loop
-               if Element (Cursor).Count > 0 then
-                  the_usage_List.append (Element (Cursor));
-               end if;
-
-               exit when the_Lines.Length = 25;
-               next (Cursor);
-            end loop;
-         end;
-
-         declare
-            function "<" (L, R : in package_Usage) return Boolean
-            is
-            begin
-               return L.Count > R.Count;
-            end "<";
-
-            package Sorter is new type_Usage_Vectors.Generic_Sorting ("<");
-         begin
-            Sorter.sort (the_usage_List);
-         end;
-
-         declare
-            Cursor : type_Usage_Vectors.Cursor := the_usage_List.First;
-         begin
-            while has_Element (Cursor)
-            loop
-               if Element (Cursor).Count > 0 then
-                  the_Lines.Append (Element (Cursor).Name);
-               end if;
-
-               exit when the_Lines.Length = 25;
-               next (Cursor);
-            end loop;
-         end;
-
-         return the_Lines;
-      end fetch;
+--        function  fetch return AdaM.text_Lines
+--        is
+--           use package_Usage_Sets,
+--               ada.Containers;
+--
+--           the_Lines : AdaM.text_Lines;
+--
+--           package type_Usage_Vectors is new ada.Containers.Vectors (Positive, package_Usage);
+--           use     type_Usage_Vectors;
+--
+--           the_usage_List : type_Usage_Vectors.Vector;
+--
+--        begin
+--           declare
+--              Cursor : package_Usage_Sets.Cursor := the_usage_Stats.First;
+--           begin
+--              while has_Element (Cursor)
+--              loop
+--                 if Element (Cursor).Count > 0 then
+--                    the_usage_List.append (Element (Cursor));
+--                 end if;
+--
+--                 exit when the_Lines.Length = 25;
+--                 next (Cursor);
+--              end loop;
+--           end;
+--
+--           declare
+--              function "<" (L, R : in package_Usage) return Boolean
+--              is
+--              begin
+--                 return L.Count > R.Count;
+--              end "<";
+--
+--              package Sorter is new type_Usage_Vectors.Generic_Sorting ("<");
+--           begin
+--              Sorter.sort (the_usage_List);
+--           end;
+--
+--           declare
+--              Cursor : type_Usage_Vectors.Cursor := the_usage_List.First;
+--           begin
+--              while has_Element (Cursor)
+--              loop
+--                 if Element (Cursor).Count > 0 then
+--                    the_Lines.Append (Element (Cursor).Name);
+--                 end if;
+--
+--                 exit when the_Lines.Length = 25;
+--                 next (Cursor);
+--              end loop;
+--           end;
+--
+--           return the_Lines;
+--        end fetch;
 
 
       procedure read  (From : access Ada.Streams.Root_Stream_Type'Class)
@@ -390,7 +387,8 @@ is
 
       full_Name : constant String := package_Name;
    begin
-      recent_Packages.register_Usage (+full_Name, the_Package);
+--        recent_Packages.register_Usage (+full_Name, the_Package);
+      recent_Packages.register_Usage (the_Package);
       Self.build_recent_List;
 
       if Self.Invoked_by /= null
@@ -446,6 +444,7 @@ is
       Self.Target_2   := Target;
       Self.Target     := null;
 
+      Self.freshen;
       Self.Top.show_All;
    end show;
 
@@ -548,6 +547,8 @@ is
 
       Row, Col   : Guint := 0;
    begin
+      put_Line ("build_recent_List");
+
       Self.recent_Table.Foreach (destroy_Callback'Access);
 
       for i in 1 .. Integer (the_Recent.Length)
@@ -556,9 +557,9 @@ is
             use AdaM;
             the_Package : AdaM.a_Package.view renames the_Recent.Element (i);
          begin
-            the_Button := aIDE.Palette.of_packages_subpackages.new_Button (for_Package      => the_Package,
+            the_Button := aIDE.Palette.of_packages_subpackages.new_Button (for_Package      =>  the_Package,
                                                                            Named            => +the_Package.Name,
-                                                                           packages_Palette => Self'unchecked_Access);
+                                                                           packages_Palette =>  Self'unchecked_Access);
             Self.recent_Table.attach (the_Button,
                                       Col, Col + 1,
                                       Row, Row + 1,
