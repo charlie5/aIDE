@@ -68,7 +68,7 @@ is
 
 
 
-   function  full_Name  (Self : in Item) return String
+   function  full_Name  (Self : in Item) return Identifier
    is
       use type Entity.view;
    begin

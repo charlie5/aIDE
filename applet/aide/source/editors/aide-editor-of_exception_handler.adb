@@ -120,8 +120,8 @@ is
       then
          new_Button.Set_Tooltip_Text ("Not yet set.");
       else
-         new_Button.Set_Tooltip_Text (the_Exception.full_Name);
-         new_Button.Set_Label        (AdaM.Assist.strip_standard_Prefix (the_Exception.Name));
+         new_Button.Set_Tooltip_Text (String (the_Exception.full_Name));
+         new_Button.Set_Label        (String (AdaM.Assist.strip_standard_Prefix (the_Exception.Name)));
       end if;
 
       Self.exception_names_Box.pack_Start (new_Button, expand => True, fill => True);

@@ -6,7 +6,7 @@ with
 package body AdaM.Assist
 is
 
-   function identifier_Suffix (Id : in Identifier;   Count : in Positive) return String
+   function identifier_Suffix (Id : in Identifier;   Count : in Positive) return Identifier
    is
       use Ada.Strings,
           Ada.Strings.fixed,
@@ -45,27 +45,41 @@ is
 
 
 
-   function strip_standard_Prefix (Id : in Identifier) return String
+--     function strip_standard_Prefix (Id : in Identifier) return Identifier
+--     is
+--        the_Id : constant String := String (Id);
+--        Token  : constant String := "Standard.";
+--     begin
+--        if the_Id (the_Id'First .. the_Id'First + Token'Length - 1) = Token
+--        then
+--           return the_Id (the_Id'First + Token'Length .. the_Id'Last);
+--        else
+--           return the_Id;
+--        end if;
+--     end strip_standard_Prefix;
+
+
+   function strip_standard_Prefix (Id : in Identifier) return Identifier
    is
-      the_Id : constant String := String (Id);
-      Token  : constant String := "Standard.";
+      Token  : constant Identifier := "Standard.";
    begin
-      if the_Id (the_Id'First .. the_Id'First + Token'Length - 1) = Token
+      if         Id'Length >= Token'Length
+        and then Id (Id'First .. Id'First + Token'Length - 1) = Token
       then
-         return the_Id (the_Id'First + Token'Length .. the_Id'Last);
+         return Id (Id'First + Token'Length .. Id'Last);
       else
-         return the_Id;
+         return Id;
       end if;
    end strip_standard_Prefix;
 
 
 
-   function Tail_of (the_full_Name : in String) return String
+   function Tail_of (the_full_Name : in Identifier) return Identifier
    is
       use Ada.Strings,
           Ada.Strings.fixed;
 
-      Dot : constant Natural := Index (the_full_Name, ".", Backward);
+      Dot : constant Natural := Index (String (the_full_Name), ".", Backward);
    begin
       if Dot = 0
       then
@@ -77,11 +91,11 @@ is
 
 
 
-   function strip_Tail_of (the_full_Name : in String) return String
+   function strip_Tail_of (the_full_Name : in Identifier) return Identifier
    is
       use Ada.Strings,
           Ada.Strings.fixed;
-      Dot : constant Natural := Index (the_full_Name, ".", Backward);
+      Dot : constant Natural := Index (String (the_full_Name), ".", Backward);
    begin
       if Dot = 0 then
          return the_full_Name;
@@ -92,47 +106,23 @@ is
 
 
 
-   function type_button_Name_of (the_full_Name : in String) return String
+   function type_button_Name_of (the_full_Name : in Identifier) return String
    is
-      Tail : constant String := Assist.Tail_of (the_full_Name);
+      Tail : constant Identifier := Assist.Tail_of (the_full_Name);
    begin
       if         the_full_Name'Length >= 9
         and then the_full_Name (the_full_Name'First .. the_full_Name'First + 8) = "Standard."
       then
-         return Tail;
+         return String (Tail);
       end if;
 
       declare
-         Head : constant String := assist.strip_Tail_of (the_full_Name);
+         Head : constant Identifier := assist.strip_Tail_of (the_full_Name);
       begin
-         return assist.Tail_of (Head) & "." & Tail;
+         return String (assist.Tail_of (Head) & "." & Tail);
       end;
    end type_button_Name_of;
 
-
-
-   function Split (the_Text : in String) return text_Lines
-   is
-      use ada.Strings.Fixed,
-          ada.Strings.Unbounded;
-
-      the_Lines : text_Lines;
-      Dot       : Natural   := Index (the_Text, ".");
-      First     : Positive  := 1;
-      Last      : Positive;
-
-   begin
-      while Dot /= 0
-      loop
-         Last  := Dot - 1;
-         the_Lines.append (+the_Text (First .. Last));
-         First := Dot + 1;
-         Dot   := Index (the_Text, ".", First);
-      end loop;
-
-      the_Lines.append (+the_Text (First .. the_Text'Last));
-      return the_Lines;
-   end Split;
 
 
 
@@ -140,16 +130,23 @@ is
    is
       use Ada.Strings,
           Ada.Strings.fixed;
-
-      the_Id : constant String  := String (Id);
-      I      : constant Natural := Index (the_Id, ".", going => Backward);
    begin
-      if I = 0
+      if Id = "Standard"
       then
-         return "Standard";
+         return "";
       end if;
 
-      return Identifier (the_Id (the_Id'First .. I - 1));
+      declare
+         the_Id : constant String  := String (Id);
+         I      : constant Natural := Index (the_Id, ".", going => Backward);
+      begin
+         if I = 0
+         then
+            return "Standard";
+         end if;
+
+         return Identifier (the_Id (the_Id'First .. I - 1));
+      end;
    end parent_Name;
 
 
@@ -168,6 +165,34 @@ is
 
       return Id (I + 1 .. Id'Last);
    end simple_Name;
+
+
+
+
+
+--     function Split (the_Text : in Identifier) return text_Lines
+--     is
+--        use ada.Strings.Fixed,
+--            ada.Strings.Unbounded;
+--
+--        the_Lines : text_Lines;
+--        Dot       : Natural   := Index (the_Text, ".");
+--        First     : Positive  := 1;
+--        Last      : Positive;
+--
+--     begin
+--        while Dot /= 0
+--        loop
+--           Last  := Dot - 1;
+--           the_Lines.append (+the_Text (First .. Last));
+--           First := Dot + 1;
+--           Dot   := Index (the_Text, ".", First);
+--        end loop;
+--
+--        the_Lines.append (+the_Text (First .. the_Text'Last));
+--        return the_Lines;
+--     end Split;
+
 
 
 

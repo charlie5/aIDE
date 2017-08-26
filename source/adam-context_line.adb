@@ -146,11 +146,11 @@ is
    is
       use ada.Strings.unbounded;
 
-      the_Line   : Text               := +"with " & Self.my_Package.full_Name & ";";
+      the_Line   : Text               := +"with " & String (Self.my_Package.full_Name) & ";";
       the_Source : text_Vectors.Vector;
    begin
       if Self.Used then
-         append (the_Line, "   use " & Self.my_Package.full_Name & ";");
+         append (the_Line, "   use " & String (Self.my_Package.full_Name) & ";");
       end if;
 
       the_Source.append (the_Line);

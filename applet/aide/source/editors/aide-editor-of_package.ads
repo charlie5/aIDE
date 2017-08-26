@@ -60,7 +60,9 @@ private
          context_Alignment  : gtk_Alignment;
          name_Entry         : gtk_Entry;
 
-         declarations_Label  : gtk_Label;
+         package_Label      : gtk_Label;
+         declarations_Label : gtk_Label;
+
          simple_attributes_Table  : gtk_Table;
 
          top_Window         : gtk_scrolled_Window;

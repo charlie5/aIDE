@@ -175,7 +175,7 @@ is
             then
                Lines.append (+"constraint_Error");
             else
-               Lines.append (+Self.Exceptions.Element (i).full_Name);
+               Lines.append (+String (Self.Exceptions.Element (i).full_Name));
             end if;
 
             not_First := True;

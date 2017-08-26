@@ -85,7 +85,7 @@ is
       if use_simple_Name then
          gtk_New (the_Button, Named);
       else
-         gtk_New (the_Button, assist.type_button_Name_of (full_Name));
+         gtk_New (the_Button, assist.type_button_Name_of (Identifier (full_Name)));
       end if;
 
       the_Button.Set_Tooltip_Text (full_Name);
@@ -113,7 +113,7 @@ is
       if use_simple_Name then
          gtk_New (the_Button, Named);
       else
-         gtk_New (the_Button, assist.type_button_Name_of (full_Name));
+         gtk_New (the_Button, assist.type_button_Name_of (Identifier (full_Name)));
       end if;
 
       the_Button.Set_Tooltip_Text (full_Name);

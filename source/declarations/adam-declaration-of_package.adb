@@ -380,7 +380,7 @@ is
 
 
 
-   function  full_Name  (Self : in Item) return String
+   function  full_Name  (Self : in Item) return Identifier
    is
    begin
       if Self.Parent = null   -- Is the Standard package.

@@ -53,7 +53,7 @@ is
    function  Id               (Self : access Item) return AdaM.Id;
 
 
-   function  full_Name        (Self : in Item) return String;
+   function  full_Name        (Self : in Item) return Identifier;
 
    overriding
    function  to_Source        (Self : in     Item) return text_Vectors.Vector;

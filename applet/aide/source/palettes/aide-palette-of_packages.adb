@@ -396,8 +396,8 @@ is
       if Self.Invoked_by /= null
       then
 --           Self.Invoked_by.set_Label (full_Name);
-         Self.Invoked_by.set_Label        (identifier_Suffix (+the_Package.full_Name, 2));
-         Self.Invoked_by.set_Tooltip_Text (the_Package.full_Name);
+         Self.Invoked_by.set_Label        (String (identifier_Suffix (the_Package.full_Name, 2)));
+         Self.Invoked_by.set_Tooltip_Text (String (the_Package.full_Name));
       end if;
 
       if Self.Target /= null and Self.Target_2 /= null

@@ -344,15 +344,15 @@ is
           AdaM.Assist;
 
 --        full_Name : constant String := package_Name & "." & Now;
-      full_Name : constant String := the_Exception.full_Name;
+      full_Name : constant String := String (the_Exception.full_Name);
 
    begin
 --        recent_Exceptions.register_Usage (+full_Name);
       recent_Exceptions.register_Usage (the_Exception);
       Self.build_recent_List;
 
-      Self.Invoked_by.Set_Label (AdaM.Assist.strip_standard_Prefix (+identifier_Suffix (+full_Name, 2)));
-      Self.Invoked_by.Set_Tooltip_Text (full_Name);
+      Self.Invoked_by.set_Label (String (strip_standard_Prefix (identifier_Suffix (the_Exception.full_Name, 2))));
+      Self.Invoked_by.set_Tooltip_Text (full_Name);
 
       Self.Target.my_Exception_is (Self.Slot, the_Exception);
 --        Self.Target.my_add_Exception (the_Exception);
@@ -519,15 +519,15 @@ is
 --              the_Exception : adam.Text renames the_Recent.Element (i);
             the_Exception : constant adam.Declaration.of_exception.view := the_Recent.Element (i);
          begin
-            put_Line ("Recent: " & the_Exception.full_Name);
-            put_Line ("Named : " & assist.      Tail_of (the_Exception.full_Name));
-            put_Line ("package_Name: " & assist.strip_Tail_of (the_Exception.full_Name));
+            put_Line ("Recent: " & String (the_Exception.full_Name));
+            put_Line ("Named : " & String (assist.    Tail_of (the_Exception.full_Name)));
+            put_Line ("package_Name: " & String (assist.strip_Tail_of (the_Exception.full_Name)));
 
 --              gtk_New (the_Button, +the_Exception);
             the_Button := aIDE.Palette.of_exceptions_subpackages.new_Button
                              (for_Exception      => the_Exception,
-                              Named              => assist.      Tail_of (the_Exception.full_Name),
-                              package_Name       => assist.strip_Tail_of (the_Exception.full_Name),
+                              Named              => String (assist.      Tail_of (the_Exception.full_Name)),
+                              package_Name       => String (assist.strip_Tail_of (the_Exception.full_Name)),
                               exceptions_Palette => Self'unchecked_Access,
                               use_simple_Name    => False);
 

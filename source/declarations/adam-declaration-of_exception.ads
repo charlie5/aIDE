@@ -43,7 +43,7 @@ is
    overriding
    function Id (Self : access Item) return AdaM.Id;
 
-   function full_Name (Self : in Item) return String;
+   function full_Name (Self : in Item) return Identifier;
 
 
    overriding

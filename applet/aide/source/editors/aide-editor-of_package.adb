@@ -1,7 +1,7 @@
 with
      aIDE.GUI,
---       adam.Source,
-     aIDE.Style;
+     aIDE.Style,
+     AdaM.Assist;
 
 with Ada.Text_IO;          use Ada.Text_IO;
 
@@ -99,6 +99,7 @@ is
          Self.context_Alignment   := gtk_Alignment       (the_Builder.get_Object ("context_Alignment"));
          Self.name_Entry          := gtk_Entry           (the_Builder.get_Object ("name_Entry"));
 
+         Self.package_Label       := gtk_Label           (the_Builder.get_Object ("package_Label"));
          Self.declarations_Label  := gtk_Label           (the_Builder.get_Object ("declarations_Label"));
 
          Self.context_Editor := aIDE.Editor.of_context.Forge.to_context_Editor (Self.my_Package.Context);
@@ -138,10 +139,27 @@ is
    overriding
    procedure freshen (Self : in out Item)
    is
+      use AdaM.Assist;
    begin
-      put_Line ("KKKKK " & (String (Self.my_Package.Name)));
-      Self.name_Entry.set_Text (String (Self.my_Package.Name));
+      put_Line ("KKKKK " & (String (Self.my_Package.full_Name)));
 
+      declare
+         use AdaM;
+         parent_Prefix : constant Identifier := strip_standard_Prefix (parent_Name (Self.my_Package.full_Name));
+      begin
+         put_Line ("Self.my_Package.full_Name = " & String (Self.my_Package.full_Name));
+         put_Line ("parent_Name (Self.my_Package.full_Name) = " & String (parent_Name (Self.my_Package.full_Name)));
+         put_Line ("parent_Prefix = " & String (parent_Prefix));
+
+         if parent_Prefix = ""
+         then
+            Self.package_Label.set_Text ("package ");
+         else
+            Self.package_Label.set_Text ("package " & String (parent_Prefix) & ".");
+         end if;
+
+         Self.name_Entry.set_Text (String (Self.my_Package.Name));
+      end;
 
       -- Destroy all prior public entity widgets.
       --
@@ -177,7 +195,7 @@ is
       end;
 
 
---        aIDE.Style.apply_Css (Self.top_Widget);
+--        aIDE.Style.apply_Css (Self.top_Widget);     -- TODO: This causes a truckload of gtk warnings.
 
 
       --  Operations
