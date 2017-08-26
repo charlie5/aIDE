@@ -1,5 +1,6 @@
 with
      aIDE,
+     aIDE.Gui,
      aIDE.Palette.of_packages_subpackages,
 --       AdaM.a_Package,
      AdaM.Environment,
@@ -384,6 +385,8 @@ is
    is
       use AdaM,
           AdaM.Assist;
+      use type AdaM.context_Line.view,
+               AdaM.a_Package.view;
 
       full_Name : constant String := package_Name;
    begin
@@ -397,8 +400,26 @@ is
          Self.Invoked_by.set_Tooltip_Text (the_Package.full_Name);
       end if;
 
-      Self.Target.Name_is  (full_Name);
-      Self.Target.Package_is (the_Package.all'Access);
+      if Self.Target /= null and Self.Target_2 /= null
+      then
+         raise program_Error with "Self.Target /= null and Self.Target_2 /= null";
+      end if;
+
+      if Self.Target /= null
+      then
+         Self.Target.Name_is  (full_Name);
+         Self.Target.Package_is (the_Package.all'Access);
+
+      elsif Self.Target_2 /= null
+      then
+--           put_Line ("JJJJJ " & String (Self.Target_2.Name));
+--           aIDE.Gui.set_selected_Package (to => Self.Target_2);
+         put_Line ("JJJJJ " & String (the_Package.Name));
+         aIDE.Gui.set_selected_Package (to => the_Package);
+
+      else
+         raise program_Error with "No target has been set";
+      end if;
 
       Self.Top.hide;
    end choice_is;
@@ -411,6 +432,19 @@ is
    begin
       Self.Invoked_by := Invoked_by;
       Self.Target     := Target;
+      Self.Target_2   := null;
+
+      Self.Top.show_All;
+   end show;
+
+
+   procedure show (Self : in out Item;   Invoked_by   : in     Gtk.Button.gtk_Button;
+                                         Target       : in     AdaM.a_Package.view)
+   is
+   begin
+      Self.Invoked_by := Invoked_by;
+      Self.Target_2   := Target;
+      Self.Target     := null;
 
       Self.Top.show_All;
    end show;

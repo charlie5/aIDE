@@ -139,6 +139,7 @@ is
    procedure freshen (Self : in out Item)
    is
    begin
+      put_Line ("KKKKK " & (String (Self.my_Package.Name)));
       Self.name_Entry.set_Text (String (Self.my_Package.Name));
 
 
@@ -176,7 +177,7 @@ is
       end;
 
 
-      aIDE.Style.apply_Css (Self.top_Widget);
+--        aIDE.Style.apply_Css (Self.top_Widget);
 
 
       --  Operations

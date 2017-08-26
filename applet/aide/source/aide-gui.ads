@@ -2,6 +2,7 @@ with
      aIDE.Palette.of_packages,
      aIDE.Editor,
      AdaM.Entity,
+     AdaM.a_Package,
      AdaM.context_Line,
      AdaM.exception_Handler,
 --       AdaM.Source,
@@ -20,6 +21,9 @@ is
    procedure show_packages_Palette (Invoked_by : in     Gtk.Button.gtk_Button;
                                     Target     : in     AdaM.context_Line.view);
 
+   procedure show_packages_Palette (Invoked_by : in     Gtk.Button.gtk_Button;
+                                    Target     : in     AdaM.a_Package.view);
+
 --     procedure show_source_entities_Palette (Invoked_by : in aIDE.Editor.view;
 --                                             Target     : in AdaM.Source.Entities_view);
 
@@ -34,5 +38,7 @@ is
 
 
    procedure update_selected_package_Name (new_Name : in String);
+
+   procedure set_selected_Package (To : in AdaM.a_Package.view);
 
 end aIDE.GUI;

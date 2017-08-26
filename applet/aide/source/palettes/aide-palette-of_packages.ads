@@ -34,6 +34,10 @@ is
    --
    procedure show      (Self : in out Item;   Invoked_by   : in     Gtk.Button.gtk_Button;
                                               Target       : in     AdaM.context_Line.view);
+
+   procedure show      (Self : in out Item;   Invoked_by   : in     Gtk.Button.gtk_Button;
+                                              Target       : in     AdaM.a_Package.view);
+
    procedure choice_is (Self : in out Item;   package_Name : in String;
                                               the_Package  : in AdaM.a_Package.view);
    procedure freshen   (Self : in out Item);
@@ -70,6 +74,7 @@ private
       record
          Invoked_by    : gtk_Button;
          Target        : AdaM.context_Line.view;
+         Target_2      : AdaM.a_Package.view;
 
          recent_Table  : gtk_Table;
          top_Notebook,

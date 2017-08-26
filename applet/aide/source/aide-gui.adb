@@ -87,6 +87,7 @@ is
    -- Package Tab Widgets
    --
 
+   choose_package_Button : Gtk_Button;
    new_package_Button    : Gtk_Button;
    rid_package_Button    : Gtk_Button;
 
@@ -200,6 +201,19 @@ is
 
 
 
+
+   procedure on_choose_package_Button_clicked (Button : access Gtk_Button_Record'Class)
+   is
+      pragma Unreferenced (Button);
+   begin
+      Ada.Text_IO.put_Line ("YAY");
+      show_packages_Palette (Invoked_by => Button.all'Access,
+                             Target     => the_applet_Package);
+   end on_choose_package_Button_clicked;
+
+
+
+
    procedure open
    is
       use Common_Gtk,
@@ -310,11 +324,17 @@ is
       --
 
       the_package_Alignment      := Gtk_Alignment  (glade_Builder.Get_Object ("package_editor_Alignment"));
+      choose_package_Button      := Gtk_Button     (glade_Builder.Get_Object ("choose_package_Button"));
       new_package_Button         := Gtk_Button     (glade_Builder.Get_Object ("new_package_Button"));
       rid_package_Button         := Gtk_Button     (glade_Builder.Get_Object ("rid_package_Button"));
       the_package_tree_Store     := gtk_tree_Store (glade_Builder.Get_Object ("package_tree_Store"));
       the_package_tree_View      := gtk_tree_View  (glade_Builder.Get_Object ("package_tree_View"));
       the_package_tree_Selection := the_package_tree_View.Get_Selection;
+
+      Button_Handler.connect (choose_package_Button,
+                              "clicked",
+                              on_choose_package_Button_clicked'Access);
+
 
       -- The Palettes
       --
@@ -339,6 +359,15 @@ is
 
    procedure show_packages_Palette (Invoked_by : in     Gtk.Button.gtk_Button;
                                     Target     : in     AdaM.context_Line.view)
+   is
+   begin
+      the_packages_Palette.show (Invoked_by, Target);
+   end show_packages_Palette;
+
+
+
+   procedure show_packages_Palette (Invoked_by : in     Gtk.Button.gtk_Button;
+                                    Target     : in     AdaM.a_Package.view)
    is
    begin
       the_packages_Palette.show (Invoked_by, Target);
@@ -474,6 +503,15 @@ is
          put_Line ("update_selected_package_Name : *** Null Iter ***");
       end if;
    end update_selected_package_Name;
+
+
+
+   procedure set_selected_Package (To : in AdaM.a_Package.view)
+   is
+   begin
+      the_package_Editor.Package_is (To);
+   end set_selected_Package;
+
 
 
 end aIDE.GUI;
