@@ -1,4 +1,6 @@
 with
+     aIDE.Palette.of_pragmas,
+
      Glib,
      glib.Error,
 
@@ -46,6 +48,22 @@ is
                                                                             aIDE.Editor.of_pragma.view);
 
 
+   procedure on_choose_Button_clicked (the_Button : access Gtk_Button_Record'Class;
+                                      Self       : in     aIDE.Editor.of_pragma.view)
+   is
+   begin
+      put_Line ("YAY YAY");
+   end on_choose_Button_clicked;
+
+
+   package Button_return_Callbacks is new Gtk.Handlers.User_Callback (Gtk_Button_Record,
+--                                                                               Boolean,
+                                                                      aIDE.Editor.of_pragma.view);
+
+
+
+
+
    package body Forge
    is
       function new_Editor (the_Pragma : in AdaM.a_Pragma.view) return View
@@ -87,6 +105,13 @@ is
 --                                           "button-release-event",
 --                                           on_procedure_Label_clicked'Access,
 --                                           Self);
+
+
+         Button_return_Callbacks.Connect (Self.choose_Button,
+                                         "clicked",
+                                         on_choose_Button_clicked'Access,
+                                         Self);
+
 
 
          Self.Target   := the_Pragma;
