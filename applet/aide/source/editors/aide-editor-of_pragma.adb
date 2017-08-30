@@ -1,5 +1,6 @@
 with
      aIDE.Palette.of_pragmas,
+     aIDE.GUI,
 
      Glib,
      glib.Error,
@@ -53,6 +54,8 @@ is
    is
    begin
       put_Line ("YAY YAY");
+      aIDE.GUI.show_pragma_Palette (Invoked_by => Self.all'Access,
+                                    Target     => Self.Target);
    end on_choose_Button_clicked;
 
 

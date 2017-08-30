@@ -2,9 +2,12 @@ with
      aIDE.Editor.of_subprogram,
      aIDE.Editor.of_block,
      aIDE.Editor.of_package,
-     aIDE.Palette.of_source_Entities,
-     aIDE.Palette.of_exceptions,
      aIDE.Editor.of_pragma,
+     aIDE.Palette.of_source_Entities,
+     aIDE.Palette.of_pragmas,
+     aIDE.Palette.of_exceptions,
+
+     adaM.a_Pragma,
 
      Common_Gtk,
      Glib,
@@ -56,6 +59,7 @@ is
    -- Palettes
    --
    the_source_entities_Palette : aIDE.Palette.of_source_entities.view;
+   the_pragma_Palette          : aIDE.Palette.of_pragmas.view;
    the_exceptions_Palette      : aIDE.Palette.of_exceptions.view;
 
 
@@ -342,6 +346,7 @@ is
 
       the_packages_Palette        := aIDE.Palette.of_packages.to_packages_Palette;
       the_source_entities_Palette := aIDE.Palette.of_source_entities.to_source_entities_Palette;
+      the_pragma_Palette          := aIDE.Palette.of_pragmas.to_source_entities_Palette;
       the_exceptions_Palette      := aIDE.Palette.of_exceptions.to_exceptions_Palette;
 
 
@@ -418,6 +423,17 @@ is
 
       the_source_entities_Palette.show (Invoked_by, Target, the_Filter);
    end show_source_entities_Palette;
+
+
+
+   procedure show_pragma_Palette (Invoked_by : in aIDE.Editor.view;
+                                  Target     : in AdaM.a_Pragma.view)
+   is
+   begin
+      the_pragma_Palette.show (Invoked_by, Target, aIDE.Palette.of_pragmas.declare_Region);
+   end show_pragma_Palette;
+
+
 
 
    --  Logging
