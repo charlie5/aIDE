@@ -39,10 +39,11 @@ is
       new_Source : constant AdaM.raw_Source.view := AdaM.raw_Source.new_Source;
    begin
       put_Line ("KKK KKK " & the_Button.get_Label);
---        Self.Target.append (new_Source.all'Access);
---        Self.Top.Hide;
---
---        Self.Invoked_by.freshen;
+
+      Self.Target.Name_is (the_Button.get_Label);
+      Self.Top.Hide;
+
+      Self.Invoked_by.freshen;
    end on_raw_source_Button_clicked;
 
 

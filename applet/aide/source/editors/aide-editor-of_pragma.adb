@@ -132,6 +132,14 @@ is
    end Forge;
 
 
+
+   procedure destroy_Callback (Widget : not null access Gtk.Widget.Gtk_Widget_Record'Class)
+   is
+   begin
+      Widget.destroy;
+   end destroy_Callback;
+
+
    overriding
    procedure freshen (Self : in out Item)
    is
@@ -140,6 +148,7 @@ is
 
       Args : constant text_Lines := Self.Target.Arguments;
    begin
+      Self.arguments_Box.forEach (destroy_Callback'Access);
       Self.choose_Button.set_Label (String (Self.Target.Name));
 
       if Args.Length = 0
