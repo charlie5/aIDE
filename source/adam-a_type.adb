@@ -1,5 +1,6 @@
 with
      AdaM.Factory,
+     AdaM.a_Package,
      ada.Tags;
 
 
@@ -35,6 +36,19 @@ is
       Self.Name := +Now;
    end Name_is;
 
+
+
+   function  full_Name  (Self : in Item) return Identifier
+   is
+      use type Entity.view;
+   begin
+      if Self.parent_Entity = null
+      then
+         return "Standard." & (+Self.Name);
+      else
+         return a_Package.view (Self.parent_Entity).full_Name & "." & (+Self.Name);
+      end if;
+   end full_Name;
 
 
 

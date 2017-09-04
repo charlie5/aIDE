@@ -62,6 +62,7 @@ is
 
    function  Context          (Self : in     Item) return Context.view;
 
+   function  all_Types        (Self : access Item) return AdaM.a_Type.Vector;
    function  all_Exceptions   (Self : access Item) return AdaM.Declaration.of_exception.Vector;
 
    function  requires_Body    (Self : in Item) return Boolean;

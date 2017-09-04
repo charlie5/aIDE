@@ -184,6 +184,38 @@ is
 
 
 
+   function all_Types (Self : access Item) return AdaM.a_Type.Vector
+   is
+      use type a_Type.view;
+
+      the_Exceptions : AdaM.a_Type.Vector;
+--        the_Exception  : AdaM.Declaration.of_exception.view;
+   begin
+--        put_Line ("all_Exceptions PACKAGE NAME: " & (+Self.Name));
+
+      for Each of Self.Children.all
+      loop
+--           put_Line ("*************   Tag: " & ada.Tags.External_Tag (Each.all'Tag));
+--              raise program_Error with "sdfhslkad";
+
+--           the_Exception := Declaration.of_exception.view (Each);
+
+--           if the_Exception /= null
+         if Each.all in AdaM.a_Type.item'Class
+         then
+            the_Exceptions.append (a_Type.view (Each));
+         end if;
+      end loop;
+
+      return the_Exceptions;
+   end all_Types;
+
+
+
+
+
+
+
    overriding
    function to_Source (Self : in Item) return text_Vectors.Vector
    is

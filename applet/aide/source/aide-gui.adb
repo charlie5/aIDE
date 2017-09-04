@@ -6,6 +6,7 @@ with
      aIDE.Palette.of_source_Entities,
      aIDE.Palette.of_pragmas,
      aIDE.Palette.of_exceptions,
+     aIDE.Palette.of_types,
 
      adaM.a_Pragma,
 
@@ -61,6 +62,7 @@ is
    the_source_entities_Palette : aIDE.Palette.of_source_entities.view;
    the_pragma_Palette          : aIDE.Palette.of_pragmas.view;
    the_exceptions_Palette      : aIDE.Palette.of_exceptions.view;
+   the_types_Palette           : aIDE.Palette.of_types.view;
 
 
    -- Main Widgets
@@ -348,6 +350,7 @@ is
       the_source_entities_Palette := aIDE.Palette.of_source_entities.to_source_entities_Palette;
       the_pragma_Palette          := aIDE.Palette.of_pragmas.to_source_entities_Palette;
       the_exceptions_Palette      := aIDE.Palette.of_exceptions.to_exceptions_Palette;
+      the_types_Palette           := aIDE.Palette.of_types.to_Palette;
 
 
       the_package_Editor := aIDE.Editor.of_package.Forge.to_package_Editor (the_applet_Package);
@@ -378,6 +381,19 @@ is
    begin
       the_packages_Palette.show (Invoked_by, Target);
    end show_packages_Palette;
+
+
+
+   procedure show_types_Palette (Invoked_by : in     Gtk.Button.gtk_Button;
+                                 Target     : access AdaM.a_Type.view)
+   is
+   begin
+      the_types_Palette.show (Invoked_by, Target);
+   end show_types_Palette;
+
+
+
+
 
 
    procedure show_source_entities_Palette (Invoked_by : in aIDE.Editor.view;

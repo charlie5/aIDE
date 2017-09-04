@@ -722,6 +722,7 @@ begin
          new_Subtype : constant AdaM.a_Type.a_subtype.view
            := AdaM.a_Type.a_subtype.new_Type (Name => "Natural");
       begin
+         new_Subtype.main_Type_is (Environ.find ("Integer"));
          standard_Package.Children.append (new_Subtype.all'Access);
       end add_Natural;
 
@@ -730,6 +731,7 @@ begin
          new_Subtype : constant AdaM.a_Type.a_subtype.view
            := AdaM.a_Type.a_subtype.new_Type (Name => "Positive");
       begin
+         new_Subtype.main_Type_is (Environ.find ("Integer"));
          standard_Package.Children.append (new_Subtype.all'Access);
       end add_Positive;
 

@@ -6,6 +6,7 @@ with
      AdaM.a_Pragma,
      AdaM.context_Line,
      AdaM.exception_Handler,
+     AdaM.a_Type.a_subtype,
 --       AdaM.Source,
      gtk.Button;
 
@@ -24,6 +25,11 @@ is
 
    procedure show_packages_Palette (Invoked_by : in     Gtk.Button.gtk_Button;
                                     Target     : in     AdaM.a_Package.view);
+
+
+   procedure show_types_Palette (Invoked_by : in     Gtk.Button.gtk_Button;
+                                 Target     : access AdaM.a_Type.view);
+
 
 --     procedure show_source_entities_Palette (Invoked_by : in aIDE.Editor.view;
 --                                             Target     : in AdaM.Source.Entities_view);
