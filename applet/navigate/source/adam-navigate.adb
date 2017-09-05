@@ -791,6 +791,10 @@ begin
          new_float_Type : constant AdaM.a_Type.floating_point_type.view
            := AdaM.a_Type.floating_point_type.new_Type (Name => "Short_Float");
       begin
+         new_float_Type.Digits_are (6);
+         new_float_Type.First_is   (long_long_Float (Short_Float'First));
+         new_float_Type.Last_is    (long_long_Float (Short_Float'Last));
+
          standard_Package.Children.append (new_float_Type.all'Access);
       end add_short_Float;
 

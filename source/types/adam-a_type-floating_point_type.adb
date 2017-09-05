@@ -77,6 +77,53 @@ is
    end to_Source;
 
 
+
+   function  my_Digits    (Self : in     Item)     return Positive
+   is
+   begin
+      return Self.my_Digits;
+   end my_Digits;
+
+
+   procedure Digits_are (Self : in out Item;   Now : in Positive)
+   is
+   begin
+      Self.my_Digits := Now;
+   end Digits_are;
+
+
+
+   function  First    (Self : in     Item)     return long_long_Float
+   is
+   begin
+      return Self.First;
+   end First;
+
+
+   procedure First_is (Self : in out Item;   Now : in long_long_Float)
+   is
+   begin
+      Self.First := Now;
+   end First_is;
+
+
+   function  Last    (Self : in     Item)     return long_long_Float
+   is
+   begin
+      return Self.Last;
+   end Last;
+
+
+   procedure Last_is (Self : in out Item;   Now : in long_long_Float)
+   is
+   begin
+      Self.Last := Now;
+   end Last_is;
+
+
+
+
+
    -- Streams
    --
 

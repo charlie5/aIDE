@@ -4,6 +4,7 @@ with
      aIDE.Editor.of_subtype,
      aIDE.Editor.of_enumeration_type,
      aIDE.Editor.of_signed_integer_type,
+     aIDE.Editor.of_float_type,
      aIDE.Editor.of_raw_source,
 
      AdaM.raw_Source,
@@ -12,6 +13,7 @@ with
      AdaM.a_Type.a_subtype,
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
+     AdaM.a_Type.floating_point_type,
 
      Ada.Tags;
 
@@ -80,6 +82,15 @@ is
          declare
             new_Editor : constant Editor.of_signed_integer_type.view
               := Editor.of_signed_integer_type.Forge.to_Editor (AdaM.a_Type.signed_integer_type.view (Target));
+         begin
+            Self := Editor.view (new_Editor);
+         end;
+
+      elsif Target.all in AdaM.a_Type.floating_point_type.item'Class
+      then
+         declare
+            new_Editor : constant Editor.of_float_type.view
+              := Editor.of_float_type.Forge.to_Editor (AdaM.a_Type.floating_point_type.view (Target));
          begin
             Self := Editor.view (new_Editor);
          end;

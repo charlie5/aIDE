@@ -31,11 +31,23 @@ is
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 
 
+   function  my_Digits  (Self : in     Item)     return Positive;
+   procedure Digits_are (Self : in out Item;   Now : in Positive);
+
+   function  First    (Self : in     Item)     return long_long_Float;
+   procedure First_is (Self : in out Item;   Now : in long_long_Float);
+
+   function  Last    (Self : in     Item)     return long_long_Float;
+   procedure Last_is (Self : in out Item;   Now : in long_long_Float);
+
+
 private
 
    type Item is new a_Type.real_Type with
       record
-         null;
+         my_Digits : Positive := 1;
+         First     : long_long_Float;
+         Last      : long_long_Float;
       end record;
 
 
