@@ -27,6 +27,26 @@ is
    end on_name_Entry_leave;
 
 
+   function on_first_Entry_leave (the_Entry : access Gtk_Entry_Record'Class;
+                                  Target    : in     AdaM.a_Type.floating_point_type.view) return Boolean
+   is
+      the_Text : constant String := the_Entry.Get_Text;
+   begin
+      Target.First_is (Long_Long_Float'Value (the_Text));
+      return False;
+   end on_first_Entry_leave;
+
+
+   function on_last_Entry_leave (the_Entry : access Gtk_Entry_Record'Class;
+                                 Target    : in     AdaM.a_Type.floating_point_type.view) return Boolean
+   is
+      the_Text : constant String := the_Entry.Get_Text;
+   begin
+      Target.Last_is (Long_Long_Float'Value (the_Text));
+      return False;
+   end on_last_Entry_leave;
+
+
 
    procedure on_rid_Button_clicked (the_Button : access Gtk_Button_Record'Class;
                                     the_Editor : in     aIDE.Editor.of_float_type.view)
@@ -129,6 +149,19 @@ is
                                        "value-changed",
                                        on_spin_Button_clicked'Access,
                                        Self);
+
+
+         Entry_return_Callbacks.connect (Self.first_Entry,
+                                         "focus-out-event",
+                                         on_first_Entry_leave'Access,
+                                         the_Target);
+
+         Entry_return_Callbacks.connect (Self.last_Entry,
+                                         "focus-out-event",
+                                         on_last_Entry_leave'Access,
+                                         the_Target);
+
+
 
 --           Label_return_Callbacks.Connect (Self.is_Label,
 --                                           "button-release-event",
