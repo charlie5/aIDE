@@ -54,7 +54,6 @@
           <object class="GtkSpinButton" id="digits_Spinbutton">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="orientation">vertical</property>
             <property name="adjustment">adjustment1</property>
             <property name="numeric">True</property>
           </object>

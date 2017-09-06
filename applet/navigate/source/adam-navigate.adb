@@ -803,6 +803,10 @@ begin
          new_float_Type : constant AdaM.a_Type.floating_point_type.view
            := AdaM.a_Type.floating_point_type.new_Type (Name => "Float");
       begin
+         new_float_Type.Digits_are (6);
+         new_float_Type.First_is   (long_long_Float (Float'First));
+         new_float_Type.Last_is    (long_long_Float (Float'Last));
+
          standard_Package.Children.append (new_float_Type.all'Access);
       end add_Float;
 
@@ -811,6 +815,10 @@ begin
          new_float_Type : constant AdaM.a_Type.floating_point_type.view
            := AdaM.a_Type.floating_point_type.new_Type (Name => "Long_Float");
       begin
+         new_float_Type.Digits_are (15);
+         new_float_Type.First_is   (long_long_Float (long_Float'First));
+         new_float_Type.Last_is    (long_long_Float (long_Float'Last));
+
          standard_Package.Children.append (new_float_Type.all'Access);
       end add_long_Float;
 
@@ -819,8 +827,13 @@ begin
          new_float_Type : constant AdaM.a_Type.floating_point_type.view
            := AdaM.a_Type.floating_point_type.new_Type (Name => "Long_Long_Float");
       begin
+         new_float_Type.Digits_are (18);
+         new_float_Type.First_is   (long_long_Float'First);
+         new_float_Type.Last_is    (long_long_Float'Last);
+
          standard_Package.Children.append (new_float_Type.all'Access);
       end add_long_long_Float;
+
 
       add_Character:
       declare

@@ -6,6 +6,7 @@ with
 
      gtk.Builder,
      gtk.Handlers;
+with Ada.Text_IO; use Ada.Text_IO;
 
 
 package body aIDE.Editor.of_float_type
@@ -43,6 +44,23 @@ is
 
    package Button_Callbacks is new Gtk.Handlers.User_Callback (Gtk_Button_Record,
                                                                aIDE.Editor.of_float_type.view);
+
+
+
+   procedure on_spin_Button_clicked (the_Button : access Gtk_Spin_Button_Record'Class;
+                                     the_Editor : in     aIDE.Editor.of_float_type.view)
+   is
+      pragma Unreferenced (the_Editor);
+      the_Value : Integer := Natural (the_Button.Get_Value);
+   begin
+      put_Line ("WHO hoooooo" & Natural'Image (the_Value));
+      the_Editor.Target.Digits_are (the_Value);
+--        the_Button.get_Parent.destroy;
+   end on_spin_Button_clicked;
+
+
+   package Spinbutton_Callbacks is new Gtk.Handlers.User_Callback (Gtk_Spin_Button_Record,
+                                                                   aIDE.Editor.of_float_type.view);
 
 
    function on_is_Label_clicked (the_Label : access Gtk_Label_Record'Class;
@@ -106,6 +124,11 @@ is
                                    "clicked",
                                    on_rid_Button_clicked'Access,
                                    Self);
+
+         Spinbutton_Callbacks.connect (Self.digits_Spinbutton,
+                                       "value-changed",
+                                       on_spin_Button_clicked'Access,
+                                       Self);
 
 --           Label_return_Callbacks.Connect (Self.is_Label,
 --                                           "button-release-event",
