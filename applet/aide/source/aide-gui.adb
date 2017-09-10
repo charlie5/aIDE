@@ -229,6 +229,10 @@ is
       glade_Builder : Gtk_Builder;
       Result        : Guint;         pragma Unreferenced (Result);
    begin
+--        put_Line ("************************************************");
+--        put_Line ("'" & Duration'Image (Duration'Delta) & "'");
+
+
       Gtk.Main.Init;
 
       Gtk_New (glade_Builder);

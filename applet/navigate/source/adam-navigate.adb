@@ -914,10 +914,13 @@ begin
 
       add_Duration:
       declare
+         use Ada.Strings,
+             Ada.Strings.fixed;
+
          new_ordinary_fixed_Type : constant AdaM.a_Type.ordinary_fixed_point_type.view
            := AdaM.a_Type.ordinary_fixed_point_type.new_Type (Name => "Duration");
       begin
-         new_ordinary_fixed_Type.Delta_is ("0.000000001");
+         new_ordinary_fixed_Type.Delta_is (Trim (Duration'Image (Duration'Delta), Left));
          new_ordinary_fixed_Type.First_is ("-((2 ** 63)     * 0.000000001)");
          new_ordinary_fixed_Type.Last_is  ("+((2 ** 63 - 1) * 0.000000001)");
 
