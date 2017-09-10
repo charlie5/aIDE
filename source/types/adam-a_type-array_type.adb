@@ -2,7 +2,7 @@ with
      AdaM.Factory;
 
 
-package body AdaM.a_Type.unconstrained_array_type
+package body AdaM.a_Type.array_type
 is
    --  Storage Pool
    --
@@ -11,11 +11,11 @@ is
    pool_Size      : constant := 5_000;
 
    package Pool is new AdaM.Factory.Pools (storage_Folder => ".adam-store",
-                                           pool_Name      => "unconstrained_array_types",
+                                           pool_Name      => "array_types",
                                            max_Items      => pool_Size,
                                            record_Version => record_Version,
-                                           Item           => unconstrained_array_type.item,
-                                           View           => unconstrained_array_type.view);
+                                           Item           => array_type.item,
+                                           View           => array_type.view);
 
    --  Forge
    --
@@ -37,17 +37,17 @@ is
 
 
 
-   function new_Type (Name : in String := "") return unconstrained_array_type.View
+   function new_Type (Name : in String := "") return array_type.View
    is
-      new_View : constant unconstrained_array_type.view := Pool.new_Item;
+      new_View : constant array_type.view := Pool.new_Item;
    begin
-      define (unconstrained_array_type.item (new_View.all), Name);
+      define (array_type.item (new_View.all), Name);
       return new_View;
    end new_Type;
 
 
 
-   procedure free (Self : in out unconstrained_array_type.view)
+   procedure free (Self : in out array_type.view)
    is
    begin
       destruct (a_Type.item (Self.all));
@@ -178,4 +178,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end AdaM.a_Type.unconstrained_array_type;
+end AdaM.a_Type.array_type;

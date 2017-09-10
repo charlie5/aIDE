@@ -2,7 +2,7 @@ with
      Ada.Streams;
 
 
-package AdaM.a_Type.unconstrained_array_type
+package AdaM.a_Type.array_type
 is
 
    type Item is new a_Type.composite_Type with private;
@@ -12,12 +12,12 @@ is
    --  Forge
    --
 
-   function  new_Type (Name : in     String := "") return unconstrained_array_type.view;
+   function  new_Type (Name : in     String := "") return array_type.view;
 
    overriding
    procedure destruct (Self : in out Item);
 
-   procedure free     (Self : in out unconstrained_array_type.view);
+   procedure free     (Self : in out array_type.view);
 
 
    --  Attributes
@@ -75,4 +75,4 @@ private
    for View'write use View_write;
    for View'read  use View_read;
 
-end AdaM.a_Type.unconstrained_array_type;
+end AdaM.a_Type.array_type;

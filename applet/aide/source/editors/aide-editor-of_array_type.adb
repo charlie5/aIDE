@@ -19,7 +19,7 @@ is
 
 
    function on_type_name_Entry_leave (the_Entry : access Gtk_Entry_Record'Class;
-                                      Target    : in     AdaM.a_Type.unconstrained_array_type.view) return Boolean
+                                      Target    : in     AdaM.a_Type.array_type.view) return Boolean
    is
       the_Text : constant String := the_Entry.Get_Text;
    begin
@@ -29,7 +29,7 @@ is
 
 
    function on_first_Entry_leave (the_Entry : access Gtk_Entry_Record'Class;
-                                  Target    : in     AdaM.a_Type.unconstrained_array_type.view) return Boolean
+                                  Target    : in     AdaM.a_Type.array_type.view) return Boolean
    is
       the_Text : constant String := the_Entry.Get_Text;
    begin
@@ -39,7 +39,7 @@ is
 
 
    function on_last_Entry_leave (the_Entry : access Gtk_Entry_Record'Class;
-                                 Target    : in     AdaM.a_Type.unconstrained_array_type.view) return Boolean
+                                 Target    : in     AdaM.a_Type.array_type.view) return Boolean
    is
       the_Text : constant String := the_Entry.Get_Text;
    begin
@@ -87,7 +87,7 @@ is
 
    package Entry_return_Callbacks is new Gtk.Handlers.User_Return_Callback (Gtk_Entry_Record,
                                                                             Boolean,
-                                                                            AdaM.a_Type.unconstrained_array_type.view);
+                                                                            AdaM.a_Type.array_type.view);
 
    package Button_Callbacks is new Gtk.Handlers.User_Callback (Gtk_Button_Record,
                                                                aIDE.Editor.of_array_type.view);
@@ -124,7 +124,7 @@ is
 
    package body Forge
    is
-      function to_Editor (the_Target : in AdaM.a_Type.unconstrained_array_type.view) return View
+      function to_Editor (the_Target : in AdaM.a_Type.array_type.view) return View
       is
          use AdaM,
              Glib;

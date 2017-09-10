@@ -15,7 +15,7 @@ with
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
      AdaM.a_Type.floating_point_type,
-     AdaM.a_Type.unconstrained_array_type,
+     AdaM.a_Type.array_type,
 
      Ada.Tags;
 
@@ -97,11 +97,11 @@ is
             Self := Editor.view (new_Editor);
          end;
 
-      elsif Target.all in AdaM.a_Type.unconstrained_array_type.item'Class
+      elsif Target.all in AdaM.a_Type.array_type.item'Class
       then
          declare
             new_Editor : constant Editor.of_array_type.view
-              := Editor.of_array_type.Forge.to_Editor (AdaM.a_Type.unconstrained_array_type.view (Target));
+              := Editor.of_array_type.Forge.to_Editor (AdaM.a_Type.array_type.view (Target));
          begin
             Self := Editor.view (new_Editor);
          end;

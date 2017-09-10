@@ -1,5 +1,5 @@
 with
-     AdaM.a_Type.unconstrained_array_type,
+     AdaM.a_Type.array_type,
      gtk.Widget;
 
 private
@@ -19,7 +19,7 @@ is
 
    package Forge
    is
-      function to_Editor (the_Target : in AdaM.a_Type.unconstrained_array_type.view) return View;
+      function to_Editor (the_Target : in AdaM.a_Type.array_type.view) return View;
    end Forge;
 
    overriding
@@ -37,7 +37,7 @@ private
 
    type Item is new Editor.item with
       record
-         Target               : AdaM.a_Type.unconstrained_array_type.view;
+         Target               : AdaM.a_Type.array_type.view;
 
          top_Box              : gtk_Box;
          type_name_Entry      : Gtk_Entry;

@@ -10,7 +10,7 @@ with
      AdaM.a_Type.signed_integer_type,
      AdaM.a_Type.a_subtype,
      AdaM.a_Type.floating_point_type,
-     AdaM.a_Type.unconstrained_array_type,
+     AdaM.a_Type.array_type,
      AdaM.a_Type.ordinary_fixed_point_type,
      AdaM.Declaration.of_exception,
      AdaM.Assist;
@@ -860,8 +860,8 @@ begin
 
       add_String:
       declare
-         new_array_Type : constant AdaM.a_Type.unconstrained_array_type.view
-           := AdaM.a_Type.unconstrained_array_type.new_Type (Name => "String");
+         new_array_Type : constant AdaM.a_Type.array_type.view
+           := AdaM.a_Type.array_type.new_Type (Name => "String");
 
          new_Pragma     : constant AdaM.a_Pragma.view
            := AdaM.a_Pragma.new_Pragma (Name => "Pack");
@@ -878,8 +878,8 @@ begin
 
       add_wide_String:
       declare
-         new_array_Type : constant AdaM.a_Type.unconstrained_array_type.view
-           := AdaM.a_Type.unconstrained_array_type.new_Type (Name => "Wide_String");
+         new_array_Type : constant AdaM.a_Type.array_type.view
+           := AdaM.a_Type.array_type.new_Type (Name => "Wide_String");
 
          new_Pragma     : constant AdaM.a_Pragma.view
            := AdaM.a_Pragma.new_Pragma (Name => "Pack");
@@ -896,8 +896,8 @@ begin
 
       add_wide_wide_String:
       declare
-         new_array_Type : constant AdaM.a_Type.unconstrained_array_type.view
-           := AdaM.a_Type.unconstrained_array_type.new_Type (Name => "Wide_Wide_String");
+         new_array_Type : constant AdaM.a_Type.array_type.view
+           := AdaM.a_Type.array_type.new_Type (Name => "Wide_Wide_String");
 
          new_Pragma     : constant AdaM.a_Pragma.view
            := AdaM.a_Pragma.new_Pragma (Name => "Pack");
