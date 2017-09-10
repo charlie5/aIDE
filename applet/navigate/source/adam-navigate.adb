@@ -677,7 +677,6 @@ begin
    add_package_Standard:
    declare
       standard_Package : constant AdaM.a_Package.view := AdaM.a_Package.new_Package ("Standard");
-
    begin
       current_compilation_Unit := AdaM.compilation_Unit.new_compilation_Unit (Name => "Standard");
       Environ.add (current_compilation_Unit);
@@ -863,24 +862,54 @@ begin
       declare
          new_array_Type : constant AdaM.a_Type.unconstrained_array_type.view
            := AdaM.a_Type.unconstrained_array_type.new_Type (Name => "String");
+
+         new_Pragma     : constant AdaM.a_Pragma.view
+           := AdaM.a_Pragma.new_Pragma (Name => "Pack");
       begin
+         new_array_Type.  index_Type_is (Environ.find ("Standard.Positive"));
+         new_array_Type.element_Type_is (Environ.find ("Standard.Character"));
+         new_array_Type.is_Constrained  (Now => False);
+
+         new_Pragma.add_Argument ("String");
+
          standard_Package.Children.append (new_array_Type.all'Access);
+         standard_Package.Children.append (new_Pragma.all'Access);
       end add_String;
 
       add_wide_String:
       declare
          new_array_Type : constant AdaM.a_Type.unconstrained_array_type.view
            := AdaM.a_Type.unconstrained_array_type.new_Type (Name => "Wide_String");
+
+         new_Pragma     : constant AdaM.a_Pragma.view
+           := AdaM.a_Pragma.new_Pragma (Name => "Pack");
       begin
+         new_array_Type.  index_Type_is (Environ.find ("Standard.Positive"));
+         new_array_Type.element_Type_is (Environ.find ("Standard.Wide_Character"));
+         new_array_Type.is_Constrained  (Now => False);
+
+         new_Pragma.add_Argument ("Wide_String");
+
          standard_Package.Children.append (new_array_Type.all'Access);
+         standard_Package.Children.append (new_Pragma.all'Access);
       end add_wide_String;
 
       add_wide_wide_String:
       declare
          new_array_Type : constant AdaM.a_Type.unconstrained_array_type.view
            := AdaM.a_Type.unconstrained_array_type.new_Type (Name => "Wide_Wide_String");
+
+         new_Pragma     : constant AdaM.a_Pragma.view
+           := AdaM.a_Pragma.new_Pragma (Name => "Pack");
       begin
+         new_array_Type.  index_Type_is (Environ.find ("Standard.Positive"));
+         new_array_Type.element_Type_is (Environ.find ("Standard.Wide_Wide_Character"));
+         new_array_Type.is_Constrained  (Now => False);
+
          standard_Package.Children.append (new_array_Type.all'Access);
+         standard_Package.Children.append (new_Pragma.all'Access);
+
+         new_Pragma.add_Argument ("Wide_Wide_String");
       end add_wide_wide_String;
 
       add_Duration:

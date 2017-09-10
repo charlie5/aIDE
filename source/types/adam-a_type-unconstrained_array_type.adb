@@ -77,6 +77,96 @@ is
    end to_Source;
 
 
+
+   function  index_Type      (Self : access Item)     return access AdaM.a_Type.view
+   is
+   begin
+      return Self.index_Type'Access;
+   end index_Type;
+
+
+   function  index_Type      (Self : in Item)     return AdaM.a_Type.view
+   is
+   begin
+      return Self.index_Type;
+   end index_Type;
+
+
+   procedure index_Type_is   (Self : in out Item;   Now : in AdaM.a_Type.view)
+   is
+   begin
+      Self.index_Type := Now;
+   end index_Type_is;
+
+
+
+   function  element_Type      (Self : access Item)     return access AdaM.a_Type.view
+   is
+   begin
+      return Self.element_Type'Access;
+   end element_Type;
+
+
+   function  element_Type    (Self : in Item)     return AdaM.a_Type.view
+   is
+   begin
+      return Self.element_Type;
+   end element_Type;
+
+
+   procedure element_Type_is (Self : in out Item;   Now : in AdaM.a_Type.view)
+   is
+   begin
+      Self.element_Type := Now;
+   end element_Type_is;
+
+
+
+   function  First    (Self : in     Item)     return String
+   is
+   begin
+      return +Self.First;
+   end First;
+
+
+   procedure First_is (Self : in out Item;   Now : in String)
+   is
+   begin
+      Self.First := +Now;
+   end First_is;
+
+
+   function  Last    (Self : in     Item)     return String
+   is
+   begin
+      return +Self.Last;
+   end Last;
+
+
+   procedure Last_is (Self : in out Item;   Now : in String)
+   is
+   begin
+      Self.Last := +Now;
+   end Last_is;
+
+
+
+   function  is_Constrained (Self : in     Item)     return Boolean
+   is
+   begin
+      return Self.is_Constrained;
+   end is_Constrained;
+
+
+   procedure is_Constrained (Self : in out Item;   Now : in Boolean := True)
+   is
+   begin
+      Self.is_Constrained := Now;
+   end is_Constrained;
+
+
+
+
    -- Streams
    --
 
