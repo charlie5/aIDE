@@ -77,6 +77,54 @@ is
    end to_Source;
 
 
+
+   function  my_Delta    (Self : in     Item)     return String
+   is
+   begin
+      return +Self.my_Delta;
+   end my_Delta;
+
+
+   procedure Delta_is (Self : in out Item;   Now : in String)
+   is
+   begin
+      Self.my_Delta := +Now;
+   end Delta_is;
+
+
+
+   function  First    (Self : in     Item)     return String
+   is
+   begin
+      return +Self.First;
+   end First;
+
+
+   procedure First_is (Self : in out Item;   Now : in String)
+   is
+   begin
+      Self.First := +Now;
+   end First_is;
+
+
+   function  Last    (Self : in     Item)     return String
+   is
+   begin
+      return +Self.Last;
+   end Last;
+
+
+   procedure Last_is (Self : in out Item;   Now : in String)
+   is
+   begin
+      Self.Last := +Now;
+   end Last_is;
+
+
+
+
+
+
    -- Streams
    --
 

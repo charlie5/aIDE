@@ -31,12 +31,24 @@ is
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 
 
+   function  my_Delta (Self : in     Item)     return String;
+   procedure Delta_is (Self : in out Item;   Now : in String);
+
+   function  First    (Self : in     Item)     return String;
+   procedure First_is (Self : in out Item;   Now : in String);
+
+   function  Last    (Self : in     Item)     return String;
+   procedure Last_is (Self : in out Item;   Now : in String);
+
+
 
 private
 
    type Item is new a_Type.fixed_Type with
       record
-         null;
+         my_Delta  : Text;
+         First     : Text;
+         Last      : Text;
       end record;
 
 
