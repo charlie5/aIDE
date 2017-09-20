@@ -1,5 +1,6 @@
 with
      aIDE.Editor.of_comment,
+     aIDE.Editor.of_exception,
      aIDE.Editor.of_pragma,
      aIDE.Editor.of_subtype,
      aIDE.Editor.of_enumeration_type,
@@ -12,6 +13,7 @@ with
      AdaM.raw_Source,
      AdaM.Comment,
      AdaM.a_Pragma,
+     AdaM.Declaration.of_exception,
      AdaM.a_Type.a_subtype,
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
@@ -59,6 +61,14 @@ is
       then
          declare
             new_Editor : constant Editor.of_pragma.view := Editor.of_pragma.Forge.new_Editor (AdaM.a_Pragma.view (Target));
+         begin
+            Self := Editor.view (new_Editor);
+         end;
+
+      elsif Target.all in AdaM.Declaration.of_exception.item'Class
+      then
+         declare
+            new_Editor : constant Editor.of_exception.view := Editor.of_exception.Forge.new_Editor (AdaM.Declaration.of_exception.view (Target));
          begin
             Self := Editor.view (new_Editor);
          end;

@@ -975,7 +975,7 @@ begin
 
       --     for I in 1 .. 1 loop -- CMD.Argument_Count loop
       declare
-         Prefix : constant String   := "/usr/lib/gcc/x86_64-pc-linux-gnu/7.1.1/adainclude/";
+         Prefix : constant String   := "/usr/lib/gcc/x86_64-pc-linux-gnu/7.2.0/adainclude/";
          Arg    : constant String   := Each.all;
          Unit   : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, Prefix & Arg);
          --           Unit : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, "standard.ads");
