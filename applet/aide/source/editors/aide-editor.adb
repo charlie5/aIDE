@@ -8,12 +8,14 @@ with
      aIDE.Editor.of_fixed_type,
      aIDE.Editor.of_float_type,
      aIDE.Editor.of_array_type,
+     aIDE.Editor.of_object,
      aIDE.Editor.of_raw_source,
 
      AdaM.raw_Source,
      AdaM.Comment,
      AdaM.a_Pragma,
      AdaM.Declaration.of_exception,
+     AdaM.Declaration.of_object,
      AdaM.a_Type.a_subtype,
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
@@ -69,6 +71,14 @@ is
       then
          declare
             new_Editor : constant Editor.of_exception.view := Editor.of_exception.Forge.new_Editor (AdaM.Declaration.of_exception.view (Target));
+         begin
+            Self := Editor.view (new_Editor);
+         end;
+
+      elsif Target.all in AdaM.Declaration.of_object.item'Class
+      then
+         declare
+            new_Editor : constant Editor.of_object.view := Editor.of_object.Forge.new_Editor (AdaM.Declaration.of_object.view (Target));
          begin
             Self := Editor.view (new_Editor);
          end;

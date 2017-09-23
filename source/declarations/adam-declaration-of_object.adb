@@ -96,6 +96,14 @@ is
    end my_Type;
 
 
+   function  my_Type (Self : access Item)     return access AdaM.a_Type.view
+   is
+   begin
+      return Self.my_Type'Access;
+   end my_Type;
+
+
+
    procedure Initialiser_is (Self : in out Item;   Now : in String)
    is
    begin
