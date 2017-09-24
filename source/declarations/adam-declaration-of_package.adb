@@ -312,6 +312,7 @@ is
 
    function requires_Body (Self : in Item) return Boolean
    is
+      pragma Unreferenced (Self);
 --        use AdaM.Source.utility;
    begin
       return False; -- contains_Subprograms (Self.public_Entities);

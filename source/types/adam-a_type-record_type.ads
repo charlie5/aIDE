@@ -27,6 +27,7 @@ is
    function  Id (Self : access Item) return AdaM.Id;
 
 
+   overriding
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 
 
