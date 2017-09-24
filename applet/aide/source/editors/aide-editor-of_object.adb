@@ -1,12 +1,11 @@
 with
      aIDE.GUI,
-     aIDE.Editor.of_enumeration_literal,
-     AdaM.a_Type.enumeration_literal,
 
      glib.Error,
 
      gtk.Builder,
      gtk.Handlers;
+
 with Ada.Text_IO; use Ada.Text_IO;
 
 
@@ -18,51 +17,35 @@ is
        glib.Error;
 
 
-   function on_type_name_Entry_leave (the_Entry : access Gtk_Entry_Record'Class;
+   function on_name_Entry_leave (the_Entry : access Gtk_Entry_Record'Class;
                                       Target    : in     AdaM.Declaration.of_object.view) return Boolean
    is
       the_Text : constant String := the_Entry.Get_Text;
    begin
       Target.Name_is (AdaM.Identifier (the_Text));
       return False;
-   end on_type_name_Entry_leave;
+   end on_name_Entry_leave;
 
 
-   function on_first_Entry_leave (the_Entry : access Gtk_Entry_Record'Class;
-                                  Target    : in     AdaM.Declaration.of_object.view) return Boolean
+
+   function on_initialiser_Entry_leave (the_Entry : access Gtk_Entry_Record'Class;
+                                        Target    : in     AdaM.Declaration.of_object.view) return Boolean
    is
       the_Text : constant String := the_Entry.Get_Text;
    begin
       Target.Initialiser_is (the_Text);
       return False;
-   end on_first_Entry_leave;
+   end on_initialiser_Entry_leave;
 
 
 
-   procedure on_index_type_Button_clicked (the_Entry  : access Gtk_Button_Record'Class;
-                                                the_Editor : in     aIDE.Editor.of_object.view) --  return Boolean
+   procedure on_type_Button_clicked (the_Entry  : access Gtk_Button_Record'Class;
+                                     the_Editor : in     aIDE.Editor.of_object.view)
    is
---        the_Text : constant String := the_Entry.get_Text;
    begin
-      put_Line ("YAYAYAYAY5");
       aIDE.GUI.show_types_Palette (Invoked_by => the_Entry.all'Access,
                                    Target     => the_Editor.Target.my_Type);
---        Target.Name_is (the_Text);
---        return False;
-   end on_index_type_Button_clicked;
-
-
-
---     procedure on_element_type_Button_clicked (the_Entry  : access Gtk_Button_Record'Class;
---                                               the_Editor : in     aIDE.Editor.of_array_type.view) --  return Boolean
---     is
---  --        the_Text : constant String := the_Entry.get_Text;
---     begin
---        aIDE.GUI.show_types_Palette (Invoked_by => the_Entry.all'Access,
---                                     Target     => the_Editor.Target.element_Type);
---     end on_element_type_Button_clicked;
-
-
+   end on_type_Button_clicked;
 
 
 
@@ -84,8 +67,8 @@ is
                                                                aIDE.Editor.of_object.view);
 
 
-   function on_unconstrained_Label_clicked (the_Label : access Gtk_Label_Record'Class;
-                                            Self      : in     aIDE.Editor.of_object.view) return Boolean
+   function on_colon_Label_clicked (the_Label : access Gtk_Label_Record'Class;
+                                    Self      : in     aIDE.Editor.of_object.view) return Boolean
    is
       pragma Unreferenced (the_Label);
    begin
@@ -93,11 +76,11 @@ is
       Self.freshen;
 
       return False;
-   end on_unconstrained_Label_clicked;
+   end on_colon_Label_clicked;
 
 
 
-   function on_constrained_Label_clicked (the_Label : access Gtk_Label_Record'Class;
+   function on_initialiser_Label_clicked (the_Label : access Gtk_Label_Record'Class;
                                           Self      : in     aIDE.Editor.of_object.view) return Boolean
    is
       pragma Unreferenced (the_Label);
@@ -106,7 +89,7 @@ is
       Self.freshen;
 
       return False;
-   end on_constrained_Label_clicked;
+   end on_initialiser_Label_clicked;
 
 
    package Label_return_Callbacks is new Gtk.Handlers.User_Return_Callback (Gtk_Label_Record,
@@ -154,23 +137,22 @@ is
 
          Entry_return_Callbacks.connect (Self.name_Entry,
                                          "focus-out-event",
-                                         on_type_name_Entry_leave'Access,
+                                         on_name_Entry_leave'Access,
                                          the_Target);
 
          Self.initializer_Entry.set_Text (Self.Target.Initialiser);
 
          Entry_return_Callbacks.connect (Self.initializer_Entry,
                                          "focus-out-event",
-                                         on_first_Entry_leave'Access,
+                                         on_initialiser_Entry_leave'Access,
                                          the_Target);
 
          Self.type_Button.set_Label (+Self.Target.my_Type.Name);
 
          button_Callbacks.connect (Self.type_Button,
                                    "clicked",
-                                   on_index_type_Button_clicked'Access,
+                                   on_type_Button_clicked'Access,
                                    Self);
-
 
          Button_Callbacks.Connect (Self.rid_Button,
                                    "clicked",
@@ -179,12 +161,12 @@ is
 
          Label_return_Callbacks.Connect (Self.colon_Label,
                                          "button-release-event",
-                                         on_unconstrained_Label_clicked'Access,
+                                         on_colon_Label_clicked'Access,
                                          Self);
 
          Label_return_Callbacks.Connect (Self.initializer_Label,
                                          "button-release-event",
-                                         on_constrained_Label_clicked'Access,
+                                         on_initialiser_Label_clicked'Access,
                                          Self);
 
          Self.freshen;
