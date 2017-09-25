@@ -4,9 +4,9 @@ with
 
 private
 with
-     AdaM.subprogram_renaming_Declaration,
-     AdaM.   package_renaming_Declaration,
-     AdaM.   generic_renaming_Declaration;
+     AdaM.Declaration.of_renaming.a_subprogram,
+     AdaM.Declaration.of_renaming.a_package,
+     AdaM.Declaration.of_renaming.a_generic;
 
 
 package AdaM.library_Unit.renaming_declaration
@@ -39,6 +39,7 @@ is
    --
    function  new_Subprogram         return library_Unit.renaming_declaration.view;
    procedure free           (Self : in out library_Unit.renaming_declaration.view);
+   overriding
    procedure destruct       (Self : in out library_Unit.renaming_declaration.item);
 
 
@@ -61,13 +62,13 @@ private
          case Kind
          is
             when package_renaming_Declaration =>
-               of_package_Renaming    : AdaM.package_renaming_Declaration.view;
+               of_package_Renaming    : AdaM.Declaration.of_renaming.a_package.view;
 
             when generic_renaming_Declaration =>
-               of_generic_Renaming    : AdaM.generic_renaming_Declaration.view;
+               of_generic_Renaming    : AdaM.Declaration.of_renaming.a_generic.view;
 
             when subprogram_renaming_Declaration =>
-               of_subprogram_Renaming : AdaM.subprogram_renaming_Declaration.view;
+               of_subprogram_Renaming : AdaM.Declaration.of_renaming.a_subprogram.view;
          end case;
       end record;
 

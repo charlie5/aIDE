@@ -2,8 +2,6 @@ with
      Ada.Tags,
      AdaM.Factory;
 
-with Ada.Text_IO; use Ada.Text_IO;
-
 
 package body AdaM.Entity
 is
@@ -51,14 +49,14 @@ is
 
 
 
-   function to_spec_Source (Self : in Item) return text_Vectors.Vector
-   is
-      pragma Unreferenced (Self);
-      the_Source : text_Vectors.Vector;
-   begin
-      raise Program_Error with "TODO";
-      return the_Source;
-   end to_spec_Source;
+--     function to_spec_Source (Self : in Item) return text_Vectors.Vector
+--     is
+--        pragma Unreferenced (Self);
+--        the_Source : text_Vectors.Vector;
+--     begin
+--        raise Program_Error with "TODO";
+--        return the_Source;
+--     end to_spec_Source;
 
 
 

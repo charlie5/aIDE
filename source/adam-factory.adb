@@ -161,7 +161,7 @@ is
       function to_Id (From : in View) return AdaM.Id
       is
          Start  : constant View    := Pool (Pool'First)'Access;
-         the_Id :          AdaM.Id := AdaM.Id (From - Start) + 1;
+         the_Id : constant AdaM.Id := AdaM.Id (From - Start) + 1;
       begin
          if the_Id not in item_Id
          then

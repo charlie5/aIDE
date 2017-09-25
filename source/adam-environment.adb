@@ -65,6 +65,7 @@ is
       the_Types  : AdaM.a_Type.Vector;
 
       the_Unit   : AdaM.compilation_Unit.view;
+      pragma Unreferenced (the_Unit);
 --        the_Entity : AdaM.Source.Entity_View;
 
       use type AdaM.a_Type.view;
@@ -240,13 +241,13 @@ is
       the_Unit   : AdaM.compilation_Unit.view;
 --        the_Entity : AdaM.Source.Entity_View;
 
-      Depth      : Natural := 0;
-
-      function Indent return String
-      is
-      begin
-         return Depth * "   ";
-      end Indent;
+--        Depth      : Natural := 0;
+--
+--        function Indent return String
+--        is
+--        begin
+--           return Depth * "   ";
+--        end Indent;
 
    begin
       put_Line ("Environment:");

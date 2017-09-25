@@ -2,8 +2,6 @@ with
      AdaM.Block,
      AdaM.Factory;
 
-with Ada.Text_IO; use Ada.Text_IO;
-
 
 package body AdaM.exception_Handler
 is
