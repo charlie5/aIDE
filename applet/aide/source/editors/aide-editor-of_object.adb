@@ -72,6 +72,35 @@ is
    is
       pragma Unreferenced (the_Label);
    begin
+      if    not Self.Target.is_Aliased
+        and not Self.Target.is_Constant
+      then
+         Self.Target.is_Aliased  (now => True);
+         Self.Target.is_Constant (now => False);
+
+      elsif     Self.Target.is_Aliased
+        and not Self.Target.is_Constant
+      then
+         Self.Target.is_Aliased  (now => False);
+         Self.Target.is_Constant (now => True);
+
+      elsif not Self.Target.is_Aliased
+        and     Self.Target.is_Constant
+      then
+         Self.Target.is_Aliased  (now => True);
+         Self.Target.is_Constant (now => True);
+
+      elsif     Self.Target.is_Aliased
+        and     Self.Target.is_Constant
+      then
+         Self.Target.is_Aliased  (now => False);
+         Self.Target.is_Constant (now => False);
+
+      else
+         raise Program_Error;
+      end if;
+
+      put_Line ("YAY");
 --        Self.Target.is_Constrained;
       Self.freshen;
 
@@ -85,6 +114,7 @@ is
    is
       pragma Unreferenced (the_Label);
    begin
+      put_Line ("YAY2");
 --        Self.Target.is_Constrained (Now => False);
       Self.freshen;
 
@@ -126,6 +156,7 @@ is
          Self.type_Button    := Gtk_Button (the_Builder.get_Object ("type_Button"));
 
          Self.   colon_Label := Gtk_Label (the_Builder.get_Object ("colon_Label"));
+         Self. aliased_Label := Gtk_Label (the_Builder.get_Object ("aliased_Label"));
          Self.constant_Label := Gtk_Label (the_Builder.get_Object ("constant_Label"));
 
          Self.initializer_Label := Gtk_Label  (the_Builder.get_Object ("initializer_Label"));
@@ -191,20 +222,19 @@ is
 --        the_Literals   : AdaM.a_Type.enumeration_literal.vector renames Self.Target.Literals;
 --        literal_Editor : aIDE.Editor.of_enumeration_literal.view;
    begin
---        if Self.Target.is_Constrained
---        then
---           Self.unconstrained_Label.hide;
---           Self.  constrained_Label.show;
---           Self.first_Entry.show;
---           Self.last_Entry.show;
---        else
---           Self.first_Entry.hide;
---           Self.last_Entry.hide;
---           Self.  constrained_Label.hide;
---           Self.unconstrained_Label.show;
---        end if;
+      if Self.Target.is_Aliased
+      then
+         Self.aliased_Label.show;
+      else
+         Self.aliased_Label.hide;
+      end if;
 
-      null;
+      if Self.Target.is_Constant
+      then
+         Self.constant_Label.show;
+      else
+         Self.constant_Label.hide;
+      end if;
 
 --        Self.first_Entry.set_Text (Self.Target.First);
 --        Self.last_Entry .set_Text (Self.Target.Last);

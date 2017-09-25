@@ -67,6 +67,20 @@ is
    end Id;
 
 
+   procedure is_Aliased (Self : in out Item;   Now : in Boolean := True)
+   is
+   begin
+      Self.is_Aliased := Now;
+   end is_Aliased;
+
+
+   function  is_Aliased (Self : in     Item) return Boolean
+   is
+   begin
+      return Self.is_Aliased;
+   end is_Aliased;
+
+
    procedure is_Constant (Self : in out Item;   Now : in Boolean := True)
    is
    begin

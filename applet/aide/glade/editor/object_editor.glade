@@ -34,10 +34,10 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="constant_Label">
+          <object class="GtkLabel" id="aliased_Label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">constant </property>
+            <property name="label" translatable="yes">aliased </property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -46,11 +46,10 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="type_Button">
-            <property name="label" translatable="yes">&lt;any discrete Type&gt;</property>
+          <object class="GtkLabel" id="constant_Label">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">constant </property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -59,15 +58,29 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="initializer_Label">
+          <object class="GtkButton" id="type_Button">
+            <property name="label" translatable="yes">&lt;any Type&gt;</property>
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label" translatable="yes"> := </property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="initializer_Label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes"> := </property>
+            <property name="selectable">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">5</property>
           </packing>
         </child>
         <child>
@@ -79,7 +92,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">5</property>
+            <property name="position">6</property>
           </packing>
         </child>
         <child>

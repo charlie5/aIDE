@@ -43,6 +43,7 @@ private
          name_Entry        : Gtk_Entry;
          type_Button       : gtk_Button;
          colon_Label       : gtk_Label;
+         aliased_Label     : gtk_Label;
          constant_Label    : gtk_Label;
          initializer_Label : gtk_Label;
          initializer_Entry : Gtk_Entry;

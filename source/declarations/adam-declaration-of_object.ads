@@ -45,6 +45,9 @@ is
    overriding
    function Id (Self : access Item) return AdaM.Id;
 
+   procedure is_Aliased  (Self : in out Item;   Now : in Boolean := True);
+   function  is_Aliased  (Self : in     Item)     return Boolean;
+
    procedure is_Constant (Self : in out Item;   Now : in Boolean := True);
    function  is_Constant (Self : in     Item)     return Boolean;
 
@@ -60,7 +63,8 @@ private
 
    type Item is new Declaration.item with
       record
-         is_Constant : Boolean             := False;
+         is_Aliased  : Boolean            := False;
+         is_Constant : Boolean            := False;
          my_Type     : aliased a_Type.view;
          Initialiser : Text;
       end record;
