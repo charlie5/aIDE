@@ -24,7 +24,6 @@ with Langkit_Support.Diagnostics;
 with Langkit_Support.Text;
 with Libadalang.Analysis;
 
-with Put_Title;
 with ada.Wide_Wide_Text_IO;
 with ada.Characters.Conversions;
 
