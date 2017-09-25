@@ -13,6 +13,8 @@ is
 
    type Item is tagged private;
 
+   procedure add_package_Standard (Self : in out Item);
+
    procedure add   (Self : in out Item;   Unit : in compilation_Unit.view);
    procedure clear (Self : in out Item);
 
