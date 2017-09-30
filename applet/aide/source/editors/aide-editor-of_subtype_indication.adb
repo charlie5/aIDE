@@ -116,14 +116,14 @@ is
 
          Gtk_New (the_Builder);
 
-         Result := the_Builder.Add_From_File ("glade/editor/array_type_editor.glade", Error'Access);
+         Result := the_Builder.Add_From_File ("glade/editor/subtype_indication_editor.glade", Error'Access);
 
          if Error /= null then
             raise Program_Error with "Error: adam.Editor.of_enumeration_type ~ " & Get_Message (Error);
          end if;
 
          Self.top_Box             := gtk_Box    (the_Builder.get_Object ("top_Box"));
-         Self.index_type_Button   := Gtk_Button (the_Builder.get_Object ("index_type_Button"));
+         Self.type_Button   := Gtk_Button (the_Builder.get_Object ("index_type_Button"));
 
          Self.unconstrained_Label := Gtk_Label (the_Builder.get_Object ("unconstrained_Label"));
          Self.  constrained_Label := Gtk_Label (the_Builder.get_Object (  "constrained_Label"));
@@ -148,9 +148,9 @@ is
                                          the_Target);
 
 
-         Self.index_type_Button.set_Label (+Self.Target.main_Type.Name);
+         Self.type_Button.set_Label (+Self.Target.main_Type.Name);
 
-         button_Callbacks.connect (Self.index_type_Button,
+         button_Callbacks.connect (Self.type_Button,
                                    "clicked",
                                    on_index_type_Button_clicked'Access,
                                    Self);

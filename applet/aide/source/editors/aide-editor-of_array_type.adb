@@ -148,13 +148,14 @@ is
 
          Self.top_Box             := gtk_Box    (the_Builder.get_Object ("top_Box"));
          Self.type_name_Entry     := Gtk_Entry  (the_Builder.get_Object ("type_name_Entry"));
-         Self.index_type_Button   := Gtk_Button (the_Builder.get_Object ("index_type_Button"));
-
-         Self.unconstrained_Label := Gtk_Label (the_Builder.get_Object ("unconstrained_Label"));
-         Self.  constrained_Label := Gtk_Label (the_Builder.get_Object (  "constrained_Label"));
-
-         Self.first_Entry         := Gtk_Entry  (the_Builder.get_Object ("first_Entry"));
-         Self. last_Entry         := Gtk_Entry  (the_Builder.get_Object ( "last_Entry"));
+         Self.index_Box           := gtk_Box    (the_Builder.get_Object ("index_Box"));
+--           Self.index_type_Button   := Gtk_Button (the_Builder.get_Object ("index_type_Button"));
+--
+--           Self.unconstrained_Label := Gtk_Label (the_Builder.get_Object ("unconstrained_Label"));
+--           Self.  constrained_Label := Gtk_Label (the_Builder.get_Object (  "constrained_Label"));
+--
+--           Self.first_Entry         := Gtk_Entry  (the_Builder.get_Object ("first_Entry"));
+--           Self. last_Entry         := Gtk_Entry  (the_Builder.get_Object ( "last_Entry"));
          Self.element_type_Button := Gtk_Button (the_Builder.get_Object ("element_type_Button"));
          Self.rid_Button          := gtk_Button (the_Builder.get_Object ("rid_Button"));
 
@@ -165,28 +166,30 @@ is
                                          on_type_name_Entry_leave'Access,
                                          the_Target);
 
-         Self.first_Entry.set_Text (Self.Target.index_Indication.First);
+         Self.index_Box.pack_Start (aIDE.Editor.to_Editor (Self.Target.index_Indication.all'Access).top_Widget);
 
-         Entry_return_Callbacks.connect (Self.first_Entry,
-                                         "focus-out-event",
-                                         on_first_Entry_leave'Access,
-                                         the_Target);
-
-         Self.last_Entry.set_Text (Self.Target.index_Indication.Last);
-
-         Entry_return_Callbacks.connect (Self.last_Entry,
-                                         "focus-out-event",
-                                         on_last_Entry_leave'Access,
-                                         the_Target);
-
-
-
-         Self.index_type_Button.set_Label (+Self.Target.index_Indication.main_Type.Name);
-
-         button_Callbacks.connect (Self.index_type_Button,
-                                   "clicked",
-                                   on_index_type_Button_clicked'Access,
-                                   Self);
+--           Self.first_Entry.set_Text (Self.Target.index_Indication.First);
+--
+--           Entry_return_Callbacks.connect (Self.first_Entry,
+--                                           "focus-out-event",
+--                                           on_first_Entry_leave'Access,
+--                                           the_Target);
+--
+--           Self.last_Entry.set_Text (Self.Target.index_Indication.Last);
+--
+--           Entry_return_Callbacks.connect (Self.last_Entry,
+--                                           "focus-out-event",
+--                                           on_last_Entry_leave'Access,
+--                                           the_Target);
+--
+--
+--
+--           Self.index_type_Button.set_Label (+Self.Target.index_Indication.main_Type.Name);
+--
+--           button_Callbacks.connect (Self.index_type_Button,
+--                                     "clicked",
+--                                     on_index_type_Button_clicked'Access,
+--                                     Self);
 
 
          Self.element_type_Button.set_Label (+Self.Target.element_Indication.main_Type.Name);
@@ -202,15 +205,15 @@ is
                                    on_rid_Button_clicked'Access,
                                    Self);
 
-         Label_return_Callbacks.Connect (Self.unconstrained_Label,
-                                         "button-release-event",
-                                         on_unconstrained_Label_clicked'Access,
-                                         Self);
-
-         Label_return_Callbacks.Connect (Self.constrained_Label,
-                                         "button-release-event",
-                                         on_constrained_Label_clicked'Access,
-                                         Self);
+--           Label_return_Callbacks.Connect (Self.unconstrained_Label,
+--                                           "button-release-event",
+--                                           on_unconstrained_Label_clicked'Access,
+--                                           Self);
+--
+--           Label_return_Callbacks.Connect (Self.constrained_Label,
+--                                           "button-release-event",
+--                                           on_constrained_Label_clicked'Access,
+--                                           Self);
 
          Self.freshen;
 
@@ -219,11 +222,13 @@ is
    end Forge;
 
 
+
    procedure destroy_Callback (Widget : not null access Gtk.Widget.Gtk_Widget_Record'Class)
    is
    begin
       Widget.destroy;
    end destroy_Callback;
+
 
 
    overriding
@@ -234,18 +239,20 @@ is
 --        the_Literals   : AdaM.a_Type.enumeration_literal.vector renames Self.Target.Literals;
 --        literal_Editor : aIDE.Editor.of_enumeration_literal.view;
    begin
-      if Self.Target.is_Constrained
-      then
-         Self.unconstrained_Label.hide;
-         Self.  constrained_Label.show;
-         Self.first_Entry.show;
-         Self.last_Entry.show;
-      else
-         Self.first_Entry.hide;
-         Self.last_Entry.hide;
-         Self.  constrained_Label.hide;
-         Self.unconstrained_Label.show;
-      end if;
+--        if Self.Target.is_Constrained
+--        then
+--           Self.unconstrained_Label.hide;
+--           Self.  constrained_Label.show;
+--           Self.first_Entry.show;
+--           Self.last_Entry.show;
+--        else
+--           Self.first_Entry.hide;
+--           Self.last_Entry.hide;
+--           Self.  constrained_Label.hide;
+--           Self.unconstrained_Label.show;
+--        end if;
+
+      null;
 
 --        Self.first_Entry.set_Text (Self.Target.First);
 --        Self.last_Entry .set_Text (Self.Target.Last);

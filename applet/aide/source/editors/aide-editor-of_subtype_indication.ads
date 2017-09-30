@@ -40,7 +40,7 @@ private
          Target               : AdaM.subtype_Indication.view;
 
          top_Box              : gtk_Box;
-         index_type_Button    : gtk_Button;
+         type_Button          : gtk_Button;
          unconstrained_Label  : gtk_Label;
          constrained_Label    : gtk_Label;
          first_Entry          : Gtk_Entry;

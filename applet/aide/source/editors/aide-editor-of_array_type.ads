@@ -41,11 +41,12 @@ private
 
          top_Box              : gtk_Box;
          type_name_Entry      : Gtk_Entry;
-         index_type_Button    : gtk_Button;
-         unconstrained_Label  : gtk_Label;
-         constrained_Label    : gtk_Label;
-         first_Entry          : Gtk_Entry;
-         last_Entry           : Gtk_Entry;
+         index_Box            : gtk_Box;
+--           index_type_Button    : gtk_Button;
+--           unconstrained_Label  : gtk_Label;
+--           constrained_Label    : gtk_Label;
+--           first_Entry          : Gtk_Entry;
+--           last_Entry           : Gtk_Entry;
          element_type_Button  : gtk_Button;
          rid_Button           : gtk_Button;
       end record;
