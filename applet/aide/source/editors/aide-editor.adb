@@ -8,6 +8,7 @@ with
      aIDE.Editor.of_fixed_type,
      aIDE.Editor.of_float_type,
      aIDE.Editor.of_array_type,
+     aIDE.Editor.of_subtype_indication,
      aIDE.Editor.of_object,
      aIDE.Editor.of_raw_source,
 
@@ -22,6 +23,7 @@ with
      AdaM.a_Type.ordinary_fixed_point_type,
      AdaM.a_Type.floating_point_type,
      AdaM.a_Type.array_type,
+     AdaM.subtype_Indication,
 
      Ada.Tags;
 
@@ -133,6 +135,15 @@ is
          declare
             new_Editor : constant Editor.of_array_type.view
               := Editor.of_array_type.Forge.to_Editor (AdaM.a_Type.array_type.view (Target));
+         begin
+            Self := Editor.view (new_Editor);
+         end;
+
+      elsif Target.all in AdaM.subtype_Indication.item'Class
+      then
+         declare
+            new_Editor : constant Editor.of_subtype_indication.view
+              := Editor.of_subtype_indication.Forge.to_Editor (AdaM.subtype_Indication.view (Target));
          begin
             Self := Editor.view (new_Editor);
          end;

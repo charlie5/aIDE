@@ -384,7 +384,7 @@ is
          end if;
       end loop;
 
-      put_Line ("*** NOT FOUND ***");
+      put_Line (String (Named) & " NOT FOUND in package " & (+Self.Name));
       return null;
    end find;
 
@@ -406,7 +406,7 @@ is
          end if;
       end loop;
 
-      put_Line ("*** NOT FOUND ***");
+      put_Line (String (Named) & " NOT FOUND in package " & (+Self.Name));
       return null;
    end find;
 

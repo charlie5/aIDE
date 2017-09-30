@@ -384,9 +384,9 @@ is
          new_Subtype : constant AdaM.a_Type.a_subtype.view
            := AdaM.a_Type.a_subtype.new_Subtype (Name => "Natural");
       begin
-         new_Subtype.main_Type_is (Self.find ("Integer"));
-         new_Subtype.First_is ("0");
-         new_Subtype.Last_is  ("Integer'Last");
+         new_Subtype.Indication.main_Type_is (Self.find ("Integer"));
+         new_Subtype.Indication.First_is ("0");
+         new_Subtype.Indication.Last_is  ("Integer'Last");
 
          standard_Package.Children.append (new_Subtype.all'Access);
       end add_Natural;
@@ -396,9 +396,9 @@ is
          new_Subtype : constant AdaM.a_Type.a_subtype.view
            := AdaM.a_Type.a_subtype.new_Subtype (Name => "Positive");
       begin
-         new_Subtype.main_Type_is (Self.find ("Integer"));
-         new_Subtype.First_is ("1");
-         new_Subtype.Last_is  ("Integer'Last");
+         new_Subtype.Indication.main_Type_is (Self.find ("Integer"));
+         new_Subtype.Indication.First_is ("1");
+         new_Subtype.Indication.Last_is  ("Integer'Last");
 
          standard_Package.Children.append (new_Subtype.all'Access);
       end add_Positive;

@@ -35,7 +35,7 @@ is
    begin
       put_Line ("YAYAYAYAY");
       aIDE.GUI.show_types_Palette (Invoked_by => the_Entry.all'Access,
-                                   Target     => the_Editor.Target.main_Type);
+                                   Target     => the_Editor.Target.Indication.main_Type);
 --        Target.Name_is (the_Text);
 --        return False;
    end on_type_name_Button_clicked;
@@ -117,7 +117,7 @@ is
                                          on_subtype_name_Entry_leave'Access,
                                          the_Target);
 
-         Self.type_name_Button.set_Label (+Self.Target.main_Type.Name);
+         Self.type_name_Button.set_Label (+Self.Target.Indication.main_Type.Name);
 
          button_Callbacks.connect (Self.type_name_Button,
                                    "clicked",
@@ -155,8 +155,8 @@ is
 --        the_Literals   : AdaM.a_Type.enumeration_literal.vector renames Self.Target.Literals;
 --        literal_Editor : aIDE.Editor.of_enumeration_literal.view;
    begin
-      Self.first_Entry.set_Text (Self.Target.First);
-      Self.last_Entry .set_Text (Self.Target.Last);
+      Self.first_Entry.set_Text (Self.Target.Indication.First);
+      Self.last_Entry .set_Text (Self.Target.Indication.Last);
 --        Self.literals_Box.Foreach (destroy_Callback'Access);
 
 --        for Each of the_Literals

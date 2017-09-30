@@ -79,57 +79,65 @@ is
 
 
 
-   function  First    (Self : in     Item)     return String
+   function  Indication (Self : in    Item)        return AdaM.subtype_Indication.view
    is
    begin
-      return Self.Indication.First;
-   end First;
-
-
-   procedure First_is (Self : in out Item;   Now : in String)
-   is
-   begin
-      Self.Indication.First_is (Now);
-   end First_is;
-
-
-   function  Last    (Self : in     Item)     return String
-   is
-   begin
-      return Self.Indication.Last;
-   end Last;
-
-
-   procedure Last_is (Self : in out Item;   Now : in String)
-   is
-   begin
-      Self.Indication.Last_is (Now);
-   end Last_is;
+      return Self.Indication;
+   end;
 
 
 
-   function  main_Type    (Self : access Item)     return access AdaM.a_Type.view
-   is
-   begin
-      return Self.Indication.main_Type;
-   end main_Type;
-
-
-
-   function  main_Type    (Self : in     Item)  return AdaM.a_Type.view
-   is
-   begin
-      return Self.Indication.main_Type;
-   end main_Type;
-
-
-
-   procedure main_Type_is (Self : in out Item;   Now : in AdaM.a_Type.view)
-   is
-   begin
-      Self.Indication.main_Type_is (Now);
-   end main_Type_is;
-
+--     function  First    (Self : in     Item)     return String
+--     is
+--     begin
+--        return Self.Indication.First;
+--     end First;
+--
+--
+--     procedure First_is (Self : in out Item;   Now : in String)
+--     is
+--     begin
+--        Self.Indication.First_is (Now);
+--     end First_is;
+--
+--
+--     function  Last    (Self : in     Item)     return String
+--     is
+--     begin
+--        return Self.Indication.Last;
+--     end Last;
+--
+--
+--     procedure Last_is (Self : in out Item;   Now : in String)
+--     is
+--     begin
+--        Self.Indication.Last_is (Now);
+--     end Last_is;
+--
+--
+--
+--     function  main_Type    (Self : access Item)     return access AdaM.a_Type.view
+--     is
+--     begin
+--        return Self.Indication.main_Type;
+--     end main_Type;
+--
+--
+--
+--     function  main_Type    (Self : in     Item)  return AdaM.a_Type.view
+--     is
+--     begin
+--        return Self.Indication.main_Type;
+--     end main_Type;
+--
+--
+--
+--     procedure main_Type_is (Self : in out Item;   Now : in AdaM.a_Type.view)
+--     is
+--     begin
+--        Self.Indication.main_Type_is (Now);
+--     end main_Type_is;
+--
 
 
 

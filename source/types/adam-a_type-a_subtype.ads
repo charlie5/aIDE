@@ -32,16 +32,18 @@ is
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 
 
-   function  main_Type    (Self : access Item)     return access AdaM.a_Type.view;
-   function  main_Type    (Self : in     Item)     return AdaM.a_Type.view;
-   procedure main_Type_is (Self : in out Item;   Now : in AdaM.a_Type.view);
+   function  Indication (Self : in    Item)        return AdaM.subtype_Indication.view;
 
-
-   function  First    (Self : in     Item)     return String;
-   procedure First_is (Self : in out Item;   Now : in String);
-
-   function  Last    (Self : in     Item)     return String;
-   procedure Last_is (Self : in out Item;   Now : in String);
+--     function  main_Type    (Self : access Item)     return access AdaM.a_Type.view;
+--     function  main_Type    (Self : in     Item)     return AdaM.a_Type.view;
+--     procedure main_Type_is (Self : in out Item;   Now : in AdaM.a_Type.view);
+--
+--
+--     function  First    (Self : in     Item)     return String;
+--     procedure First_is (Self : in out Item;   Now : in String);
+--
+--     function  Last    (Self : in     Item)     return String;
+--     procedure Last_is (Self : in out Item;   Now : in String);
 
 
 private

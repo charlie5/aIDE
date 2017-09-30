@@ -100,6 +100,223 @@ is
 
 
 
+   procedure parse_subtype_Indication (Node           : in     LAL.Subtype_Indication;
+                                       new_Indication :    out AdaM.subtype_Indication.item'Class)
+   is
+      use ada.Characters.Conversions;
+
+      index_Type         : constant String               := to_String (Node.F_Name.Text);
+      Constraint         : constant LAL.Range_Constraint := LAL.Range_Constraint (Node.Child (3));
+
+   begin
+      Depth := Depth + 1;
+
+      log ("parse_subtype_Indication");
+
+      -- Parse children.
+      --
+      new_Indication.main_Type_is (Environ.find (Identifier (index_Type)));
+
+      if Constraint /= null
+      then
+         declare
+            the_Range : constant LAL.Bin_Op           := LAL.Bin_Op (Constraint.Child (1));
+            First     : constant String               := to_String (the_Range.Child (1).Text);
+            Last      : constant String               := to_String (the_Range.Child (3).Text);
+         begin
+            new_Indication.First_is (First);
+            new_Indication.Last_is  (Last);
+         end;
+      end if;
+
+      Depth := Depth - 1;
+   end parse_subtype_Indication;
+
+
+
+
+
+
+
+   function parse_array_Type (Named : in String;
+                              Node  : in LAL.Array_Type_Def) return AdaM.a_Type.array_type.view
+   is
+      use ada.Characters.Conversions;
+
+      new_array_Type : constant AdaM.a_Type.array_type.view := AdaM.a_Type.array_type.new_Type (Named);
+
+   begin
+      Depth := Depth + 1;
+
+--        log ("Name: '" & Name & "'");
+
+
+      -- Parse children.
+      --
+      put_Line (Indent & "Child Count: " & Integer'Image (Node.Child_Count));
+
+      for i in 1 .. Node.child_Count
+      loop
+         declare
+            use type LAL.Ada_Node;
+            Child : LAL.Ada_Node := Node.Child (i);
+         begin
+            if Child = null
+            then
+               log ("Null Node");
+
+            else
+               case Child.Kind
+               is
+                  when LAL.Ada_Constrained_Array_Indices =>
+                     log ("parsing Ada_Constrained_Array_Indices");
+
+                     new_array_Type.is_Constrained;
+
+                     LAL.print (Child);
+
+                     Put_Line (Indent & "<parse_array_Type> processing of " & Short_Image (Child)
+                               & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Child.Kind));
+
+
+                     log ("my CHILD COUNT: " & Integer'Image (Child.Child_Count));
+
+                     declare
+                        Indices            : constant LAL.Constrained_Array_Indices := LAL.Constrained_Array_Indices (Child);
+                        node_List          : constant LAL.Ada_Node_List             := LAL.Ada_Node_List (Indices.Child (1));
+
+                        subtype_Indication : LAL.Subtype_Indication        := LAL.Subtype_Indication (node_List.Child (1));
+                     begin
+                        Put_Line (  Indent & "<parse_array_Type> processing of " & Short_Image (Indices)
+                                  & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Indices.Kind));
+
+                        parse_subtype_Indication (subtype_Indication, new_array_Type.index_Indication.all);
+                     end;
+
+
+                  when LAL.Ada_Component_Def =>
+                     log ("");
+                     log ("parsing Ada_Component_Def");
+
+                     LAL.print (Child);
+
+                     declare
+                        Component : LAL.Component_Def := LAL.Component_Def (Child);
+                     begin
+                        if Component = null
+                        then
+                           log ("NULLLLLLLLLLLLLLLLLLLLLLLLL");
+                        end if;
+
+                        if Component.F_Has_Aliased
+                        then
+                           new_array_Type.Element_is_aliased;
+                        end if;
+
+                        parse_subtype_Indication (LAL.subtype_Indication (Component.Child (2)),
+                                                  new_array_Type.element_Indication.all);
+                     end;
+
+--                       new_array_Type.element_Indication.main_Type_is (Environ.find ("Standard.Integer"));
+
+
+                     -- Others
+                     --
+                  when others =>
+                     Put_Line (Indent & "<parse_array_Type> Skip pre-processing of " & Short_Image (Child)
+                               & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Child.Kind));
+               end case;
+            end if;
+         end;
+      end loop;
+
+      Depth := Depth - 1;
+
+      return new_array_Type; -- new_Enumeration.all'Access;
+   end parse_array_Type;
+
+
+
+
+   function parse_anonymous_Type (Node : in LAL.Anonymous_Type) return AdaM.a_Type.view
+   is
+      use ada.Characters.Conversions;
+      node_Text : constant String := to_String (Node.Text);
+
+      Declaration : LAL.Anonymous_Type_Decl := LAL.Anonymous_Type_Decl (Node.Child (1));
+      new_Type    : AdaM.a_Type.view;
+   begin
+      log ("parse_anonymous_Type");
+      log ("Anonymous type text : '" & node_Text & "'");
+
+      Depth := Depth + 1;
+
+      for i in 1 .. Declaration.child_Count
+      loop
+         declare
+            Child : LAL.Ada_Node := Declaration.Child (i);
+         begin
+            if Child = null
+            then
+               log ("Null Node");
+            else
+               case Child.Kind
+               is
+                  when LAL.Ada_Aggregate =>   -- tbd: is this used ?
+                     raise Program_Error with "is this used ?";
+                     --                                      new_Object.is_Constant;
+                     log ("Aggregate found");
+                     Depth := Depth + 1;
+
+                     for j in 1 .. Child.Child_Count
+                     loop
+                        declare
+                           sub_Child : constant LAL.Ada_Node := Child.Child (j);
+                        begin
+                           if sub_Child = null
+                           then
+                              log ("Null Node");
+                           else
+                              case sub_Child.Kind
+                              is
+                                 when LAL.Ada_Aggregate =>
+                                    --                                      new_Object.is_Constant;
+                                    log ("Aggregate found");
+
+                                 when others =>
+                                    Put_Line (Indent & "1 Skip pre-processing of " & Short_Image (sub_Child)
+                                              & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (sub_Child.Kind));
+                              end case;
+                           end if;
+                        end;
+                     end loop;
+                     Depth := Depth - 1;
+
+                  when LAL.Ada_Array_Type_Def =>
+                     log ("Ada_Array_Type_Def found");
+
+                     declare
+                        array_Def  : constant LAL.Array_Type_Def          := LAL.Array_Type_Def (Child);
+                        array_Type :          AdaM.a_Type.array_type.view := parse_array_Type ("", array_Def);
+                     begin
+                        new_Type := array_Type.all'Access;
+                     end;
+
+                  when others =>
+                     Put_Line (Indent & "2 Skip pre-processing of " & Short_Image (Child)
+                               & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Child.Kind));
+               end case;
+            end if;
+         end;
+
+      end loop;
+
+      return new_Type;
+   end parse_anonymous_Type;
+
+
+
+
    function parse_object_Declaration (Node : in LAL.Object_Decl) return AdaM.Declaration.of_object.view
    is
       use ada.Characters.Conversions;
@@ -153,61 +370,63 @@ is
                      log ("Ada_Anonymous_Type found");
                      lal.print (Child);
 
-                     declare
-                        Value : constant String := to_String (LAL.Anonymous_Type (Child).Text);
-                     begin
-                        log ("Anonymous type text : '" & Value & "'");
-                        --                          new_Object.Initialiser_is (Value);
-                        Depth := Depth + 1;
+                     new_Object.Type_is (parse_anonymous_Type (LAL.Anonymous_Type (Child)));
 
-                        for i in 1 .. Child.child_Count
-                        loop
-                           declare
-                              sub_Child : LAL.Ada_Node := Child.Child (i);
-                           begin
-                              if sub_Child = null
-                              then
-                                 log ("Null Node");
-                              else
-                                 case sub_Child.Kind
-                                 is
-                                 when LAL.Ada_Aggregate =>
-                                    --                                      new_Object.is_Constant;
-                                    log ("Aggregate found");
-                                    Depth := Depth + 1;
-
-                                    for j in 1 .. sub_Child.Child_Count
-                                    loop
-                                       declare
-                                          sub_sub_Child : LAL.Ada_Node := sub_Child.Child (j);
-                                       begin
-                                          if sub_sub_Child = null
-                                          then
-                                             log ("Null Node");
-                                          else
-                                             case sub_sub_Child.Kind
-                                             is
-                                             when LAL.Ada_Aggregate =>
-                                                --                                      new_Object.is_Constant;
-                                                log ("Aggregate found");
-                                             when others =>
-                                                Put_Line (Indent & "1 Skip pre-processing of " & Short_Image (sub_sub_Child)
-                                                          & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (sub_sub_Child.Kind));
-                                             end case;
-                                          end if;
-                                       end;
-                                    end loop;
-                                    Depth := Depth - 1;
-
-                                 when others =>
-                                    Put_Line (Indent & "2 Skip pre-processing of " & Short_Image (sub_Child)
-                                              & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (sub_Child.Kind));
-                                 end case;
-                              end if;
-                           end;
-
-                        end loop;
-                     end;
+--                       declare
+--                          Value : constant String := to_String (LAL.Anonymous_Type (Child).Text);
+--                       begin
+--                          log ("Anonymous type text : '" & Value & "'");
+--                          --                          new_Object.Initialiser_is (Value);
+--                          Depth := Depth + 1;
+--
+--                          for i in 1 .. Child.child_Count
+--                          loop
+--                             declare
+--                                sub_Child : LAL.Ada_Node := Child.Child (i);
+--                             begin
+--                                if sub_Child = null
+--                                then
+--                                   log ("Null Node");
+--                                else
+--                                   case sub_Child.Kind
+--                                   is
+--                                   when LAL.Ada_Aggregate =>
+--                                      --                                      new_Object.is_Constant;
+--                                      log ("Aggregate found");
+--                                      Depth := Depth + 1;
+--
+--                                      for j in 1 .. sub_Child.Child_Count
+--                                      loop
+--                                         declare
+--                                            sub_sub_Child : LAL.Ada_Node := sub_Child.Child (j);
+--                                         begin
+--                                            if sub_sub_Child = null
+--                                            then
+--                                               log ("Null Node");
+--                                            else
+--                                               case sub_sub_Child.Kind
+--                                               is
+--                                               when LAL.Ada_Aggregate =>
+--                                                  --                                      new_Object.is_Constant;
+--                                                  log ("Aggregate found");
+--                                               when others =>
+--                                                  Put_Line (Indent & "1 Skip pre-processing of " & Short_Image (sub_sub_Child)
+--                                                            & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (sub_sub_Child.Kind));
+--                                               end case;
+--                                            end if;
+--                                         end;
+--                                      end loop;
+--                                      Depth := Depth - 1;
+--
+--                                   when others =>
+--                                      Put_Line (Indent & "2 Skip pre-processing of " & Short_Image (sub_Child)
+--                                                & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (sub_Child.Kind));
+--                                   end case;
+--                                end if;
+--                             end;
+--
+--                          end loop;
+--                       end;
 
                      Depth := Depth - 1;
 
@@ -395,166 +614,8 @@ is
 
 
 
-   procedure parse_subtype_Indication (Node           : in     LAL.Subtype_Indication;
-                                       new_Indication :    out AdaM.subtype_Indication.item'Class)
-   is
-      use ada.Characters.Conversions;
-
-      index_Type         : constant String               := to_String (Node.F_Name.Text);
-      Constraint         : constant LAL.Range_Constraint := LAL.Range_Constraint (Node.Child (3));
-
-   begin
-      Depth := Depth + 1;
-
-      log ("parse_subtype_Indication");
-
-      -- Parse children.
-      --
-      new_Indication.main_Type_is (Environ.find (Identifier (index_Type)));
-
-      if Constraint /= null
-      then
-         declare
-            the_Range : constant LAL.Bin_Op           := LAL.Bin_Op (Constraint.Child (1));
-            First     : constant String               := to_String (the_Range.Child (1).Text);
-            Last      : constant String               := to_String (the_Range.Child (3).Text);
-         begin
-            new_Indication.First_is (First);
-            new_Indication.Last_is  (Last);
-         end;
-      end if;
-
-      Depth := Depth - 1;
-   end parse_subtype_Indication;
 
 
-
-
-
-
-   function parse_array_Type (Named : in String;
-                              Node  : in LAL.Array_Type_Def) return AdaM.a_Type.array_type.view
-   is
-      use ada.Characters.Conversions;
-
-      new_array_Type : constant AdaM.a_Type.array_type.view := AdaM.a_Type.array_type.new_Type (Named);
-
-   begin
-      Depth := Depth + 1;
-
---        log ("Name: '" & Name & "'");
-
-
-      -- Parse children.
-      --
-      put_Line (Indent & "Child Count: " & Integer'Image (Node.Child_Count));
-
-      for i in 1 .. Node.child_Count
-      loop
-         declare
-            use type LAL.Ada_Node;
-            Child : LAL.Ada_Node := Node.Child (i);
-         begin
-            if Child = null
-            then
-               log ("Null Node");
-
-            else
-               case Child.Kind
-               is
-                  when LAL.Ada_Constrained_Array_Indices =>
-                     log ("parsing Ada_Constrained_Array_Indices");
-
-                     new_array_Type.is_Constrained;
-
-                     LAL.print (Child);
-
-                     Put_Line (Indent & "<parse_array_Type> processing of " & Short_Image (Child)
-                               & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Child.Kind));
-
-
-                     log ("my CHILD COUNT: " & Integer'Image (Child.Child_Count));
-
-                     declare
-                        Indices            : constant LAL.Constrained_Array_Indices := LAL.Constrained_Array_Indices (Child);
-                        node_List          : constant LAL.Ada_Node_List             := LAL.Ada_Node_List (Indices.Child (1));
-
-                        subtype_Indication : LAL.Subtype_Indication        := LAL.Subtype_Indication (node_List.Child (1));
---                          index_Type         : String                        := to_String (subtype_Indication.F_Name.Text);
---                          Constraint         : LAL.Range_Constraint          := LAL.Range_Constraint (subtype_Indication.Child (3));
---                          the_Range          : LAL.Bin_Op                    := LAL.Bin_Op (Constraint.Child (1));
---                          First              : String                        := to_String (the_Range.Child (1).Text);
---                          Last               : String                        := to_String (the_Range.Child (3).Text);
-
-                     begin
-                        Put_Line (Indent & "<parse_array_Type> processing of " & Short_Image (Indices)
-                                  & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Indices.Kind));
-
-                        parse_subtype_Indication (subtype_Indication, new_array_Type.index_Indication.all);
-
---                          log ("subtype_Indication CHILD COUNT: " & Integer'Image (subtype_Indication.Child_Count));
---                          log ("index_Type NAME: " & index_Type);
---                          new_array_Type.index_Type_is (Environ.find (Identifier (index_Type)));
---
---                          log ("FIRST = '" & First & "'");
---                          log ("LAST  = '" & Last  & "'");
---                          new_array_Type.First_is (First);
---                          new_array_Type.Last_is  (Last);
-
---                          for i in 1 .. subtype_Indication.child_Count
---                          loop
---                             declare
---                                Literal : LAL.Enum_Literal_Decl := LAL.Enum_Literal_Decl (subtype_Indication.Child (i));
---                                Name    : String                := to_String (Literal.P_Defining_Name.Text);
---
---                             begin
---                                log ("'" & Name & "'");
---  --                                new_Enumeration.add_Literal (Name);
---                             end;
---                          end loop;
-                     end;
-
-
-                  when LAL.Ada_Component_Def =>
-                     log ("");
-                     log ("parsing Ada_Component_Def");
-
-                     LAL.print (Child);
-
-                     declare
-                        Component : LAL.Component_Def := LAL.Component_Def (Child);
-                     begin
-                        if Component = null
-                        then
-                           log ("NULLLLLLLLLLLLLLLLLLLLLLLLL");
-                        end if;
-
-                        if Component.F_Has_Aliased
-                        then
-                           new_array_Type.Element_is_aliased;
-                        end if;
-
-                        parse_subtype_Indication (LAL.subtype_Indication (Component.Child (2)),
-                                                  new_array_Type.element_Indication.all);
-                     end;
-
---                       new_array_Type.element_Indication.main_Type_is (Environ.find ("Standard.Integer"));
-
-
-                     -- Others
-                     --
-                  when others =>
-                     Put_Line (Indent & "<parse_array_Type> Skip pre-processing of " & Short_Image (Child)
-                               & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Child.Kind));
-               end case;
-            end if;
-         end;
-      end loop;
-
-      Depth := Depth - 1;
-
-      return new_array_Type; -- new_Enumeration.all'Access;
-   end parse_array_Type;
 
 
 
@@ -782,9 +843,26 @@ is
             log ("Processing an Ada_Type_Decl");
 
             new_Entity := parse_Type (LAL.Type_Decl (Node)).all'Access;
+            skip_Children := True;
+
+         when LAL.Ada_Subtype_Decl =>
+            log ("Processing an Ada_Subtype_Decl");
+
+            declare
+               use Ada.Characters.Conversions;
+               Name         : constant String                     := to_String (LAL.Subtype_Decl (Node).P_Defining_Name.Text);
+               new_Subtype  : constant AdaM.a_Type.a_subtype.view := AdaM.a_Type.a_subtype.new_Subtype (Name);
+            begin
+               log ("Subtype name: '" & Name & "'");
+
+               parse_subtype_Indication (LAL.Subtype_Indication (Node.Child (2)),
+                                         new_Subtype.Indication.all);
+
+               new_Entity := new_Subtype.all'Access;
+            end;
 --              skip_Children := True;
 
-         -- Others
+          -- Others
          --
          when others =>
             Put_Line (Indent & "Skip pre-processing of " & Short_Image (Node)
