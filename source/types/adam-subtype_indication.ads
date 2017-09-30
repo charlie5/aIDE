@@ -1,24 +1,25 @@
 with
-     AdaM.subtype_Indication,
+     AdaM.Entity,
+     AdaM.a_Type,
+
      Ada.Streams;
 
 
-package AdaM.a_Type.a_subtype
+package AdaM.subtype_Indication
 is
 
-   type Item is new a_Type.item with private;
+   type Item is new Entity.item with private;
    type View is access all Item'Class;
 
 
    --  Forge
    --
 
-   function  new_Subtype (Name : in     String := "") return a_subtype.view;
+   function  new_Indication (Name : in     String := "") return subtype_Indication.view;
 
-   overriding
    procedure destruct (Self : in out Item);
 
-   procedure free     (Self : in out a_subtype.view);
+   procedure free     (Self : in out subtype_Indication.view);
 
 
    --  Attributes
@@ -27,10 +28,15 @@ is
    overriding
    function  Id (Self : access Item) return AdaM.Id;
 
+   overriding
+   function  Name      (Self : in     Item) return Identifier;
 
    overriding
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 
+
+   function  has_not_Null (Self : in     Item)     return Boolean;
+   procedure has_not_Null (Self : in out Item;   Now : in Boolean := True);
 
    function  main_Type    (Self : access Item)     return access AdaM.a_Type.view;
    function  main_Type    (Self : in     Item)     return AdaM.a_Type.view;
@@ -46,14 +52,13 @@ is
 
 private
 
-   type Item is new a_Type.item with
+   type Item is new Entity.item with
       record
-         Indication : subtype_Indication.view;
+         has_not_Null : Boolean := False;
+         main_Type    : aliased AdaM.a_Type.view;
 
---           main_Type : aliased AdaM.a_Type.view;
---
---           First     : Text;
---           Last      : Text;
+         First        : Text;
+         Last         : Text;
       end record;
 
 
@@ -70,4 +75,4 @@ private
    for View'read  use View_read;
 
 
-end AdaM.a_Type.a_subtype;
+end AdaM.subtype_Indication;

@@ -2,7 +2,7 @@ with
      AdaM.Factory;
 
 
-package body AdaM.a_Type.a_subtype
+package body AdaM.subtype_Indication
 is
    --  Storage Pool
    --
@@ -11,11 +11,11 @@ is
    pool_Size      : constant                := 5_000;
 
    package Pool is new AdaM.Factory.Pools (storage_Folder => ".adam-store",
-                                           pool_Name      => "subtypes",
+                                           pool_Name      => "subtype_Indications",
                                            max_Items      => pool_Size,
                                            record_Version => record_Version,
-                                           Item           => a_subtype.item,
-                                           View           => a_subtype.view);
+                                           Item           => subtype_Indication.item,
+                                           View           => subtype_Indication.view);
 
    --  Forge
    --
@@ -23,35 +23,33 @@ is
    procedure define (Self : in out Item;   Name : in String)
    is
    begin
-      Self.Name := +Name;
-      Self.Indication := subtype_Indication.new_Indication;
+      null;
    end define;
 
 
 
-   overriding
    procedure destruct (Self : in out Item)
    is
    begin
-      subtype_Indication.free (Self.Indication);
+      null;
    end destruct;
 
 
 
-   function new_Subtype (Name : in String := "") return a_subtype.View
+   function new_Indication (Name : in String := "") return subtype_Indication.View
    is
-      new_View : constant a_subtype.view := Pool.new_Item;
+      new_View : constant subtype_Indication.view := Pool.new_Item;
    begin
-      define (a_subtype.item (new_View.all), Name);
+      define (subtype_Indication.item (new_View.all), Name);
       return new_View;
-   end new_Subtype;
+   end new_Indication;
 
 
 
-   procedure free (Self : in out a_subtype.view)
+   procedure free (Self : in out subtype_Indication.view)
    is
    begin
-      destruct (a_Type.item (Self.all));
+      destruct (subtype_Indication.item (Self.all));
       Pool.free (Self);
    end free;
 
@@ -82,36 +80,50 @@ is
    function  First    (Self : in     Item)     return String
    is
    begin
-      return Self.Indication.First;
+      return +Self.First;
    end First;
 
 
    procedure First_is (Self : in out Item;   Now : in String)
    is
    begin
-      Self.Indication.First_is (Now);
+      Self.First := +Now;
    end First_is;
 
 
    function  Last    (Self : in     Item)     return String
    is
    begin
-      return Self.Indication.Last;
+      return +Self.Last;
    end Last;
 
 
    procedure Last_is (Self : in out Item;   Now : in String)
    is
    begin
-      Self.Indication.Last_is (Now);
+      Self.Last := +Now;
    end Last_is;
+
+
+   function  has_not_Null (Self : in     Item)     return Boolean
+   is
+   begin
+      return Self.has_not_Null;
+   end has_not_Null;
+
+
+   procedure has_not_Null (Self : in out Item;   Now : in Boolean := True)
+   is
+   begin
+      Self.has_not_Null := Now;
+   end has_not_Null;
 
 
 
    function  main_Type    (Self : access Item)     return access AdaM.a_Type.view
    is
    begin
-      return Self.Indication.main_Type;
+      return Self.main_Type'Access;
    end main_Type;
 
 
@@ -119,7 +131,7 @@ is
    function  main_Type    (Self : in     Item)  return AdaM.a_Type.view
    is
    begin
-      return Self.Indication.main_Type;
+      return Self.main_Type;
    end main_Type;
 
 
@@ -127,9 +139,17 @@ is
    procedure main_Type_is (Self : in out Item;   Now : in AdaM.a_Type.view)
    is
    begin
-      Self.Indication.main_Type_is (Now);
+      Self.main_Type := Now;
    end main_Type_is;
 
+
+   overriding
+   function  Name      (Self : in     Item) return Identifier
+   is
+      pragma Unreferenced (Self);
+   begin
+      return "";
+   end Name;
 
 
 
@@ -144,4 +164,4 @@ is
                         Self   : out             View)
                         renames Pool.View_read;
 
-end AdaM.a_Type.a_subtype;
+end AdaM.subtype_Indication;

@@ -33,7 +33,7 @@ is
    is
       the_Text : constant String := the_Entry.Get_Text;
    begin
-      Target.First_is (the_Text);
+      Target.index_Indication.First_is (the_Text);
       return False;
    end on_first_Entry_leave;
 
@@ -43,7 +43,7 @@ is
    is
       the_Text : constant String := the_Entry.Get_Text;
    begin
-      Target.Last_is (the_Text);
+      Target.index_Indication.Last_is (the_Text);
       return False;
    end on_last_Entry_leave;
 
@@ -53,9 +53,8 @@ is
    is
 --        the_Text : constant String := the_Entry.get_Text;
    begin
-      put_Line ("YAYAYAYAY5");
       aIDE.GUI.show_types_Palette (Invoked_by => the_Entry.all'Access,
-                                   Target     => the_Editor.Target.index_Type);
+                                   Target     => the_Editor.Target.index_Indication.main_Type);
 --        Target.Name_is (the_Text);
 --        return False;
    end on_index_type_Button_clicked;
@@ -68,7 +67,7 @@ is
 --        the_Text : constant String := the_Entry.get_Text;
    begin
       aIDE.GUI.show_types_Palette (Invoked_by => the_Entry.all'Access,
-                                   Target     => the_Editor.Target.element_Type);
+                                   Target     => the_Editor.Target.element_Indication.main_Type);
    end on_element_type_Button_clicked;
 
 
@@ -166,14 +165,14 @@ is
                                          on_type_name_Entry_leave'Access,
                                          the_Target);
 
-         Self.first_Entry.set_Text (Self.Target.First);
+         Self.first_Entry.set_Text (Self.Target.index_Indication.First);
 
          Entry_return_Callbacks.connect (Self.first_Entry,
                                          "focus-out-event",
                                          on_first_Entry_leave'Access,
                                          the_Target);
 
-         Self.last_Entry.set_Text (Self.Target.Last);
+         Self.last_Entry.set_Text (Self.Target.index_Indication.Last);
 
          Entry_return_Callbacks.connect (Self.last_Entry,
                                          "focus-out-event",
@@ -182,7 +181,7 @@ is
 
 
 
-         Self.index_type_Button.set_Label (+Self.Target.index_Type.Name);
+         Self.index_type_Button.set_Label (+Self.Target.index_Indication.main_Type.Name);
 
          button_Callbacks.connect (Self.index_type_Button,
                                    "clicked",
@@ -190,7 +189,7 @@ is
                                    Self);
 
 
-         Self.element_type_Button.set_Label (+Self.Target.element_Type.Name);
+         Self.element_type_Button.set_Label (+Self.Target.element_Indication.main_Type.Name);
 
          button_Callbacks.connect (Self.element_type_Button,
                                    "clicked",

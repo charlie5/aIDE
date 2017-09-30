@@ -1,4 +1,5 @@
 with
+     AdaM.subtype_Indication,
      Ada.Streams;
 
 
@@ -31,22 +32,28 @@ is
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 
 
-   function  index_Type      (Self : access Item) return access AdaM.a_Type.view;
-   function  index_Type      (Self : in     Item) return        AdaM.a_Type.view;
-   procedure index_Type_is   (Self : in out Item;   Now : in AdaM.a_Type.view);
+   function    index_Indication (Self : access Item) return AdaM.subtype_Indication.view;
+   function  element_Indication (Self : access Item) return AdaM.subtype_Indication.view;
 
-   function  element_Type    (Self : access Item) return access AdaM.a_Type.view;
-   function  element_Type    (Self : in     Item) return        AdaM.a_Type.view;
-   procedure element_Type_is (Self : in out Item;   Now : in AdaM.a_Type.view);
+--     function  index_Type      (Self : access Item) return access AdaM.a_Type.view;
+--     function  index_Type      (Self : in     Item) return        AdaM.a_Type.view;
+--     procedure index_Type_is   (Self : in out Item;   Now : in AdaM.a_Type.view);
 
-   function  First    (Self : in     Item)     return String;
-   procedure First_is (Self : in out Item;   Now : in String);
-
-   function  Last    (Self : in     Item)     return String;
-   procedure Last_is (Self : in out Item;   Now : in String);
+--     function  element_Type    (Self : access Item) return access AdaM.a_Type.view;
+--     function  element_Type    (Self : in     Item) return        AdaM.a_Type.view;
+--     procedure element_Type_is (Self : in out Item;   Now : in AdaM.a_Type.view);
+--
+--     function  First    (Self : in     Item)     return String;
+--     procedure First_is (Self : in out Item;   Now : in String);
+--
+--     function  Last    (Self : in     Item)     return String;
+--     procedure Last_is (Self : in out Item;   Now : in String);
 
    function  is_Constrained (Self : in     Item)     return Boolean;
    procedure is_Constrained (Self : in out Item;   Now : in Boolean := True);
+
+   function  Element_is_aliased (Self : in     Item)     return Boolean;
+   procedure Element_is_aliased (Self : in out Item;   Now : in Boolean := True);
 
 
 
@@ -54,8 +61,13 @@ private
 
    type Item is new a_Type.composite_Type with
       record
-         index_Type     : aliased AdaM.a_Type.view;
-         element_Type   : aliased AdaM.a_Type.view;
+--           index_Type     : aliased AdaM.a_Type.view;
+--           element_Type   : aliased AdaM.a_Type.view;
+
+         index_Subtype      : AdaM.subtype_Indication.view;
+
+         element_Subtype    : AdaM.subtype_Indication.view;
+         Element_is_aliased : Boolean := False;
 
          is_Constrained : Boolean;
          First          : Text;

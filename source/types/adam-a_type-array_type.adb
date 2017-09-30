@@ -23,7 +23,9 @@ is
    procedure define (Self : in out Item;   Name : in String)
    is
    begin
-      Self.Name := +Name;
+      Self.Name            := +Name;
+      Self.  index_Subtype := subtype_Indication.new_Indication;
+      Self.element_Subtype := subtype_Indication.new_Indication;
    end define;
 
 
@@ -31,8 +33,10 @@ is
    overriding
    procedure destruct (Self : in out Item)
    is
+      use subtype_Indication;
    begin
-      null;
+      free (Self.  index_Subtype);
+      free (Self.element_Subtype);
    end destruct;
 
 
@@ -41,7 +45,8 @@ is
    is
       new_View : constant array_type.view := Pool.new_Item;
    begin
-      define (array_type.item (new_View.all), Name);
+      define (array_type.item (new_View.all),
+              Name);
       return new_View;
    end new_Type;
 
@@ -77,77 +82,90 @@ is
    end to_Source;
 
 
-
-   function  index_Type      (Self : access Item)     return access AdaM.a_Type.view
+   function  index_Indication (Self : access Item) return AdaM.subtype_Indication.view
    is
    begin
-      return Self.index_Type'Access;
-   end index_Type;
+      return Self.index_Subtype;
+   end index_Indication;
 
 
-   function  index_Type      (Self : in Item)     return AdaM.a_Type.view
+   function  element_Indication (Self : access Item) return AdaM.subtype_Indication.view
    is
    begin
-      return Self.index_Type;
-   end index_Type;
+      return Self.element_Subtype;
+   end element_Indication;
 
 
-   procedure index_Type_is   (Self : in out Item;   Now : in AdaM.a_Type.view)
-   is
-   begin
-      Self.index_Type := Now;
-   end index_Type_is;
-
-
-
-   function  element_Type      (Self : access Item)     return access AdaM.a_Type.view
-   is
-   begin
-      return Self.element_Type'Access;
-   end element_Type;
-
-
-   function  element_Type    (Self : in Item)     return AdaM.a_Type.view
-   is
-   begin
-      return Self.element_Type;
-   end element_Type;
-
-
-   procedure element_Type_is (Self : in out Item;   Now : in AdaM.a_Type.view)
-   is
-   begin
-      Self.element_Type := Now;
-   end element_Type_is;
+--     function  index_Type      (Self : access Item)     return access AdaM.a_Type.view
+--     is
+--     begin
+--        return Self.index_Type'Access;
+--     end index_Type;
+--
+--
+--     function  index_Type      (Self : in Item)     return AdaM.a_Type.view
+--     is
+--     begin
+--        return Self.index_Type;
+--     end index_Type;
+--
+--
+--     procedure index_Type_is   (Self : in out Item;   Now : in AdaM.a_Type.view)
+--     is
+--     begin
+--        Self.index_Type := Now;
+--     end index_Type_is;
 
 
 
-   function  First    (Self : in     Item)     return String
-   is
-   begin
-      return +Self.First;
-   end First;
+--     function  element_Type      (Self : access Item)     return access AdaM.a_Type.view
+--     is
+--     begin
+--        return Self.element_Type'Access;
+--     end element_Type;
+--
+--
+--     function  element_Type    (Self : in Item)     return AdaM.a_Type.view
+--     is
+--     begin
+--        return Self.element_Type;
+--     end element_Type;
+--
+--
+--     procedure element_Type_is (Self : in out Item;   Now : in AdaM.a_Type.view)
+--     is
+--     begin
+--        Self.element_Type := Now;
+--     end element_Type_is;
 
 
-   procedure First_is (Self : in out Item;   Now : in String)
-   is
-   begin
-      Self.First := +Now;
-   end First_is;
 
-
-   function  Last    (Self : in     Item)     return String
-   is
-   begin
-      return +Self.Last;
-   end Last;
-
-
-   procedure Last_is (Self : in out Item;   Now : in String)
-   is
-   begin
-      Self.Last := +Now;
-   end Last_is;
+--     function  First    (Self : in     Item)     return String
+--     is
+--     begin
+--        return +Self.First;
+--     end First;
+--
+--
+--     procedure First_is (Self : in out Item;   Now : in String)
+--     is
+--     begin
+--        Self.First := +Now;
+--     end First_is;
+--
+--
+--     function  Last    (Self : in     Item)     return String
+--     is
+--     begin
+--        return +Self.Last;
+--     end Last;
+--
+--
+--     procedure Last_is (Self : in out Item;   Now : in String)
+--     is
+--     begin
+--        Self.Last := +Now;
+--     end Last_is;
 
 
 
@@ -164,6 +182,19 @@ is
       Self.is_Constrained := Now;
    end is_Constrained;
 
+
+   function  Element_is_aliased (Self : in     Item)     return Boolean
+   is
+   begin
+      return Self.Element_is_aliased;
+   end Element_is_aliased;
+
+
+   procedure Element_is_aliased (Self : in out Item;   Now : in Boolean := True)
+   is
+   begin
+      Self.Element_is_aliased := Now;
+   end Element_is_aliased;
 
 
 

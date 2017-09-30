@@ -178,6 +178,7 @@ is
                                          on_initialiser_Entry_leave'Access,
                                          the_Target);
 
+         put_Line ("JJJJJ: " & String (Self.Target.Name));
          Self.type_Button.set_Label (+Self.Target.my_Type.Name);
 
          button_Callbacks.connect (Self.type_Button,

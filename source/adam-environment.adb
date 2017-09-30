@@ -382,7 +382,7 @@ is
       add_Natural:
       declare
          new_Subtype : constant AdaM.a_Type.a_subtype.view
-           := AdaM.a_Type.a_subtype.new_Type (Name => "Natural");
+           := AdaM.a_Type.a_subtype.new_Subtype (Name => "Natural");
       begin
          new_Subtype.main_Type_is (Self.find ("Integer"));
          new_Subtype.First_is ("0");
@@ -394,7 +394,7 @@ is
       add_Positive:
       declare
          new_Subtype : constant AdaM.a_Type.a_subtype.view
-           := AdaM.a_Type.a_subtype.new_Type (Name => "Positive");
+           := AdaM.a_Type.a_subtype.new_Subtype (Name => "Positive");
       begin
          new_Subtype.main_Type_is (Self.find ("Integer"));
          new_Subtype.First_is ("1");
@@ -529,8 +529,8 @@ is
          new_Pragma     : constant AdaM.a_Pragma.view
            := AdaM.a_Pragma.new_Pragma (Name => "Pack");
       begin
-         new_array_Type.  index_Type_is (Self.find ("Standard.Positive"));
-         new_array_Type.element_Type_is (Self.find ("Standard.Character"));
+         new_array_Type.index_Indication.main_Type_is (Self.find ("Standard.Positive"));
+         new_array_Type.element_Indication.main_Type_is (Self.find ("Standard.Character"));
          new_array_Type.is_Constrained  (Now => False);
 
          new_Pragma.add_Argument ("String");
@@ -547,8 +547,8 @@ is
          new_Pragma     : constant AdaM.a_Pragma.view
            := AdaM.a_Pragma.new_Pragma (Name => "Pack");
       begin
-         new_array_Type.  index_Type_is (Self.find ("Standard.Positive"));
-         new_array_Type.element_Type_is (Self.find ("Standard.Wide_Character"));
+         new_array_Type.index_Indication.main_Type_is (Self.find ("Standard.Positive"));
+         new_array_Type.element_Indication.main_Type_is (Self.find ("Standard.Wide_Character"));
          new_array_Type.is_Constrained  (Now => False);
 
          new_Pragma.add_Argument ("Wide_String");
@@ -565,8 +565,8 @@ is
          new_Pragma     : constant AdaM.a_Pragma.view
            := AdaM.a_Pragma.new_Pragma (Name => "Pack");
       begin
-         new_array_Type.  index_Type_is (Self.find ("Standard.Positive"));
-         new_array_Type.element_Type_is (Self.find ("Standard.Wide_Wide_Character"));
+         new_array_Type.index_Indication.main_Type_is (Self.find ("Standard.Positive"));
+         new_array_Type.element_Indication.main_Type_is (Self.find ("Standard.Wide_Wide_Character"));
          new_array_Type.is_Constrained  (Now => False);
 
          standard_Package.Children.append (new_array_Type.all'Access);
