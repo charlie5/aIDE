@@ -207,20 +207,31 @@ is
 --        else
 --           Self.unconstrained_Label.hide;
 
-         if Self.Target.is_Constrained
+      if Self.Target.is_Constrained
+      then
+         put_Line ("IS CONSTRAINED");
+         if Self.Target.First = ""
          then
+            Self.range_Label.hide;
+            Self.  constrained_Label.hide;
+            Self.unconstrained_Label.hide;
+            Self.first_Entry.hide;
+            Self.last_Entry.hide;
+         else
             Self.range_Label.show;
             Self.  constrained_Label.show;
             Self.unconstrained_Label.hide;
             Self.first_Entry.show;
             Self.last_Entry.show;
-         else
-            Self.range_Label.show;
-            Self.first_Entry.hide;
-            Self.last_Entry.hide;
-            Self.  constrained_Label.hide;
-            Self.unconstrained_Label.show;
          end if;
+      else
+         put_Line ("NOT IS CONSTRAINED");
+         Self.range_Label.show;
+         Self.first_Entry.hide;
+         Self.last_Entry.hide;
+         Self.  constrained_Label.hide;
+         Self.unconstrained_Label.show;
+      end if;
 --        end if;
 
 --        if Self.is_in_unconstrained_Array

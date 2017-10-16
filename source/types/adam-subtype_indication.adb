@@ -80,7 +80,7 @@ is
    function is_Constrained (Self : in Item) return Boolean
    is
    begin
-      return Self.First /= "";
+      return Self.is_Constrained;
    end is_Constrained;
 
 
@@ -89,7 +89,7 @@ is
    is
    begin
       Self.is_Constrained := Now;
-   end;
+   end is_Constrained;
 
 
 

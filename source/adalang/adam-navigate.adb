@@ -138,6 +138,9 @@ is
          else
             raise Program_Error with Constraint.Child (1).Kind_Name & " not yet supported";
          end if;
+
+      else
+         new_Indication.is_Constrained (True);
       end if;
 
       Depth := Depth - 1;
@@ -202,6 +205,7 @@ is
                                   & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Indices.Kind));
 
                         parse_subtype_Indication (subtype_Indication, new_array_Type.index_Indication.all);
+--                          new_array_Type.index_Indication.is_Constrained;
                      end;
 
 
