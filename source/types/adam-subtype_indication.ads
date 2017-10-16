@@ -49,6 +49,10 @@ is
    function  Last    (Self : in     Item)     return String;
    procedure Last_is (Self : in out Item;   Now : in String);
 
+   function  is_Constrained (Self : in     Item) return Boolean;
+   procedure is_Constrained (Self : in out Item;   Now : in Boolean := True);
+
+
 
 private
 
@@ -57,6 +61,7 @@ private
          has_not_Null : Boolean := False;
          main_Type    : aliased AdaM.a_Type.view;
 
+         is_Constrained : Boolean;
          First        : Text;
          Last         : Text;
       end record;

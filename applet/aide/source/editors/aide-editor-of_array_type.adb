@@ -1,6 +1,6 @@
 with
      aIDE.GUI,
-     aIDE.Editor.of_enumeration_literal,
+     aIDE.Editor.of_subtype_indication,
      AdaM.a_Type.enumeration_literal,
 
      glib.Error,
@@ -166,8 +166,14 @@ is
                                          on_type_name_Entry_leave'Access,
                                          the_Target);
 
-         Self.index_Box.pack_Start (aIDE.Editor.to_Editor (Self.Target.index_Indication.all'Access).top_Widget);
-
+         declare
+            indication_Editor : aIDE.Editor.of_subtype_indication.view
+              := aIDE.Editor.of_subtype_indication.Forge.to_Editor (the_Target                => Self.Target.index_Indication.all'Access,
+                                                                    is_in_unconstrained_Array => not Self.Target.is_Constrained);
+         begin
+--              Self.index_Box.pack_Start (aIDE.Editor.to_Editor (Self.Target.index_Indication.all'Access).top_Widget);
+            Self.index_Box.pack_Start (indication_Editor.top_Widget);
+         end;
 --           Self.first_Entry.set_Text (Self.Target.index_Indication.First);
 --
 --           Entry_return_Callbacks.connect (Self.first_Entry,

@@ -99,7 +99,8 @@ is
 
    package body Forge
    is
-      function to_Editor (the_Target : in AdaM.subtype_Indication.view) return View
+      function to_Editor (the_Target                : in AdaM.subtype_Indication.view;
+                          is_in_unconstrained_Array : in Boolean) return View
       is
          use AdaM,
              Glib;
@@ -112,7 +113,8 @@ is
          pragma Unreferenced (Result);
 
       begin
-         Self.Target := the_Target;
+         Self.Target                    := the_Target;
+         Self.is_in_unconstrained_Array := is_in_unconstrained_Array;
 
          Gtk_New (the_Builder);
 
@@ -123,14 +125,15 @@ is
          end if;
 
          Self.top_Box             := gtk_Box    (the_Builder.get_Object ("top_Box"));
-         Self.type_Button   := Gtk_Button (the_Builder.get_Object ("index_type_Button"));
+         Self.type_Button         := Gtk_Button (the_Builder.get_Object ("index_type_Button"));
 
+         Self.range_Label         := Gtk_Label (the_Builder.get_Object ("range_Label"));
          Self.unconstrained_Label := Gtk_Label (the_Builder.get_Object ("unconstrained_Label"));
          Self.  constrained_Label := Gtk_Label (the_Builder.get_Object (  "constrained_Label"));
 
          Self.first_Entry         := Gtk_Entry  (the_Builder.get_Object ("first_Entry"));
          Self. last_Entry         := Gtk_Entry  (the_Builder.get_Object ( "last_Entry"));
-         Self.rid_Button          := gtk_Button (the_Builder.get_Object ("rid_Button"));
+--           Self.rid_Button          := gtk_Button (the_Builder.get_Object ("rid_Button"));
 
 
          Self.first_Entry.set_Text (Self.Target.First);
@@ -156,10 +159,10 @@ is
                                    Self);
 
 
-         Button_Callbacks.Connect (Self.rid_Button,
-                                   "clicked",
-                                   on_rid_Button_clicked'Access,
-                                   Self);
+--           Button_Callbacks.Connect (Self.rid_Button,
+--                                     "clicked",
+--                                     on_rid_Button_clicked'Access,
+--                                     Self);
 
          Label_return_Callbacks.Connect (Self.unconstrained_Label,
                                          "button-release-event",
@@ -193,20 +196,59 @@ is
 --        the_Literals   : AdaM.a_Type.enumeration_literal.vector renames Self.Target.Literals;
 --        literal_Editor : aIDE.Editor.of_enumeration_literal.view;
    begin
---        if Self.Target.is_Constrained
+--        if Self.is_in_unconstrained_Array
 --        then
---           Self.unconstrained_Label.hide;
---           Self.  constrained_Label.show;
---           Self.first_Entry.show;
---           Self.last_Entry.show;
---        else
+--           Self.unconstrained_Label.show;
+--
 --           Self.first_Entry.hide;
 --           Self.last_Entry.hide;
+--           Self.range_Label.show;
 --           Self.  constrained_Label.hide;
---           Self.unconstrained_Label.show;
+--        else
+--           Self.unconstrained_Label.hide;
+
+         if Self.Target.is_Constrained
+         then
+            Self.range_Label.show;
+            Self.  constrained_Label.show;
+            Self.unconstrained_Label.hide;
+            Self.first_Entry.show;
+            Self.last_Entry.show;
+         else
+            Self.range_Label.show;
+            Self.first_Entry.hide;
+            Self.last_Entry.hide;
+            Self.  constrained_Label.hide;
+            Self.unconstrained_Label.show;
+         end if;
 --        end if;
 
-      null;
+--        if Self.is_in_unconstrained_Array
+--        then
+--           Self.unconstrained_Label.show;
+--
+--           Self.first_Entry.hide;
+--           Self.last_Entry.hide;
+--           Self.range_Label.show;
+--           Self.  constrained_Label.hide;
+--        else
+--           Self.unconstrained_Label.hide;
+--
+--           if Self.Target.is_Constrained
+--           then
+--              Self.range_Label.show;
+--              Self.  constrained_Label.show;
+--              Self.first_Entry.show;
+--              Self.last_Entry.show;
+--           else
+--              Self.range_Label.hide;
+--              Self.first_Entry.hide;
+--              Self.last_Entry.hide;
+--              Self.  constrained_Label.hide;
+--              Self.unconstrained_Label.hide;
+--           end if;
+--        end if;
+
 
 --        Self.first_Entry.set_Text (Self.Target.First);
 --        Self.last_Entry .set_Text (Self.Target.Last);

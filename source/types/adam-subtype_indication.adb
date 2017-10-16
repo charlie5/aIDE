@@ -77,6 +77,24 @@ is
 
 
 
+   function is_Constrained (Self : in Item) return Boolean
+   is
+   begin
+      return Self.First /= "";
+   end is_Constrained;
+
+
+
+   procedure is_Constrained (Self : in out Item;   Now : in Boolean := True)
+   is
+   begin
+      Self.is_Constrained := Now;
+   end;
+
+
+
+
+
    function  First    (Self : in     Item)     return String
    is
    begin

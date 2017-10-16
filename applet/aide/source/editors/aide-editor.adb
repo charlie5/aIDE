@@ -139,14 +139,14 @@ is
             Self := Editor.view (new_Editor);
          end;
 
-      elsif Target.all in AdaM.subtype_Indication.item'Class
-      then
-         declare
-            new_Editor : constant Editor.of_subtype_indication.view
-              := Editor.of_subtype_indication.Forge.to_Editor (AdaM.subtype_Indication.view (Target));
-         begin
-            Self := Editor.view (new_Editor);
-         end;
+--        elsif Target.all in AdaM.subtype_Indication.item'Class
+--        then
+--           declare
+--              new_Editor : constant Editor.of_subtype_indication.view
+--                := Editor.of_subtype_indication.Forge.to_Editor (AdaM.subtype_Indication.view (Target));
+--           begin
+--              Self := Editor.view (new_Editor);
+--           end;
 
       else
          put_Line ("Warning: no editor is known for entity of type " & ada.Tags.Expanded_Name (Target.all'Tag));

@@ -119,14 +119,25 @@ is
 
       if Constraint /= null
       then
-         declare
-            the_Range : constant LAL.Bin_Op           := LAL.Bin_Op (Constraint.Child (1));
-            First     : constant String               := to_String (the_Range.Child (1).Text);
-            Last      : constant String               := to_String (the_Range.Child (3).Text);
-         begin
-            new_Indication.First_is (First);
-            new_Indication.Last_is  (Last);
-         end;
+         if Constraint.Child (1).Kind = LAL.Ada_Bin_Op
+         then
+            new_Indication.is_Constrained (True);
+
+            declare
+               the_Range : constant LAL.Bin_Op           := LAL.Bin_Op (Constraint.Child (1));
+               First     : constant String               := to_String (the_Range.Child (1).Text);
+               Last      : constant String               := to_String (the_Range.Child (3).Text);
+            begin
+               new_Indication.First_is (First);
+               new_Indication.Last_is  (Last);
+            end;
+
+         elsif Constraint.Child (1).Kind = LAL.Ada_Box_Expr
+         then
+            new_Indication.is_Constrained (False);
+         else
+            raise Program_Error with Constraint.Child (1).Kind_Name & " not yet supported";
+         end if;
       end if;
 
       Depth := Depth - 1;
