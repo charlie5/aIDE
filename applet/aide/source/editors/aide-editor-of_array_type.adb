@@ -149,6 +149,7 @@ is
          Self.top_Box             := gtk_Box    (the_Builder.get_Object ("top_Box"));
          Self.type_name_Entry     := Gtk_Entry  (the_Builder.get_Object ("type_name_Entry"));
          Self.index_Box           := gtk_Box    (the_Builder.get_Object ("index_Box"));
+         Self.component_Box       := gtk_Box    (the_Builder.get_Object ("component_Box"));
 --           Self.index_type_Button   := Gtk_Button (the_Builder.get_Object ("index_type_Button"));
 --
 --           Self.unconstrained_Label := Gtk_Label (the_Builder.get_Object ("unconstrained_Label"));
@@ -156,7 +157,7 @@ is
 --
 --           Self.first_Entry         := Gtk_Entry  (the_Builder.get_Object ("first_Entry"));
 --           Self. last_Entry         := Gtk_Entry  (the_Builder.get_Object ( "last_Entry"));
-         Self.element_type_Button := Gtk_Button (the_Builder.get_Object ("element_type_Button"));
+--           Self.element_type_Button := Gtk_Button (the_Builder.get_Object ("element_type_Button"));
          Self.rid_Button          := gtk_Button (the_Builder.get_Object ("rid_Button"));
 
          Self.type_name_Entry.Set_Text (+Self.Target.Name);
@@ -167,13 +168,22 @@ is
                                          the_Target);
 
          declare
-            indication_Editor : aIDE.Editor.of_subtype_indication.view
+            indication_Editor : constant aIDE.Editor.of_subtype_indication.view
               := aIDE.Editor.of_subtype_indication.Forge.to_Editor (the_Target                => Self.Target.index_Indication.all'Access,
                                                                     is_in_unconstrained_Array => not Self.Target.is_Constrained);
          begin
---              Self.index_Box.pack_Start (aIDE.Editor.to_Editor (Self.Target.index_Indication.all'Access).top_Widget);
             Self.index_Box.pack_Start (indication_Editor.top_Widget);
          end;
+
+         declare
+            indication_Editor : constant aIDE.Editor.of_subtype_indication.view
+              := aIDE.Editor.of_subtype_indication.Forge.to_Editor (the_Target                => Self.Target.element_Indication.all'Access,
+                                                                    is_in_unconstrained_Array => False);
+         begin
+            Self.component_Box.pack_Start (indication_Editor.top_Widget);
+         end;
+
+
 --           Self.first_Entry.set_Text (Self.Target.index_Indication.First);
 --
 --           Entry_return_Callbacks.connect (Self.first_Entry,
@@ -198,12 +208,12 @@ is
 --                                     Self);
 
 
-         Self.element_type_Button.set_Label (+Self.Target.element_Indication.main_Type.Name);
-
-         button_Callbacks.connect (Self.element_type_Button,
-                                   "clicked",
-                                   on_element_type_Button_clicked'Access,
-                                   Self);
+--           Self.element_type_Button.set_Label (+Self.Target.element_Indication.main_Type.Name);
+--
+--           button_Callbacks.connect (Self.element_type_Button,
+--                                     "clicked",
+--                                     on_element_type_Button_clicked'Access,
+--                                     Self);
 
 
          Button_Callbacks.Connect (Self.rid_Button,
