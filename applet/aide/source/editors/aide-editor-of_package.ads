@@ -53,6 +53,7 @@ private
    type Item is new Editor.item with
       record
          my_Package         : adam.a_Package.view;
+--           public_Part        : Boolean;
 
          Notebook           : gtk_Notebook;
          context_Editor     : aIDE.Editor.of_context.view;
@@ -68,7 +69,8 @@ private
          top_Window         : gtk_scrolled_Window;
          top_Box            : gtk_Box;
 
-         public_entities_Box : gtk_Box;
+         public_entities_Box  : gtk_Box;
+         private_entities_Box : gtk_Box;
 
          declare_Text,
          begin_Text,

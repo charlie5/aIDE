@@ -340,6 +340,14 @@ is
    is
       current_compilation_Unit :          AdaM.compilation_Unit.view;
       standard_Package         : constant AdaM.a_Package.view       := AdaM.a_Package.new_Package ("Standard");
+
+      procedure add (the_Entity : in AdaM.Entity.view)
+      is
+      begin
+         the_Entity.is_Public;
+         standard_Package.Children.append (the_Entity);
+      end add;
+
    begin
       current_compilation_Unit := AdaM.compilation_Unit.new_compilation_Unit (Name => "Standard");
       Self.add (current_compilation_Unit);
@@ -352,8 +360,7 @@ is
            := AdaM.a_Pragma.new_Pragma (Name => "Pure");
       begin
          new_Pragma.add_Argument ("Standard");
-
-         standard_Package.Children.append (new_Pragma.all'Access);
+         add (new_Pragma.all'Access);
       end add_pragma_Pure;
 
 
@@ -365,7 +372,7 @@ is
          new_enum_Type.add_Literal ("False");
          new_enum_Type.add_Literal ("True");
 
-         standard_Package.Children.append (new_enum_Type.all'Access);
+         add (new_enum_Type.all'Access);
       end add_Boolean;
 
       add_Integer:
@@ -376,7 +383,7 @@ is
          new_integer_Type.First_is (Long_Long_Integer (Integer'First));
          new_integer_Type.Last_is  (Long_Long_Integer (Integer'Last));
 
-         standard_Package.Children.append (new_integer_Type.all'Access);
+         add (new_integer_Type.all'Access);
       end add_Integer;
 
       add_Natural:
@@ -388,7 +395,7 @@ is
          new_Subtype.Indication.First_is ("0");
          new_Subtype.Indication.Last_is  ("Integer'Last");
 
-         standard_Package.Children.append (new_Subtype.all'Access);
+         add (new_Subtype.all'Access);
       end add_Natural;
 
       add_Positive:
@@ -400,7 +407,7 @@ is
          new_Subtype.Indication.First_is ("1");
          new_Subtype.Indication.Last_is  ("Integer'Last");
 
-         standard_Package.Children.append (new_Subtype.all'Access);
+         add (new_Subtype.all'Access);
       end add_Positive;
 
       add_short_short_Integer:
@@ -411,7 +418,7 @@ is
          new_integer_Type.First_is (Long_Long_Integer (Short_Short_Integer'First));
          new_integer_Type.Last_is  (Long_Long_Integer (Short_Short_Integer'Last));
 
-         standard_Package.Children.append (new_integer_Type.all'Access);
+         add (new_integer_Type.all'Access);
       end add_short_short_Integer;
 
       add_short_Integer:
@@ -422,7 +429,7 @@ is
          new_integer_Type.First_is (Long_Long_Integer (short_Integer'First));
          new_integer_Type.Last_is  (Long_Long_Integer (short_Integer'Last));
 
-         standard_Package.Children.append (new_integer_Type.all'Access);
+         add (new_integer_Type.all'Access);
       end add_short_Integer;
 
       add_long_Integer:
@@ -433,7 +440,7 @@ is
          new_integer_Type.First_is (Long_Long_Integer (long_Integer'First));
          new_integer_Type.Last_is  (Long_Long_Integer (long_Integer'Last));
 
-         standard_Package.Children.append (new_integer_Type.all'Access);
+         add (new_integer_Type.all'Access);
       end add_long_Integer;
 
       add_long_long_Integer:
@@ -444,7 +451,7 @@ is
          new_integer_Type.First_is (Long_Long_Integer'First);
          new_integer_Type.Last_is  (Long_Long_Integer'Last);
 
-         standard_Package.Children.append (new_integer_Type.all'Access);
+         add (new_integer_Type.all'Access);
       end add_long_long_Integer;
 
 
@@ -457,7 +464,7 @@ is
          new_float_Type.First_is   (long_long_Float (Short_Float'First));
          new_float_Type.Last_is    (long_long_Float (Short_Float'Last));
 
-         standard_Package.Children.append (new_float_Type.all'Access);
+         add (new_float_Type.all'Access);
       end add_short_Float;
 
       add_Float:
@@ -469,7 +476,7 @@ is
          new_float_Type.First_is   (long_long_Float (Float'First));
          new_float_Type.Last_is    (long_long_Float (Float'Last));
 
-         standard_Package.Children.append (new_float_Type.all'Access);
+         add (new_float_Type.all'Access);
       end add_Float;
 
       add_long_Float:
@@ -481,7 +488,7 @@ is
          new_float_Type.First_is   (long_long_Float (long_Float'First));
          new_float_Type.Last_is    (long_long_Float (long_Float'Last));
 
-         standard_Package.Children.append (new_float_Type.all'Access);
+         add (new_float_Type.all'Access);
       end add_long_Float;
 
       add_long_long_Float:
@@ -493,7 +500,7 @@ is
          new_float_Type.First_is   (long_long_Float'First);
          new_float_Type.Last_is    (long_long_Float'Last);
 
-         standard_Package.Children.append (new_float_Type.all'Access);
+         add (new_float_Type.all'Access);
       end add_long_long_Float;
 
 
@@ -502,7 +509,7 @@ is
          new_enum_Type : constant AdaM.a_Type.enumeration_type.view
            := AdaM.a_Type.enumeration_type.new_Type (Name => "Character");
       begin
-         standard_Package.Children.append (new_enum_Type.all'Access);
+         add (new_enum_Type.all'Access);
       end add_Character;
 
       add_wide_Character:
@@ -510,7 +517,7 @@ is
          new_enum_Type : constant AdaM.a_Type.enumeration_type.view
            := AdaM.a_Type.enumeration_type.new_Type (Name => "Wide_Character");
       begin
-         standard_Package.Children.append (new_enum_Type.all'Access);
+         add (new_enum_Type.all'Access);
       end add_wide_Character;
 
       add_wide_wide_Character:
@@ -518,7 +525,7 @@ is
          new_enum_Type : constant AdaM.a_Type.enumeration_type.view
            := AdaM.a_Type.enumeration_type.new_Type (Name => "Wide_Wide_Character");
       begin
-         standard_Package.Children.append (new_enum_Type.all'Access);
+         add (new_enum_Type.all'Access);
       end add_wide_wide_Character;
 
       add_String:
@@ -536,8 +543,8 @@ is
 
          new_Pragma.add_Argument ("String");
 
-         standard_Package.Children.append (new_array_Type.all'Access);
-         standard_Package.Children.append (new_Pragma.all'Access);
+         add (new_array_Type.all'Access);
+         add (new_Pragma.all'Access);
       end add_String;
 
       add_wide_String:
@@ -555,8 +562,8 @@ is
 
          new_Pragma.add_Argument ("Wide_String");
 
-         standard_Package.Children.append (new_array_Type.all'Access);
-         standard_Package.Children.append (new_Pragma.all'Access);
+         add (new_array_Type.all'Access);
+         add (new_Pragma    .all'Access);
       end add_wide_String;
 
       add_wide_wide_String:
@@ -572,8 +579,8 @@ is
          new_array_Type.element_Indication.is_Constrained;
          new_array_Type.is_Constrained (Now => False);
 
-         standard_Package.Children.append (new_array_Type.all'Access);
-         standard_Package.Children.append (new_Pragma.all'Access);
+         add (new_array_Type.all'Access);
+         add (new_Pragma    .all'Access);
 
          new_Pragma.add_Argument ("Wide_Wide_String");
       end add_wide_wide_String;
@@ -590,7 +597,7 @@ is
          new_ordinary_fixed_Type.First_is ("-((2 ** 63)     * 0.000000001)");
          new_ordinary_fixed_Type.Last_is  ("+((2 ** 63 - 1) * 0.000000001)");
 
-         standard_Package.Children.append (new_ordinary_fixed_Type.all'Access);
+         add (new_ordinary_fixed_Type.all'Access);
       end add_Duration;
 
       add_constraint_Error:
@@ -598,7 +605,7 @@ is
          new_Exception : constant AdaM.Declaration.of_exception.view
            := Adam.Declaration.of_exception.new_Declaration ("Constraint_Error");
       begin
-         standard_Package.Children.append (new_Exception.all'Access);
+         add (new_Exception.all'Access);
       end add_constraint_Error;
 
       add_program_Error:
@@ -606,7 +613,7 @@ is
          new_Exception : constant AdaM.Declaration.of_exception.view
            := Adam.Declaration.of_exception.new_Declaration ("Program_Error");
       begin
-         standard_Package.Children.append (new_Exception.all'Access);
+         add (new_Exception.all'Access);
       end add_program_Error;
 
       add_storage_Error:
@@ -614,7 +621,7 @@ is
          new_Exception : constant AdaM.Declaration.of_exception.view
            := Adam.Declaration.of_exception.new_Declaration ("Storage_Error");
       begin
-         standard_Package.Children.append (new_Exception.all'Access);
+         add (new_Exception.all'Access);
       end add_storage_Error;
 
       add_tasking_Error:
@@ -622,7 +629,7 @@ is
          new_Exception : constant AdaM.Declaration.of_exception.view
            := Adam.Declaration.of_exception.new_Declaration ("Tasking_Error");
       begin
-         standard_Package.Children.append (new_Exception.all'Access);
+         add (new_Exception.all'Access);
       end add_tasking_Error;
 
       add_numeric_Error:   -- TODO: Make this a proper exception renaming as per 'standard.ads'.
@@ -630,7 +637,7 @@ is
          new_Exception : constant AdaM.Declaration.of_exception.view
            := Adam.Declaration.of_exception.new_Declaration ("Numeric_Error");
       begin
-         standard_Package.Children.append (new_Exception.all'Access);
+         add (new_Exception.all'Access);
       end add_numeric_Error;
 
    end add_package_Standard;

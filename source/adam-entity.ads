@@ -56,6 +56,9 @@ is
    function  Name      (Self : in     Item) return Identifier is abstract;
 --     function  full_Name (Self : in Item'Class) return String;
 
+   function  is_Public (Self : in     Item)     return Boolean;
+   procedure is_Public (Self : in out Item;   Now : in Boolean := True);
+
 
 
 private
@@ -65,6 +68,7 @@ private
       record
          parent_Entity :         Entity.view;
          Children      : aliased Entities;
+         is_Public     :         Boolean;
       end record;
 
 

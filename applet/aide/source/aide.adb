@@ -70,8 +70,8 @@ is
    begin
       -- Build the standard ada tree file.
       --
-      put_Line ("rm *.adt: "        & command_Output (to_Command ("rm ./*.adt")));
-      put_Line ("gnatmake output: " & Command_Output (to_Command ("gnatmake -c -gnatc -gnatt ./assets/asis/all_standard_ada.adb")));
+--        put_Line ("rm *.adt: "        & command_Output (to_Command ("rm ./*.adt")));
+--        put_Line ("gnatmake output: " & Command_Output (to_Command ("gnatmake -c -gnatc -gnatt ./assets/asis/all_standard_ada.adb")));
 
 --        the_Environ := AdaM.Assist.known_Environment;
 --        the_Environ.print;

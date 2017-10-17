@@ -39,6 +39,9 @@ is
    current_compilation_Unit : AdaM.compilation_Unit.view;
    current_Package          : AdaM.Declaration.of_package.view;
 
+   type package_Section is (public_Part, private_Part);
+   current_Section : package_Section;
+
    current_Parent : AdaM.Entity.view;
 
 
@@ -740,6 +743,7 @@ is
       current_Package := new_Package;
       log ("Setting current package to " & (+current_Package.Name));
 
+      current_Section := public_Part;
 
       -- Parse children.
       --
@@ -796,6 +800,14 @@ is
 
             new_Entity := parse_Package (LAL.Package_Decl (Node)).all'Access;
 --              skip_Children := True;
+
+         when LAL.Ada_Public_Part =>
+            log ("Processing an Ada_Public_Part");
+            current_Section := public_Part;
+
+         when LAL.Ada_Private_Part =>
+            log ("Processing an Ada_Private_Part");
+            current_Section := private_Part;
 
          when LAL.Ada_Package_Body =>
             Print_Navigation
@@ -904,6 +916,16 @@ is
          end if;
 
          current_Parent := new_Entity;
+
+         case current_Section
+         is
+            when public_Part =>
+               new_Entity.is_Public;
+
+            when private_Part =>
+               new_Entity.is_Public (now => False);
+         end case;
+
       end if;
 
 

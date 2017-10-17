@@ -80,7 +80,8 @@ is
          Result      :          Guint;
 
       begin
-         Self.my_Package := the_Package;
+         Self.my_Package  := the_Package;
+--           Self.public_Part := public_Part;
 
          Gtk_New (the_Builder);
 
@@ -91,10 +92,11 @@ is
             Error_Free (Error);
          end if;
 
-         Self.Notebook            := gtk_Notebook        (the_Builder.get_Object ("top_Notebook"));
-         Self.top_Window          := gtk_scrolled_Window (the_Builder.get_Object ("top_Window"));
-         Self.top_Box             := gtk_Box             (the_Builder.get_Object ("top_Box"));
-         Self.public_entities_Box := gtk_Box             (the_Builder.get_Object ("public_entities_Box"));
+         Self.Notebook             := gtk_Notebook        (the_Builder.get_Object ("top_Notebook"));
+         Self.top_Window           := gtk_scrolled_Window (the_Builder.get_Object ("top_Window"));
+         Self.top_Box              := gtk_Box             (the_Builder.get_Object ("top_Box"));
+         Self.public_entities_Box  := gtk_Box             (the_Builder.get_Object ("public_entities_Box"));
+         Self.private_entities_Box := gtk_Box             (the_Builder.get_Object ("private_entities_Box"));
 
          Self.context_Alignment   := gtk_Alignment       (the_Builder.get_Object ("context_Alignment"));
          Self.name_Entry          := gtk_Entry           (the_Builder.get_Object ("name_Entry"));
@@ -161,7 +163,7 @@ is
          Self.name_Entry.set_Text (String (Self.my_Package.Name));
       end;
 
-      -- Destroy all prior public entity widgets.
+      -- Destroy all prior entity widgets.
       --
       loop
          declare
@@ -172,23 +174,37 @@ is
          end;
       end loop;
 
-      -- Create all public entity widgets.
+      loop
+         declare
+            the_Child : constant gtk_Widget := Self.private_entities_Box.get_Child (0);
+         begin
+            exit when the_Child = null;
+            the_Child.destroy;
+         end;
+      end loop;
+
+      -- Create all entity widgets.
       --
       declare
 --           the_Entities : constant access adam.Source.Entity_Vector := Self.my_Package.public_Entities;
          the_Entities : constant adam.Entity.Entities_view := Self.my_Package.Children;
+         the_Entity   :          adam.Entity.view;
       begin
          for i in 1 .. Integer (the_Entities.Length)
          loop
---              put_Line ("kkk = " & Integer'Image (i));
+            the_Entity := the_Entities.Element (i);
+
             declare
---                 the_Entity : adam.Source.Entity_view renames the_Entities.Element (i);
-               the_Entity :          adam.Entity.view renames the_Entities.Element (i);
-               the_Editor : constant aIDE.Editor.view :=      aIDE.Editor.to_Editor (the_Entity);
+               the_Editor : constant aIDE.Editor.view := aIDE.Editor.to_Editor (the_Entity);
             begin
                if the_Editor /= null
                then
-                  the_Editor.top_Widget.reparent (Self.public_entities_Box);
+                  if the_Entity.is_Public
+                  then
+                     the_Editor.top_Widget.reparent (Self.public_entities_Box);
+                  else
+                     the_Editor.top_Widget.reparent (Self.private_entities_Box);
+                  end if;
                end if;
             end;
          end loop;

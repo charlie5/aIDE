@@ -97,6 +97,23 @@ is
 
 
 
+   function  is_Public (Self : in     Item)     return Boolean
+   is
+   begin
+      return Self.is_Public;
+   end is_Public;
+
+
+   procedure is_Public (Self : in out Item;   Now : in Boolean := True)
+   is
+   begin
+      Self.is_Public := Now;
+   end is_Public;
+
+
+
+
+   ----------
    -- Streams
    --
 
