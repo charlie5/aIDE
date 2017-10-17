@@ -3,7 +3,7 @@ A widget-based Ada IDE.
 
 ### Dependencies
 
-- ASIS
+- Libadalang
 - GtkAda
 - Florist
 - aShell ~ https://github.com/charlie5/aShell.git
