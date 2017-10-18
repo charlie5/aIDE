@@ -95,17 +95,23 @@ is
          Self.Notebook             := gtk_Notebook        (the_Builder.get_Object ("top_Notebook"));
          Self.top_Window           := gtk_scrolled_Window (the_Builder.get_Object ("top_Window"));
          Self.top_Box              := gtk_Box             (the_Builder.get_Object ("top_Box"));
-         Self.public_entities_Box  := gtk_Box             (the_Builder.get_Object ("public_entities_Box"));
+
+         Self. public_entities_Box := gtk_Box             (the_Builder.get_Object ("public_entities_Box"));
          Self.private_entities_Box := gtk_Box             (the_Builder.get_Object ("private_entities_Box"));
 
-         Self.context_Alignment   := gtk_Alignment       (the_Builder.get_Object ("context_Alignment"));
+         Self. public_context_Alignment := gtk_Alignment  (the_Builder.get_Object ("public_context_Alignment"));
+         Self.private_context_Alignment := gtk_Alignment  (the_Builder.get_Object ("private_context_Alignment"));
+
          Self.name_Entry          := gtk_Entry           (the_Builder.get_Object ("name_Entry"));
 
          Self.package_Label       := gtk_Label           (the_Builder.get_Object ("package_Label"));
          Self.declarations_Label  := gtk_Label           (the_Builder.get_Object ("declarations_Label"));
 
-         Self.context_Editor := aIDE.Editor.of_context.Forge.to_context_Editor (Self.my_Package.Context);
-         Self.context_Editor.top_Widget.Reparent (new_Parent => Self.context_Alignment);
+         Self.public_context_Editor := aIDE.Editor.of_context.Forge.to_context_Editor (Self.my_Package.Context);
+         Self.public_context_Editor.top_Widget.Reparent (new_Parent => Self.public_context_Alignment);
+
+         Self.private_context_Editor := aIDE.Editor.of_context.Forge.to_context_Editor (Self.my_Package.Context);
+         Self.private_context_Editor.top_Widget.Reparent (new_Parent => Self.private_context_Alignment);
 
          Self.  declare_Text := Gtk_Text_View (the_Builder.get_Object (  "declare_Textview"));
          Self.    begin_Text := Gtk_Text_View (the_Builder.get_Object (    "begin_Textview"));
@@ -256,7 +262,10 @@ is
    is
    begin
       Self.my_Package := Now;
-      Self.context_Editor.Context_is (Self.my_Package.Context);
+
+      Self. public_context_Editor.Context_is (Self.my_Package.Context);
+      Self.private_context_Editor.Context_is (Self.my_Package.Context);
+
       Self.freshen;
    end Package_is;
 

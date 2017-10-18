@@ -8,6 +8,7 @@ with
      aIDE.Editor.of_fixed_type,
      aIDE.Editor.of_float_type,
      aIDE.Editor.of_array_type,
+     aIDE.Editor.of_private_type,
      aIDE.Editor.of_subtype_indication,
      aIDE.Editor.of_object,
      aIDE.Editor.of_raw_source,
@@ -17,6 +18,7 @@ with
      AdaM.a_Pragma,
      AdaM.Declaration.of_exception,
      AdaM.Declaration.of_object,
+     AdaM.a_Type.private_type,
      AdaM.a_Type.a_subtype,
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
@@ -81,6 +83,15 @@ is
       then
          declare
             new_Editor : constant Editor.of_object.view := Editor.of_object.Forge.new_Editor (AdaM.Declaration.of_object.view (Target));
+         begin
+            Self := Editor.view (new_Editor);
+         end;
+
+      elsif Target.all in AdaM.a_Type.private_type.item'Class
+      then
+         declare
+            new_Editor : constant Editor.of_private_type.view
+              := Editor.of_private_type.Forge.to_Editor (AdaM.a_Type.private_type.view (Target));
          begin
             Self := Editor.view (new_Editor);
          end;

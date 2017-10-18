@@ -56,9 +56,13 @@ private
 --           public_Part        : Boolean;
 
          Notebook           : gtk_Notebook;
-         context_Editor     : aIDE.Editor.of_context.view;
 
-         context_Alignment  : gtk_Alignment;
+         public_context_Editor    : aIDE.Editor.of_context.view;
+         public_context_Alignment : gtk_Alignment;
+
+         private_context_Editor    : aIDE.Editor.of_context.view;
+         private_context_Alignment : gtk_Alignment;
+
          name_Entry         : gtk_Entry;
 
          package_Label      : gtk_Label;

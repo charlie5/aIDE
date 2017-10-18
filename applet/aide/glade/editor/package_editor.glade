@@ -29,7 +29,7 @@
                         <property name="label_xalign">0</property>
                         <property name="shadow_type">none</property>
                         <child>
-                          <object class="GtkAlignment" id="context_Alignment">
+                          <object class="GtkAlignment" id="public_context_Alignment">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="left_padding">12</property>
@@ -175,7 +175,7 @@
                         <property name="label_xalign">0</property>
                         <property name="shadow_type">none</property>
                         <child>
-                          <object class="GtkAlignment" id="context_Alignment1">
+                          <object class="GtkAlignment" id="private_context_Alignment">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="left_padding">12</property>

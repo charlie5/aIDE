@@ -6,6 +6,7 @@ with
      AdaM.Declaration.of_object,
      AdaM.a_Pragma,
      AdaM.a_Package,
+
      AdaM.a_Type.universal_type,
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
@@ -13,6 +14,8 @@ with
      AdaM.a_Type.floating_point_type,
      AdaM.a_Type.array_type,
      AdaM.a_Type.ordinary_fixed_point_type,
+     AdaM.a_Type.private_type,
+
      AdaM.subtype_indication,
      AdaM.Declaration.of_exception,
      AdaM.Declaration.of_exception,
@@ -148,9 +151,6 @@ is
 
       Depth := Depth - 1;
    end parse_subtype_Indication;
-
-
-
 
 
 
@@ -632,18 +632,12 @@ is
 
 
 
-
-
-
-
-
-
    function parse_Type (Node : in LAL.Type_Decl) return AdaM.a_Type.view
    is
       use ada.Characters.Conversions;
 
       Name            : constant String                            := to_String (Node.P_Defining_Name.Text);
-      new_Enumeration : constant AdaM.a_Type.enumeration_type.view := AdaM.a_Type.enumeration_type.new_Type (Name);
+--        new_Enumeration : constant AdaM.a_Type.enumeration_type.view := AdaM.a_Type.enumeration_type.new_Type (Name);
 
 --  --        Ids : LAL.Identifier_List := Node.F_Ids;
    begin
@@ -668,6 +662,15 @@ is
             else
                case Child.Kind
                is
+                  when LAL.Ada_Signed_Int_Type_Def =>
+                     log ("parsing Ada_Signed_Int_Type_Def");
+
+                     declare
+                        new_Type : AdaM.a_Type.signed_integer_type.view := AdaM.a_Type.signed_integer_type.new_Type (Name);
+                     begin
+                        return new_Type.all'Access;
+                     end;
+
                   when LAL.Ada_Array_Type_Def =>
                      log ("parsing Ada_Array_Type_Def");
 
@@ -689,8 +692,15 @@ is
 --                          end loop;
 --                       end;
 
-                     -- Others
-                     --
+                  when LAL.Ada_Private_Type_Def =>
+                     log ("parsing Ada_Private_Type_Def");
+
+                     declare
+                        new_private_Type : AdaM.a_Type.private_type.view := AdaM.a_Type.private_type.new_Type (Name);
+                     begin
+                        return new_private_Type.all'Access;
+                     end;
+
                   when others =>
                      Put_Line (Indent & "<parse_type> Skip pre-processing of " & Short_Image (Child)
                                & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Child.Kind));
@@ -701,7 +711,7 @@ is
 
       Depth := Depth - 1;
 
-      return new_Enumeration.all'Access;
+      return null;   -- new_Enumeration.all'Access;
    end parse_Type;
 
 
