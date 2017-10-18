@@ -1,0 +1,42 @@
+with
+     "libadalang";
+
+
+project test_name_Res
+is
+
+   Style_Options  := ("-gnatykp",     --  Check casings: a:attribute, k:keywords, n:package Standard identifiers, p:pragma, r:identifier references.
+                      "-gnatybfhi",   --  Check b:no blanks at end of lines, f:no ff/vtabs, h: no htabs, i:if-then layout, u:no unnecessary blank lines.
+                      "-gnatyO",      --  Check that overriding subprograms are explicitly marked as such.
+                      "-gnatye",      --  Check that labels on end statements (ending subprograms), and on exit statements (exiting named loops), are present.
+                      "-gnatyx");     --  Check x:no extra parens.
+
+   Compiler_Options :=   ("-gnat12",
+                          "-gnatwa",
+                          "-fno-strict-aliasing")
+                        & Style_Options;
+
+
+   for Object_Dir use "build";
+   for Exec_Dir use ".";
+   for Main use ("launch_test.adb");
+
+   for Source_Dirs use (".");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g", "-j5");
+   end Builder;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g");
+   end Linker;
+
+   package Compiler is
+      for Default_Switches ("ada") use Compiler_Options;
+   end Compiler;
+
+end test_name_Res;
