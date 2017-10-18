@@ -10,6 +10,9 @@
 b__*.ad[sb]
 *.bexch
 gnatinspect.*
+*.adb.stderr
+*.adb.stdout
+clang_ref_cache.db
 
 applet/aide/launch_aide
 applet/aide/test
@@ -17,3 +20,4 @@ applet/aide/test
 library/build
 applet/aide/build
 applet/navigate/build
+launch_test
