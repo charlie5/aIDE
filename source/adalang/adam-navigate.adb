@@ -279,7 +279,7 @@ is
    is
       use ada.Characters.Conversions;
       node_Text : constant String := to_String (Node.Text);
-
+kkk : Boolean := Node.P_Resolve_Symbols;
       Declaration : LAL.Anonymous_Type_Decl := LAL.Anonymous_Type_Decl (Node.Child (1));
       new_Type    : AdaM.a_Type.view;
    begin
@@ -574,6 +574,14 @@ is
             Name          : String         := LAL.Text (Child.F_Tok);
             new_Exception : AdaM.Declaration.of_exception.view := AdaM.Declaration.of_exception.new_Declaration (Name);
          begin
+            case current_Section
+            is
+               when public_Part =>
+                  new_Exception.is_Public;
+               when private_Part =>
+                  new_Exception.is_Public (now => False);
+            end case;
+
             current_Parent.Children.append (new_Exception.all'Access);
             new_Exception.parent_Entity_is (current_Parent);
          end;
@@ -724,9 +732,7 @@ is
       use ada.Characters.Conversions;
 
       Name            : constant String                            := to_String (Node.P_Defining_Name.Text);
---        new_Enumeration : constant AdaM.a_Type.enumeration_type.view := AdaM.a_Type.enumeration_type.new_Type (Name);
-
---  --        Ids : LAL.Identifier_List := Node.F_Ids;
+--        Ids : LAL.Identifier_List := Node.F_Ids;
    begin
       Depth := Depth + 1;
 
@@ -789,7 +795,7 @@ is
 
       Depth := Depth - 1;
 
-      return null;   -- new_Enumeration.all'Access;
+      return null;
    end parse_Type;
 
 
