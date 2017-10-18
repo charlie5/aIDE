@@ -102,17 +102,33 @@ is
 
 
 
+   ----------
+   -- Process
+   --
+
    procedure process (Node : in LAL.Ada_Node);
+
+
+
+   procedure parse_Range (the_Range : in     LAL.Bin_Op;
+                          First     :    out Text;
+                          Last      :    out Text)
+   is
+      use Ada.Characters.conversions;
+   begin
+      First := +to_String (the_Range.Child (1).Text);
+      Last  := +to_String (the_Range.Child (3).Text);
+   end parse_Range;
 
 
 
    procedure parse_subtype_Indication (Node           : in     LAL.Subtype_Indication;
                                        new_Indication :    out AdaM.subtype_Indication.item'Class)
    is
-      use ada.Characters.Conversions;
+      use Ada.Characters.Conversions;
 
-      index_Type         : constant String               := to_String (Node.F_Name.Text);
-      Constraint         : constant LAL.Range_Constraint := LAL.Range_Constraint (Node.Child (3));
+      index_Type : constant String               := to_String (Node.F_Name.Text);
+      Constraint : constant LAL.Range_Constraint := LAL.Range_Constraint (Node.Child (3));
 
    begin
       Depth := Depth + 1;
@@ -130,12 +146,14 @@ is
             new_Indication.is_Constrained (True);
 
             declare
-               the_Range : constant LAL.Bin_Op           := LAL.Bin_Op (Constraint.Child (1));
-               First     : constant String               := to_String (the_Range.Child (1).Text);
-               Last      : constant String               := to_String (the_Range.Child (3).Text);
+               the_Range : constant LAL.Bin_Op := LAL.Bin_Op (Constraint.Child (1));
+               First     :          Text;
+               Last      :          Text;
             begin
-               new_Indication.First_is (First);
-               new_Indication.Last_is  (Last);
+               parse_Range (the_Range,  First, Last);
+
+               new_Indication.First_is (+First);
+               new_Indication.Last_is  (+Last);
             end;
 
          elsif Constraint.Child (1).Kind = LAL.Ada_Box_Expr
@@ -632,6 +650,38 @@ is
 
 
 
+   function parse_signed_integer_Type (Named : in String;
+                                       Node  : in LAL.Signed_Int_Type_Def) return AdaM.a_Type.signed_integer_type.view
+   is
+      use ada.Characters.Conversions;
+
+      new_Type : constant AdaM.a_Type.signed_integer_type.view := AdaM.a_Type.signed_integer_type.new_Type (Named);
+
+   begin
+      Node.Print;
+      Depth := Depth + 1;
+
+      declare
+         the_Range : constant LAL.Bin_Op := LAL.Bin_Op (Node.Child (1));
+         First     :          Text;
+         Last      :          Text;
+      begin
+         parse_Range (the_Range,  First, Last);
+
+         new_Type.First_is (long_long_Integer'Value (+First));
+         new_Type.Last_is  (long_long_Integer'Value (+Last));
+      end;
+
+      Depth := Depth - 1;
+
+      return new_Type;
+   end parse_signed_integer_Type;
+
+
+
+
+
+
    function parse_Type (Node : in LAL.Type_Decl) return AdaM.a_Type.view
    is
       use ada.Characters.Conversions;
@@ -665,11 +715,13 @@ is
                   when LAL.Ada_Signed_Int_Type_Def =>
                      log ("parsing Ada_Signed_Int_Type_Def");
 
-                     declare
-                        new_Type : AdaM.a_Type.signed_integer_type.view := AdaM.a_Type.signed_integer_type.new_Type (Name);
-                     begin
-                        return new_Type.all'Access;
-                     end;
+                     return AdaM.a_Type.view (parse_signed_integer_Type (named => Name, node => LAL.Signed_Int_Type_Def (Child)));
+
+--                       declare
+--                          new_Type : AdaM.a_Type.signed_integer_type.view := AdaM.a_Type.signed_integer_type.new_Type (Name);
+--                       begin
+--                          return new_Type.all'Access;
+--                       end;
 
                   when LAL.Ada_Array_Type_Def =>
                      log ("parsing Ada_Array_Type_Def");
