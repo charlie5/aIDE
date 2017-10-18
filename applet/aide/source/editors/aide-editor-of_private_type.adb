@@ -118,7 +118,7 @@ is
 
          Gtk_New (the_Builder);
 
-         Result := the_Builder.Add_From_File ("glade/editor/private_type_editor.glade", Error'Access);
+         Result := the_Builder.add_From_File ("glade/editor/private_type_editor.glade", Error'Access);
 
          if Error /= null then
             raise Program_Error with "Error: adam.Editor.of_enumeration_type ~ " & Get_Message (Error);

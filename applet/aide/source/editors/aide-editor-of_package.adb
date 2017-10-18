@@ -93,7 +93,6 @@ is
          end if;
 
          Self.Notebook             := gtk_Notebook        (the_Builder.get_Object ("top_Notebook"));
-         Self.top_Window           := gtk_scrolled_Window (the_Builder.get_Object ("top_Window"));
          Self.top_Box              := gtk_Box             (the_Builder.get_Object ("top_Box"));
 
          Self. public_entities_Box := gtk_Box             (the_Builder.get_Object ("public_entities_Box"));
