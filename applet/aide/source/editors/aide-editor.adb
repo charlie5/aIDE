@@ -3,6 +3,7 @@ with
      aIDE.Editor.of_exception,
      aIDE.Editor.of_pragma,
      aIDE.Editor.of_subtype,
+     aIDE.Editor.of_derived_type,
      aIDE.Editor.of_enumeration_type,
      aIDE.Editor.of_signed_integer_type,
      aIDE.Editor.of_fixed_type,
@@ -20,6 +21,7 @@ with
      AdaM.Declaration.of_object,
      AdaM.a_Type.private_type,
      AdaM.a_Type.a_subtype,
+     AdaM.a_Type.derived_type,
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
      AdaM.a_Type.ordinary_fixed_point_type,
@@ -101,6 +103,15 @@ is
          declare
             new_Editor : constant Editor.of_subtype.view
               := Editor.of_subtype.Forge.to_Editor (AdaM.a_Type.a_subtype.view (Target));
+         begin
+            Self := Editor.view (new_Editor);
+         end;
+
+      elsif Target.all in AdaM.a_Type.derived_type.item'Class
+      then
+         declare
+            new_Editor : constant Editor.of_derived_type.view
+              := Editor.of_derived_type.Forge.to_Editor (AdaM.a_Type.derived_type.view (Target));
          begin
             Self := Editor.view (new_Editor);
          end;

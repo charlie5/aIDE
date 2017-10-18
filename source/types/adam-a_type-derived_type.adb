@@ -67,6 +67,23 @@ is
 
 
 
+   function  parent_Subtype    (Self : in Item)     return subtype_Indication.view
+   is
+   begin
+      return Self.parent_Subtype;
+   end parent_Subtype;
+
+
+
+   procedure parent_Subtype_is (Self : out Item;   Now : in subtype_Indication.view)
+   is
+   begin
+      Self.parent_Subtype := Now;
+   end parent_Subtype_is;
+
+
+
+
    -- Streams
    --
 

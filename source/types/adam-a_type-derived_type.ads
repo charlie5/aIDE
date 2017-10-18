@@ -1,5 +1,6 @@
 with
      AdaM.a_Type.record_type,
+     AdaM.subtype_Indication,
      Ada.Streams;
 
 
@@ -28,12 +29,18 @@ is
    function  Id (Self : access Item) return AdaM.Id;
 
 
+   function  parent_Subtype    (Self : in     Item)     return subtype_Indication.view;
+   procedure parent_Subtype_is (Self :    out Item;   Now : in subtype_Indication.view);
+
 
 private
 
    type Item is new a_Type.record_type.item with
       record
-         null;
+         is_Abstract    : Boolean := False;
+         is_Limited     : Boolean := False;
+
+         parent_Subtype : subtype_Indication.view;
       end record;
 
 

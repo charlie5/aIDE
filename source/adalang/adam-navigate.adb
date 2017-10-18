@@ -15,6 +15,7 @@ with
      AdaM.a_Type.array_type,
      AdaM.a_Type.ordinary_fixed_point_type,
      AdaM.a_Type.private_type,
+     AdaM.a_Type.derived_type,
 
      AdaM.subtype_indication,
      AdaM.Declaration.of_exception,
@@ -69,17 +70,17 @@ is
    Enabled_Kinds : array (LAL.Ada_Node_Kind_type) of Boolean :=
      (others => True);
 
-   function Is_Navigation_Disabled (N : LAL.Ada_Node) return Boolean;
+--     function Is_Navigation_Disabled (N : LAL.Ada_Node) return Boolean;
 
    function Node_Filter (N : LAL.Ada_Node) return Boolean
    is
-     (             Enabled_Kinds (N.Kind)
-      and then not Is_Navigation_Disabled (N));
+     (             Enabled_Kinds (N.Kind));
+--        and then not Is_Navigation_Disabled (N));
 
    procedure Process_File (Unit : LAL.Analysis_Unit; Filename : String);
 
-   procedure Print_Navigation (Part_Name  : String;
-                               Orig, Dest : access LAL.Ada_Node_Type'Class);
+--     procedure Print_Navigation (Part_Name  : String;
+--                                 Orig, Dest : access LAL.Ada_Node_Type'Class);
 
    At_Least_Once : Boolean := False;
 
@@ -679,6 +680,42 @@ is
 
 
 
+   function parse_derived_Type (Named : in String;
+                                Node  : in LAL.Derived_Type_Def) return AdaM.a_Type.derived_type.view
+   is
+      use ada.Characters.Conversions;
+      new_Type : constant AdaM.a_Type.derived_type.view := AdaM.a_Type.derived_type.new_Type (Named);
+   begin
+      Node.Print;
+      Depth := Depth + 1;
+
+      declare
+         the_Subtype    : LAL.Subtype_Indication       := LAL.Subtype_Indication (Node.Child (4));
+         new_Indication : AdaM.subtype_Indication.view := AdaM.subtype_Indication.new_Indication;
+      begin
+         parse_subtype_Indication (the_Subtype, new_Indication.all);
+         new_Type.parent_Subtype_is (new_Indication);
+      end;
+
+
+
+--        declare
+--           the_Range : constant LAL.Bin_Op := LAL.Bin_Op (Node.Child (1));
+--           First     :          Text;
+--           Last      :          Text;
+--        begin
+--           parse_Range (the_Range,  First, Last);
+--
+--           new_Type.First_is (long_long_Integer'Value (+First));
+--           new_Type.Last_is  (long_long_Integer'Value (+Last));
+--        end;
+
+      Depth := Depth - 1;
+
+      return new_Type;
+   end parse_derived_Type;
+
+
 
 
 
@@ -717,41 +754,30 @@ is
 
                      return AdaM.a_Type.view (parse_signed_integer_Type (named => Name, node => LAL.Signed_Int_Type_Def (Child)));
 
---                       declare
---                          new_Type : AdaM.a_Type.signed_integer_type.view := AdaM.a_Type.signed_integer_type.new_Type (Name);
---                       begin
---                          return new_Type.all'Access;
---                       end;
-
                   when LAL.Ada_Array_Type_Def =>
                      log ("parsing Ada_Array_Type_Def");
 
                      return AdaM.a_Type.view (parse_array_Type (named => Name, node => LAL.Array_Type_Def (Child)));
 
---                       declare
---                          Def : LAL.Array_Type_Def := LAL.Array_Type_Def (Child);
---                       begin
---                          for i in 1 .. Def.child_Count
---                          loop
---                             declare
---                                Literal : LAL.Enum_Literal_Decl := LAL.Enum_Literal_Decl (Def.Child (i));
---                                Name    : String                := to_String (Literal.P_Defining_Name.Text);
---
---                             begin
---                                log ("'" & Name & "'");
---  --                                new_Enumeration.add_Literal (Name);
---                             end;
---                          end loop;
---                       end;
-
                   when LAL.Ada_Private_Type_Def =>
                      log ("parsing Ada_Private_Type_Def");
 
                      declare
-                        new_private_Type : AdaM.a_Type.private_type.view := AdaM.a_Type.private_type.new_Type (Name);
+                        new_Type : constant AdaM.a_Type.private_type.view := AdaM.a_Type.private_type.new_Type (Name);
                      begin
-                        return new_private_Type.all'Access;
+                        return new_Type.all'Access;
                      end;
+
+                  when LAL.Ada_Derived_Type_Def =>
+                     log ("parsing Ada_Derived_Type_Def");
+
+                     return AdaM.a_Type.view (parse_derived_Type (named => Name, node => LAL.Derived_Type_Def (Child)));
+
+--                       declare
+--                          new_Type : constant AdaM.a_Type.derived_type.view := AdaM.a_Type.derived_type.new_Type (Name);
+--                       begin
+--                          return new_Type.all'Access;
+--                       end;
 
                   when others =>
                      Put_Line (Indent & "<parse_type> Skip pre-processing of " & Short_Image (Child)
@@ -871,29 +897,30 @@ is
             log ("Processing an Ada_Private_Part");
             current_Section := private_Part;
 
-         when LAL.Ada_Package_Body =>
-            Print_Navigation
-              (Indent & "Decl", Node, LAL.Package_Body (Node).P_Decl_Part);
-
-         when LAL.Ada_Generic_Package_Decl =>
-            Print_Navigation
-              (Indent & "Body", Node,
-               LAL.Generic_Package_Decl (Node).P_Body_Part);
-
-            --  Subprograms
-            --
-         when LAL.Ada_Subp_Decl =>
-            Print_Navigation
-              (Indent & "Body", Node, LAL.Subp_Decl (Node).P_Body_Part);
-
-         when LAL.Ada_Subp_Body =>
-            Print_Navigation
-              (Indent & "Decl", Node, LAL.Subp_Body (Node).P_Decl_Part);
-
-         when LAL.Ada_Generic_Subp_Decl =>
-            Print_Navigation
-              (Indent & "Body", Node,
-               LAL.Generic_Subp_Decl (Node).P_Body_Part);
+--           when LAL.Ada_Package_Body =>
+--              log ("Processing an Ada_Package_Body");
+--              Print_Navigation
+--                (Indent & "Decl", Node, LAL.Package_Body (Node).P_Decl_Part);
+--
+--           when LAL.Ada_Generic_Package_Decl =>
+--              Print_Navigation
+--                (Indent & "Body", Node,
+--                 LAL.Generic_Package_Decl (Node).P_Body_Part);
+--
+--              --  Subprograms
+--              --
+--           when LAL.Ada_Subp_Decl =>
+--              Print_Navigation
+--                (Indent & "Body", Node, LAL.Subp_Decl (Node).P_Body_Part);
+--
+--           when LAL.Ada_Subp_Body =>
+--              Print_Navigation
+--                (Indent & "Decl", Node, LAL.Subp_Body (Node).P_Decl_Part);
+--
+--           when LAL.Ada_Generic_Subp_Decl =>
+--              Print_Navigation
+--                (Indent & "Body", Node,
+--                 LAL.Generic_Subp_Decl (Node).P_Body_Part);
 
          when LAL.Ada_Pragma_Node =>
             log ("Processing an Ada_Pragma_Node");
@@ -930,8 +957,14 @@ is
 
          when LAL.Ada_Type_Decl =>
             log ("Processing an Ada_Type_Decl");
-
-            new_Entity := parse_Type (LAL.Type_Decl (Node)).all'Access;
+            declare
+               use adam.a_Type;
+            begin
+               if parse_Type (LAL.Type_Decl (Node)) /= null
+               then
+                  new_Entity := parse_Type (LAL.Type_Decl (Node)).all'Access;
+               end if;
+            end;
             skip_Children := True;
 
          when LAL.Ada_Subtype_Decl =>
@@ -1081,75 +1114,75 @@ is
 
 
 
-   procedure Print_Navigation (Part_Name  : String;
-                               Orig, Dest : access LAL.Ada_Node_Type'Class)
-   is
-   begin
-      if Dest = null then
-         Put_Line
-           (Short_Image (Orig) & " has no " & To_Lower (Part_Name));
-      else
-         Put_Line
-           (Part_Name & " of " & Short_Image (Orig) & " is "
-            & Short_Image (Dest)
-            & " [" & LAL.Get_Filename (Dest.Get_Unit) & "]");
-      end if;
-   end Print_Navigation;
+--     procedure Print_Navigation (Part_Name  : String;
+--                                 Orig, Dest : access LAL.Ada_Node_Type'Class)
+--     is
+--     begin
+--        if Dest = null then
+--           Put_Line
+--             (Short_Image (Orig) & " has no " & To_Lower (Part_Name));
+--        else
+--           Put_Line
+--             (Part_Name & " of " & Short_Image (Orig) & " is "
+--              & Short_Image (Dest)
+--              & " [" & LAL.Get_Filename (Dest.Get_Unit) & "]");
+--        end if;
+--     end Print_Navigation;
 
 
    ----------------------------
    -- Is_Navigation_Disabled --
    ----------------------------
 
-   function Is_Navigation_Disabled (N : LAL.Ada_Node) return Boolean
-   is
-
-      function Lowercase_Name (Id : LAL.Identifier) return String is
-        (To_Lower (Langkit_Support.Text.Image (LAL.Text (Id.F_Tok))));
-
-      function Has_Disable_Navigation
-        (Aspects : LAL.Aspect_Spec) return Boolean;
-
-      ----------------------------
-      -- Has_Disable_Navigation --
-      ----------------------------
-
-      function Has_Disable_Navigation
-        (Aspects : LAL.Aspect_Spec) return Boolean
-      is
-         use type LAL.Ada_Node_Kind_Type;
-         use type LAL.Aspect_Spec;
-      begin
-         if Aspects = null then
-            return False;
-         end if;
-         for Child of Aspects.F_Aspect_Assocs.Children loop
-            declare
-               Assoc : constant LAL.Aspect_Assoc := LAL.Aspect_Assoc (Child);
-            begin
-               if Assoc.F_Id.Kind = LAL.Ada_Identifier then
-                  declare
-                     Id : constant LAL.Identifier :=
-                       LAL.Identifier (Assoc.F_Id);
-                  begin
-                     return Lowercase_Name (Id) = "disable_navigation";
-                  end;
-               end if;
-            end;
-         end loop;
-         return False;
-      end Has_Disable_Navigation;
-
-   begin
-      case N.Kind is
-         when LAL.Ada_Base_Package_Decl =>
-            return Has_Disable_Navigation
-              (LAL.Base_Package_Decl (N).F_Aspects);
-
-         when others =>
-            return False;
-      end case;
-   end Is_Navigation_Disabled;
+--     function Is_Navigation_Disabled (N : LAL.Ada_Node) return Boolean
+--     is
+--
+--        function Lowercase_Name (Id : LAL.Identifier) return String is
+--          (To_Lower (Langkit_Support.Text.Image (LAL.Text (Id.F_Tok))));
+--
+--        function Has_Disable_Navigation
+--          (Aspects : LAL.Aspect_Spec) return Boolean;
+--
+--        ----------------------------
+--        -- Has_Disable_Navigation --
+--        ----------------------------
+--
+--        function Has_Disable_Navigation
+--          (Aspects : LAL.Aspect_Spec) return Boolean
+--        is
+--           use type LAL.Ada_Node_Kind_Type;
+--           use type LAL.Aspect_Spec;
+--        begin
+--           if Aspects = null then
+--              return False;
+--           end if;
+--           for Child of Aspects.F_Aspect_Assocs.Children loop
+--              declare
+--                 Assoc : constant LAL.Aspect_Assoc := LAL.Aspect_Assoc (Child);
+--              begin
+--                 if Assoc.F_Id.Kind = LAL.Ada_Identifier then
+--                    declare
+--                       Id : constant LAL.Identifier :=
+--                         LAL.Identifier (Assoc.F_Id);
+--                    begin
+--                       return Lowercase_Name (Id) = "disable_navigation";
+--                    end;
+--                 end if;
+--              end;
+--           end loop;
+--           return False;
+--        end Has_Disable_Navigation;
+--
+--     begin
+--        case N.Kind is
+--           when LAL.Ada_Base_Package_Decl =>
+--              return Has_Disable_Navigation
+--                (LAL.Base_Package_Decl (N).F_Aspects);
+--
+--           when others =>
+--              return False;
+--        end case;
+--     end Is_Navigation_Disabled;
 
 
 begin
