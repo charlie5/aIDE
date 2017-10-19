@@ -6,8 +6,6 @@ with
      AdaM.Declaration.of_object,
      AdaM.a_Pragma,
      AdaM.a_Package,
-
-     AdaM.a_Type.universal_type,
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
      AdaM.a_Type.a_subtype,
@@ -19,25 +17,23 @@ with
 
      AdaM.subtype_indication,
      AdaM.Declaration.of_exception,
-     AdaM.Declaration.of_exception,
      AdaM.Assist;
 
 with Ada.Characters.Handling;
 with ada.strings.fixed;
-with Ada.Command_Line;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Langkit_Support.Diagnostics;
 with Langkit_Support.Text;
 with Libadalang.Analysis;
 
-with ada.Wide_Wide_Text_IO;
 with ada.Characters.Conversions;
 use Libadalang.Analysis;
 
 
 procedure AdaM.parse (File : in String;   Into : in out AdaM.Environment.item)
 is
+   pragma Unreferenced (File);
    Environ : AdaM.Environment.item renames Into;
 
    current_compilation_Unit : AdaM.compilation_Unit.view;
@@ -64,10 +60,12 @@ is
 
    function To_Lower (S : String) return String
                       renames Ada.Characters.Handling.To_Lower;
+   pragma Unreferenced (To_Lower);
 
    Fatal_Error   : exception;
+   pragma Unreferenced (Fatal_Error);
    Ctx           : LAL.Analysis_Context;
-   Enabled_Kinds : array (LAL.Ada_Node_Kind_type) of Boolean :=
+   Enabled_Kinds : constant array (LAL.Ada_Node_Kind_type) of Boolean :=
      (others => True);
 
 --     function Is_Navigation_Disabled (N : LAL.Ada_Node) return Boolean;
@@ -75,6 +73,7 @@ is
    function Node_Filter (N : LAL.Ada_Node) return Boolean
    is
      (             Enabled_Kinds (N.Kind));
+   pragma Unreferenced (Node_Filter);
 --        and then not Is_Navigation_Disabled (N));
 
    procedure Process_File (Unit : LAL.Analysis_Unit; Filename : String);
@@ -194,8 +193,7 @@ is
       for i in 1 .. Node.child_Count
       loop
          declare
-            use type LAL.Ada_Node;
-            Child : LAL.Ada_Node := Node.Child (i);
+            Child : constant LAL.Ada_Node := Node.Child (i);
          begin
             if Child = null
             then
@@ -221,7 +219,7 @@ is
                         Indices            : constant LAL.Constrained_Array_Indices := LAL.Constrained_Array_Indices (Child);
                         node_List          : constant LAL.Ada_Node_List             := LAL.Ada_Node_List (Indices.Child (1));
 
-                        subtype_Indication : LAL.Subtype_Indication        := LAL.Subtype_Indication (node_List.Child (1));
+                        subtype_Indication : constant LAL.Subtype_Indication        := LAL.Subtype_Indication (node_List.Child (1));
                      begin
                         Put_Line (  Indent & "<parse_array_Type> processing of " & Short_Image (Indices)
                                   & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Indices.Kind));
@@ -238,7 +236,7 @@ is
                      LAL.print (Child);
 
                      declare
-                        Component : LAL.Component_Def := LAL.Component_Def (Child);
+                        Component : constant LAL.Component_Def := LAL.Component_Def (Child);
                      begin
                         if Component = null
                         then
@@ -278,10 +276,9 @@ is
    function parse_anonymous_Type (Node : in LAL.Anonymous_Type) return AdaM.a_Type.view
    is
       use ada.Characters.Conversions;
-      node_Text : constant String := to_String (Node.Text);
-kkk : Boolean := Node.P_Resolve_Symbols;
-      Declaration : LAL.Anonymous_Type_Decl := LAL.Anonymous_Type_Decl (Node.Child (1));
-      new_Type    : AdaM.a_Type.view;
+      node_Text   : constant String := to_String (Node.Text);
+      Declaration : constant LAL.Anonymous_Type_Decl := LAL.Anonymous_Type_Decl (Node.Child (1));
+      new_Type    :          AdaM.a_Type.view;
    begin
       log ("parse_anonymous_Type");
       log ("Anonymous type text : '" & node_Text & "'");
@@ -291,7 +288,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
       for i in 1 .. Declaration.child_Count
       loop
          declare
-            Child : LAL.Ada_Node := Declaration.Child (i);
+            Child : constant LAL.Ada_Node := Declaration.Child (i);
          begin
             if Child = null
             then
@@ -334,7 +331,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
 
                      declare
                         array_Def  : constant LAL.Array_Type_Def          := LAL.Array_Type_Def (Child);
-                        array_Type :          AdaM.a_Type.array_type.view := parse_array_Type ("", array_Def);
+                        array_Type : constant AdaM.a_Type.array_type.view := parse_array_Type ("", array_Def);
                      begin
                         new_Type := array_Type.all'Access;
                      end;
@@ -370,8 +367,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
       for i in 1 .. Node.child_Count
       loop
          declare
-            use type LAL.Ada_Node;
-            Child : LAL.Ada_Node := Node.Child (i);
+            Child : constant LAL.Ada_Node := Node.Child (i);
          begin
             if Child = null
             then
@@ -501,8 +497,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
       for i in 1 .. Node.child_Count
       loop
          declare
-            use type LAL.Ada_Node;
-            Child : LAL.Ada_Node := Node.Child (i);
+            Child : constant LAL.Ada_Node := Node.Child (i);
          begin
             if Child = null
             then
@@ -515,7 +510,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
 --                       log ("ADA_BASE_ASSOC_LIST");
 
                      declare
-                        List : LAL.Base_Assoc_List := LAL.Base_Assoc_List (Child);
+                        List : constant LAL.Base_Assoc_List := LAL.Base_Assoc_List (Child);
                      begin
                         if not List.Is_Empty_List
                         then
@@ -524,8 +519,8 @@ kkk : Boolean := Node.P_Resolve_Symbols;
                            for i in 1 .. List.Child_Count
                            loop
                               declare
-                                 Pragma_Arg : LAL.Pragma_Argument_Assoc := LAL.Pragma_Argument_Assoc (List.Child (i));
-                                 Arg        : String := to_String (Pragma_Arg.F_Expr.Text);
+                                 Pragma_Arg : constant LAL.Pragma_Argument_Assoc := LAL.Pragma_Argument_Assoc (List.Child (i));
+                                 Arg        : constant String := to_String (Pragma_Arg.F_Expr.Text);
                               begin
 --                                Pragma_Arg.Print;
 --                                put_Line ("'" & Arg & "'");
@@ -558,7 +553,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
    is
       use ada.Characters.Conversions;
 
-      Ids : LAL.Identifier_List := Node.F_Ids;
+      Ids : constant LAL.Identifier_List := Node.F_Ids;
    begin
       Depth := Depth + 1;
 
@@ -569,10 +564,9 @@ kkk : Boolean := Node.P_Resolve_Symbols;
       for i in 1 .. Ids.child_Count
       loop
          declare
-            use type LAL.Ada_Node;
-            Child         : LAL.Identifier := LAL.Identifier (Ids.Child (i));
-            Name          : String         := LAL.Text (Child.F_Tok);
-            new_Exception : AdaM.Declaration.of_exception.view := AdaM.Declaration.of_exception.new_Declaration (Name);
+            Child         : constant LAL.Identifier := LAL.Identifier (Ids.Child (i));
+            Name          : constant String         := LAL.Text (Child.F_Tok);
+            new_Exception : constant AdaM.Declaration.of_exception.view := AdaM.Declaration.of_exception.new_Declaration (Name);
          begin
             case current_Section
             is
@@ -612,8 +606,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
       for i in 1 .. Node.child_Count
       loop
          declare
-            use type LAL.Ada_Node;
-            Child : LAL.Ada_Node := Node.Child (i);
+            Child : constant LAL.Ada_Node := Node.Child (i);
          begin
             if Child = null
             then
@@ -626,13 +619,13 @@ kkk : Boolean := Node.P_Resolve_Symbols;
                      log ("parsing Ada_Enum_Literal_Decl_List");
 
                      declare
-                        List : LAL.Enum_Literal_Decl_List := LAL.Enum_Literal_Decl_List (Child);
+                        List : constant LAL.Enum_Literal_Decl_List := LAL.Enum_Literal_Decl_List (Child);
                      begin
                         for i in 1 .. List.child_Count
                         loop
                            declare
-                              Literal : LAL.Enum_Literal_Decl := LAL.Enum_Literal_Decl (List.Child (i));
-                              Name    : String                := to_String (Literal.P_Defining_Name.Text);
+                              Literal : constant LAL.Enum_Literal_Decl := LAL.Enum_Literal_Decl (List.Child (i));
+                              Name    : constant String                := to_String (Literal.P_Defining_Name.Text);
 
                            begin
                               log ("'" & Name & "'");
@@ -698,7 +691,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
       Depth := Depth + 1;
 
       declare
-         digits_Text :          String  := to_String (Node.Child (1).Text);
+         digits_Text : constant String  := to_String (Node.Child (1).Text);
          the_Digits  : constant Integer := Integer'Value (digits_Text);
       begin
          new_Type.Digits_are (the_Digits);
@@ -732,7 +725,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
       Depth := Depth + 1;
 
       declare
-         delta_Text :          String := to_String (Node.Child (1).Text);
+         delta_Text : constant String := to_String (Node.Child (1).Text);
 --           the_Delta  : constant Float  := Float'Value (delta_Text);
       begin
          null;
@@ -767,8 +760,8 @@ kkk : Boolean := Node.P_Resolve_Symbols;
       Depth := Depth + 1;
 
       declare
-         the_Subtype    : LAL.Subtype_Indication       := LAL.Subtype_Indication (Node.Child (4));
-         new_Indication : AdaM.subtype_Indication.view := AdaM.subtype_Indication.new_Indication;
+         the_Subtype    : constant LAL.Subtype_Indication       := LAL.Subtype_Indication (Node.Child (4));
+         new_Indication : constant AdaM.subtype_Indication.view := AdaM.subtype_Indication.new_Indication;
       begin
          parse_subtype_Indication (the_Subtype, new_Indication.all);
          new_Type.parent_Subtype_is (new_Indication);
@@ -816,8 +809,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
       for i in 1 .. Node.child_Count
       loop
          declare
-            use type LAL.Ada_Node;
-            Child : LAL.Ada_Node := Node.Child (i);
+            Child : constant LAL.Ada_Node := Node.Child (i);
          begin
             if Child = null
             then
@@ -940,8 +932,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
    procedure process (Node : in LAL.Ada_Node)
    is
       use AdaM;
-      use type AdaM.Entity.view,
-               LAL.Ada_Node;
+      use type AdaM.Entity.view;
 
       new_Entity          : AdaM.Entity.view;
       Processed_Something : Boolean := True;
@@ -1184,7 +1175,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
       LAL.Populate_Lexical_Env (Unit);
 
       declare
-         Node : LAL.Ada_Node := LAL.Root (Unit);
+         Node : constant LAL.Ada_Node := LAL.Root (Unit);
       begin
          process (Node);
 
@@ -1289,7 +1280,7 @@ begin
    declare
       Prefix : constant String   := "/eden/forge/applet/tool/aIDE/applet/aide/test/";
       Arg    : constant String   := "test_package.ads";
-      Unit   : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, Prefix & Arg);
+      Unit   : constant LAL.Analysis_Unit := LAL.Get_From_File (Ctx, Prefix & Arg);
    begin
       process_File (Unit, Prefix & Arg);
    end;
