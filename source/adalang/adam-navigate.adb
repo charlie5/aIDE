@@ -722,6 +722,39 @@ kkk : Boolean := Node.P_Resolve_Symbols;
 
 
 
+   function parse_fixed_point_Type (Named : in String;
+                                    Node  : in LAL.Ordinary_Fixed_Point_Def) return AdaM.a_Type.ordinary_fixed_point_type.view
+   is
+      use ada.Characters.Conversions;
+      new_Type : constant AdaM.a_Type.ordinary_fixed_point_type.view := AdaM.a_Type.ordinary_fixed_point_type.new_Type (Named);
+   begin
+      Node.print;
+      Depth := Depth + 1;
+
+      declare
+         delta_Text :          String := to_String (Node.Child (1).Text);
+--           the_Delta  : constant Float  := Float'Value (delta_Text);
+      begin
+         null;
+         new_Type.Delta_is (delta_Text);
+      end;
+
+      declare
+         the_Range : constant LAL.Bin_Op := LAL.Bin_Op (Node.Child (2));
+         First     :          Text;
+         Last      :          Text;
+      begin
+         parse_Range (the_Range,  First, Last);
+
+         new_Type.First_is (+First);
+         new_Type.Last_is  (+Last);
+      end;
+
+      Depth := Depth - 1;
+
+      return new_Type;
+   end parse_fixed_point_Type;
+
 
 
    function parse_derived_Type (Named : in String;
@@ -799,6 +832,10 @@ kkk : Boolean := Node.P_Resolve_Symbols;
                   when LAL.Ada_Floating_Point_Def =>
                      log ("parsing Ada_Floating_Point_Def");
                      return AdaM.a_Type.view (parse_floating_point_Type (named => Name, node => LAL.Floating_Point_Def (Child)));
+
+                  when LAL.Ada_Ordinary_Fixed_Point_Def =>
+                     log ("parsing Ada_Ordinary_Fixed_Point_Def");
+                     return AdaM.a_Type.view (parse_fixed_point_Type (named => Name, node => LAL.Ordinary_Fixed_Point_Def (Child)));
 
                   when LAL.Ada_Array_Type_Def =>
                      log ("parsing Ada_Array_Type_Def");
