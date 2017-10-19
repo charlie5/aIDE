@@ -209,7 +209,6 @@ is
 
       if Self.Target.is_Constrained
       then
-         put_Line ("IS CONSTRAINED");
          if Self.Target.First = ""
          then
             Self.range_Label.hide;
@@ -225,7 +224,6 @@ is
             Self.last_Entry.show;
          end if;
       else
-         put_Line ("NOT IS CONSTRAINED");
          Self.range_Label.show;
          Self.first_Entry.hide;
          Self.last_Entry.hide;

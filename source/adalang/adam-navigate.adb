@@ -688,6 +688,42 @@ kkk : Boolean := Node.P_Resolve_Symbols;
 
 
 
+   function parse_floating_point_Type (Named : in String;
+                                       Node  : in LAL.Floating_Point_Def) return AdaM.a_Type.floating_point_type.view
+   is
+      use ada.Characters.Conversions;
+      new_Type : constant AdaM.a_Type.floating_point_type.view := AdaM.a_Type.floating_point_type.new_Type (Named);
+   begin
+      Node.print;
+      Depth := Depth + 1;
+
+      declare
+         digits_Text :          String  := to_String (Node.Child (1).Text);
+         the_Digits  : constant Integer := Integer'Value (digits_Text);
+      begin
+         new_Type.Digits_are (the_Digits);
+      end;
+
+      declare
+         the_Range : constant LAL.Bin_Op := LAL.Bin_Op (Node.Child (2));
+         First     :          Text;
+         Last      :          Text;
+      begin
+         parse_Range (the_Range,  First, Last);
+
+         new_Type.First_is (long_long_Float'Value (+First));
+         new_Type.Last_is  (long_long_Float'Value (+Last));
+      end;
+
+      Depth := Depth - 1;
+
+      return new_Type;
+   end parse_floating_point_Type;
+
+
+
+
+
    function parse_derived_Type (Named : in String;
                                 Node  : in LAL.Derived_Type_Def) return AdaM.a_Type.derived_type.view
    is
@@ -731,7 +767,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
    is
       use ada.Characters.Conversions;
 
-      Name            : constant String                            := to_String (Node.P_Defining_Name.Text);
+      Name : constant String := to_String (Node.P_Defining_Name.Text);
 --        Ids : LAL.Identifier_List := Node.F_Ids;
    begin
       Depth := Depth + 1;
@@ -760,6 +796,10 @@ kkk : Boolean := Node.P_Resolve_Symbols;
 
                      return AdaM.a_Type.view (parse_signed_integer_Type (named => Name, node => LAL.Signed_Int_Type_Def (Child)));
 
+                  when LAL.Ada_Floating_Point_Def =>
+                     log ("parsing Ada_Floating_Point_Def");
+                     return AdaM.a_Type.view (parse_floating_point_Type (named => Name, node => LAL.Floating_Point_Def (Child)));
+
                   when LAL.Ada_Array_Type_Def =>
                      log ("parsing Ada_Array_Type_Def");
 
@@ -786,7 +826,7 @@ kkk : Boolean := Node.P_Resolve_Symbols;
 --                       end;
 
                   when others =>
-                     Put_Line (Indent & "<parse_type> Skip pre-processing of " & Short_Image (Child)
+                     Put_Line (Indent & "*** parse_type *** ...  Skip pre-processing of " & Short_Image (Child)
                                & "   Kind => " & LAL.Ada_Node_Kind_Type'Image (Child.Kind));
                end case;
             end if;

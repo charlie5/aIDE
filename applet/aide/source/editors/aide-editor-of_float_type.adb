@@ -73,7 +73,6 @@ is
       pragma Unreferenced (the_Editor);
       the_Value : Integer := Natural (the_Button.Get_Value);
    begin
-      put_Line ("WHO hoooooo" & Natural'Image (the_Value));
       the_Editor.Target.Digits_are (the_Value);
 --        the_Button.get_Parent.destroy;
    end on_spin_Button_clicked;
