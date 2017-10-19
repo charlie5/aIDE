@@ -36,9 +36,9 @@ with ada.Characters.Conversions;
 use Libadalang.Analysis;
 
 
-function AdaM.Navigate return AdaM.Environment.item
+procedure AdaM.parse (File : in String;   Into : in out AdaM.Environment.item)
 is
-   Environ : AdaM.Environment.item;
+   Environ : AdaM.Environment.item renames Into;
 
    current_compilation_Unit : AdaM.compilation_Unit.view;
    current_Package          : AdaM.Declaration.of_package.view;
@@ -807,6 +807,8 @@ kkk : Boolean := Node.P_Resolve_Symbols;
 
       log ("Name: '" & Name & "'");
 
+      Node.print;
+
       -- Parse children.
       --
       put_Line (Indent & "Child Count: " & Integer'Image (Node.Child_Count));
@@ -1296,5 +1298,5 @@ begin
    put_Line ("Done.");
    new_Line;
 
-   return Environ;
-end AdaM.Navigate;
+--     return Environ;
+end AdaM.parse;
