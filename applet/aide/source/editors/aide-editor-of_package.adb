@@ -206,9 +206,19 @@ is
                then
                   if the_Entity.is_Public
                   then
-                     Self.public_entities_Box.pack_Start (the_Editor.top_Widget);
+                     if the_Editor.top_Widget.Get_Parent = null
+                     then
+                        Self.public_entities_Box.pack_Start (the_Editor.top_Widget);
+                     else
+                        the_Editor.top_Widget.reparent (Self.public_entities_Box);
+                     end if;
                   else
-                     Self.private_entities_Box.pack_Start (the_Editor.top_Widget);
+                     if the_Editor.top_Widget.Get_Parent = null
+                     then
+                        Self.private_entities_Box.pack_Start (the_Editor.top_Widget);
+                     else
+                        the_Editor.top_Widget.reparent (Self.private_entities_Box);
+                     end if;
                   end if;
                end if;
             end;

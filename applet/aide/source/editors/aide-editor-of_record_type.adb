@@ -1,5 +1,7 @@
 with
+     aIDE.Editor.of_record_component,
      aIDE.GUI,
+     AdaM.record_Component,
 
      glib.Error,
 
@@ -103,9 +105,10 @@ is
 
          Self.top_Box          := gtk_Box    (the_Builder.get_Object ("top_Box"));
          Self.name_Entry       := Gtk_Entry  (the_Builder.get_Object ("name_Entry"));
-         Self.        is_Label := Gtk_Label  (the_Builder.get_Object (        "is_Label"));
-         Self.    record_Label := Gtk_Label  (the_Builder.get_Object (    "record_Label"));
-         Self.      null_Label := Gtk_Label  (the_Builder.get_Object (      "null_Label"));
+         Self.is_Label         := Gtk_Label  (the_Builder.get_Object ("is_Label"));
+         Self.record_Label     := Gtk_Label  (the_Builder.get_Object ("record_Label"));
+         Self.components_Box   := gtk_Box    (the_Builder.get_Object ("components_Box"));
+         Self.null_Label       := Gtk_Label  (the_Builder.get_Object ("null_Label"));
          Self.end_record_Label := Gtk_Label  (the_Builder.get_Object ("end_record_Label"));
          Self.rid_Button       := gtk_Button (the_Builder.get_Object ("rid_Button"));
 
@@ -169,8 +172,25 @@ is
 
 --        the_Literals   : AdaM.a_Type.enumeration_literal.vector renames Self.Target.Literals;
 --        literal_Editor : aIDE.Editor.of_enumeration_literal.view;
+
+      Children : AdaM.Entity.Entities renames Self.Target.Children.all;
    begin
-      null;
+      if Children.is_Empty
+      then
+         Self.null_Label.show;
+      else
+         Self.null_Label.hide;
+      end if;
+
+      for Each of Children
+      loop
+         declare
+            Child      : constant AdaM.record_Component.view           := AdaM.record_Component.view (Each);
+            new_Editor : constant aIDE.Editor.of_record_component.view := Editor.of_record_component.Forge.new_Editor (the_target => Child);
+         begin
+            Self.components_Box.pack_Start (new_Editor.top_Widget);
+         end;
+      end loop;
 
 --        if Self.is_in_unconstrained_Array
 --        then

@@ -43,6 +43,7 @@ private
          name_Entry       : Gtk_Entry;
          is_Label         : gtk_Label;
          record_Label     : gtk_Label;
+         components_Box   : gtk_Box;
          null_Label       : gtk_Label;
          end_record_Label : gtk_Label;
          rid_Button       : gtk_Button;

@@ -12,6 +12,7 @@ with
      AdaM.a_Type.floating_point_type,
      AdaM.a_Type.array_type,
      AdaM.a_Type.record_type,
+     AdaM.record_Component,
      AdaM.a_Type.ordinary_fixed_point_type,
      AdaM.a_Type.private_type,
      AdaM.a_Type.derived_type,
@@ -28,13 +29,16 @@ with Langkit_Support.Diagnostics;
 with Langkit_Support.Text;
 with Libadalang.Analysis;
 
-with ada.Characters.Conversions;
+with Ada.Characters.conversions;
 use Libadalang.Analysis;
 
 
 procedure AdaM.parse (File : in     String;
                       Into : in out AdaM.Environment.item)
 is
+   use Ada.Characters.conversions;
+
+
    pragma Unreferenced (File);
    Environ : AdaM.Environment.item renames Into;
 
@@ -116,7 +120,6 @@ is
                           First     :    out Text;
                           Last      :    out Text)
    is
-      use Ada.Characters.conversions;
    begin
       First := +to_String (the_Range.Child (1).Text);
       Last  := +to_String (the_Range.Child (3).Text);
@@ -127,7 +130,6 @@ is
    procedure parse_subtype_Indication (Node           : in     LAL.Subtype_Indication;
                                        new_Indication :    out AdaM.subtype_Indication.item'Class)
    is
-      use Ada.Characters.Conversions;
 
       index_Type : constant String               := to_String (Node.F_Name.Text);
       Constraint : constant LAL.Range_Constraint := LAL.Range_Constraint (Node.Child (3));
@@ -178,7 +180,6 @@ is
    function parse_array_Type (Named : in String;
                               Node  : in LAL.Array_Type_Def) return AdaM.a_Type.array_type.view
    is
-      use ada.Characters.Conversions;
 
       new_array_Type : constant AdaM.a_Type.array_type.view := AdaM.a_Type.array_type.new_Type (Named);
 
@@ -235,7 +236,7 @@ is
                      log ("");
                      log ("parsing Ada_Component_Def");
 
-                     LAL.print (Child);
+--                       LAL.print (Child);
 
                      declare
                         Component : constant LAL.Component_Def := LAL.Component_Def (Child);
@@ -277,7 +278,6 @@ is
 
    function parse_anonymous_Type (Node : in LAL.Anonymous_Type) return AdaM.a_Type.view
    is
-      use ada.Characters.Conversions;
       node_Text   : constant String := to_String (Node.Text);
       Declaration : constant LAL.Anonymous_Type_Decl := LAL.Anonymous_Type_Decl (Node.Child (1));
       new_Type    :          AdaM.a_Type.view;
@@ -355,7 +355,6 @@ is
 
    function parse_object_Declaration (Node : in LAL.Object_Decl) return AdaM.Declaration.of_object.view
    is
-      use ada.Characters.Conversions;
       Name        : constant String                          := to_String (Node.P_Defining_Name.Text);
       new_Object  : constant AdaM.Declaration.of_object.view := AdaM.Declaration.of_object.new_Declaration (Name);
    begin
@@ -403,7 +402,7 @@ is
 
                   when LAL.Ada_Anonymous_Type =>
                      log ("Ada_Anonymous_Type found");
-                     lal.print (Child);
+--                       lal.print (Child);
 
                      new_Object.Type_is (parse_anonymous_Type (LAL.Anonymous_Type (Child)));
 
@@ -482,7 +481,6 @@ is
 
    function parse_Pragma (Node : in LAL.Pragma_Node) return AdaM.a_Pragma.view
    is
-      use ada.Characters.Conversions;
 
       Name        : constant String             := to_String (Node.F_Id.Text);
       new_Pragma  : constant AdaM.a_Pragma.view := AdaM.a_Pragma.new_Pragma (Name);
@@ -553,7 +551,6 @@ is
 
    procedure parse_Exception (Node : in LAL.Exception_Decl)
    is
-      use ada.Characters.Conversions;
 
       Ids : constant LAL.Identifier_List := Node.F_Ids;
    begin
@@ -590,7 +587,6 @@ is
 
    function parse_Enumeration (Node : in LAL.Enum_Type_Decl) return AdaM.a_Type.enumeration_type.view
    is
-      use ada.Characters.Conversions;
 
       Name            : constant String                            := to_String (Node.P_Defining_Name.Text);
       new_Enumeration : constant AdaM.a_Type.enumeration_type.view := AdaM.a_Type.enumeration_type.new_Type (Name);
@@ -657,12 +653,11 @@ is
    function parse_signed_integer_Type (Named : in String;
                                        Node  : in LAL.Signed_Int_Type_Def) return AdaM.a_Type.signed_integer_type.view
    is
-      use ada.Characters.Conversions;
 
       new_Type : constant AdaM.a_Type.signed_integer_type.view := AdaM.a_Type.signed_integer_type.new_Type (Named);
 
    begin
-      Node.Print;
+--        Node.Print;
       Depth := Depth + 1;
 
       declare
@@ -686,10 +681,9 @@ is
    function parse_floating_point_Type (Named : in String;
                                        Node  : in LAL.Floating_Point_Def) return AdaM.a_Type.floating_point_type.view
    is
-      use ada.Characters.Conversions;
       new_Type : constant AdaM.a_Type.floating_point_type.view := AdaM.a_Type.floating_point_type.new_Type (Named);
    begin
-      Node.print;
+--        Node.print;
       Depth := Depth + 1;
 
       declare
@@ -720,10 +714,9 @@ is
    function parse_fixed_point_Type (Named : in String;
                                     Node  : in LAL.Ordinary_Fixed_Point_Def) return AdaM.a_Type.ordinary_fixed_point_type.view
    is
-      use ada.Characters.Conversions;
       new_Type : constant AdaM.a_Type.ordinary_fixed_point_type.view := AdaM.a_Type.ordinary_fixed_point_type.new_Type (Named);
    begin
-      Node.print;
+--        Node.print;
       Depth := Depth + 1;
 
       declare
@@ -755,10 +748,9 @@ is
    function parse_derived_Type (Named : in String;
                                 Node  : in LAL.Derived_Type_Def) return AdaM.a_Type.derived_type.view
    is
-      use ada.Characters.Conversions;
       new_Type : constant AdaM.a_Type.derived_type.view := AdaM.a_Type.derived_type.new_Type (Named);
    begin
-      Node.Print;
+--        Node.Print;
       Depth := Depth + 1;
 
       declare
@@ -776,10 +768,29 @@ is
 
 
 
+   procedure parse_record_Component (Into : in out AdaM.a_Type.record_type.item'Class;
+                                     From : in     LAL.Component_Decl)
+   is
+      the_Record     : AdaM.a_Type.record_type.item'Class renames Into;
+      component_Decl : LAL.Component_Decl                 renames From;
+
+      component_Def  : LAL.Component_Def := LAL.Component_Def (component_Decl.Child (2));
+      the_Type       : LAL.Subtype_Indication := LAL.Subtype_Indication (Component_Def.F_Type_Expr);
+
+      Name           : constant String                     := to_String (component_Decl.P_Defining_Name.Text);
+      the_Component  :          AdaM.record_Component.view := AdaM.record_Component.new_Component (Name);
+   begin
+      the_Component.is_Aliased (now => Component_Def.F_Has_Aliased);
+--        parse_subtype_Indication (the_Type, the_Component.type_Indication);
+
+      the_Record.Children.append (the_Component.all'Access);
+   end parse_record_Component;
+
+
+
    function parse_record_Type (Named : in String;
                                Node  : in LAL.Record_Type_Def) return AdaM.a_Type.record_type.view
    is
-      use ada.Characters.Conversions;
       new_Type : constant AdaM.a_Type.record_type.view := AdaM.a_Type.record_type.new_Type (Named);
    begin
 --        Node.print;
@@ -788,6 +799,18 @@ is
       new_Type.is_Abstract (now => Node.F_Has_Abstract);
       new_Type.is_Tagged   (now => Node.F_Has_Tagged);
       new_Type.is_Limited  (now => Node.F_Has_Limited);
+
+      declare
+         the_Record : constant LAL.Record_Def    := LAL.Record_Def    (Node.Child (4));
+         Components : constant LAL.Ada_Node_List := LAL.Ada_Node_List (the_Record.Child (1).Child (1));
+         Component  :          LAL.Component_Decl;
+      begin
+         for i in 1 .. Components.child_Count
+         loop
+            Component := LAL.Component_Decl (Components.Child (i));
+            parse_record_Component (new_Type.all, Component);
+         end loop;
+      end;
 
 --        declare
 --           the_Subtype    : constant LAL.Subtype_Indication       := LAL.Subtype_Indication (Node.Child (4));
@@ -809,7 +832,9 @@ is
       use ada.Characters.Conversions;
 
       Name : constant String := to_String (Node.P_Defining_Name.Text);
---        Ids : LAL.Identifier_List := Node.F_Ids;
+      --        Ids : LAL.Identifier_List := Node.F_Ids;
+
+      Result : AdaM.a_Type.view;
    begin
       Depth := Depth + 1;
 
@@ -835,26 +860,30 @@ is
                is
                   when LAL.Ada_Signed_Int_Type_Def =>
                      log ("parsing Ada_Signed_Int_Type_Def");
-
-                     return AdaM.a_Type.view (parse_signed_integer_Type (named => Name, node => LAL.Signed_Int_Type_Def (Child)));
+                     Result := AdaM.a_Type.view (parse_signed_integer_Type (named => Name, node => LAL.Signed_Int_Type_Def (Child)));
+                     exit;
 
                   when LAL.Ada_Floating_Point_Def =>
                      log ("parsing Ada_Floating_Point_Def");
-                     return AdaM.a_Type.view (parse_floating_point_Type (named => Name, node => LAL.Floating_Point_Def (Child)));
+                     Result := AdaM.a_Type.view (parse_floating_point_Type (named => Name, node => LAL.Floating_Point_Def (Child)));
+                     exit;
 
                   when LAL.Ada_Ordinary_Fixed_Point_Def =>
                      log ("parsing Ada_Ordinary_Fixed_Point_Def");
-                     return AdaM.a_Type.view (parse_fixed_point_Type (named => Name, node => LAL.Ordinary_Fixed_Point_Def (Child)));
+                     Result := AdaM.a_Type.view (parse_fixed_point_Type (named => Name, node => LAL.Ordinary_Fixed_Point_Def (Child)));
+                     exit;
 
                   when LAL.Ada_Array_Type_Def =>
                      log ("parsing Ada_Array_Type_Def");
 
-                     return AdaM.a_Type.view (parse_array_Type (named => Name, node => LAL.Array_Type_Def (Child)));
+                     Result := AdaM.a_Type.view (parse_array_Type (named => Name, node => LAL.Array_Type_Def (Child)));
+                     exit;
 
                   when LAL.Ada_Record_Type_Def =>
                      log ("parsing Ada_Record_Type_Def");
 
-                     return AdaM.a_Type.view (parse_record_Type (named => Name, node => LAL.Record_Type_Def (Child)));
+                     Result := AdaM.a_Type.view (parse_record_Type (named => Name, node => LAL.Record_Type_Def (Child)));
+                     exit;
 
                   when LAL.Ada_Private_Type_Def =>
                      log ("parsing Ada_Private_Type_Def");
@@ -862,13 +891,15 @@ is
                      declare
                         new_Type : constant AdaM.a_Type.private_type.view := AdaM.a_Type.private_type.new_Type (Name);
                      begin
-                        return new_Type.all'Access;
+                        Result := new_Type.all'Access;
+                        exit;
                      end;
 
                   when LAL.Ada_Derived_Type_Def =>
                      log ("parsing Ada_Derived_Type_Def");
 
-                     return AdaM.a_Type.view (parse_derived_Type (named => Name, node => LAL.Derived_Type_Def (Child)));
+                     Result := AdaM.a_Type.view (parse_derived_Type (named => Name, node => LAL.Derived_Type_Def (Child)));
+                     exit;
 
 --                       declare
 --                          new_Type : constant AdaM.a_Type.derived_type.view := AdaM.a_Type.derived_type.new_Type (Name);
@@ -886,7 +917,7 @@ is
 
       Depth := Depth - 1;
 
-      return null;
+      return Result;
    end parse_Type;
 
 
@@ -1055,10 +1086,16 @@ is
             log ("Processing an Ada_Type_Decl");
             declare
                use adam.a_Type;
+               new_Type : AdaM.a_Type.view := parse_Type (LAL.Type_Decl (Node));
             begin
-               if parse_Type (LAL.Type_Decl (Node)) /= null
+               if new_Type /= null
                then
-                  new_Entity := parse_Type (LAL.Type_Decl (Node)).all'Access;
+                  new_Entity := new_Type.all'Access;
+               else
+                  new_Line (3);
+                  put_Line ("*** WARNING *** : unable to parse type for node =>");
+                  Node.print;
+                  new_Line (3);
                end if;
             end;
             skip_Children := True;
@@ -1067,7 +1104,6 @@ is
             log ("Processing an Ada_Subtype_Decl");
 
             declare
-               use Ada.Characters.Conversions;
                Name         : constant String                     := to_String (LAL.Subtype_Decl (Node).P_Defining_Name.Text);
                new_Subtype  : constant AdaM.a_Type.a_subtype.view := AdaM.a_Type.a_subtype.new_Subtype (Name);
             begin
