@@ -9,6 +9,7 @@ with
      aIDE.Editor.of_fixed_type,
      aIDE.Editor.of_float_type,
      aIDE.Editor.of_array_type,
+     aIDE.Editor.of_record_type,
      aIDE.Editor.of_private_type,
      aIDE.Editor.of_subtype_indication,
      aIDE.Editor.of_object,
@@ -27,6 +28,7 @@ with
      AdaM.a_Type.ordinary_fixed_point_type,
      AdaM.a_Type.floating_point_type,
      AdaM.a_Type.array_type,
+     AdaM.a_Type.record_type,
      AdaM.subtype_Indication,
 
      Ada.Tags;
@@ -37,12 +39,10 @@ with Ada.Text_IO; use Ada.Text_IO;
 package body aIDE.Editor
 is
 
---     function to_Editor (Target : in AdaM.Source.Entity_view) return Editor.view
    function to_Editor (Target : in AdaM.Entity.view) return Editor.view
    is
       use type AdaM.Entity.view;
-      use -- AdaM.Source,
-          AdaM.Comment;
+      use      AdaM.Comment;
 
       Self : Editor.view;
    begin
@@ -157,6 +157,15 @@ is
          declare
             new_Editor : constant Editor.of_array_type.view
               := Editor.of_array_type.Forge.to_Editor (AdaM.a_Type.array_type.view (Target));
+         begin
+            Self := Editor.view (new_Editor);
+         end;
+
+      elsif Target.all in AdaM.a_Type.record_type.item'Class
+      then
+         declare
+            new_Editor : constant Editor.of_record_type.view
+              := Editor.of_record_type.Forge.to_Editor (AdaM.a_Type.record_type.view (Target));
          begin
             Self := Editor.view (new_Editor);
          end;

@@ -76,6 +76,50 @@ is
    end to_Source;
 
 
+
+
+   function  is_Abstract (Self : in     Item)     return Boolean
+   is
+   begin
+      return Self.is_Abstract;
+   end is_Abstract;
+
+   procedure is_Abstract (Self :    out Item;   Now : in Boolean := True)
+   is
+   begin
+      Self.is_Abstract := Now;
+   end is_Abstract;
+
+
+   function  is_Tagged (Self : in     Item)     return Boolean
+   is
+   begin
+      return Self.is_Tagged;
+   end is_Tagged;
+
+   procedure is_Tagged (Self :    out Item;   Now : in Boolean := True)
+   is
+   begin
+      Self.is_Tagged := Now;
+   end is_Tagged;
+
+
+   function  is_Limited (Self : in     Item)     return Boolean
+   is
+   begin
+      return Self.is_Limited;
+   end is_Limited;
+
+
+   procedure is_Limited (Self :    out Item;   Now : in Boolean := True)
+   is
+   begin
+      Self.is_Limited := Now;
+   end is_Limited;
+
+
+
+   ----------
    -- Streams
    --
 

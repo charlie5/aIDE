@@ -11,11 +11,12 @@ with
      AdaM.a_Type.a_subtype,
      AdaM.a_Type.floating_point_type,
      AdaM.a_Type.array_type,
+     AdaM.a_Type.record_type,
      AdaM.a_Type.ordinary_fixed_point_type,
      AdaM.a_Type.private_type,
      AdaM.a_Type.derived_type,
 
-     AdaM.subtype_indication,
+     AdaM.subtype_Indication,
      AdaM.Declaration.of_exception,
      AdaM.Assist;
 
@@ -31,7 +32,8 @@ with ada.Characters.Conversions;
 use Libadalang.Analysis;
 
 
-procedure AdaM.parse (File : in String;   Into : in out AdaM.Environment.item)
+procedure AdaM.parse (File : in     String;
+                      Into : in out AdaM.Environment.item)
 is
    pragma Unreferenced (File);
    Environ : AdaM.Environment.item renames Into;
@@ -767,25 +769,38 @@ is
          new_Type.parent_Subtype_is (new_Indication);
       end;
 
-
-
---        declare
---           the_Range : constant LAL.Bin_Op := LAL.Bin_Op (Node.Child (1));
---           First     :          Text;
---           Last      :          Text;
---        begin
---           parse_Range (the_Range,  First, Last);
---
---           new_Type.First_is (long_long_Integer'Value (+First));
---           new_Type.Last_is  (long_long_Integer'Value (+Last));
---        end;
-
       Depth := Depth - 1;
 
       return new_Type;
    end parse_derived_Type;
 
 
+
+   function parse_record_Type (Named : in String;
+                               Node  : in LAL.Record_Type_Def) return AdaM.a_Type.record_type.view
+   is
+      use ada.Characters.Conversions;
+      new_Type : constant AdaM.a_Type.record_type.view := AdaM.a_Type.record_type.new_Type (Named);
+   begin
+--        Node.print;
+      Depth := Depth + 1;
+
+      new_Type.is_Abstract (now => Node.F_Has_Abstract);
+      new_Type.is_Tagged   (now => Node.F_Has_Tagged);
+      new_Type.is_Limited  (now => Node.F_Has_Limited);
+
+--        declare
+--           the_Subtype    : constant LAL.Subtype_Indication       := LAL.Subtype_Indication (Node.Child (4));
+--           new_Indication : constant AdaM.subtype_Indication.view := AdaM.subtype_Indication.new_Indication;
+--        begin
+--           parse_subtype_Indication (the_Subtype, new_Indication.all);
+--           new_Type.parent_Subtype_is (new_Indication);
+--        end;
+
+      Depth := Depth - 1;
+
+      return new_Type;
+   end parse_record_Type;
 
 
 
@@ -835,6 +850,11 @@ is
                      log ("parsing Ada_Array_Type_Def");
 
                      return AdaM.a_Type.view (parse_array_Type (named => Name, node => LAL.Array_Type_Def (Child)));
+
+                  when LAL.Ada_Record_Type_Def =>
+                     log ("parsing Ada_Record_Type_Def");
+
+                     return AdaM.a_Type.view (parse_record_Type (named => Name, node => LAL.Record_Type_Def (Child)));
 
                   when LAL.Ada_Private_Type_Def =>
                      log ("parsing Ada_Private_Type_Def");

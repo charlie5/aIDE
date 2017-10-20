@@ -31,12 +31,24 @@ is
    function  to_Source (Self : in Item) return text_Vectors.Vector;
 
 
+   function  is_Abstract (Self : in     Item)     return Boolean;
+   procedure is_Abstract (Self :    out Item;   Now : in Boolean := True);
+
+   function  is_Tagged   (Self : in     Item)     return Boolean;
+   procedure is_Tagged   (Self :    out Item;   Now : in Boolean := True);
+
+   function  is_Limited  (Self : in     Item)     return Boolean;
+   procedure is_Limited  (Self :    out Item;   Now : in Boolean := True);
+
+
 
 private
 
    type Item is new a_Type.composite_Type with
       record
-         null;
+         is_Abstract : Boolean;
+         is_Tagged   : Boolean;
+         is_Limited  : Boolean;
       end record;
 
 

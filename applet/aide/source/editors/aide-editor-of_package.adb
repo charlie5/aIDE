@@ -206,9 +206,9 @@ is
                then
                   if the_Entity.is_Public
                   then
-                     the_Editor.top_Widget.reparent (Self.public_entities_Box);
+                     Self.public_entities_Box.pack_Start (the_Editor.top_Widget);
                   else
-                     the_Editor.top_Widget.reparent (Self.private_entities_Box);
+                     Self.private_entities_Box.pack_Start (the_Editor.top_Widget);
                   end if;
                end if;
             end;
