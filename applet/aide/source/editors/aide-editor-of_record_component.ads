@@ -45,7 +45,7 @@ private
          colon_Label       : gtk_Label;
          aliased_Label     : gtk_Label;
          initializer_Label : gtk_Label;
-         initializer_Entry : Gtk_Entry;
+         default_Entry : Gtk_Entry;
          rid_Button        : gtk_Button;
       end record;
 

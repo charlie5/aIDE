@@ -60,8 +60,8 @@ is
 --     function  my_Type (Self : in     Item)     return AdaM.a_Type.view;
 --     function  my_Type (Self : access Item)     return access AdaM.a_Type.view;
 
-   procedure Initialiser_is (Self : in out Item;   Now : in String);
-   function  Initialiser    (Self : in     Item)     return String;
+   procedure Default_is (Self : in out Item;   Now : in String);
+   function  Default    (Self : in     Item)     return String;
 
    overriding
    function  to_Source (Self : in     Item) return text_Vectors.Vector;

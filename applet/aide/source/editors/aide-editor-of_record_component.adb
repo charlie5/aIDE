@@ -33,7 +33,7 @@ is
    is
       the_Text : constant String := the_Entry.Get_Text;
    begin
-      Target.Initialiser_is (the_Text);
+      Target.Default_is (the_Text);
       return False;
    end on_initialiser_Entry_leave;
 
@@ -150,7 +150,7 @@ is
          Self. aliased_Label    := Gtk_Label (the_Builder.get_Object ("aliased_Label"));
 
          Self.initializer_Label := Gtk_Label  (the_Builder.get_Object ("initializer_Label"));
-         Self.initializer_Entry := Gtk_Entry  (the_Builder.get_Object ("initializer_Entry"));
+         Self.default_Entry := Gtk_Entry  (the_Builder.get_Object ("initializer_Entry"));
 
          Self.rid_Button        := gtk_Button (the_Builder.get_Object ("rid_Button"));
 
@@ -162,9 +162,9 @@ is
                                          on_name_Entry_leave'Access,
                                          the_Target);
 
-         Self.initializer_Entry.set_Text (Self.Target.Initialiser);
+         Self.default_Entry.set_Text (Self.Target.Default);
 
-         Entry_return_Callbacks.connect (Self.initializer_Entry,
+         Entry_return_Callbacks.connect (Self.default_Entry,
                                          "focus-out-event",
                                          on_initialiser_Entry_leave'Access,
                                          the_Target);

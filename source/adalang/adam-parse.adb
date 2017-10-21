@@ -776,6 +776,7 @@ is
 
       component_Def  : constant LAL.Component_Def      := LAL.Component_Def (component_Decl.Child (2));
       the_Type       : constant LAL.Subtype_Indication := LAL.Subtype_Indication (Component_Def.F_Type_Expr);
+      the_Default    : LAL.Ada_Node                    := component_Decl.Child (3);
 
       Name           : constant String                     := to_String (component_Decl.P_Defining_Name.Text);
       the_Component  : constant AdaM.record_Component.view := AdaM.record_Component.new_Component (Name);
@@ -786,6 +787,11 @@ is
       parse_subtype_Indication (the_Type, the_Component.Definition.subtype_Indication.all);
 --        parse_subtype_Indication (the_Type, the_Indication.all);
 --        the_Component.Definition.subtype_Indication_is (the_Indication);
+
+      if the_Default /= null
+      then
+         the_Component.Default_is (to_String (the_Default.Text));
+      end if;
 
       the_Record.Children.append (the_Component.all'Access);
    end parse_record_Component;
