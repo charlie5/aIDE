@@ -214,12 +214,14 @@ is
 --        literal_Editor : aIDE.Editor.of_enumeration_literal.view;
    begin
       if Self.Target.is_Aliased
-      then
-         Self.aliased_Label.show;
-      else
-         Self.aliased_Label.hide;
+      then   Self.aliased_Label.show;
+      else   Self.aliased_Label.hide;
       end if;
 
+      if Self.Target.Default = ""
+      then   Self.default_Entry.hide;
+      else   Self.default_Entry.show;
+      end if;
 
 --        Self.first_Entry.set_Text (Self.Target.First);
 --        Self.last_Entry .set_Text (Self.Target.Last);
