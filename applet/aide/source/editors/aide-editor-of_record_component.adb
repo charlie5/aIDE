@@ -136,7 +136,7 @@ is
 
          Gtk_New (the_Builder);
 
-         Result := the_Builder.Add_From_File ("glade/editor/object_editor.glade", Error'Access);
+         Result := the_Builder.Add_From_File ("glade/editor/record_component_editor.glade", Error'Access);
 
          if Error /= null then
             raise Program_Error with "Error: adam.Editor.of_object_type ~ " & Get_Message (Error);

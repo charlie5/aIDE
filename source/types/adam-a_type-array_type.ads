@@ -1,5 +1,7 @@
 with
      AdaM.subtype_Indication,
+     AdaM.component_Definition,
+
      Ada.Streams;
 
 
@@ -33,7 +35,7 @@ is
 
 
    function    index_Indication (Self : access Item) return AdaM.subtype_Indication.view;
-   function  element_Indication (Self : access Item) return AdaM.subtype_Indication.view;
+   function  component_Indication (Self : access Item) return AdaM.subtype_Indication.view;
 
 --     function  index_Type      (Self : access Item) return access AdaM.a_Type.view;
 --     function  index_Type      (Self : in     Item) return        AdaM.a_Type.view;
@@ -52,8 +54,8 @@ is
    function  is_Constrained (Self : in     Item)     return Boolean;
    procedure is_Constrained (Self : in out Item;   Now : in Boolean := True);
 
-   function  Element_is_aliased (Self : in     Item)     return Boolean;
-   procedure Element_is_aliased (Self : in out Item;   Now : in Boolean := True);
+   function  Component_is_aliased (Self : in     Item)     return Boolean;
+   procedure Component_is_aliased (Self : in out Item;   Now : in Boolean := True);
 
 
 
@@ -66,8 +68,9 @@ private
 
          index_Subtype      : AdaM.subtype_Indication.view;
 
-         element_Subtype    : AdaM.subtype_Indication.view;
-         Element_is_aliased : Boolean := False;
+         Component          : AdaM.component_Definition.view;
+--           element_Subtype    : AdaM.subtype_Indication.view;
+--           Element_is_aliased : Boolean := False;
 
          is_Constrained : Boolean;
          First          : Text;

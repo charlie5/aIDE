@@ -23,9 +23,10 @@ is
    procedure define (Self : in out Item;   Name : in String)
    is
    begin
-      Self.Name            := +Name;
-      Self.  index_Subtype := subtype_Indication.new_Indication;
-      Self.element_Subtype := subtype_Indication.new_Indication;
+      Self.Name          := +Name;
+      Self.index_Subtype := subtype_Indication.new_Indication;
+      Self.Component     := component_Definition.new_Definition;
+--        Self.element_Subtype := subtype_Indication.new_Indication;
    end define;
 
 
@@ -33,10 +34,12 @@ is
    overriding
    procedure destruct (Self : in out Item)
    is
-      use subtype_Indication;
+      use subtype_Indication,
+          component_Definition;
    begin
       free (Self.  index_Subtype);
-      free (Self.element_Subtype);
+      free (Self.Component);
+--        free (Self.element_Subtype);
    end destruct;
 
 
@@ -89,11 +92,11 @@ is
    end index_Indication;
 
 
-   function  element_Indication (Self : access Item) return AdaM.subtype_Indication.view
+   function  component_Indication (Self : access Item) return AdaM.subtype_Indication.view
    is
    begin
-      return Self.element_Subtype;
-   end element_Indication;
+      return Self.Component.subtype_Indication;
+   end component_Indication;
 
 
 --     function  index_Type      (Self : access Item)     return access AdaM.a_Type.view
@@ -183,18 +186,18 @@ is
    end is_Constrained;
 
 
-   function  Element_is_aliased (Self : in     Item)     return Boolean
+   function  Component_is_aliased (Self : in     Item)     return Boolean
    is
    begin
-      return Self.Element_is_aliased;
-   end Element_is_aliased;
+      return Self.Component.is_Aliased;
+   end Component_is_aliased;
 
 
-   procedure Element_is_aliased (Self : in out Item;   Now : in Boolean := True)
+   procedure Component_is_aliased (Self : in out Item;   Now : in Boolean := True)
    is
    begin
-      Self.Element_is_aliased := Now;
-   end Element_is_aliased;
+      Self.Component.is_Aliased (Now);
+   end Component_is_aliased;
 
 
 

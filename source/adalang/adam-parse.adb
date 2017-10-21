@@ -248,11 +248,11 @@ is
 
                         if Component.F_Has_Aliased
                         then
-                           new_array_Type.Element_is_aliased;
+                           new_array_Type.Component_is_aliased;
                         end if;
 
                         parse_subtype_Indication (LAL.subtype_Indication (Component.Child (2)),
-                                                  new_array_Type.element_Indication.all);
+                                                  new_array_Type.component_Indication.all);
                      end;
 
 --                       new_array_Type.element_Indication.main_Type_is (Environ.find ("Standard.Integer"));

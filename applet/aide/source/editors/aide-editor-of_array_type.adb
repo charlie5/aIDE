@@ -67,7 +67,7 @@ is
 --        the_Text : constant String := the_Entry.get_Text;
    begin
       aIDE.GUI.show_types_Palette (Invoked_by => the_Entry.all'Access,
-                                   Target     => the_Editor.Target.element_Indication.main_Type);
+                                   Target     => the_Editor.Target.component_Indication.main_Type);
    end on_element_type_Button_clicked;
 
 
@@ -177,7 +177,7 @@ is
 
          declare
             indication_Editor : constant aIDE.Editor.of_subtype_indication.view
-              := aIDE.Editor.of_subtype_indication.Forge.to_Editor (the_Target                => Self.Target.element_Indication.all'Access,
+              := aIDE.Editor.of_subtype_indication.Forge.to_Editor (the_Target                => Self.Target.component_Indication.all'Access,
                                                                     is_in_unconstrained_Array => False);
          begin
             Self.component_Box.pack_Start (indication_Editor.top_Widget);

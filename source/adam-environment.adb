@@ -537,8 +537,8 @@ is
            := AdaM.a_Pragma.new_Pragma (Name => "Pack");
       begin
          new_array_Type.index_Indication  .main_Type_is (Self.find ("Standard.Positive"));
-         new_array_Type.element_Indication.main_Type_is (Self.find ("Standard.Character"));
-         new_array_Type.element_Indication.is_Constrained;
+         new_array_Type.component_Indication.main_Type_is (Self.find ("Standard.Character"));
+         new_array_Type.component_Indication.is_Constrained;
          new_array_Type.is_Constrained  (Now => False);
 
          new_Pragma.add_Argument ("String");
@@ -556,8 +556,8 @@ is
            := AdaM.a_Pragma.new_Pragma (Name => "Pack");
       begin
          new_array_Type.index_Indication  .main_Type_is (Self.find ("Standard.Positive"));
-         new_array_Type.element_Indication.main_Type_is (Self.find ("Standard.Wide_Character"));
-         new_array_Type.element_Indication.is_Constrained;
+         new_array_Type.component_Indication.main_Type_is (Self.find ("Standard.Wide_Character"));
+         new_array_Type.component_Indication.is_Constrained;
          new_array_Type.is_Constrained  (Now => False);
 
          new_Pragma.add_Argument ("Wide_String");
@@ -575,8 +575,8 @@ is
            := AdaM.a_Pragma.new_Pragma (Name => "Pack");
       begin
          new_array_Type.index_Indication  .main_Type_is (Self.find ("Standard.Positive"));
-         new_array_Type.element_Indication.main_Type_is (Self.find ("Standard.Wide_Wide_Character"));
-         new_array_Type.element_Indication.is_Constrained;
+         new_array_Type.component_Indication.main_Type_is (Self.find ("Standard.Wide_Wide_Character"));
+         new_array_Type.component_Indication.is_Constrained;
          new_array_Type.is_Constrained (Now => False);
 
          add (new_array_Type.all'Access);
