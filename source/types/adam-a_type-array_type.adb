@@ -25,7 +25,7 @@ is
    begin
       Self.Name          := +Name;
       Self.index_Subtype := subtype_Indication.new_Indication;
-      Self.Component     := component_Definition.new_Definition;
+      Self.Component     := component_Definition.new_Definition (is_subtype_Indication => True);
 --        Self.element_Subtype := subtype_Indication.new_Indication;
    end define;
 

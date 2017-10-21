@@ -21,10 +21,15 @@ is
    --  Forge
    --
 
-   procedure define (Self : in out Item)
+   procedure define (Self : in out Item;   is_subtype_Indication : in Boolean)
    is
    begin
-      null;
+      if is_subtype_Indication
+      then
+         Self.subtype_Indication := AdaM.subtype_Indication.new_Indication;
+      else
+         Self.access_Definition  := AdaM.access_Definition.new_Definition;
+      end if;
    end define;
 
 
@@ -35,11 +40,12 @@ is
    end destruct;
 
 
-   function new_Definition return View
+   function  new_Definition (is_subtype_Indication : in Boolean) return component_Definition.view
    is
       new_View : constant component_Definition.view := Pool.new_Item;
    begin
-      define (component_Definition.item (new_View.all));
+      define (component_Definition.item (new_View.all),
+             is_subtype_Indication);
 
       return new_View;
    end new_Definition;
@@ -90,31 +96,29 @@ is
 
 
 
-   procedure subtype_Indication_is (Self :    out Item;   Now : in AdaM.subtype_Indication.view)
-   is
-      use type AdaM.access_Definition.view;
-   begin
-      if Self.access_Definition /= null
-      then
-         raise program_Error with "access_Definition is already set";
-      end if;
-
-      Self.subtype_Indication := Now;
-   end subtype_Indication_is;
-
-
-
-   procedure access_Definition_is  (Self :    out Item;   Now : in AdaM.access_Definition.view)
-   is
-      use type AdaM.subtype_Indication.view;
-   begin
-      if Self.subtype_Indication /= null
-      then
-         raise program_Error with "subtype_Indication is already set";
-      end if;
-
-      Self.access_Definition := Now;
-   end access_Definition_is;
+--     procedure subtype_Indication_is (Self :    out Item;   Now : in AdaM.subtype_Indication.view)
+--     is
+--        use type AdaM.access_Definition.view;
+--     begin
+--        if Self.access_Definition /= null
+--        then
+--           raise program_Error with "access_Definition is already set";
+--        end if;
+--
+--        Self.subtype_Indication := Now;
+--     end subtype_Indication_is;
+--
+--     procedure access_Definition_is  (Self :    out Item;   Now : in AdaM.access_Definition.view)
+--     is
+--        use type AdaM.subtype_Indication.view;
+--     begin
+--        if Self.subtype_Indication /= null
+--        then
+--           raise program_Error with "subtype_Indication is already set";
+--        end if;
+--
+--        Self.access_Definition := Now;
+--     end access_Definition_is;
 
 
 

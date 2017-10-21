@@ -35,7 +35,7 @@ is
 
    --  Forge
    --
-   function  new_Definition return component_Definition.view;
+   function  new_Definition (is_subtype_Indication : in Boolean) return component_Definition.view;
 
    procedure free     (Self : in out component_Definition.view);
    procedure destruct (Self : in out component_Definition.item);
@@ -53,8 +53,8 @@ is
    procedure is_Aliased  (Self : in out Item;   Now : in Boolean := True);
    function  is_Aliased  (Self : in     Item)     return Boolean;
 
-   procedure subtype_Indication_is (Self :    out Item;   Now : in subtype_Indication.view);
-   procedure access_Definition_is  (Self :    out Item;   Now : in access_Definition.view);
+--     procedure subtype_Indication_is (Self :    out Item;   Now : in subtype_Indication.view);
+--     procedure access_Definition_is  (Self :    out Item;   Now : in access_Definition.view);
 
    function  is_subtype_Indication (Self : in Item) return Boolean;
    function  is_access_Definition  (Self : in Item) return Boolean;
@@ -71,11 +71,12 @@ is
    function  to_Source (Self : in     Item) return text_Vectors.Vector;
 
 
+
 private
 
    type Item is new Entity.item with
       record
-         is_Aliased         : Boolean := False;
+         is_Aliased : Boolean := False;
 
          subtype_Indication : AdaM.subtype_Indication.view;
          access_Definition  : AdaM.access_Definition .view;

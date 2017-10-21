@@ -24,7 +24,7 @@ is
    procedure define (Self : in out Item)
    is
    begin
-      Self.Definition := component_Definition.new_Definition;
+      Self.Definition := component_Definition.new_Definition (is_subtype_Indication => True);
    end define;
 
 
