@@ -815,11 +815,16 @@ is
          Components : constant LAL.Ada_Node_List := LAL.Ada_Node_List (the_Record.Child (1).Child (1));
          Component  :          LAL.Component_Decl;
       begin
-         for i in 1 .. Components.child_Count
-         loop
-            Component := LAL.Component_Decl (Components.Child (i));
-            parse_record_Component (new_Type.all, Component);
-         end loop;
+         if Components.Child (1).Kind = LAL.Ada_Null_Component_Decl
+         then
+            null;
+         else
+            for i in 1 .. Components.child_Count
+            loop
+               Component := LAL.Component_Decl (Components.Child (i));
+               parse_record_Component (new_Type.all, Component);
+            end loop;
+         end if;
       end;
 
 --        declare
