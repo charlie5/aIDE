@@ -44,7 +44,7 @@ is
    is
    begin
       aIDE.GUI.show_types_Palette (Invoked_by => the_Entry.all'Access,
-                                   Target     => the_Editor.Target.my_Type);
+                                   Target     => the_Editor.Target.Definition.subtype_Indication.main_Type);
    end on_type_Button_clicked;
 
 
@@ -72,28 +72,27 @@ is
    is
       pragma Unreferenced (the_Label);
    begin
-      if    not Self.Target.is_Aliased
-      then
-         Self.Target.is_Aliased  (now => True);
-
-      elsif     Self.Target.is_Aliased
-      then
-         Self.Target.is_Aliased  (now => False);
-
-      elsif not Self.Target.is_Aliased
-      then
-         Self.Target.is_Aliased  (now => True);
-
-      elsif     Self.Target.is_Aliased
-      then
-         Self.Target.is_Aliased  (now => False);
-
-      else
-         raise Program_Error;
-      end if;
+--        if    not Self.Target.is_Aliased
+--        then
+--           Self.Target.is_Aliased  (now => True);
+--
+--        elsif     Self.Target.is_Aliased
+--        then
+--           Self.Target.is_Aliased  (now => False);
+--
+--        elsif not Self.Target.is_Aliased
+--        then
+--           Self.Target.is_Aliased  (now => True);
+--
+--        elsif     Self.Target.is_Aliased
+--        then
+--           Self.Target.is_Aliased  (now => False);
+--
+--        else
+--           raise Program_Error;
+--        end if;
 
       put_Line ("YAY");
---        Self.Target.is_Constrained;
       Self.freshen;
 
       return False;
@@ -170,8 +169,7 @@ is
                                          on_initialiser_Entry_leave'Access,
                                          the_Target);
 
-         put_Line ("JJJJJ: " & String (Self.Target.Name));
-         Self.type_Button.set_Label (+Self.Target.my_Type.Name);
+         Self.type_Button.set_Label (+Self.Target.Definition.subtype_Indication.main_Type.Name);
 
          button_Callbacks.connect (Self.type_Button,
                                    "clicked",

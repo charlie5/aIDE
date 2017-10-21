@@ -24,14 +24,15 @@ is
    procedure define (Self : in out Item)
    is
    begin
-      null;
+      Self.Definition := component_Definition.new_Definition;
    end define;
 
 
    procedure destruct (Self : in out Item)
    is
+      use component_Definition;
    begin
-      null;
+      free (Self.Definition);
    end destruct;
 
 
@@ -84,41 +85,50 @@ is
 
 
 
-   procedure is_Aliased (Self : in out Item;   Now : in Boolean := True)
-   is
-   begin
-      Self.is_Aliased := Now;
-   end is_Aliased;
-
 
    function  is_Aliased (Self : in     Item) return Boolean
    is
    begin
-      return Self.is_Aliased;
+      return Self.Definition.is_Aliased;
    end is_Aliased;
 
 
 
+--     procedure Definition_is  (Self : in out Item;   Now : in AdaM.component_Definition.view)
+--     is
+--     begin
+--        Self.Definition := Now;
+--     end Definition_is;
 
-   procedure Type_is  (Self : in out Item;   Now : in AdaM.a_Type.view)
+
+
+   function  Definition     (Self : in     Item)     return AdaM.component_Definition.view
    is
    begin
-      Self.my_Type := Now;
-   end Type_is;
+      return Self.Definition;
+   end Definition;
 
 
-   function  my_Type (Self : in     Item)     return AdaM.a_Type.view
-   is
-   begin
-      return Self.my_Type;
-   end my_Type;
 
-
-   function  my_Type (Self : access Item)     return access AdaM.a_Type.view
-   is
-   begin
-      return Self.my_Type'Access;
-   end my_Type;
+--     procedure Type_is  (Self : in out Item;   Now : in AdaM.a_Type.view)
+--     is
+--     begin
+--        Self.my_Type := Now;
+--     end Type_is;
+--
+--
+--     function  my_Type (Self : in     Item)     return AdaM.a_Type.view
+--     is
+--     begin
+--        return Self.my_Type;
+--     end my_Type;
+--
+--
+--     function  my_Type (Self : access Item)     return access AdaM.a_Type.view
+--     is
+--     begin
+--        return Self.my_Type'Access;
+--     end my_Type;
 
 
 

@@ -779,9 +779,12 @@ is
 
       Name           : constant String                     := to_String (component_Decl.P_Defining_Name.Text);
       the_Component  :          AdaM.record_Component.view := AdaM.record_Component.new_Component (Name);
+      the_Indication :          Subtype_Indication   .view := AdaM.subtype_Indication.new_Indication;
    begin
-      the_Component.is_Aliased (now => Component_Def.F_Has_Aliased);
---        parse_subtype_Indication (the_Type, the_Component.type_Indication);
+      the_Component.Definition.is_Aliased (now => Component_Def.F_Has_Aliased);
+
+      parse_subtype_Indication (the_Type, the_Indication.all);
+      the_Component.Definition.subtype_Indication_is (the_Indication);
 
       the_Record.Children.append (the_Component.all'Access);
    end parse_record_Component;

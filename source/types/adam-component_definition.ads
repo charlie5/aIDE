@@ -1,13 +1,13 @@
 with
      AdaM.Entity,
-     AdaM.a_Type,
-     AdaM.component_Definition,
+     AdaM.subtype_Indication,
+     AdaM.access_Definition,
 
      Ada.Containers.Vectors,
      Ada.Streams;
 
 
-package AdaM.record_Component
+package AdaM.component_Definition
 is
 
    type Item is new Entity.item with private;
@@ -35,10 +35,10 @@ is
 
    --  Forge
    --
-   function  new_Component (Name : in String) return record_Component.view;
+   function  new_Definition return component_Definition.view;
 
-   procedure free     (Self : in out record_Component.view);
-   procedure destruct (Self : in out record_Component.item);
+   procedure free     (Self : in out component_Definition.view);
+   procedure destruct (Self : in out component_Definition.item);
 
 
    -- Attributes
@@ -49,19 +49,23 @@ is
 
    overriding
    function  Name    (Self : in     Item)     return Identifier;
-   procedure Name_is (Self :    out Item;   Now : in Identifier);
 
+   procedure is_Aliased  (Self : in out Item;   Now : in Boolean := True);
    function  is_Aliased  (Self : in     Item)     return Boolean;
 
---     procedure Definition_is  (Self : in out Item;   Now : in AdaM.component_Definition.view);
-   function  Definition     (Self : in     Item)     return AdaM.component_Definition.view;
+   procedure subtype_Indication_is (Self :    out Item;   Now : in subtype_Indication.view);
+   procedure access_Definition_is  (Self :    out Item;   Now : in access_Definition.view);
+
+   function  is_subtype_Indication (Self : in Item) return Boolean;
+   function  is_access_Definition  (Self : in Item) return Boolean;
+
+   function  subtype_Indication (Self : in Item) return subtype_Indication.view;
+   function  access_Definition  (Self : in Item) return access_Definition.view;
+
 
 --     procedure Type_is (Self : in out Item;   Now : in AdaM.a_Type.view);
 --     function  my_Type (Self : in     Item)     return AdaM.a_Type.view;
 --     function  my_Type (Self : access Item)     return access AdaM.a_Type.view;
-
-   procedure Initialiser_is (Self : in out Item;   Now : in String);
-   function  Initialiser    (Self : in     Item)     return String;
 
    overriding
    function  to_Source (Self : in     Item) return text_Vectors.Vector;
@@ -71,11 +75,10 @@ private
 
    type Item is new Entity.item with
       record
-         Name        :         Text;
-         Definition  : component_Definition.view;
---           is_Aliased  :         Boolean    := False;
---           my_Type     : aliased a_Type.view;
-         Initialiser :         Text;
+         is_Aliased         : Boolean := False;
+
+         subtype_Indication : AdaM.subtype_Indication.view;
+         access_Definition  : AdaM.access_Definition .view;
       end record;
 
-end AdaM.record_Component;
+end AdaM.component_Definition;
