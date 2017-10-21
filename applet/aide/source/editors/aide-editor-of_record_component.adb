@@ -213,9 +213,14 @@ is
 --        the_Literals   : AdaM.a_Type.enumeration_literal.vector renames Self.Target.Literals;
 --        literal_Editor : aIDE.Editor.of_enumeration_literal.view;
    begin
+--        if Self.Target.is_Aliased
+--        then   Self.aliased_Label.show;
+--        else   Self.aliased_Label.hide;
+--        end if;
+
       if Self.Target.is_Aliased
-      then   Self.aliased_Label.show;
-      else   Self.aliased_Label.hide;
+      then   Self.aliased_Label.set_Text ("aliased ");
+      else   Self.aliased_Label.set_Text ("        ");
       end if;
 
       if Self.Target.Default = ""
