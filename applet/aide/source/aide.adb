@@ -1,10 +1,9 @@
 with
-     AdaM.parse,
-
      aIDE.GUI,
      aIDE.Palette.of_packages,
 
      AdaM.Entity,
+     AdaM.parse,
 
 
      AdaM.Assist,
@@ -79,7 +78,27 @@ is
 
 --        the_entity_Environ := AdaM.Assist.known_Entities;
 --        the_entity_Environ := AdaM.parse;
-      AdaM.parse (file => "", into => the_entity_Environ);
+
+
+   the_entity_Environ.add_package_Standard;
+
+--     for Each of ada_Family
+--     loop
+--        declare
+--           Prefix : constant String   := "/usr/lib/gcc/x86_64-pc-linux-gnu/7.2.0/adainclude/";
+--           Arg    : constant String   := Each.all;
+--        begin
+--        AdaM.parse (Prefix & Arg, into => the_entity_Environ);
+--        end;
+--     end loop;
+
+      declare
+         Prefix : constant String   := "/eden/forge/applet/tool/aIDE/applet/aide/test/";
+         Arg    : constant String   := "test_package.ads";
+      begin
+         AdaM.parse (Prefix & Arg, into => the_entity_Environ);
+      end;
+
       the_entity_Environ.print_Entities;
    end define_standard_Ada_Types;
 

@@ -107,7 +107,6 @@ is
    end log;
 
 
-
    ----------
    -- Process
    --
@@ -1334,27 +1333,30 @@ is
 
 begin
    Ctx := LAL.Create;
-   Environ.add_package_Standard;
 
---     for Each of ada_Family
---     loop
---        declare
---           Prefix : constant String   := "/usr/lib/gcc/x86_64-pc-linux-gnu/7.2.0/adainclude/";
---           Arg    : constant String   := Each.all;
---           Unit   : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, Prefix & Arg);
---           --           Unit : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, "standard.ads");
---        begin
---           process_File (Unit, Prefix & Arg);
---        end;
---     end loop;
+   process_File (Unit, File);
 
-   declare
-      Prefix : constant String   := "/eden/forge/applet/tool/aIDE/applet/aide/test/";
-      Arg    : constant String   := "test_package.ads";
-      Unit   : constant LAL.Analysis_Unit := LAL.Get_From_File (Ctx, Prefix & Arg);
-   begin
-      process_File (Unit, Prefix & Arg);
-   end;
+--     Environ.add_package_Standard;
+--
+--  --     for Each of ada_Family
+--  --     loop
+--  --        declare
+--  --           Prefix : constant String   := "/usr/lib/gcc/x86_64-pc-linux-gnu/7.2.0/adainclude/";
+--  --           Arg    : constant String   := Each.all;
+--  --           Unit   : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, Prefix & Arg);
+--  --           --           Unit : LAL.Analysis_Unit := LAL.Get_From_File (Ctx, "standard.ads");
+--  --        begin
+--  --           process_File (Unit, Prefix & Arg);
+--  --        end;
+--  --     end loop;
+--
+--     declare
+--        Prefix : constant String   := "/eden/forge/applet/tool/aIDE/applet/aide/test/";
+--        Arg    : constant String   := "test_package.ads";
+--        Unit   : constant LAL.Analysis_Unit := LAL.Get_From_File (Ctx, Prefix & Arg);
+--     begin
+--        process_File (Unit, Prefix & Arg);
+--     end;
 
    LAL.Destroy (Ctx);
    put_Line ("Done.");
