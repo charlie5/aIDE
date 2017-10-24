@@ -14,6 +14,7 @@ with
      AdaM.a_Type.record_type,
      AdaM.record_Component,
      AdaM.a_Type.ordinary_fixed_point_type,
+     AdaM.a_Type.decimal_fixed_point_type,
      AdaM.a_Type.private_type,
      AdaM.a_Type.derived_type,
 
@@ -70,7 +71,7 @@ is
 
    Fatal_Error   : exception;
    pragma Unreferenced (Fatal_Error);
-   Ctx           : LAL.Analysis_Context;
+   Ctx           : LAL.Analysis_Context := LAL.create;
    Enabled_Kinds : constant array (LAL.Ada_Node_Kind_type) of Boolean :=
      (others => True);
 
@@ -744,6 +745,49 @@ is
 
 
 
+   function parse_decimal_point_Type (Named : in String;
+                                      Node  : in LAL.Decimal_Fixed_Point_Def) return AdaM.a_Type.decimal_fixed_point_type.view
+   is
+      new_Type : constant AdaM.a_Type.decimal_fixed_point_type.view := AdaM.a_Type.decimal_fixed_point_type.new_Type (Named);
+   begin
+--        Node.print;
+      Depth := Depth + 1;
+
+      declare
+         delta_Text : constant String := to_String (Node.Child (1).Text);
+      begin
+         new_Type.Delta_is (delta_Text);
+      end;
+
+      declare
+         digits_Text : constant String := to_String (Node.Child (2).Text);
+      begin
+         new_Type.Digits_is (digits_Text);
+      end;
+
+      declare
+         the_Range : constant LAL.Bin_Op := LAL.Bin_Op (Node.Child (3));
+         First     :          Text;
+         Last      :          Text;
+      begin
+         if the_Range /= null
+         then
+            parse_Range (the_Range,  First, Last);
+
+            new_Type.First_is (+First);
+            new_Type.Last_is  (+Last);
+         end if;
+      end;
+
+      Depth := Depth - 1;
+
+      return new_Type;
+   end parse_decimal_point_Type;
+
+
+
+
+
    function parse_derived_Type (Named : in String;
                                 Node  : in LAL.Derived_Type_Def) return AdaM.a_Type.derived_type.view
    is
@@ -885,6 +929,11 @@ is
                   when LAL.Ada_Ordinary_Fixed_Point_Def =>
                      log ("parsing Ada_Ordinary_Fixed_Point_Def");
                      Result := AdaM.a_Type.view (parse_fixed_point_Type (named => Name, node => LAL.Ordinary_Fixed_Point_Def (Child)));
+                     exit;
+
+                  when LAL.Ada_Decimal_Fixed_Point_Def =>
+                     log ("parsing Ada_Decimal_Fixed_Point_Def");
+                     Result := AdaM.a_Type.view (parse_decimal_point_Type (named => Name, node => LAL.Decimal_Fixed_Point_Def (Child)));
                      exit;
 
                   when LAL.Ada_Array_Type_Def =>
@@ -1330,9 +1379,10 @@ is
 --        end case;
 --     end Is_Navigation_Disabled;
 
+   Unit : LAL.Analysis_Unit := LAL.get_from_File (Ctx, File);
 
 begin
-   Ctx := LAL.Create;
+--     Ctx := LAL.Create;
 
    process_File (Unit, File);
 

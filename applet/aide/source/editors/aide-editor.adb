@@ -7,6 +7,7 @@ with
      aIDE.Editor.of_enumeration_type,
      aIDE.Editor.of_signed_integer_type,
      aIDE.Editor.of_fixed_type,
+     aIDE.Editor.of_decimal_type,
      aIDE.Editor.of_float_type,
      aIDE.Editor.of_array_type,
      aIDE.Editor.of_record_type,
@@ -26,6 +27,7 @@ with
      AdaM.a_Type.enumeration_type,
      AdaM.a_Type.signed_integer_type,
      AdaM.a_Type.ordinary_fixed_point_type,
+     AdaM.a_Type.decimal_fixed_point_type,
      AdaM.a_Type.floating_point_type,
      AdaM.a_Type.array_type,
      AdaM.a_Type.record_type,
@@ -139,6 +141,15 @@ is
          declare
             new_Editor : constant Editor.of_fixed_type.view
               := Editor.of_fixed_type.Forge.to_Editor (AdaM.a_Type.ordinary_fixed_point_type.view (Target));
+         begin
+            Self := Editor.view (new_Editor);
+         end;
+
+      elsif Target.all in AdaM.a_Type.decimal_fixed_point_type.item'Class
+      then
+         declare
+            new_Editor : constant Editor.of_decimal_type.view
+              := Editor.of_decimal_type.Forge.to_Editor (AdaM.a_Type.decimal_fixed_point_type.view (Target));
          begin
             Self := Editor.view (new_Editor);
          end;
