@@ -6,11 +6,10 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkButton" id="index_type_Button">
-        <property name="label" translatable="yes">&lt;any scalar Type&gt;</property>
+      <object class="GtkLabel" id="type_Label">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">type </property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -19,10 +18,10 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="range_Label">
+      <object class="GtkEntry" id="type_name_Entry">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes"> range </property>
+        <property name="can_focus">True</property>
+        <property name="text" translatable="yes">&lt;type Name&gt;</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -31,10 +30,11 @@
       </packing>
     </child>
     <child>
-      <object class="GtkEntry" id="first_Entry">
+      <object class="GtkLabel" id="is_Label">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="width_chars">20</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes"> is </property>
+        <property name="selectable">True</property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -43,11 +43,10 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="constrained_Label">
+      <object class="GtkLabel" id="not_null_Label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes"> .. </property>
-        <property name="selectable">True</property>
+        <property name="label" translatable="yes"> not null </property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -56,11 +55,10 @@
       </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="unconstrained_Label">
+      <object class="GtkLabel" id="access_Label">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">&lt;&gt;</property>
-        <property name="selectable">True</property>
+        <property name="label" translatable="yes"> access </property>
       </object>
       <packing>
         <property name="expand">False</property>
@@ -69,15 +67,43 @@
       </packing>
     </child>
     <child>
-      <object class="GtkEntry" id="last_Entry">
+      <object class="GtkLabel" id="modifier_Label">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="width_chars">20</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes"> &lt;none | all | constant&gt; </property>
       </object>
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
         <property name="position">5</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox" id="subeditor_Box">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">6</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="rid_Button">
+        <property name="label" translatable="yes">-</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">8</property>
       </packing>
     </child>
   </object>

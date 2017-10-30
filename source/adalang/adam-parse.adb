@@ -17,6 +17,7 @@ with
      AdaM.a_Type.decimal_fixed_point_type,
      AdaM.a_Type.private_type,
      AdaM.a_Type.derived_type,
+     AdaM.a_Type.access_type,
 
      AdaM.subtype_Indication,
      AdaM.Declaration.of_exception,
@@ -870,18 +871,37 @@ is
          end if;
       end;
 
---        declare
---           the_Subtype    : constant LAL.Subtype_Indication       := LAL.Subtype_Indication (Node.Child (4));
---           new_Indication : constant AdaM.subtype_Indication.view := AdaM.subtype_Indication.new_Indication;
---        begin
---           parse_subtype_Indication (the_Subtype, new_Indication.all);
---           new_Type.parent_Subtype_is (new_Indication);
---        end;
-
       Depth := Depth - 1;
 
       return new_Type;
    end parse_record_Type;
+
+
+
+   function parse_access_Type (Named : in String;
+                               Node  : in LAL.Type_Access_Def) return AdaM.a_Type.access_type.view
+   is
+      use AdaM.a_Type.access_type;
+      new_Type : constant AdaM.a_Type.access_type.view := AdaM.a_Type.access_type.new_Type (is_access_to_Object => True);
+   begin
+--        Node.print;
+      Depth := Depth + 1;
+
+      new_Type.Name_is (Named);
+      new_Type.has_not_Null (now => Node.F_Has_Not_Null);
+
+      if    Node.F_Has_All      then   new_Type.Modifier_is (all_Modifier);
+      elsif Node.F_Has_Constant then   new_Type.Modifier_is (constant_Modifier);
+      else                             new_Type.Modifier_is (None);
+      end if;
+
+      parse_subtype_Indication (Node           => Node.F_Subtype_Indication,
+                                new_Indication => new_Type.Indication.all);
+
+      Depth := Depth - 1;
+
+      return new_Type;
+   end parse_access_Type;
 
 
 
@@ -969,6 +989,12 @@ is
 --                       begin
 --                          return new_Type.all'Access;
 --                       end;
+
+                  when LAL.Ada_Type_Access_Def =>
+                     log ("parsing Ada_Type_Access_Def");
+
+                     Result := AdaM.a_Type.view (parse_access_Type (named => Name, node => LAL.Type_Access_Def (Child)));
+                     exit;
 
                   when others =>
                      Put_Line (Indent & "*** parse_type *** ...  Skip pre-processing of " & Short_Image (Child)

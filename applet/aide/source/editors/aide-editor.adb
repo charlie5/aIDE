@@ -12,6 +12,7 @@ with
      aIDE.Editor.of_array_type,
      aIDE.Editor.of_record_type,
      aIDE.Editor.of_private_type,
+     aIDE.Editor.of_access_type,
      aIDE.Editor.of_subtype_indication,
      aIDE.Editor.of_object,
      aIDE.Editor.of_raw_source,
@@ -31,6 +32,7 @@ with
      AdaM.a_Type.floating_point_type,
      AdaM.a_Type.array_type,
      AdaM.a_Type.record_type,
+     AdaM.a_Type.access_type,
      AdaM.subtype_Indication,
 
      Ada.Tags;
@@ -180,6 +182,16 @@ is
          begin
             Self := Editor.view (new_Editor);
          end;
+
+      elsif Target.all in AdaM.a_Type.access_type.item'Class
+      then
+         declare
+            new_Editor : constant Editor.of_access_type.view
+              := Editor.of_access_type.Forge.to_Editor (AdaM.a_Type.access_type.view (Target));
+         begin
+            Self := Editor.view (new_Editor);
+         end;
+
 
 --        elsif Target.all in AdaM.subtype_Indication.item'Class
 --        then
